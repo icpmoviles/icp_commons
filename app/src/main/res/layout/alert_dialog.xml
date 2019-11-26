@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/transparent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_gravity="center|top"
+                android:layout_height="50dp"
+                android:layout_marginTop="0dp"
+                android:layout_width="wrap_content"
+                android:src="@drawable/logo_icp" />
+
+            <TextView
+                android:ems="10"
+                android:id="@+id/tituloCustom"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:text="@string/alert_dialog_tituloCustom_text"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:background="@android:color/white"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:weightSum="2">
+
+        <Button
+            android:background="@android:color/black"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:text="@string/submit"
+            android:textColor="#FFFFFF" />
+
+        <View
+            android:background="@android:color/transparent"
+            android:layout_height="match_parent"
+            android:layout_width="4dp" />
+
+        <Button
+            android:background="@android:color/black"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+</LinearLayout>
