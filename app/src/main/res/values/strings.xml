@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ICP_Commons</string>
+    <string name="alert_dialog_tituloCustom_text"> Mi mensaje custom </string>
+    <string name="alert_dialog_buttons_tituloCustom_text"> Consulta Inventario </string>
+    <string name="submit"> Submit </string>
+    <string name="cancel"> Cancel </string>
+    <string name="aceptar"> Aceptar </string>
+    <string name="si"> Si </string>
+    <string name="no"> No </string>
 </resources>
