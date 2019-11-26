@@ -6,14 +6,17 @@ import android.app.Dialog;
 import android.content.Context;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,23 +38,30 @@ public class CustomDialog {
     private List<TextView> textViews;
     private AlertDialog dialog;
     private boolean cancelable;
-
+    private int color;
+    private Drawable drawable;
 
 
     public CustomDialog(Context context, int kind) {
-
         this.context = context;
         this.Kind = kind;
         this.cancelable = true;
-
-
     }
 
     public CustomDialog(Context context, String titulo, int kind) {
-        this.context = context;
+        this(context, kind);
         this.titulo = titulo;
-        this.Kind = kind;
-        this.cancelable = true;
+    }
+
+    public CustomDialog(Context context, int kind, int color, Drawable drawable) {
+        this(context, kind);
+        this.color = color;
+        this.drawable = drawable;
+    }
+
+    public CustomDialog(Context context, String titulo, int kind, int color, Drawable drawable) {
+        this(context, kind, color, drawable);
+        this.titulo = titulo;
     }
 
 
@@ -108,6 +118,13 @@ public class CustomDialog {
         final View dialogView = LayoutInflater.from(context).inflate(layout, viewGroup, false);
         TextView tituloView = dialogView.findViewById(R.id.tituloCustom);
 
+        if (Kind == Constantes.DIALOG_BUTTONS) {
+            TextView txtAtencion = dialogView.findViewById(R.id.txtAtencion);
+            ImageView imagen = dialogView.findViewById(R.id.imagen);
+            txtAtencion.setBackgroundColor(color);
+            imagen.setImageDrawable(drawable);
+        }
+
         tituloView.setText(Html.fromHtml(titulo));
 
 
@@ -149,12 +166,12 @@ public class CustomDialog {
     }
 
     //Muestra una advertencia en un dialog
-    public static void dialogAdvertencia (final Context ctx, final String texto, final ListenerAccion listener){
+    public static void dialogAdvertencia (final Context ctx, final String texto, final int color, final Drawable drawable, final ListenerAccion listener){
         Activity activity = (Activity) ctx;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run (){
-                CustomDialog dialog = new CustomDialog(ctx, Constantes.DIALOG_BUTTONS);
+                CustomDialog dialog = new CustomDialog(ctx, Constantes.DIALOG_BUTTONS, color, drawable);
                 dialog.setTitulo(texto);
                 dialog.AddButton(ctx.getString(R.string.aceptar), new CustomDialogResponse() {
                     @Override
@@ -169,12 +186,12 @@ public class CustomDialog {
     }
 
     //Dialogo comun con valores de SI / NO en los botones, la accion de estos botones se toma en ResoibseDialog.
-    public static  void dialogSiNO (final Context ctx, final String texto, final ResponseDialog responseDialog){
+    public static  void dialogSiNO (final Context ctx, final String texto, final int color, final Drawable drawable, final ResponseDialog responseDialog){
         Activity activity = (Activity) ctx;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run (){
-                CustomDialog dialog = new CustomDialog(ctx, Constantes.DIALOG_BUTTONS);
+                CustomDialog dialog = new CustomDialog(ctx, Constantes.DIALOG_BUTTONS, color, drawable);
                 dialog.setTitulo(texto);
                 dialog.AddButton(ctx.getString(R.string.si), new CustomDialogResponse() {
                     @Override
