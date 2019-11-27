@@ -1,2 +1,2 @@
-include ':app', ':api_rfid'
+include ':app', ':api_rfid', ':api_barcode'
 rootProject.name='ICP_Commons'
