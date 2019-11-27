@@ -30,7 +30,7 @@ import com.zebra.rfid.api3.TriggerInfo;
 
 import java.util.ArrayList;
 
-class RFIDHandler implements Readers.RFIDReaderEventHandler {
+public class RFIDHandler implements Readers.RFIDReaderEventHandler {
 
     final static String TAG = "RFID_SAMPLE";
     // RFID Reader
