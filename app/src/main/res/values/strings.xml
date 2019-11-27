@@ -13,4 +13,6 @@
     <string name="custom_notification_minimizar">" ---------- Deslice hacia arriba para maximizar ---------- "</string>
     <string name="texto_notification_inventario">"Se ha detectado un inventario activo. ¿Quiere continuar con las lecturas?"</string>
     <string name="button_notification_inventario">"Continuar"</string>
+    <string name="multi_spinner_sin_informacion">Sin información seleccionable...</string>
+    <string name="multi_spinner_seleccione">Seleccione</string>
 </resources>
