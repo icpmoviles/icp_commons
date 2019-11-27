@@ -129,7 +129,7 @@ public class CustomDialog {
 
 
         //Añadir diferentes mensajes en la vista
-        if (textViews != null && textViews.size() > 0)
+        if (textViews != null && textViews.size() > 0 && Kind == Constantes.DIALOG_BUTTONS)
         {
             LinearLayout linearLayout = dialogView.findViewById(R.id.linearButtonsDialog);
             for (TextView txt : textViews)
@@ -140,7 +140,7 @@ public class CustomDialog {
 
 
 
-        if (buttons != null && buttons.size() > 0)
+        if (buttons != null && buttons.size() > 0 && Kind == Constantes.DIALOG_BUTTONS)
         {
             LinearLayout linearLayout = dialogView.findViewById(R.id.linearButtonsDialog);
             for (Button btn : buttons)
