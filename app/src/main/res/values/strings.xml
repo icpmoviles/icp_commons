@@ -7,4 +7,10 @@
     <string name="aceptar"> Aceptar </string>
     <string name="si"> Si </string>
     <string name="no"> No </string>
+    <string name="fragment_progress_bar_txtSalvando_text"> Salvando </string>
+    <string name="fragment_progress_bar_txtPorcentajeProgress_text"> 48% </string>
+    <string name="custom_notification_maximizar">" ---------- Deslice hacia abajo para minimizar ---------- "</string>
+    <string name="custom_notification_minimizar">" ---------- Deslice hacia arriba para maximizar ---------- "</string>
+    <string name="texto_notification_inventario">"Se ha detectado un inventario activo. ¿Quiere continuar con las lecturas?"</string>
+    <string name="button_notification_inventario">"Continuar"</string>
 </resources>

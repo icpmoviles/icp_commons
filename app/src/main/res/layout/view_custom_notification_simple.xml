@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/touchListenerLayout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:id="@+id/notificationBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/rounded_white_button"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/txtDeslizar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" ---------- Deslice hacia abajo para minimizar ---------- "
+            android:textSize="8sp"
+            android:textColor="@color/colorNotification"
+            android:textScaleX="1"
+            android:textAlignment="center"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorAccent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtDecripcion"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:text="Texto de ejemplo. Esto es un texto de ejemplo."
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</FrameLayout>
