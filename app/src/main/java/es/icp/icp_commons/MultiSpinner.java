@@ -13,6 +13,8 @@ import androidx.appcompat.widget.AppCompatSpinner;
 
 import java.util.List;
 
+import es.icp.icp_commons.Interfaces.MultiSpinnerListener;
+
 public class MultiSpinner extends AppCompatSpinner implements
         DialogInterface.OnMultiChoiceClickListener, DialogInterface.OnCancelListener {
 
@@ -172,9 +174,5 @@ public class MultiSpinner extends AppCompatSpinner implements
                     android.R.layout.simple_spinner_item, new String[] { context.getString(R.string.multi_spinner_seleccione) });
             setAdapter(adapter);
         }
-    }
-
-    public interface MultiSpinnerListener {
-        public void onItemsSelected(boolean[] selected);
     }
 }

@@ -2,18 +2,9 @@ package es.icp.icp_commons;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
-
-import androidx.annotation.RawRes;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Helpers.GlobalVariables;
+import es.icp.icp_commons.Interfaces.OnCompletionListener;
 
 public class Sonido {
 
@@ -37,12 +28,19 @@ public class Sonido {
     }
 
     public static void reproducirSonido(Context context, int sonido) {
+        reproducirSonido(context, sonido, null);
+    }
+
+    public static  void reproducirSonido(Context context, int sonido, final OnCompletionListener onCompletionListener) {
         if (!GlobalVariables.Sonido){
             final MediaPlayer mp = MediaPlayer.create(context, sonido);
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
                     GlobalVariables.Sonido = false;
+                    if (onCompletionListener != null) {
+                        onCompletionListener.onCompletion(mediaPlayer);
+                    }
                 }
             });
             mp.start();
