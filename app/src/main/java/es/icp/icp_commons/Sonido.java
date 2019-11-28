@@ -17,27 +17,6 @@ import es.icp.icp_commons.Helpers.GlobalVariables;
 
 public class Sonido {
 
-    public static void reproducirSonidoApp(Context context, int resource) throws IOException{
-        InputStream raw = context.getResources().openRawResource(resource);
-        File file = new File(context.getFilesDir().getAbsolutePath() + "/temp.txt");
-        copyInputStreamToFile(raw, file);
-        FileInputStream fis = new FileInputStream(file);
-
-        if (!GlobalVariables.Sonido){
-            final MediaPlayer mp = new MediaPlayer();
-            mp.setDataSource(fis.getFD());
-            mp.prepare();
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    GlobalVariables.Sonido = false;
-                }
-            });
-            mp.start();
-            GlobalVariables.Sonido = true;
-        }
-    }
-
     public static void reproducirSonidoLib(Context context, int audio) {
         int sonido;
         switch (audio) {
@@ -68,16 +47,6 @@ public class Sonido {
             });
             mp.start();
             GlobalVariables.Sonido = true;
-        }
-    }
-
-    private static void copyInputStreamToFile(InputStream inputStream, File file) throws IOException {
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            int read;
-            byte[] bytes = new byte[1024];
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
         }
     }
 }
