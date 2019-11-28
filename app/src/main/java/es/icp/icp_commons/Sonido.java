@@ -54,10 +54,10 @@ public class Sonido {
                 sonido = R.raw.ohoh;
                 break;
         }
-        reproducir(context, sonido);
+        reproducirSonido(context, sonido);
     }
 
-    private static void reproducir(Context context, int sonido) {
+    public static void reproducirSonido(Context context, int sonido) {
         if (!GlobalVariables.Sonido){
             final MediaPlayer mp = MediaPlayer.create(context, sonido);
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
