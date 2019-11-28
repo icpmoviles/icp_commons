@@ -4,4 +4,8 @@ public class Constantes {
 
     public static final int DIALOG_NORMAL  = 0;
     public static final int DIALOG_BUTTONS = 1;
+    public static final int AUDIO_EXITO = 0;
+    public static final int AUDIO_ERROR = 1;
+    public static final int AUDIO_OHOH = 2;
+
 }
