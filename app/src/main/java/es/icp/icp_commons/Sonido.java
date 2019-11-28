@@ -19,7 +19,7 @@ public class Sonido {
 
     public static void reproducirSonidoApp(Context context, int resource) throws IOException{
         InputStream raw = context.getResources().openRawResource(resource);
-        File file = new File("temp.txt");
+        File file = new File(context.getFilesDir().getAbsolutePath() + "/temp.txt");
         copyInputStreamToFile(raw, file);
         FileInputStream fis = new FileInputStream(file);
 
