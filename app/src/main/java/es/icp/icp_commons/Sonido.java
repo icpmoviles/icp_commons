@@ -9,6 +9,10 @@ import es.icp.icp_commons.Interfaces.OnCompletionListener;
 public class Sonido {
 
     public static void reproducirSonidoLib(Context context, int audio) {
+        reproducirSonidoLib(context, audio, null);
+    }
+
+    public static void reproducirSonidoLib(Context context, int audio, OnCompletionListener onCompletionListener) {
         int sonido;
         switch (audio) {
             case Constantes.AUDIO_ERROR:
@@ -24,7 +28,7 @@ public class Sonido {
                 sonido = R.raw.ohoh;
                 break;
         }
-        reproducirSonido(context, sonido);
+        reproducirSonido(context, sonido, onCompletionListener);
     }
 
     public static void reproducirSonido(Context context, int sonido) {
