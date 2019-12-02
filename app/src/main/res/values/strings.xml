@@ -15,6 +15,9 @@
     <string name="button_notification_inventario">"Continuar"</string>
     <string name="multi_spinner_sin_informacion">Sin información seleccionable...</string>
     <string name="multi_spinner_seleccione">Seleccione</string>
+    <string name="cargando"> Cargando </string>
+    <string name="obteniendo_informacion"> Obteniendo información... </string>
+    <string name="subiendo_acciones_pendientes_offline">Subiendo acciones pendientes offline</string>
     <string-array name="array_name">
         <item>Equipos</item>
         <item>Tarjetas</item>
