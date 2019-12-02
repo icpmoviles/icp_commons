@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import es.icp.icp_commons.Helpers.Helper;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Interfaces.VolleyCallBack;
+import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Services.WebService;
 
 import static es.icp.icp_commons.Services.WebService.EnviarAcciones;
@@ -20,7 +21,7 @@ public class CheckRequest {
     private static Context context;
     private static VolleyCallBack callBack;
 
-    public static void Check(final Context context, final JsonObjectRequest jsonObjectRequest, final VolleyCallBack callback) {
+    public static void Check(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callback) {
         CheckRequest.callBack = callback;
         CheckRequest.context = context;
         try{
@@ -38,7 +39,7 @@ public class CheckRequest {
 
                             ShowLoading(context);
 
-                            JsonObjectRequest request = new JsonObjectRequest(jsonObjectRequest.getMethod(), jsonObjectRequest.getUrl(), new JSONObject(jsonObjectRequest.getBody().toString()),
+                            JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJson(),
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
@@ -50,7 +51,6 @@ public class CheckRequest {
                                 public void onErrorResponse(VolleyError error) {
                                     WebService.HideLoading();
                                     callBack.onError(error);
-                                    jsonObjectRequest.getErrorListener().onErrorResponse(error);
                                 }
                             });
 
