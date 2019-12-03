@@ -37,11 +37,11 @@ public class CheckRequest {
                 EnviarAcciones(context, envioAccionesCallback);
 
             }else{
-                callBack.onOffline();
+                envioAccionesCallback.onOffline();
             }
         }catch (Exception ex)
         {
-
+            envioAccionesCallback.onOffline();
         }
     }
 
@@ -120,6 +120,27 @@ public class CheckRequest {
             public void onFinish() {
                 Send(context, parametros, callBack, loader);
             }
+
+            @Override
+            public void onOffline() {
+                callBack.onOffline();
+            }
         }, loader);
+    }
+
+    public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) {
+        CheckAndSendWithoutActions(context, parametros, callBack, true);
+    }
+
+    public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, final boolean loader) {
+        CheckRequest.callBack = callBack;
+        CheckRequest.context = context;
+        GlobalVariables.loader = loader;
+
+        if (Helper.CheckConnection(context)) {
+            Send(context, parametros, callBack, loader);
+        } else {
+            callBack.onOffline();
+        }
     }
 }
