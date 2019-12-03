@@ -123,6 +123,7 @@ public class CustomDialog {
             ImageView imagen = dialogView.findViewById(R.id.imagen);
             txtAtencion.setBackgroundColor(color);
             imagen.setImageDrawable(drawable);
+            imagen.setScaleType(ImageView.ScaleType.FIT_CENTER);
         }
 
         tituloView.setText(Html.fromHtml(titulo));
