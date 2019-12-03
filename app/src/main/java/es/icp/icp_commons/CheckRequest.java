@@ -4,10 +4,8 @@ import android.content.Context;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import es.icp.icp_commons.Helpers.GlobalVariables;
@@ -73,7 +71,7 @@ public class CheckRequest {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (GlobalVariables.loader) WebService.HideLoading();
-                        callBack.onError(error);
+                        callBack.onError((es.icp.icp_commons.Objects.VolleyError) error);
                     }
                 });
                 WebService.AddRequest(request, context);
