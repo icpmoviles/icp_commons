@@ -17,10 +17,10 @@ import es.icp.icp_commons.Helpers.Helper;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Interfaces.VolleyCallBack;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
+import es.icp.icp_commons.Services.Loading;
 import es.icp.icp_commons.Services.WebService;
 
 import static es.icp.icp_commons.Services.WebService.EnviarAcciones;
-import static es.icp.icp_commons.Services.WebService.ShowLoading;
 
 public class CheckRequest {
     private static Context context;
@@ -55,21 +55,22 @@ public class CheckRequest {
         Send(context, parametros, callBack, true);
     }
 
-    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, final boolean loader) {
+    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
+                            final boolean loader) {
         CheckRequest.callBack = callBack;
         CheckRequest.context = context;
         GlobalVariables.loader = loader;
         try {
 
-            if (GlobalVariables.loader) ShowLoading(context);
+            if (GlobalVariables.loader) Loading.ShowLoading(context);
 
             if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
                 JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                if (GlobalVariables.loader) WebService.HideLoading();
-                                Object responseObject = null;
+                                if (GlobalVariables.loader) Loading.HideLoading();
+                                Object responseObject;
                                 try {
                                     Class clase = parametros.getClase();
                                     if (clase != null) {
@@ -90,7 +91,7 @@ public class CheckRequest {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if (GlobalVariables.loader) WebService.HideLoading();
+                        if (GlobalVariables.loader) Loading.HideLoading();
                         callBack.onError(error.getMessage());
                     }
                 });
@@ -113,7 +114,7 @@ public class CheckRequest {
 //            }
 
         } catch (Exception ex) {
-            if (GlobalVariables.loader) WebService.HideLoading();
+            if (GlobalVariables.loader) Loading.HideLoading();
             ex.printStackTrace();
             callBack.onOffline();
         }
@@ -123,7 +124,8 @@ public class CheckRequest {
         CheckAndSend(context, parametros, callBack, true);
     }
 
-    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, final boolean loader) {
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
+                                    final boolean loader) {
         CheckRequest.callBack = callBack;
         CheckRequest.context = context;
         GlobalVariables.loader = loader;
@@ -146,11 +148,13 @@ public class CheckRequest {
         }, loader);
     }
 
-    public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) {
+    public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
+                                                  final VolleyCallBack callBack) {
         CheckAndSendWithoutActions(context, parametros, callBack, true);
     }
 
-    public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, final boolean loader) {
+    public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
+                                                  final VolleyCallBack callBack, final boolean loader) {
         CheckRequest.callBack = callBack;
         CheckRequest.context = context;
         GlobalVariables.loader = loader;
