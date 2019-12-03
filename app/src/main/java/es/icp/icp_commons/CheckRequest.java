@@ -91,7 +91,7 @@ public class CheckRequest {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (GlobalVariables.loader) WebService.HideLoading();
-                        callBack.onError((es.icp.icp_commons.Objects.VolleyError) error);
+                        callBack.onError(error.getMessage());
                     }
                 });
                 WebService.AddRequest(request, context);
