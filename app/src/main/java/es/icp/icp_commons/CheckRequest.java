@@ -4,10 +4,13 @@ import android.content.Context;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Helpers.Helper;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Interfaces.VolleyCallBack;
@@ -21,47 +24,17 @@ public class CheckRequest {
     private static Context context;
     private static VolleyCallBack callBack;
 
-    public static void Check(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callback) {
-        CheckRequest.callBack = callback;
+    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback) {
+        Check(context, envioAccionesCallback, true);
+    }
+
+    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback, boolean loader) {
         CheckRequest.context = context;
+        GlobalVariables.loader = loader;
         try{
             if (Helper.CheckConnection(context))
             {
-                EnviarAcciones(context, new EnvioAccionesCallback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        try {
-
-                            ShowLoading(context);
-
-                            JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJson(),
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    WebService.HideLoading();
-                                    callBack.onSuccess(response);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    WebService.HideLoading();
-                                    callBack.onError(error);
-                                }
-                            });
-
-                            WebService.AddRequest(request, context);
-                        } catch (Exception ex) {
-                            WebService.HideLoading();
-                            ex.printStackTrace();
-                            callBack.onOffline();
-                        }
-                    }
-                });
+                EnviarAcciones(context, envioAccionesCallback);
 
             }else{
                 callBack.onOffline();
@@ -72,4 +45,81 @@ public class CheckRequest {
         }
     }
 
+    public static boolean CheckConnection(Context context) {
+        return Helper.CheckConnection(context);
+    }
+
+    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) {
+        Send(context, parametros, callBack, true);
+    }
+
+    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, final boolean loader) {
+        CheckRequest.callBack = callBack;
+        CheckRequest.context = context;
+        GlobalVariables.loader = loader;
+        try {
+
+            if (GlobalVariables.loader) ShowLoading(context);
+
+            if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
+                JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                if (GlobalVariables.loader) WebService.HideLoading();
+                                callBack.onSuccess(response);
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (GlobalVariables.loader) WebService.HideLoading();
+                        callBack.onError(error);
+                    }
+                });
+                WebService.AddRequest(request, context);
+            } // else if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.ARRAY) {
+//                JsonArrayRequest request = new JsonArrayRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONArray(),
+//                        new Response.Listener<JSONArray>() {
+//                            @Override
+//                            public void onResponse(JSONArray response) {
+//                                if (GlobalVariables.loader) WebService.HideLoading();
+//                                callBack.onSuccess(response);
+//                            }
+//                        }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        if (GlobalVariables.loader) WebService.HideLoading();
+//                        callBack.onError(error);
+//                    }
+//                });
+//            }
+
+        } catch (Exception ex) {
+            if (GlobalVariables.loader) WebService.HideLoading();
+            ex.printStackTrace();
+            callBack.onOffline();
+        }
+    }
+
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) {
+        CheckAndSend(context, parametros, callBack, true);
+    }
+
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, final boolean loader) {
+        CheckRequest.callBack = callBack;
+        CheckRequest.context = context;
+        GlobalVariables.loader = loader;
+
+        Check(context, new EnvioAccionesCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFinish() {
+                Send(context, parametros, callBack, loader);
+            }
+        }, loader);
+    }
 }

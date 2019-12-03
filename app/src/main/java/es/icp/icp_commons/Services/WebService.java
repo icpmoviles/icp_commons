@@ -13,6 +13,7 @@ import java.util.List;
 
 import es.icp.icp_commons.Database.DBHandler;
 import es.icp.icp_commons.Helpers.Constantes;
+import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Objects.Accion;
 import es.icp.icp_commons.R;
@@ -43,7 +44,7 @@ public class WebService {
             final ProgressDialog mProgress = new ProgressDialog(mContext);
             mProgress.setCancelable(false);
             mProgress.setMessage(mContext.getString(R.string.subiendo_acciones_pendientes_offline));
-            mProgress.show();
+            if (GlobalVariables.loader) mProgress.show();
 
             EnviarAccion(dbHandler, mContext, acciones, 0, acciones.size(), new EnvioAccionesCallback() {
                 @Override
@@ -52,7 +53,7 @@ public class WebService {
 
                 @Override
                 public void onFinish() {
-                    if (mProgress != null)
+                    if (GlobalVariables.loader && mProgress != null)
                     {
                         mProgress.hide();
                         mProgress.dismiss();
