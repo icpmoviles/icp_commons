@@ -61,6 +61,11 @@ public class WebService {
                     callback.onFinish();
 
                 }
+
+                @Override
+                public void onOffline() {
+                    callback.onOffline();
+                }
             });
         }else{
             callback.onFinish();
