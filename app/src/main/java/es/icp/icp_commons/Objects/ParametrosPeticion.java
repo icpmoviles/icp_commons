@@ -21,23 +21,25 @@ public class ParametrosPeticion {
     public ParametrosPeticion() {
     }
 
-    public ParametrosPeticion(int method, String url, Object json) {
+    public ParametrosPeticion(int method, String url, JSONObject json) {
         this.method = method;
         this.url = url;
-
-        if (json instanceof JSONArray) {
-            JSONArray = (JSONArray) json;
-            JSONObject = null;
-            jsonType = JsonTypes.ARRAY;
-        } else if (json instanceof JSONObject) {
-            JSONObject = (JSONObject) json;
-            JSONArray = null;
-            jsonType = JsonTypes.SIMPLE;
-        } else {
-            JSONObject = null;
-            JSONArray = null;
-            jsonType = JsonTypes.ERROR;
-        }
+        JSONObject = json;
+        jsonType = JsonTypes.SIMPLE;
+//
+//        if (json instanceof JSONArray) {
+//            JSONArray = (JSONArray) json;
+//            JSONObject = null;
+//            jsonType = JsonTypes.ARRAY;
+//        } else if (json instanceof JSONObject) {
+//            JSONObject = (JSONObject) json;
+//            JSONArray = null;
+//            jsonType = JsonTypes.SIMPLE;
+//        } else {
+//            JSONObject = null;
+//            JSONArray = null;
+//            jsonType = JsonTypes.ERROR;
+//        }
     }
 
     public int getMethod() {
