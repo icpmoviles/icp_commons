@@ -5,8 +5,12 @@ import android.content.Context;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 
 import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Helpers.Helper;
@@ -65,7 +69,23 @@ public class CheckRequest {
                             @Override
                             public void onResponse(JSONObject response) {
                                 if (GlobalVariables.loader) WebService.HideLoading();
-                                callBack.onSuccess(response);
+                                Object responseObject = null;
+                                try {
+                                    Class clase = parametros.getClase();
+                                    if (clase != null) {
+                                        if (clase.isInstance(new Array[]{})) {
+                                            responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
+                                        } else {
+                                            responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
+                                        }
+                                    } else {
+                                        responseObject = response;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    responseObject = response;
+                                }
+                                callBack.onSuccess(responseObject);
                             }
                         }, new Response.ErrorListener() {
                     @Override

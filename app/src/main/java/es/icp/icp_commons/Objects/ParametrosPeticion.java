@@ -14,6 +14,7 @@ public class ParametrosPeticion {
     private JSONObject JSONObject;
     private JSONArray JSONArray;
     private JsonTypes jsonType;
+    private Class clase;
     public enum Method {
         POST,
         GET
@@ -28,9 +29,10 @@ public class ParametrosPeticion {
         method = Method.GET;
     }
 
-    public ParametrosPeticion(Method method, String url, JSONObject json) {
+    public ParametrosPeticion(Method method, String url, JSONObject json, Class clase) {
         this.method = method;
         this.url = url;
+        this.clase = clase;
         JSONObject = json;
         jsonType = JsonTypes.SIMPLE;
 //
@@ -90,6 +92,14 @@ public class ParametrosPeticion {
 
     public JsonTypes getJsonType() {
         return jsonType;
+    }
+
+    public Class getClase() {
+        return clase;
+    }
+
+    public void setClase(Class clase) {
+        this.clase = clase;
     }
 
     @Override
