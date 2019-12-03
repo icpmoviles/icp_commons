@@ -31,8 +31,6 @@ public class WebService {
 
 
     private static RequestQueue requestQueue;
-    private static ProgressDialog progress;
-    private static Context contextWS;
 
     public static void EnviarAcciones(final Context mContext, final EnvioAccionesCallback callback)
     {
@@ -166,43 +164,5 @@ public class WebService {
         requestQueue.add(request);
     }
 
-    public static void ShowLoading(final Context ctx){
 
-        contextWS = ctx;
-
-        ((Activity)(ctx)).runOnUiThread(new Runnable() {
-            @Override
-            public void run (){
-
-                try{
-                    progress = new ProgressDialog(ctx);
-                    progress.setTitle(ctx.getString(R.string.cargando));
-                    progress.setMessage(ctx.getString(R.string.obteniendo_informacion));
-                    progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                    progress.show();
-                }catch (Exception e){
-
-                }
-            }
-        });
-
-    }
-    public static void HideLoading(){
-        ((Activity)(contextWS)).runOnUiThread(new Runnable() {
-            @Override
-            public void run (){
-                try{
-                    if (progress != null){
-                        progress.dismiss();
-                    }
-                }catch (Exception e){
-
-                }
-
-            }
-        });
-
-
-
-    }
 }
