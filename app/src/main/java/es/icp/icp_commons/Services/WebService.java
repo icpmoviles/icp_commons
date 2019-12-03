@@ -1,6 +1,5 @@
 package es.icp.icp_commons.Services;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
