@@ -1,21 +1,43 @@
 package es.icp.icp_commons.Objects;
 
 import com.android.volley.Request;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 import org.json.JSONObject;
 
 public class ParametrosPeticion {
     private int method;
     private String url;
-    private JSONObject json;
+    private JSONObject JSONObject;
+    private JSONArray JSONArray;
+    private JsonTypes jsonType;
+    public enum JsonTypes {
+        SIMPLE,
+        ARRAY,
+        ERROR
+    }
 
     public ParametrosPeticion() {
     }
 
-    public ParametrosPeticion(int method, String url, JSONObject json) {
+    public ParametrosPeticion(int method, String url, Object json) {
         this.method = method;
         this.url = url;
-        this.json = json;
+
+        if (json instanceof JSONArray) {
+            JSONArray = (JSONArray) json;
+            JSONObject = null;
+            jsonType = JsonTypes.ARRAY;
+        } else if (json instanceof JSONObject) {
+            JSONObject = (JSONObject) json;
+            JSONArray = null;
+            jsonType = JsonTypes.SIMPLE;
+        } else {
+            JSONObject = null;
+            JSONArray = null;
+            jsonType = JsonTypes.ERROR;
+        }
     }
 
     public int getMethod() {
@@ -34,12 +56,28 @@ public class ParametrosPeticion {
         this.url = url;
     }
 
-    public JSONObject getJson() {
-        return json;
+    public JSONObject getJSONObject() {
+        return JSONObject;
     }
 
-    public void setJson(JSONObject json) {
-        this.json = json;
+    public void setJSONObject(JSONObject JSONObject) {
+        this.JSONObject = JSONObject;
+        JSONArray = null;
+        jsonType = JsonTypes.SIMPLE;
+    }
+
+    public JSONArray getJSONArray() {
+        return JSONArray;
+    }
+
+    public void setJSONArray(JSONArray JSONArray) {
+        this.JSONArray = JSONArray;
+        JSONObject = null;
+        jsonType = JsonTypes.ARRAY;
+    }
+
+    public JsonTypes getJsonType() {
+        return jsonType;
     }
 
     @Override
@@ -47,7 +85,9 @@ public class ParametrosPeticion {
         return "ParametrosPeticion{" +
                 "method=" + method +
                 ", url='" + url + '\'' +
-                ", json=" + json +
+                ", JSONObject=" + JSONObject +
+                ", JSONArray=" + JSONArray +
+                ", jsonType=" + jsonType +
                 '}';
     }
 }
