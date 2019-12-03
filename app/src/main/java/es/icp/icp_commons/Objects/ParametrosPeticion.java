@@ -29,6 +29,10 @@ public class ParametrosPeticion {
         method = Method.GET;
     }
 
+    public ParametrosPeticion(Method method, String url, JSONObject json) {
+        this(method, url, json, null);
+    }
+
     public ParametrosPeticion(Method method, String url, JSONObject json, Class clase) {
         this.method = method;
         this.url = url;
