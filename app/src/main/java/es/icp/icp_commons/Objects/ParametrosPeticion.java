@@ -1,17 +1,23 @@
 package es.icp.icp_commons.Objects;
 
 import com.android.volley.Request;
+import com.android.volley.Response;
+
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 import org.json.JSONObject;
 
 public class ParametrosPeticion {
-    private int method;
+    private Method method;
     private String url;
     private JSONObject JSONObject;
     private JSONArray JSONArray;
     private JsonTypes jsonType;
+    public enum Method {
+        POST,
+        GET
+    }
     public enum JsonTypes {
         SIMPLE,
         ARRAY,
@@ -19,9 +25,10 @@ public class ParametrosPeticion {
     }
 
     public ParametrosPeticion() {
+        method = Method.GET;
     }
 
-    public ParametrosPeticion(int method, String url, JSONObject json) {
+    public ParametrosPeticion(Method method, String url, JSONObject json) {
         this.method = method;
         this.url = url;
         JSONObject = json;
@@ -43,10 +50,13 @@ public class ParametrosPeticion {
     }
 
     public int getMethod() {
-        return method;
+        int m = 0;
+        if (method == Method.POST) m = Request.Method.POST;
+        if (method == Method.GET) m = Request.Method.GET;
+        return m;
     }
 
-    public void setMethod(int method) {
+    public void setMethod(Method method) {
         this.method = method;
     }
 
