@@ -116,6 +116,4 @@ public class VolleyError extends com.android.volley.VolleyError {
     protected void finalize() throws Throwable {
         super.finalize();
     }
-
-
 }
