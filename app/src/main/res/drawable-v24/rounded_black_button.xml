@@ -4,7 +4,6 @@
         android:width="1dp"
         android:color="@color/black" />
 
-    <!--<gradient android:startColor="#e2d7d2" android:centerColor="#e2d7d2" android:endColor="#e2d7d2" android:angle="90" /> -->
     <gradient android:endColor="@color/black" android:centerColor="@color/black" android:startColor="@color/black" android:angle="90" />
 
     <padding

@@ -6,10 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -28,12 +26,12 @@ import es.icp.icp_commons.Interfaces.CustomDialogResponse;
 import es.icp.icp_commons.Interfaces.ListenerAccion;
 import es.icp.icp_commons.Interfaces.ResponseDialog;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class CustomDialog {
-
 
     private Context context;
     private String titulo;
-    private int Kind = 0;
+    private int Kind;
     private List<Button> buttons;
     private List<TextView> textViews;
     private AlertDialog dialog;
@@ -41,30 +39,63 @@ public class CustomDialog {
     private int color;
     private Drawable drawable;
 
-
+    /**
+     * Constructor CustomDialog de 2 parámetros.
+     *
+     * @param context Context. Contexto de la aplicación.
+     * @param kind Constante (DIALOG_NORMAL / DIALOG_BUTTONS). Define el tipo de diálogo.
+     */
     public CustomDialog(Context context, int kind) {
         this.context = context;
         this.Kind = kind;
         this.cancelable = true;
     }
 
+    /**
+     * Constructor CustomDialog de 3 parámetros.
+     *
+     * @param context Context. Contexto de la aplicación.
+     * @param titulo String. Título del diálogo.
+     * @param kind Constante (DIALOG_NORMAL / DIALOG_BUTTONS). Define el tipo de diálogo.
+     */
     public CustomDialog(Context context, String titulo, int kind) {
         this(context, kind);
         this.titulo = titulo;
     }
 
+    /**
+     * Constructor CustomDialog de 4 parámetros.
+     *
+     * @param context Context. Contexto de la aplicación.
+     * @param kind Constante (DIALOG_NORMAL / DIALOG_BUTTONS). Define el tipo de diálogo.
+     * @param color int. Color del decorado de la cabecera del diálogo.
+     * @param drawable Drawable. Imagen o icono a visualizar en la cabecera del diálogo.
+     */
     public CustomDialog(Context context, int kind, int color, Drawable drawable) {
         this(context, kind);
         this.color = color;
         this.drawable = drawable;
     }
 
+    /**
+     * Constructor CustomDialog de 5 parámetros.
+     *
+     * @param context Context. Contexto de la aplicación.
+     * @param titulo String. Título del diálogo.
+     * @param kind Constante (DIALOG_NORMAL / DIALOG_BUTTONS). Define el tipo de diálogo.
+     * @param color int. Color del decorado de la cabecera del diálogo.
+     * @param drawable Drawable. Imagen o icono a visualizar en la cabecera del diálogo.
+     */
     public CustomDialog(Context context, String titulo, int kind, int color, Drawable drawable) {
         this(context, kind, color, drawable);
         this.titulo = titulo;
     }
 
-
+    /**
+     * Añade un mensaje al cuerpo del diálogo.
+     *
+     * @param text String. Mensaje del diálogo.
+     */
     public void AddMensaje(String text)
     {
         TextView textView = new TextView(context);
@@ -81,7 +112,13 @@ public class CustomDialog {
         textViews.add(textView);
     }
 
-
+    /**
+     * Añade un botón al diálogo.
+     *
+     * @param text String. Texto del botón.
+     * @param response CustomDialogResponse. Listener con la respuesta del botón.
+     * @param style int. Estilo del botón.
+     */
     public void AddButton(String text, final CustomDialogResponse response, int style)
     {
 
@@ -105,6 +142,10 @@ public class CustomDialog {
         buttons.add(btn);
     }
 
+    /**
+     * Se muestra el diálogo previamente construido.
+     *
+     */
     public void Show()
     {
         ViewGroup viewGroup = ((Activity) context).findViewById(android.R.id.content);
@@ -158,15 +199,33 @@ public class CustomDialog {
         dialog.show();
     }
 
+    /**
+     * Añade un título al diálogo.
+     *
+     * @param titulo String. Título del diálogo.
+     */
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
+    /**
+     * Permite o no  que el usuario puede cerrar el diálogo clicando fuera de la vista.
+     *
+     * @param cancelable boolean. Si es 'true', se puede cancelar clicando fuera; 'false', no se puede.
+     */
     public void setCancelable(boolean cancelable) {
         this.cancelable = cancelable;
     }
 
-    //Muestra una advertencia en un dialog
+    /**
+     * Construye y muestra un diálogo de advertencia.
+     *
+     * @param ctx Context. Contexto de la aplicación.
+     * @param texto String. Texto informativo para el cuerpo del diálogo de advertencia.
+     * @param color int. Color del decorado de la cabecera del diálogo.
+     * @param drawable Drawable. Imagen o icono a visualizar en la cabecera del diálogo.
+     * @param listener ListenerAccion. Listener para la respuesta al click del botón 'Aceptar'
+     */
     public static void dialogAdvertencia (final Context ctx, final String texto, final int color, final Drawable drawable, final ListenerAccion listener){
         Activity activity = (Activity) ctx;
         activity.runOnUiThread(new Runnable() {
@@ -186,7 +245,16 @@ public class CustomDialog {
         });
     }
 
-    //Dialogo comun con valores de SI / NO en los botones, la accion de estos botones se toma en ResoibseDialog.
+    /**
+     * Construye y muestra un diálogo común con valores de SI / NO en los botones, la acción de estos botones se toma en ResponseDialog.
+     *
+     * @param ctx Context. Contexto de la aplicación.
+     * @param texto String. Texto informativo para el cuerpo del diálogo.
+     * @param color int. Color del decorado de la cabecera del diálogo.
+     * @param drawable Drawable. Imagen o icono a visualizar en la cabecera del diálogo.
+     * @param responseDialog ListenerAccion. Listener que emite la respuesta SI / NO.
+     */
+    //
     public static  void dialogSiNO (final Context ctx, final String texto, final int color, final Drawable drawable, final ResponseDialog responseDialog){
         Activity activity = (Activity) ctx;
         activity.runOnUiThread(new Runnable() {
@@ -214,7 +282,4 @@ public class CustomDialog {
             }
         });
     }
-
-
 }
-

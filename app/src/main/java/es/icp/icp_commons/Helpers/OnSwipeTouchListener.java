@@ -1,5 +1,6 @@
 package es.icp.icp_commons.Helpers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -7,16 +8,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+@SuppressWarnings("WeakerAccess")
 public class OnSwipeTouchListener implements OnTouchListener {
 
     private final GestureDetector gestureDetector;
-    private Context ctx;
 
     public OnSwipeTouchListener(Context ctx){
         gestureDetector = new GestureDetector(ctx, new GestureListener());
-        this.ctx = ctx;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
