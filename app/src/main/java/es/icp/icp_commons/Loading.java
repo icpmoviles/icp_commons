@@ -1,26 +1,47 @@
-package es.icp.icp_commons.Services;
+package es.icp.icp_commons;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-
-import es.icp.icp_commons.R;
 
 public class Loading {
 
     private static ProgressDialog progress;
     private static Context contextWS;
 
+    /**
+     * Muestra un diálogo de carga.
+     * Por defecto, el diálogo no se puede cancelar por el usuario haciendo click fuera del mismo.
+     *
+     * @author Ventura de Lucas
+     * @param ctx Context. Contexto de la aplicación.
+     */
     public static void ShowLoading(Context ctx) {
         ShowLoading(ctx, false);
     }
 
+    /**
+     * Muestra un diálogo de carga.
+     *
+     * @author Ventura de Lucas
+     * @param ctx Context. Contexto de la aplicación.
+     * @param cancelable boolean. Indica si el diálogo se puede cancelar o no por el usuario haciendo click fuera del mismo. ('true': cancelable; 'false': no cancelable)
+     */
     public static void ShowLoading(Context ctx, boolean cancelable){
         String title = ctx.getString(R.string.cargando);
         String message = ctx.getString(R.string.obteniendo_informacion);
         ShowLoading(ctx, title, message, cancelable);
     }
 
+    /**
+     * Muestra un diálogo de carga.
+     *
+     * @author Ventura de Lucas
+     * @param ctx Context. Contexto de la aplicación.
+     * @param title String. Título del diálogo de carga.
+     * @param message String. Mensaje del diálogo de carga.
+     * @param cancelable boolean. Indica si el diálogo se puede cancelar o no por el usuario haciendo click fuera del mismo. ('true': cancelable; 'false': no cancelable)
+     */
     public static void ShowLoading(final Context ctx, String title, String message, boolean cancelable) {
         contextWS = ctx;
         ((Activity)(ctx)).runOnUiThread(new Runnable() {
@@ -39,6 +60,11 @@ public class Loading {
         });
     }
 
+    /**
+     * Oculta el diálogo de carga que se haya mostrado previamente.
+     *
+     * @author Ventura de Lucas
+     */
     public static void HideLoading(){
         ((Activity)(contextWS)).runOnUiThread(new Runnable() {
             @Override
