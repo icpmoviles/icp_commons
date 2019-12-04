@@ -4,7 +4,6 @@
     <string name="alert_dialog_buttons_tituloCustom_text"> Consulta Inventario </string>
     <string name="submit"> Submit </string>
     <string name="cancel"> Cancel </string>
-    <string name="aceptar"> Aceptar </string>
     <string name="si"> Si </string>
     <string name="no"> No </string>
     <string name="fragment_progress_bar_txtSalvando_text"> Salvando </string>
@@ -13,11 +12,16 @@
     <string name="custom_notification_minimizar">" ---------- Deslice hacia arriba para maximizar ---------- "</string>
     <string name="texto_notification_inventario">"Se ha detectado un inventario activo. ¿Quiere continuar con las lecturas?"</string>
     <string name="button_notification_inventario">"Continuar"</string>
-    <string name="multi_spinner_sin_informacion">Sin información seleccionable...</string>
+    <string name="multi_spinner_sin_informacion">Sin información seleccionable…</string>
     <string name="multi_spinner_seleccione">Seleccione</string>
     <string name="cargando"> Cargando </string>
-    <string name="obteniendo_informacion"> Obteniendo información... </string>
+    <string name="obteniendo_informacion"> Obteniendo información… </string>
     <string name="subiendo_acciones_pendientes_offline">Subiendo acciones pendientes offline</string>
+    <string name="atenci_n">atención</string>
+    <string name="imagen_cabecera_dialogo">imagen_cabecera_dialogo</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="deslice_hacia_abajo_para_minimizar">---------- Deslice hacia abajo para minimizar ----------</string>
+    <string name="texto_de_ejemplo_esto_es_un_texto_de_ejemplo">Texto de ejemplo. Esto es un texto de ejemplo.</string>
     <string-array name="array_name">
         <item>Equipos</item>
         <item>Tarjetas</item>

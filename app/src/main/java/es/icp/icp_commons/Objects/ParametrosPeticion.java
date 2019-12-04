@@ -1,13 +1,13 @@
 package es.icp.icp_commons.Objects;
 
+import androidx.annotation.NonNull;
+
 import com.android.volley.Request;
-import com.android.volley.Response;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-import org.json.JSONObject;
-
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class ParametrosPeticion {
     private Method method;
     private String url;
@@ -25,14 +25,37 @@ public class ParametrosPeticion {
         ERROR
     }
 
+    /**
+     * Constructor ParametrosPeticion sin parámetros.
+     * Por defecto, el tipo de método HTTP es 'GET'.
+     *
+     * @author Ventura de Lucas
+     */
     public ParametrosPeticion() {
         method = Method.GET;
     }
 
+    /**
+     * Constructor ParametrosPeticion de 3 parámetros.
+     *
+     * @author Ventura de Lucas
+     * @param method enum Method { POST, GET }. Método HTTP de la petición.
+     * @param url String. Dirección HTTP a la que se enviará la petición.
+     * @param json JSONObject. JSON que se enviará junto con la petición. En caso de no hacer falta, introducir un NULL.
+     */
     public ParametrosPeticion(Method method, String url, JSONObject json) {
         this(method, url, json, null);
     }
 
+    /**
+     * Constructor ParametrosPeticion de 4 parámetros.
+     *
+     * @author Ventura de Lucas
+     * @param method enum Method { POST, GET }. Método HTTP de la petición.
+     * @param url String. Dirección HTTP a la que se enviará la petición.
+     * @param json JSONObject. JSON que se enviará junto con la petición. En caso de no hacer falta, introducir un NULL.
+     * @param clase Class. Tipo de objeto al que se convertirá la respuesta recibida por el servidor.
+     */
     public ParametrosPeticion(Method method, String url, JSONObject json, Class clase) {
         this.method = method;
         this.url = url;
@@ -58,7 +81,6 @@ public class ParametrosPeticion {
     public int getMethod() {
         int m = 0;
         if (method == Method.POST) m = Request.Method.POST;
-        if (method == Method.GET) m = Request.Method.GET;
         return m;
     }
 
@@ -106,6 +128,7 @@ public class ParametrosPeticion {
         this.clase = clase;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ParametrosPeticion{" +
@@ -114,6 +137,7 @@ public class ParametrosPeticion {
                 ", JSONObject=" + JSONObject +
                 ", JSONArray=" + JSONArray +
                 ", jsonType=" + jsonType +
+                ", clase=" + clase +
                 '}';
     }
 }

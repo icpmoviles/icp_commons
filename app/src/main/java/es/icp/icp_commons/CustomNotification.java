@@ -1,5 +1,6 @@
 package es.icp.icp_commons;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -25,16 +26,13 @@ import java.util.TimerTask;
 import es.icp.icp_commons.Helpers.OnSwipeTouchListener;
 import es.icp.icp_commons.Interfaces.CustomNotificationResponse;
 
+@SuppressWarnings("unused")
 public class CustomNotification extends FrameLayout {
 
     // PROPIEDADES
 
     private Context context;
-    private LinearLayout linearProgress;
     private TextView txtDescripcion;
-    private ProgressBar loaderIcon;
-    private ProgressBar progressBar;
-    private TextView txtPorcentajeProgress;
     private TextView txtDeslizar;
     private LinearLayout notificationBox;
     private boolean minimizado = false;
@@ -62,8 +60,6 @@ public class CustomNotification extends FrameLayout {
     public static final int LENGTH_LONG = 8000;
     public static final int LENGTH_UNDEFINED = 0;
     private static final int MARGIN_BOTTOM_CABECERO = 2;
-    private static final float LIGHT_ALPHA = 0.0f;
-    private static final float DARK_ALPHA = 6.0f;
 
 
     // CONSTRUCTOR
@@ -76,16 +72,33 @@ public class CustomNotification extends FrameLayout {
         this.trans = null;
     }
 
+    /**
+     * Obtiene la Activity en la que está siendo usada la notificación.
+     *
+     * @author Ventura de Lucas
+     * @return Devuelve la Activity de la notificación.
+     */
     public Activity getActivity() {
         return activity;
     }
 
+    /**
+     * Modifica la Activity en la que está siendo usada la notificación.
+     *
+     * @author Ventura de Lucas
+     * @param activity Activity. Activity de la notificación.
+     */
     public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
     // MÉTODOS PÚBLICOS
 
+    /**
+     * Muestra la notificación en pantalla.
+     *
+     * @author Ventura de Lucas
+     */
     public void show() {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -110,6 +123,11 @@ public class CustomNotification extends FrameLayout {
         });
     }
 
+    /**
+     * Oculta la notificación.
+     *
+     * @author Ventura de Lucas
+     */
     public void hide() {
         if (!hide) {
             CustomNotification.this.notificationBox.startAnimation(leaveAnimation());
@@ -137,6 +155,14 @@ public class CustomNotification extends FrameLayout {
         };
     }
 
+    /**
+     * Añade un botón a la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_MULTIPLE)
+     *
+     * @author Ventura de Lucas
+     * @param text String. Texto del botón.
+     * @param response CustomNotificationResponse. Listener para saber cuándo es clicado el botón.
+     * @param style int. Estilo del botón.
+     */
     public void AddButton(String text, final CustomNotificationResponse response, int style)
     {
         Button btn = new Button(context);
@@ -163,29 +189,28 @@ public class CustomNotification extends FrameLayout {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        switch (mode) {
-            case NOTIFICATION_BUTTON:
-                inflater.inflate(R.layout.view_custom_notification_button, this);
-                break;
-            case NOTIFICATION_SIMPLE:
-                inflater.inflate(R.layout.view_custom_notification_simple, this);
-                break;
-            case NOTIFICATION_PROGRESS:
-                inflater.inflate(R.layout.view_custom_notification_progress, this);
-                break;
-            case NOTIFICATION_MULTIPLE:
-                inflater.inflate(R.layout.view_custom_notification_multiple, this);
-                break;
-        }
+        if (inflater != null) {
+            switch (mode) {
+                case NOTIFICATION_BUTTON:
+                    inflater.inflate(R.layout.view_custom_notification_button, this);
+                    break;
+                case NOTIFICATION_SIMPLE:
+                    inflater.inflate(R.layout.view_custom_notification_simple, this);
+                    break;
+                case NOTIFICATION_PROGRESS:
+                    inflater.inflate(R.layout.view_custom_notification_progress, this);
+                    break;
+                case NOTIFICATION_MULTIPLE:
+                    inflater.inflate(R.layout.view_custom_notification_multiple, this);
+                    break;
+            }
 
-        this.inicializar();
+            this.inicializar();
+        }
     }
 
     private void inicializar() {
         this.txtDescripcion = findViewById(R.id.txtDecripcion);
-        this.loaderIcon = findViewById(R.id.loaderIcon);
-        this.progressBar = findViewById(R.id.progressBar);
-        this.txtPorcentajeProgress = findViewById(R.id.txtPorcentajeProgress);
         this.notificationBox = findViewById(R.id.notificationBox);
         this.txtDeslizar = findViewById(R.id.txtDeslizar);
         this.crearTouchListener();
@@ -199,6 +224,12 @@ public class CustomNotification extends FrameLayout {
         }
     };
 
+    /**
+     * Modifica el progreso visualizado por la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
+     *
+     * @author Ventura de Lucas
+     * @param progress int. Valor numérico del nuevo progreso para el progressBar de la notificación.
+     */
     public synchronized void setProgress(int progress) {
         if (this.mode != NOTIFICATION_PROGRESS) {
             Toast.makeText(activity, "La notificación no permite progress", Toast.LENGTH_SHORT).show();
@@ -218,6 +249,12 @@ public class CustomNotification extends FrameLayout {
         }
     }
 
+    /**
+     * Modifica el máximo valor del progreso de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
+     *
+     * @author Ventura de Lucas
+     * @param max int. Valor numérico del nuevo máximo para el progressBar de la notificación.
+     */
     public void setMax(int max) {
         if (this.mode != NOTIFICATION_PROGRESS) {
             Toast.makeText(activity, "La notificación no permite progress", Toast.LENGTH_SHORT).show();
@@ -227,11 +264,18 @@ public class CustomNotification extends FrameLayout {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void actualizarPorcentaje() {
         int porcentaje = ( getProgress() * 100 ) / getMax();
         ((TextView) findViewById(R.id.txtPorcentajeProgress)).setText(porcentaje + "%");
     }
 
+    /**
+     * Obtiene el progreso actual del progressBar de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
+     *
+     * @author Ventura de Lucas
+     * @return Devuelve el progreso actual del progressBar de la notificación.
+     */
     public int getProgress() {
         if (this.mode != NOTIFICATION_PROGRESS) {
             Toast.makeText(activity, "La notificación no permite progress", Toast.LENGTH_SHORT).show();
@@ -241,6 +285,12 @@ public class CustomNotification extends FrameLayout {
         }
     }
 
+    /**
+     * Obtiene el máximo valor del progreso del progressBar de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
+     *
+     * @author Ventura de Lucas
+     * @return Devuelve el máximo valor del progressBar de la notificación.
+     */
     public int getMax() {
         if (this.mode != NOTIFICATION_PROGRESS) {
             Toast.makeText(activity, "La notificación no permite progress", Toast.LENGTH_SHORT).show();
@@ -250,14 +300,33 @@ public class CustomNotification extends FrameLayout {
         }
     }
 
+    /**
+     * Modifica el texto del cuerpo de la notificación.
+     *
+     * @author Ventura de Lucas
+     * @param text String. Nuevo texto del cuerpo de la notificación.
+     */
     public void setText(String text) {
         ((TextView)findViewById(R.id.txtDecripcion)).setText(text);
     }
 
+    /**
+     * Modifica el texto del botón de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_BUTTON)
+     *
+     * @author Ventura de Lucas
+     * @param action String. Nuevo texto del botón de la notificación.
+     */
     public void setAction(String action) {
         ((TextView)findViewById(R.id.btnNormal)).setText(action);
     }
 
+    /**
+     * Modifica el texto del cuerpo de la notificación.
+     * Posteriormente, muestra dicha notificación.
+     *
+     * @author Ventura de Lucas
+     * @param text String. Nuevo texto del cuerpo de la notificación.
+     */
     public void showText(String text) {
         if (mode != CustomNotification.NOTIFICATION_SIMPLE) {
             Toast.makeText(activity, "La notificación no permite simple", Toast.LENGTH_SHORT).show();
@@ -290,6 +359,12 @@ public class CustomNotification extends FrameLayout {
         });
     }
 
+    /**
+     * Modifica la respuesta del botón de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_BUTTON)
+     *
+     * @author Ventura de Lucas
+     * @param clickListener CustomNotificationResponse. Nuevo listener para la respuesta del botón de la notificación.
+     */
     public void setResponse(final CustomNotificationResponse clickListener) {
         findViewById(R.id.btnNormal).setOnClickListener(new View.OnClickListener(){
             @Override
@@ -299,10 +374,23 @@ public class CustomNotification extends FrameLayout {
         });
     }
 
+    /**
+     * Muestra un fondo oscuro detrás de la notificación para resaltarla.
+     * Se bloquea el 'touch' de lo que haya detrás de dicho fondo.
+     *
+     * @author Ventura de Lucas
+     * @param darkness boolean. Sirve para indicar si se desea o no activar este modo. Por defecto, se encuentra a 'false'.
+     */
     public void aboveDarkness(boolean darkness) {
         this.darkness = darkness;
     }
 
+    /**
+     * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
+     *
+     * @author Ventura de Lucas
+     * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+     */
     public boolean isAboveDarkness() {
         return this.darkness;
     }
@@ -400,6 +488,7 @@ public class CustomNotification extends FrameLayout {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return false;
@@ -454,6 +543,11 @@ public class CustomNotification extends FrameLayout {
         return mAnimation;
     }
 
+    /**
+     * Sirve para 'matar' la notificación. Se oculta, se elimina de la vista y se resetean todos los valores.
+     *
+     * @author Ventura de Lucas
+     */
     public void kill() {
         hide = true;
         if (CustomNotification.this.getParent() != null) ((ViewGroup)CustomNotification.this.getParent()).removeView(CustomNotification.this);
@@ -498,6 +592,7 @@ public class CustomNotification extends FrameLayout {
     }
 
     private OnTouchListener noClickableUnder = new OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             return true;
@@ -505,6 +600,7 @@ public class CustomNotification extends FrameLayout {
     };
 
     private OnTouchListener clickableUnder = new OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             return false;
@@ -513,167 +609,397 @@ public class CustomNotification extends FrameLayout {
 
     // BUILDER
 
+    /**
+     * Clase Builder básica para la construcción guiada del objeto CustomNotification.
+     *
+     * @author Ventura de Lucas
+     */
     public static class Builder {
         private CustomNotification customNotification;
 
+        /**
+         * Constructor Builder
+         *
+         * @author Ventura de Lucas
+         * @param context Context. Contexto de la aplicación.
+         */
         public Builder(Context context) {
             customNotification = new CustomNotification(context);
         }
 
+        /**
+         * Establece el tiempo que se mostrará la notificación:
+         * SHORT: 2 segundos.
+         * MEDIUM: 5 segundos.
+         * LONG: 8 segundos.
+         * UNDEFINED: siempre se muestra (tiempo infinito).
+         *
+         * @author Ventura de Lucas
+         * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         */
         public Builder setDuration(int duration) {
             customNotification.setDuration(duration);
             return this;
         }
 
+        /**
+         * Acceso a los métodos propios del modo NOTIFICATION_BUTTON
+         *
+         * @author Ventura de Lucas
+         * @return Devuelve un BuilderButton para proceder con una construcción más específica del objeto CustomNotification.
+         */
         public BuilderButton setButtonMode() {
             customNotification.setMode(NOTIFICATION_BUTTON);
             return new CustomNotification.BuilderButton(customNotification);
         }
 
+        /**
+         * Acceso a los métodos propios del modo NOTIFICATION_SIMPLE
+         *
+         * @author Ventura de Lucas
+         * @return Devuelve un BuilderSimple para proceder con una construcción más específica del objeto CustomNotification.
+         */
         public BuilderSimple setSimpleMode() {
             customNotification.setMode(NOTIFICATION_SIMPLE);
             return new CustomNotification.BuilderSimple(customNotification);
         }
 
+        /**
+         * Acceso a los métodos propios del modo NOTIFICATION_PROGRESS
+         *
+         * @author Ventura de Lucas
+         * @return Devuelve un BuilderProgress para proceder con una construcción más específica del objeto CustomNotification.
+         */
         public BuilderProgress setProgressMode() {
             customNotification.setMode(NOTIFICATION_PROGRESS);
             return new CustomNotification.BuilderProgress(customNotification);
         }
 
+        /**
+         * Acceso a los métodos propios del modo NOTIFICATION_MULTIPLE
+         *
+         * @author Ventura de Lucas
+         * @return Devuelve un BuilderMultiple para proceder con una construcción más específica del objeto CustomNotification.
+         */
         public BuilderMultiple setMultipleMode() {
             customNotification.setMode(NOTIFICATION_MULTIPLE);
             return new CustomNotification.BuilderMultiple(customNotification);
         }
     }
 
+    /**
+     * Builder específico del modo NOTIFICATION_BUTTON
+     *
+     * @author Ventura de Lucas
+     */
     public static class BuilderButton {
         private CustomNotification customNotification;
+
+        /**
+         * Constructor BuilderButton
+         *
+         * @author Ventura de Lucas
+         * @param customNotification CustomNotification. Notificación preparada previamente por la clase Builder.
+         */
         private BuilderButton(CustomNotification customNotification) {
             this.customNotification = customNotification;
         }
 
+        /**
+         * Modifica la respuesta del botón de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_BUTTON)
+         *
+         * @author Ventura de Lucas
+         * @param response CustomNotificationResponse. Nuevo listener para la respuesta del botón de la notificación.
+         */
         public BuilderButton setResponse(CustomNotificationResponse response) {
             customNotification.setResponse(response);
             return this;
         }
 
+        /**
+         * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
+         *
+         * @author Ventura de Lucas
+         * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+         */
         public BuilderButton aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
             return this;
         }
 
+        /**
+         * Modifica el texto del cuerpo de la notificación.
+         *
+         * @author Ventura de Lucas
+         * @param text String. Nuevo texto del cuerpo de la notificación.
+         */
         public BuilderButton setText(String text) {
             customNotification.setText(text);
             return this;
         }
 
+        /**
+         * Modifica el texto del botón de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_BUTTON)
+         *
+         * @author Ventura de Lucas
+         * @param action String. Nuevo texto del botón de la notificación.
+         */
         public BuilderButton setAction(String action) {
             customNotification.setAction(action);
             return this;
         }
 
+        /**
+         * Establece el tiempo que se mostrará la notificación:
+         * SHORT: 2 segundos.
+         * MEDIUM: 5 segundos.
+         * LONG: 8 segundos.
+         * UNDEFINED: siempre se muestra (tiempo infinito).
+         *
+         * @author Ventura de Lucas
+         * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         */
         public BuilderButton setDuration(int duration) {
             customNotification.setDuration(duration);
             return this;
         }
 
+        /**
+         * Se termina la construcción de la notificación.
+         *
+         * @author Ventura de Lucas
+         * @return CustomNotification. La notificación está lista para mostrarse (llamar al método show())
+         */
         public CustomNotification build() {
             return customNotification;
         }
     }
 
+    /**
+     * Builder específico del modo NOTIFICATION_SIMPLE
+     *
+     * @author Ventura de Lucas
+     */
     public static class BuilderSimple {
         private CustomNotification customNotification;
+
+        /**
+         * Constructor BuilderSimple
+         *
+         * @author Ventura de Lucas
+         * @param customNotification CustomNotification. Notificación preparada previamente por la clase Builder.
+         */
         private BuilderSimple(CustomNotification customNotification) {
             this.customNotification = customNotification;
         }
 
+        /**
+         * Modifica el texto del cuerpo de la notificación.
+         *
+         * @author Ventura de Lucas
+         * @param text String. Nuevo texto del cuerpo de la notificación.
+         */
         public BuilderSimple setText(String text) {
             customNotification.setText(text);
             return this;
         }
 
+        /**
+         * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
+         *
+         * @author Ventura de Lucas
+         * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+         */
         public BuilderSimple aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
             return this;
         }
 
+        /**
+         * Establece el tiempo que se mostrará la notificación:
+         * SHORT: 2 segundos.
+         * MEDIUM: 5 segundos.
+         * LONG: 8 segundos.
+         * UNDEFINED: siempre se muestra (tiempo infinito).
+         *
+         * @author Ventura de Lucas
+         * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         */
         public BuilderSimple setDuration(int duration) {
             customNotification.setDuration(duration);
             return this;
         }
 
+        /**
+         * Se termina la construcción de la notificación.
+         *
+         * @author Ventura de Lucas
+         * @return CustomNotification. La notificación está lista para mostrarse (llamar al método show())
+         */
         public CustomNotification build() {
             return customNotification;
         }
     }
 
+    /**
+     * Builder específico del modo NOTIFICATION_PROGRESS
+     *
+     * @author Ventura de Lucas
+     */
     public static class BuilderProgress {
         private CustomNotification customNotification;
+
+        /**
+         * Constructor BuilderProgress.
+         * Por defecto, el progressBar se inicializa con un valor máximo de 100 y un progreso del 0%.
+         *
+         * @author Ventura de Lucas
+         * @param customNotification CustomNotification. Notificación preparada previamente por la clase Builder.
+         */
         private BuilderProgress(CustomNotification customNotification) {
             this.customNotification = customNotification;
             this.customNotification.setMax(100);
             this.customNotification.setProgress(0);
         }
 
+        /**
+         * Modifica el texto del cuerpo de la notificación.
+         *
+         * @author Ventura de Lucas
+         * @param text String. Nuevo texto del cuerpo de la notificación.
+         */
         public BuilderProgress setText(String text) {
             customNotification.setText(text);
             return this;
         }
 
+        /**
+         * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
+         *
+         * @author Ventura de Lucas
+         * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+         */
         public BuilderProgress aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
             return this;
         }
 
+        /**
+         * Establece el tiempo que se mostrará la notificación:
+         * SHORT: 2 segundos.
+         * MEDIUM: 5 segundos.
+         * LONG: 8 segundos.
+         * UNDEFINED: siempre se muestra (tiempo infinito).
+         *
+         * @author Ventura de Lucas
+         * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         */
         public BuilderProgress setDuration(int duration) {
             customNotification.setDuration(duration);
             return this;
         }
 
+        /**
+         * Modifica el máximo valor del progreso de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
+         *
+         * @author Ventura de Lucas
+         * @param max int. Valor numérico del nuevo máximo para el progressBar de la notificación.
+         */
         public BuilderProgress setMax(int max) {
             customNotification.setMax(max);
             return this;
         }
 
+        /**
+         * Modifica el progreso visualizado por la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
+         *
+         * @author Ventura de Lucas
+         * @param progress int. Valor numérico del nuevo progreso para el progressBar de la notificación.
+         */
         public BuilderProgress setProgress(int progress) {
             customNotification.setProgress(progress);
             return this;
         }
 
+        /**
+         * Se termina la construcción de la notificación.
+         *
+         * @author Ventura de Lucas
+         * @return CustomNotification. La notificación está lista para mostrarse (llamar al método show())
+         */
         public CustomNotification build() {
             customNotification.built = true;
             return customNotification;
         }
     }
 
+    /**
+     * Builder específico del modo NOTIFICATION_PROGRESS
+     *
+     * @author Ventura de Lucas
+     */
     public static class BuilderMultiple {
         private CustomNotification customNotification;
         private BuilderMultiple(CustomNotification customNotification) {
             this.customNotification = customNotification;
         }
 
+        /**
+         * Establece el tiempo que se mostrará la notificación:
+         * SHORT: 2 segundos.
+         * MEDIUM: 5 segundos.
+         * LONG: 8 segundos.
+         * UNDEFINED: siempre se muestra (tiempo infinito).
+         *
+         * @author Ventura de Lucas
+         * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         */
         public BuilderMultiple setDuration(int duration) {
             customNotification.setDuration(duration);
             return this;
         }
 
+        /**
+         * Modifica el texto del cuerpo de la notificación.
+         *
+         * @author Ventura de Lucas
+         * @param text String. Nuevo texto del cuerpo de la notificación.
+         */
         public BuilderMultiple setText(String text) {
             customNotification.setText(text);
             return this;
         }
 
-
+        /**
+         * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
+         *
+         * @author Ventura de Lucas
+         * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+         */
         public BuilderMultiple aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
             return this;
         }
 
+        /**
+         * Añade un botón a la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_MULTIPLE)
+         *
+         * @author Ventura de Lucas
+         * @param text String. Texto del botón.
+         * @param response CustomNotificationResponse. Listener para saber cuándo es clicado el botón.
+         * @param style int. Estilo del botón.
+         */
         public BuilderMultiple addButton(String text, final CustomNotificationResponse response, int style) {
             this.customNotification.AddButton(text, response, style);
             return this;
         }
 
+        /**
+         * Se termina la construcción de la notificación.
+         *
+         * @author Ventura de Lucas
+         * @return CustomNotification. La notificación está lista para mostrarse (llamar al método show())
+         */
         public CustomNotification build() {
             return customNotification;
         }

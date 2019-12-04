@@ -22,16 +22,36 @@ import es.icp.icp_commons.Services.WebService;
 
 import static es.icp.icp_commons.Services.WebService.EnviarAcciones;
 
-public class CheckRequest {
-    private static Context context;
-    private static VolleyCallBack callBack;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
+public class CheckRequest {
+
+    /**
+     * Realiza las comprobaciones anteriores al envío de una petición al servidor.
+     * Comprueba la conexión a Internet.
+     * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
+     * Método asíncrono. Listener de tipo EnvioAccionesCallback.
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
+     */
     public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback) {
         Check(context, envioAccionesCallback, true);
     }
 
+    /**
+     * Realiza las comprobaciones anteriores al envío de una petición al servidor.
+     * Comprueba la conexión a Internet.
+     * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
+     * Método asíncrono. Listener de tipo EnvioAccionesCallback.
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
+     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     */
     public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback, boolean loader) {
-        CheckRequest.context = context;
         GlobalVariables.loader = loader;
         try{
             if (Helper.CheckConnection(context))
@@ -47,18 +67,41 @@ public class CheckRequest {
         }
     }
 
+    /**
+     * Comprueba la conexión a Internet.
+     *
+     * @param context Context. Contexto de la aplicación.
+     * @return Devuelve un 'boolean' indicando si hay o no conexión.
+     */
     public static boolean CheckConnection(Context context) {
         return Helper.CheckConnection(context);
     }
 
+    /**
+     * Envía una petición al servidor sin realizar ninguna comprobación antes del envío.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     */
     public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) {
         Send(context, parametros, callBack, true);
     }
 
+    /**
+     * Envía una petición al servidor sin realizar ninguna comprobación antes del envío.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     */
     public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
                             final boolean loader) {
-        CheckRequest.callBack = callBack;
-        CheckRequest.context = context;
         GlobalVariables.loader = loader;
         try {
 
@@ -120,14 +163,37 @@ public class CheckRequest {
         }
     }
 
+    /**
+     * Realiza las comprobaciones anteriores al envío de la petición al servidor.
+     * Comprueba la conexión a Internet.
+     * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
+     * Porteriormente, envía la petición al servidor.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) {
         CheckAndSend(context, parametros, callBack, true);
     }
 
+    /**
+     * Realiza las comprobaciones anteriores al envío de la petición al servidor.
+     * Comprueba la conexión a Internet.
+     * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
+     * Porteriormente, envía la petición al servidor.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
                                     final boolean loader) {
-        CheckRequest.callBack = callBack;
-        CheckRequest.context = context;
         GlobalVariables.loader = loader;
 
         Check(context, new EnvioAccionesCallback() {
@@ -148,15 +214,34 @@ public class CheckRequest {
         }, loader);
     }
 
+    /**
+     * Solamente se comprueba la conexión a Internet. No se envían acciones en espera.
+     * Porteriormente, envía la petición al servidor.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     */
     public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
                                                   final VolleyCallBack callBack) {
         CheckAndSendWithoutActions(context, parametros, callBack, true);
     }
 
+    /**
+     * Solamente se comprueba la conexión a Internet. No se envían acciones en espera.
+     * Porteriormente, envía la petición al servidor.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     */
     public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
                                                   final VolleyCallBack callBack, final boolean loader) {
-        CheckRequest.callBack = callBack;
-        CheckRequest.context = context;
         GlobalVariables.loader = loader;
 
         if (Helper.CheckConnection(context)) {
