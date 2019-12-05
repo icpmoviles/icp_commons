@@ -16,6 +16,7 @@ import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Helpers.Helper;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Interfaces.VolleyCallBack;
+import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Services.WebService;
 
@@ -35,7 +36,7 @@ public class CheckRequest {
      * @param context Context. Contexto de la aplicación.
      * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
      */
-    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback) {
+    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback) throws CheckRequestException {
         Check(context, envioAccionesCallback, true);
     }
 
@@ -50,7 +51,7 @@ public class CheckRequest {
      * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
      */
-    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback, boolean loader) {
+    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback, boolean loader) throws CheckRequestException {
         GlobalVariables.loader = loader;
         try{
             if (Helper.CheckConnection(context))
@@ -60,9 +61,10 @@ public class CheckRequest {
             }else{
                 envioAccionesCallback.onOffline();
             }
-        }catch (Exception ex)
+        }catch (Exception e)
         {
-            envioAccionesCallback.onOffline();
+//            envioAccionesCallback.onOffline();
+            throw createException(e, "Before Sending Request", "Check");
         }
     }
 
@@ -85,7 +87,7 @@ public class CheckRequest {
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
      */
-    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) {
+    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) throws CheckRequestException {
         Send(context, parametros, callBack, true);
     }
 
@@ -100,44 +102,50 @@ public class CheckRequest {
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
      */
     public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
-                            final boolean loader) {
+                            final boolean loader) throws CheckRequestException {
         GlobalVariables.loader = loader;
         try {
 
             if (GlobalVariables.loader) Loading.ShowLoading(context);
 
             if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
-                JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                if (GlobalVariables.loader) Loading.HideLoading();
-                                Object responseObject;
-                                try {
-                                    Class clase = parametros.getClase();
-                                    if (clase != null) {
-                                        if (clase.isInstance(new Array[]{})) {
-                                            responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
+                try {
+                    JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    if (GlobalVariables.loader) Loading.HideLoading();
+                                    Object responseObject;
+                                    try {
+                                        Class clase = parametros.getClase();
+                                        if (clase != null) {
+                                            if (clase.isInstance(new Array[]{})) {
+                                                responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
+                                            } else {
+                                                responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
+                                            }
                                         } else {
-                                            responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
+                                            responseObject = response;
                                         }
-                                    } else {
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                         responseObject = response;
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    responseObject = response;
+                                    callBack.onSuccess(responseObject);
                                 }
-                                callBack.onSuccess(responseObject);
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (GlobalVariables.loader) Loading.HideLoading();
-                        callBack.onError(error.getMessage());
-                    }
-                });
-                WebService.AddRequest(request, context);
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (GlobalVariables.loader) Loading.HideLoading();
+                            callBack.onError(error.getMessage());
+                        }
+                    });
+                    WebService.AddRequest(request, context);
+                } catch (Exception e) {
+                    if (GlobalVariables.loader) Loading.HideLoading();
+                    throw createException(e, parametros.getUrl(), "Send");
+                }
+
             } // else if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.ARRAY) {
 //                JsonArrayRequest request = new JsonArrayRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONArray(),
 //                        new Response.Listener<JSONArray>() {
@@ -155,11 +163,19 @@ public class CheckRequest {
 //                });
 //            }
 
-        } catch (Exception ex) {
+        } catch (Exception e) {
             if (GlobalVariables.loader) Loading.HideLoading();
-            ex.printStackTrace();
-            callBack.onOffline();
+//            e.printStackTrace();
+//            callBack.onOffline();
+            throw createException(e, parametros.getUrl(), "Send");
         }
+    }
+
+    private static CheckRequestException createException(Exception e, String url, String libMethod) {
+        String function = "WebService Exception (problem in" + libMethod + " method) - " + url;
+        CheckRequestException checkRequestException = ((CheckRequestException) e);
+        checkRequestException.setFunction(function);
+        return checkRequestException;
     }
 
     /**
@@ -173,8 +189,9 @@ public class CheckRequest {
      * @param context Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
      */
-    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) {
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) throws CheckRequestException {
         CheckAndSend(context, parametros, callBack, true);
     }
 
@@ -192,25 +209,30 @@ public class CheckRequest {
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
-                                    final boolean loader) {
+                                    final boolean loader) throws CheckRequestException {
         GlobalVariables.loader = loader;
 
-        Check(context, new EnvioAccionesCallback() {
-            @Override
-            public void onSuccess() {
+        try {
+            Check(context, new EnvioAccionesCallback() {
+                @Override
+                public void onSuccess() {
 
-            }
+                }
 
-            @Override
-            public void onFinish() {
-                Send(context, parametros, callBack, loader);
-            }
+                @Override
+                public void onFinish() throws CheckRequestException {
+                    Send(context, parametros, callBack, loader);
+                }
 
-            @Override
-            public void onOffline() {
-                callBack.onOffline();
-            }
-        }, loader);
+                @Override
+                public void onOffline() {
+                    callBack.onOffline();
+                }
+            }, loader);
+        } catch (ClassCastException e) {
+            throw e;
+        }
+
     }
 
     /**
@@ -224,7 +246,7 @@ public class CheckRequest {
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
      */
     public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
-                                                  final VolleyCallBack callBack) {
+                                                  final VolleyCallBack callBack) throws CheckRequestException {
         CheckAndSendWithoutActions(context, parametros, callBack, true);
     }
 
@@ -240,7 +262,7 @@ public class CheckRequest {
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
      */
     public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
-                                                  final VolleyCallBack callBack, final boolean loader) {
+                                                  final VolleyCallBack callBack, final boolean loader) throws CheckRequestException {
         GlobalVariables.loader = loader;
 
         if (Helper.CheckConnection(context)) {
