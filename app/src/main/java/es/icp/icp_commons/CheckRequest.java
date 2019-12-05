@@ -124,7 +124,8 @@ public class CheckRequest {
                                     try {
                                         Class clase = parametros.getClase();
                                         if (clase != null) {
-                                            if (clase.isInstance(Array.class)) {
+                                            Object objetoAux = clase.newInstance();
+                                            if (objetoAux instanceof Array) {
                                                 responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
                                             } else {
                                                 responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
@@ -132,7 +133,7 @@ public class CheckRequest {
                                         } else {
                                             responseObject = response;
                                         }
-                                    } catch (JSONException e) {
+                                    } catch (JSONException | IllegalAccessException | InstantiationException e) {
                                         e.printStackTrace();
                                         responseObject = response;
                                     }
