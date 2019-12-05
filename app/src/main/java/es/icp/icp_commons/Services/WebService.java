@@ -15,6 +15,7 @@ import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Objects.Accion;
+import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.R;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -31,8 +32,7 @@ public class WebService {
 
     private static RequestQueue requestQueue;
 
-    public static void EnviarAcciones(final Context mContext, final EnvioAccionesCallback callback)
-    {
+    public static void EnviarAcciones(final Context mContext, final EnvioAccionesCallback callback) throws CheckRequestException {
         final DBHandler dbHandler = new DBHandler(mContext);
         final List<Accion> acciones = dbHandler.getAcciones();
 
@@ -49,7 +49,7 @@ public class WebService {
                 }
 
                 @Override
-                public void onFinish() {
+                public void onFinish() throws CheckRequestException {
                     if (GlobalVariables.loader && mProgress != null)
                     {
                         mProgress.hide();
@@ -69,8 +69,7 @@ public class WebService {
         }
     }
 
-    private static void EnviarAccion(final DBHandler dbHandler, final Context mContext, final List<Accion> acciones, final int contador, final int maximo, final EnvioAccionesCallback callback)
-    {
+    private static void EnviarAccion(final DBHandler dbHandler, final Context mContext, final List<Accion> acciones, final int contador, final int maximo, final EnvioAccionesCallback callback) throws CheckRequestException {
         try{
             if (contador < maximo)
             {
@@ -89,7 +88,11 @@ public class WebService {
                                 @Override
                                 public void onResponse(JSONArray response) {
                                     dbHandler.removeAccion(accion.getID());
-                                    EnviarAccion(dbHandler, mContext, acciones, contador + 1, maximo, null);
+                                    try {
+                                        EnviarAccion(dbHandler, mContext, acciones, contador + 1, maximo, null);
+                                    } catch (CheckRequestException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
@@ -105,7 +108,11 @@ public class WebService {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     dbHandler.removeAccion(accion.getID());
-                                    EnviarAccion(dbHandler, mContext,acciones, contador + 1, maximo, callback);
+                                    try {
+                                        EnviarAccion(dbHandler, mContext,acciones, contador + 1, maximo, callback);
+                                    } catch (CheckRequestException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
@@ -128,7 +135,11 @@ public class WebService {
                             @Override
                             public void onResponse(JSONObject response) {
                                 dbHandler.removeAccion(accion.getID());
-                                EnviarAccion(dbHandler,mContext, acciones, contador + 1, maximo, callback);
+                                try {
+                                    EnviarAccion(dbHandler,mContext, acciones, contador + 1, maximo, callback);
+                                } catch (CheckRequestException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }, new Response.ErrorListener() {
                             @Override
