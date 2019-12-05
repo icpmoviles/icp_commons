@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ObjectInputStream;
 import java.lang.reflect.Array;
 
 import es.icp.icp_commons.Helpers.GlobalVariables;
@@ -123,8 +124,13 @@ public class CheckRequest {
                                     Object responseObject;
                                     try {
                                         Class clase = parametros.getClase();
+                                        Object objetoAux;
                                         if (clase != null) {
-                                            Object objetoAux = clase.newInstance();
+                                            try {
+                                                objetoAux = clase.newInstance();
+                                            } catch (InstantiationException e) {
+                                                objetoAux = new Object();
+                                            }
                                             if (objetoAux instanceof Array) {
                                                 responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
                                             } else {
@@ -133,7 +139,7 @@ public class CheckRequest {
                                         } else {
                                             responseObject = response;
                                         }
-                                    } catch (JSONException | IllegalAccessException | InstantiationException e) {
+                                    } catch (JSONException | IllegalAccessException e) {
                                         e.printStackTrace();
                                         responseObject = response;
                                     }
