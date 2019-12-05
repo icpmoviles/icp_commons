@@ -126,7 +126,12 @@ public class CheckRequest {
                                         Class clase = parametros.getClase();
                                         Object objetoAux;
                                         if (clase != null) {
-                                            String data = response.getJSONObject("data").toString();
+                                            String data;
+                                            try {
+                                                data = response.getJSONObject("data").toString();
+                                            } catch (JSONException e) {
+                                                data = response.getJSONArray("data").toString();
+                                            }
                                             if (data.startsWith("[")) {
                                                 responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
                                             } else {
