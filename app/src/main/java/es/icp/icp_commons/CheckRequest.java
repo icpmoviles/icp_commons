@@ -137,7 +137,7 @@ public class CheckRequest {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (GlobalVariables.loader) Loading.HideLoading();
-                            callBack.onError(error.getMessage());
+                            callBack.onError((error.getMessage() == null) ? String.valueOf(error.networkResponse.statusCode) : error.getMessage());
                         }
                     });
                     WebService.AddRequest(request, context);
