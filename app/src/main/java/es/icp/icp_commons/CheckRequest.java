@@ -111,7 +111,6 @@ public class CheckRequest {
                             final boolean loader) throws CheckRequestException {
         GlobalVariables.loader = loader;
         try {
-
             if (GlobalVariables.loader) Loading.ShowLoading(context);
 
             if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
@@ -125,7 +124,7 @@ public class CheckRequest {
                                     try {
                                         Class clase = parametros.getClase();
                                         if (clase != null) {
-                                            if (clase.isInstance(new Array[]{})) {
+                                            if (clase.isInstance(Array.class)) {
                                                 responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
                                             } else {
                                                 responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
