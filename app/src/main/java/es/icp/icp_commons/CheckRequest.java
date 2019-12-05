@@ -126,12 +126,8 @@ public class CheckRequest {
                                         Class clase = parametros.getClase();
                                         Object objetoAux;
                                         if (clase != null) {
-                                            try {
-                                                objetoAux = clase.newInstance();
-                                            } catch (InstantiationException e) {
-                                                objetoAux = new Object();
-                                            }
-                                            if (objetoAux instanceof Array) {
+                                            String data = response.getJSONObject("data").toString();
+                                            if (data.startsWith("[")) {
                                                 responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
                                             } else {
                                                 responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
@@ -139,7 +135,7 @@ public class CheckRequest {
                                         } else {
                                             responseObject = response;
                                         }
-                                    } catch (JSONException | IllegalAccessException e) {
+                                    } catch (JSONException e) {
                                         e.printStackTrace();
                                         responseObject = response;
                                     }
