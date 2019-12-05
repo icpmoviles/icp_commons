@@ -1,5 +1,6 @@
 package es.icp.icp_commons;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.android.volley.Response;
@@ -51,7 +52,7 @@ public class CheckRequest {
      * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
      */
-    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback, boolean loader) throws CheckRequestException {
+    public static void Check(Context context, final EnvioAccionesCallback envioAccionesCallback, boolean loader) throws CheckRequestException {
         GlobalVariables.loader = loader;
         try{
             if (Helper.CheckConnection(context))
@@ -59,7 +60,12 @@ public class CheckRequest {
                 EnviarAcciones(context, envioAccionesCallback);
 
             }else{
-                envioAccionesCallback.onOffline();
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        envioAccionesCallback.onOffline();
+                    }
+                });
             }
         }catch (Exception e)
         {
@@ -137,7 +143,7 @@ public class CheckRequest {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (GlobalVariables.loader) Loading.HideLoading();
-                            callBack.onError((error.getMessage() == null) ? String.valueOf(error.networkResponse.statusCode) : error.getMessage());
+                            callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
                         }
                     });
                     WebService.AddRequest(request, context);
