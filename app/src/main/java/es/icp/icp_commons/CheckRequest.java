@@ -13,6 +13,8 @@ import org.json.JSONObject;
 
 import java.io.ObjectInputStream;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Helpers.Helper;
@@ -20,6 +22,7 @@ import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Interfaces.VolleyCallBack;
 import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
+import es.icp.icp_commons.Services.WSHelper;
 import es.icp.icp_commons.Services.WebService;
 
 import static es.icp.icp_commons.Services.WebService.EnviarAcciones;
@@ -111,6 +114,7 @@ public class CheckRequest {
     public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
                             final boolean loader) throws CheckRequestException {
         GlobalVariables.loader = loader;
+        WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
         try {
             if (GlobalVariables.loader) Loading.ShowLoading(context);
 

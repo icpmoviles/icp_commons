@@ -146,12 +146,10 @@ public class CustomDialog {
      * Se muestra el diálogo previamente construido.
      *
      */
-    public void Show()
-    {
+    public void Show() {
         ViewGroup viewGroup = ((Activity) context).findViewById(android.R.id.content);
         int layout = 0;
-        switch (Kind)
-        {
+        switch (Kind) {
             case Constantes.DIALOG_NORMAL : layout = R.layout.alert_dialog; break;
             case Constantes.DIALOG_BUTTONS : layout = R.layout.alert_dialog_buttons; break;
         }
