@@ -8,4 +8,5 @@
     <color name="colorNotification">#FFFFFF</color>
     <color name="colorDarkness">#99000000</color>
     <color name="colorTransparent">#00000000</color>
+    <color name="red">#FF0000</color>
 </resources>

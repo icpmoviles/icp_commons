@@ -36,8 +36,8 @@ public class CustomDialog {
     private List<TextView> textViews;
     private AlertDialog dialog;
     private boolean cancelable;
-    private int color;
-    private Drawable drawable;
+    private int color = 0;
+    private Drawable drawable = null;
 
     /**
      * Constructor CustomDialog de 2 parámetros.
@@ -158,11 +158,15 @@ public class CustomDialog {
         TextView tituloView = dialogView.findViewById(R.id.tituloCustom);
 
         if (Kind == Constantes.DIALOG_BUTTONS) {
-            TextView txtAtencion = dialogView.findViewById(R.id.txtAtencion);
-            ImageView imagen = dialogView.findViewById(R.id.imagen);
-            txtAtencion.setBackgroundColor(color);
-            imagen.setImageDrawable(drawable);
-            imagen.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            if (color != 0) {
+                TextView txtAtencion = dialogView.findViewById(R.id.txtAtencion);
+                txtAtencion.setBackgroundColor(color);
+            }
+            if (drawable != null) {
+                ImageView imagen = dialogView.findViewById(R.id.imagen);
+                imagen.setImageDrawable(drawable);
+                imagen.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            }
         }
 
         tituloView.setText(Html.fromHtml(titulo));

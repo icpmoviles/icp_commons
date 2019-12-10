@@ -11,11 +11,6 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ObjectInputStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Helpers.Helper;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
@@ -40,9 +35,11 @@ public class CheckRequest {
      * @author Ventura de Lucas
      * @param context Context. Contexto de la aplicación.
      * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
+     * @param idUsuario int. ID del usuario que está llamando al servicio.
+     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      */
-    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback) throws CheckRequestException {
-        Check(context, envioAccionesCallback, true);
+    public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback, int idUsuario, String urlError) throws CheckRequestException {
+        Check(context, envioAccionesCallback, true, idUsuario, urlError);
     }
 
     /**
@@ -55,8 +52,10 @@ public class CheckRequest {
      * @param context Context. Contexto de la aplicación.
      * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario int. ID del usuario que está llamando al servicio.
+     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      */
-    public static void Check(Context context, final EnvioAccionesCallback envioAccionesCallback, boolean loader) throws CheckRequestException {
+    public static void Check(Context context, final EnvioAccionesCallback envioAccionesCallback, boolean loader, int idUsuario, String urlError) throws CheckRequestException {
         GlobalVariables.loader = loader;
         try{
             if (Helper.CheckConnection(context))
@@ -73,7 +72,7 @@ public class CheckRequest {
             }
         }catch (Exception e)
         {
-//            envioAccionesCallback.onOffline();
+            WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Before Sending Request - Check", e, "", urlError);
             throw createException(e, "Before Sending Request", "Check");
         }
     }
@@ -96,9 +95,11 @@ public class CheckRequest {
      * @param context Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario int. ID del usuario que está llamando al servicio.
+     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      */
-    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) throws CheckRequestException {
-        Send(context, parametros, callBack, true);
+    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, int idUsuario, String urlError) throws CheckRequestException {
+        Send(context, parametros, callBack, true, idUsuario, urlError);
     }
 
     /**
@@ -110,9 +111,11 @@ public class CheckRequest {
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario int. ID del usuario que está llamando al servicio.
+     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      */
     public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
-                            final boolean loader) throws CheckRequestException {
+                            final boolean loader, int idUsuario, String urlError) throws CheckRequestException {
         GlobalVariables.loader = loader;
         WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
         try {
@@ -160,6 +163,7 @@ public class CheckRequest {
                     WebService.AddRequest(request, context);
                 } catch (Exception e) {
                     if (GlobalVariables.loader) Loading.HideLoading();
+                    WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
                     throw createException(e, parametros.getUrl(), "Send");
                 }
 
@@ -184,6 +188,7 @@ public class CheckRequest {
             if (GlobalVariables.loader) Loading.HideLoading();
 //            e.printStackTrace();
 //            callBack.onOffline();
+            WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
             throw createException(e, parametros.getUrl(), "Send");
         }
     }
@@ -192,6 +197,7 @@ public class CheckRequest {
         String function = "WebService Exception (problem in" + libMethod + " method) - " + url;
         CheckRequestException checkRequestException = ((CheckRequestException) e);
         checkRequestException.setFunction(function);
+
         return checkRequestException;
     }
 
@@ -206,10 +212,12 @@ public class CheckRequest {
      * @param context Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario int. ID del usuario que está llamando al servicio.
+     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
      */
-    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack) throws CheckRequestException {
-        CheckAndSend(context, parametros, callBack, true);
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, int idUsuario, String urlError) throws CheckRequestException {
+        CheckAndSend(context, parametros, callBack, true, idUsuario, urlError);
     }
 
     /**
@@ -224,9 +232,11 @@ public class CheckRequest {
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario int. ID del usuario que está llamando al servicio.
+     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
-                                    final boolean loader) throws CheckRequestException {
+                                    final boolean loader, final int idUsuario, final String urlError) throws CheckRequestException {
         GlobalVariables.loader = loader;
 
         try {
@@ -238,15 +248,15 @@ public class CheckRequest {
 
                 @Override
                 public void onFinish() throws CheckRequestException {
-                    Send(context, parametros, callBack, loader);
+                    Send(context, parametros, callBack, loader, idUsuario, urlError);
                 }
 
                 @Override
                 public void onOffline() {
                     callBack.onOffline();
                 }
-            }, loader);
-        } catch (ClassCastException e) {
+            }, loader, idUsuario, urlError);
+        } catch (CheckRequestException e) {
             throw e;
         }
 
@@ -261,10 +271,12 @@ public class CheckRequest {
      * @param context Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario int. ID del usuario que está llamando al servicio.
+     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      */
     public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
-                                                  final VolleyCallBack callBack) throws CheckRequestException {
-        CheckAndSendWithoutActions(context, parametros, callBack, true);
+                                                  final VolleyCallBack callBack, int idUsuario, String urlError) throws CheckRequestException {
+        CheckAndSendWithoutActions(context, parametros, callBack, true, idUsuario, urlError);
     }
 
     /**
@@ -277,13 +289,15 @@ public class CheckRequest {
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
      * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario int. ID del usuario que está llamando al servicio.
+     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      */
     public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
-                                                  final VolleyCallBack callBack, final boolean loader) throws CheckRequestException {
+                                                  final VolleyCallBack callBack, final boolean loader, int idUsuario, String urlError) throws CheckRequestException {
         GlobalVariables.loader = loader;
 
         if (Helper.CheckConnection(context)) {
-            Send(context, parametros, callBack, loader);
+            Send(context, parametros, callBack, loader, idUsuario, urlError);
         } else {
             callBack.onOffline();
         }
