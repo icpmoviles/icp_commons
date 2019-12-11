@@ -108,7 +108,7 @@ public class WebService extends Application {
                     public void onOffline() {
 
                     }
-                }, idUsuario, "");
+                }, false, idUsuario, "");
             } catch (JSONException | CheckRequestException e) {
                 e.printStackTrace();
             }
