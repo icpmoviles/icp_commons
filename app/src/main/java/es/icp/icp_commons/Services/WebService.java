@@ -159,6 +159,7 @@ public class WebService extends Application {
                 //ENVIO LOS DATOS
                 final Accion accion = acciones.get(contador);
                 String url = accion.getURL();
+                WSHelper.logWS(url, accion.getJSON());
                 if (accion.getMetodo().equals("POST"))
                 {
                     try
