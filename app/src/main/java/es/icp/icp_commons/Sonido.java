@@ -60,7 +60,7 @@ public class Sonido {
      * @param context Context. Contexto de la aplicación.
      * @param sonido int. Valor id del audio a reproducir.
      */
-    public static void reproducirSonido(Context context, int sonido) {
+    private static void reproducirSonido(Context context, int sonido) {
         reproducirSonido(context, sonido, null);
     }
 
@@ -72,7 +72,7 @@ public class Sonido {
      * @param sonido int. Valor id del audio a reproducir.
      * @param onCompletionListener OnCompletionListener. Listener para conocer el momento en el que finaliza el audio.
      */
-    public static  void reproducirSonido(Context context, int sonido, final OnCompletionListener onCompletionListener) {
+    private static  void reproducirSonido(Context context, int sonido, final OnCompletionListener onCompletionListener) {
         if (!GlobalVariables.Sonido){
             final MediaPlayer mp = MediaPlayer.create(context, sonido);
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
