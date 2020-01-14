@@ -135,11 +135,12 @@ public class CheckRequest {
                                         Object objetoAux;
                                         if (clase != null) {
                                             String data = obtenerStringJSON(response);
-                                            if (data.startsWith("[")) {
-                                                responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
-                                            } else {
-                                                responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
-                                            }
+//                                            if (data.startsWith("[")) {
+//                                                responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
+//                                            } else {
+//                                                responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
+//                                            }
+                                            responseObject = new Gson().fromJson(data, clase);
                                         } else {
                                             responseObject = response;
                                         }
