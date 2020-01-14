@@ -195,13 +195,9 @@ public class CheckRequest {
             data = response.getJSONObject("data").toString();
         } catch (JSONException e) {
             try {
-                data = response.getJSONObject("").toString();
+                data = response.getJSONArray("data").toString();
             } catch (JSONException e2) {
-                try {
-                    data = response.getJSONArray("").toString();
-                } catch (JSONException e3) {
-                    data = response.getJSONArray("data").toString();
-                }
+                data = response.toString();
             }
         }
         return data;
