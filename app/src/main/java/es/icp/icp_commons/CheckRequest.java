@@ -134,12 +134,7 @@ public class CheckRequest {
                                         Class clase = parametros.getClase();
                                         Object objetoAux;
                                         if (clase != null) {
-                                            String data;
-                                            try {
-                                                data = response.getJSONObject("data").toString();
-                                            } catch (JSONException e) {
-                                                data = response.getJSONArray("data").toString();
-                                            }
+                                            String data = obtenerStringJSON(response);
                                             if (data.startsWith("[")) {
                                                 responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
                                             } else {
@@ -192,6 +187,24 @@ public class CheckRequest {
             WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
             throw createException(e, parametros.getUrl(), "Send");
         }
+    }
+
+    private static String obtenerStringJSON(JSONObject response) throws JSONException {
+        String data;
+        try {
+            data = response.getJSONObject("data").toString();
+        } catch (JSONException e) {
+            try {
+                data = response.getJSONObject("").toString();
+            } catch (JSONException e2) {
+                try {
+                    data = response.getJSONArray("").toString();
+                } catch (JSONException e3) {
+                    data = response.getJSONArray("data").toString();
+                }
+            }
+        }
+        return data;
     }
 
     private static CheckRequestException createException(Exception e, String url, String libMethod) {
