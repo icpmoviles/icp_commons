@@ -48,6 +48,7 @@ public class CustomNotification extends FrameLayout {
     private int alturaMinimizado = 0;
     private boolean darkness = false;
     private TransitionDrawable trans;
+    private boolean minimizable = true;
 
     // CONSTANTES
 
@@ -346,7 +347,7 @@ public class CustomNotification extends FrameLayout {
     private void crearTouchListener(){
         findViewById(R.id.notificationBox).setOnTouchListener(new OnSwipeTouchListener(this.context) {
             public void onSwipeBottom(){
-                if (!minimizado && !enMovimiento) {
+                if (!minimizado && !enMovimiento && minimizable) {
                     CustomNotification.this.minimizar();
                 }
             }
@@ -389,10 +390,31 @@ public class CustomNotification extends FrameLayout {
      * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
      *
      * @author Ventura de Lucas
-     * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+     * @return Devuelve 'true' si el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
      */
     public boolean isAboveDarkness() {
         return this.darkness;
+    }
+
+    /**
+     * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
+     * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
+     *
+     * @author Ventura de Lucas
+     * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+     */
+    public void setMinimizable(boolean minimizable) {
+        this.minimizable = minimizable;
+    }
+
+    /**
+     * Indica si el usuario puede o no minimizar la notificación.
+     *
+     * @author Ventura de Lucas
+     * @return Devuelve 'true' si el usuario puede minimizar la notificación; en caso contrario, devuelve 'false'
+     */
+    public boolean isMinimizable() {
+        return this.minimizable;
     }
 
     private void setMode(int mode) {
@@ -728,6 +750,18 @@ public class CustomNotification extends FrameLayout {
         }
 
         /**
+         * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
+         * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
+         *
+         * @author Ventura de Lucas
+         * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+         */
+        public BuilderButton setMinimizable(boolean minimizable) {
+            customNotification.setMinimizable(minimizable);
+            return this;
+        }
+
+        /**
          * Modifica el texto del cuerpo de la notificación.
          *
          * @author Ventura de Lucas
@@ -816,6 +850,18 @@ public class CustomNotification extends FrameLayout {
         }
 
         /**
+         * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
+         * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
+         *
+         * @author Ventura de Lucas
+         * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+         */
+        public BuilderSimple setMinimizable(boolean minimizable) {
+            customNotification.setMinimizable(minimizable);
+            return this;
+        }
+
+        /**
          * Establece el tiempo que se mostrará la notificación:
          * SHORT: 2 segundos.
          * MEDIUM: 5 segundos.
@@ -881,6 +927,18 @@ public class CustomNotification extends FrameLayout {
          */
         public BuilderProgress aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
+            return this;
+        }
+
+        /**
+         * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
+         * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
+         *
+         * @author Ventura de Lucas
+         * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+         */
+        public BuilderProgress setMinimizable(boolean minimizable) {
+            customNotification.setMinimizable(minimizable);
             return this;
         }
 
@@ -978,6 +1036,18 @@ public class CustomNotification extends FrameLayout {
          */
         public BuilderMultiple aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
+            return this;
+        }
+
+        /**
+         * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
+         * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
+         *
+         * @author Ventura de Lucas
+         * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+         */
+        public BuilderMultiple setMinimizable(boolean minimizable) {
+            customNotification.setMinimizable(minimizable);
             return this;
         }
 
