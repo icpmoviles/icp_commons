@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':pruebas'
 rootProject.name='ICP_Commons'
