@@ -224,6 +224,26 @@ public class CheckRequest {
      * @param context Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     */
+    @Deprecated
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, boolean loader) throws CheckRequestException {
+        CheckAndSend(context, parametros, callBack, true, 0, "", false);
+    }
+
+    /**
+     * Realiza las comprobaciones anteriores al envío de la petición al servidor.
+     * Comprueba la conexión a Internet.
+     * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
+     * Porteriormente, envía la petición al servidor.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
+     *
+     * @author Ventura de Lucas
+     * @param context Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack VolleyCallBack. Listener con el resultado del envío.
      * @param idUsuario int. ID del usuario que está llamando al servicio.
      * @param urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
@@ -265,6 +285,7 @@ public class CheckRequest {
      * @param context Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack VolleyCallBack. Listener con el resultado del envío.
+     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
      * @param idUsuario int. ID del usuario que está llamando al servicio.
      * @param urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).

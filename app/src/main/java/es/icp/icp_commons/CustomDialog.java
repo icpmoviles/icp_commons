@@ -9,11 +9,14 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +26,9 @@ import java.util.List;
 
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Interfaces.CustomDialogResponse;
+import es.icp.icp_commons.Interfaces.CustomDialogTextChanged;
 import es.icp.icp_commons.Interfaces.ListenerAccion;
+import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.icp_commons.Interfaces.ResponseDialog;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
@@ -33,6 +38,7 @@ public class CustomDialog {
     private String titulo;
     private int Kind;
     private List<Button> buttons;
+    private List<EditText> editTexts;
     private List<TextView> textViews;
     private AlertDialog dialog;
     private boolean cancelable;
@@ -143,6 +149,44 @@ public class CustomDialog {
     }
 
     /**
+     * Añade un editText al diálogo.
+     *
+     * @param text String. Texto del hint del editText.
+     * @param valorTexto StringBuilder. (InOutParam) "Listener" con los cambios del texto del editText.
+     * @param style int. Estilo del editText.
+     */
+    public void AddEditText(final String text, final StringBuilder valorTexto, int style)
+    {
+        EditText et = new EditText(context);
+        et.setTextColor(Color.BLACK);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0,0,0, 32);
+        et.setLayoutParams(params);
+        et.setHint(text);
+        et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                valorTexto.delete(0, valorTexto.length());
+                valorTexto.append(s.toString());
+            }
+        });
+
+        if (editTexts == null)
+            editTexts = new ArrayList<>();
+        editTexts.add(et);
+    }
+
+    /**
      * Se muestra el diálogo previamente construido.
      *
      */
@@ -182,7 +226,14 @@ public class CustomDialog {
             }
         }
 
-
+        if (editTexts != null && editTexts.size() > 0 && Kind == Constantes.DIALOG_BUTTONS)
+        {
+            LinearLayout linearLayout = dialogView.findViewById(R.id.linearButtonsDialog);
+            for (EditText et : editTexts)
+            {
+                linearLayout.addView(et);
+            }
+        }
 
         if (buttons != null && buttons.size() > 0 && Kind == Constantes.DIALOG_BUTTONS)
         {
@@ -217,6 +268,48 @@ public class CustomDialog {
      */
     public void setCancelable(boolean cancelable) {
         this.cancelable = cancelable;
+    }
+
+    /**
+     * Construye y muestra un diálogo de inputs.
+     * Dependiendo del número de "hints" que se introduzcan al final de los parámetros mostrará una cantidad determinada de EditText cuyo valor será devuelto en el ListenerEditTextAccion a modo de List<String>.
+     *
+     * @param ctx Context. Contexto de la aplicación.
+     * @param titulo String. Texto informativo para el título del diálogo de inputs.
+     * @param color int. Color del decorado de la cabecera del diálogo.
+     * @param drawable Drawable. Imagen o icono a visualizar en la cabecera del diálogo.
+     * @param listener ListenerEditTextAccion. Listener para la respuesta al click del botón 'Aceptar'. Devuelve un List<String> con todos los valores introducidos por el usuario.
+     * @param inputsHint String... Hint o "pista" que verá el usuario en cada uno de los EditText. Introducir tantos String como EditText se deseen.
+     */
+    public static void dialogInput (final Context ctx, final String titulo, final int color, final Drawable drawable, final ListenerEditTextAccion listener, final String ...inputsHint) {
+        Activity activity = (Activity) ctx;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CustomDialog dialog = new CustomDialog(ctx, Constantes.DIALOG_BUTTONS, color, drawable);
+                final ArrayList<StringBuilder> stringBuilders = new ArrayList<>();
+                dialog.setTitulo(titulo);
+                for (String inputHint: inputsHint) {
+                    StringBuilder input = new StringBuilder();
+                    dialog.AddEditText(inputHint, input, 0);
+                    stringBuilders.add(input);
+                }
+                dialog.AddButton(ctx.getString(R.string.aceptar), new CustomDialogResponse() {
+                    @Override
+                    public void onResponse(Dialog dialog) {
+                        dialog.dismiss();
+                        if (listener != null) {
+                            List<String> inputs = new ArrayList<>();
+                            for (StringBuilder input : stringBuilders) {
+                                inputs.add(input.toString());
+                            }
+                            listener.accion(0, inputs);
+                        }
+                    }
+                }, R.drawable.rounded_black_button);
+                dialog.Show();
+            }
+        });
     }
 
     /**

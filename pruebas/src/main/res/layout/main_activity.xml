@@ -18,5 +18,17 @@
             android:onClick="@{handler::onClickBtn1}"
             android:text="MOSTRAR NOTIFICACIÓN 1" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn2}"
+            android:text="MOSTRAR DIÁLOGO CON EDITTEXT 1" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn3}"
+            android:text="MOSTRAR DIÁLOGO CON EDITTEXT 2" />
+
     </LinearLayout>
 </layout>
