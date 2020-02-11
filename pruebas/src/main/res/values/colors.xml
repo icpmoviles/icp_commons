@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#7BE1FF</color>
+    <color name="colorPrimaryDark">#D1D1D1</color>
+    <color name="colorAccent">#0300A7</color>
+    <color name="greyBackground">#D1D1D1</color>
+    <color name="greyStroke">#BBBBBB</color>
+    <color name="greyVersion">#EDEDED</color>
+    <color name="greyText">#898989</color>
+    <color name="white">#ffffff</color>
+    <color name="greenButton">#248515</color>
+    <color name="greyButton">#A0A0A0</color>
+    <color name="colorLog">#093767</color>
+    <color name="lightGray">#c4c4c4</color>
+    <color name="lightGreen">#0AB40A</color>
+    <color name="darkRed">#E10000</color>
+    <color name="view_divider_color">#BABABA</color>
+    <color name="txt_filtros">#959595</color>
+    <color name="back_footer">#FAFAFA</color>
+    <color name="back_nav">#FAFAFA</color>
+    <color name="grey_stroke">#DCDCDC</color>
+</resources>
