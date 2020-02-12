@@ -9,16 +9,15 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CustomDialog;
 import es.icp.icp_commons.CustomNotification;
 import es.icp.icp_commons.Helpers.Constantes;
+import es.icp.icp_commons.Interfaces.CustomDialogButtonClicked;
 import es.icp.icp_commons.Interfaces.CustomDialogResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
-import es.icp.icp_commons.Interfaces.VolleyCallBack;
-import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 
@@ -53,8 +52,59 @@ public class MainActivity extends Activity {
             public void onClickBtn3(View view) {
                 crearDialog2();
             }
-        };
 
+            @Override
+            public void onClickBtn4(View view) {
+                crearDialog3();
+            }
+
+            @Override
+            public void onClickBtn5(View view) {
+                crearDialog4();
+            }
+        };
+    }
+
+    private void crearDialog3() {
+        CustomDialog.dialogInput(context, "Incidencia", "Rellene la incidencia", GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP, new ListenerEditTextAccion() {
+            @Override
+            public void accion(int code, List<String> inputs) {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                StringBuilder text = new StringBuilder();
+                for (String input : inputs) {
+                    text.append(input).append(" - ");
+                }
+                customNotification.showText(text.toString());
+            }
+        }, "Observaciones");
+    }
+
+    private void crearDialog4() {
+        CustomDialog dialog = new CustomDialog(context, Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
+        final ArrayList<StringBuilder> stringBuilders = new ArrayList<>();
+        dialog.setTitulo("Rellene la incidencia");
+        dialog.setTituloAdvertencia("Incidencia");
+        final StringBuilder observaciones = new StringBuilder();
+        dialog.AddEditText("Observaciones", observaciones, 0);
+        dialog.AddButton(context.getString(es.icp.icp_commons.R.string.aceptar), new CustomDialogButtonClicked() {
+            @Override
+            public void onResponse(CustomDialog dialog) {
+                if (observaciones.toString().isEmpty()) {
+                    dialog.setError(0, "Introduzca observaciones");
+                } else {
+                    dialog.dismiss();
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText(observaciones.toString());
+                }
+            }
+        }, es.icp.icp_commons.R.drawable.rounded_black_button);
+        dialog.Show();
     }
 
     private void crearDialog2() {
@@ -107,5 +157,7 @@ public class MainActivity extends Activity {
         void onClickBtn1(View view);
         void onClickBtn2(View view);
         void onClickBtn3(View view);
+        void onClickBtn4(View view);
+        void onClickBtn5(View view);
     }
 }

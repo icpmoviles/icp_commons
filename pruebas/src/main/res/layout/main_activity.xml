@@ -30,5 +30,17 @@
             android:onClick="@{handler::onClickBtn3}"
             android:text="MOSTRAR DIÁLOGO CON EDITTEXT 2" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn4}"
+            android:text="MOSTRAR DIÁLOGO CON EDITTEXT 3" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn5}"
+            android:text="MOSTRAR DIÁLOGO CON EDITTEXT SETERROR 1" />
+
     </LinearLayout>
 </layout>
