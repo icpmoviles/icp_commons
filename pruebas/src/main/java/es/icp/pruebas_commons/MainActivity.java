@@ -3,17 +3,26 @@ package es.icp.pruebas_commons;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.icp.icp_commons.CustomDialog;
+import es.icp.icp_commons.CustomEditText;
 import es.icp.icp_commons.CustomNotification;
+import es.icp.icp_commons.CustomSmartDialog;
+import es.icp.icp_commons.CustomTitle;
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Interfaces.CustomDialogButtonClicked;
 import es.icp.icp_commons.Interfaces.CustomDialogResponse;
@@ -62,7 +71,73 @@ public class MainActivity extends Activity {
             public void onClickBtn5(View view) {
                 crearDialog4();
             }
+
+            @Override
+            public void onClickBtn6(View view) {
+                crearDialog5();
+            }
         };
+    }
+
+    private void crearDialog5() {
+        CustomTitle customTitle = new CustomTitle.Builder(context)
+                .setTitle("Datos personales")
+                .setIcon(getDrawable(R.drawable.ic_search_black_24dp))
+                .setBackgroundColor(R.color.colorAccent)
+                .setTextColor(R.color.white)
+                .setIconColor(R.color.white)
+                .build();
+
+        TextView message = new CustomSmartDialog.Message.Builder(context)
+                .setText("Introduce nombre y apellidos")
+                .build();
+
+        final CustomEditText customEditText = new CustomEditText.Builder(context)
+                .setHintText("Nombre y apellidos")
+                .setStartIconDrawable(getDrawable(R.drawable.ic_person_black_24dp))
+                .setStartIconColor(R.color.colorAccent)
+                .setTextAppearance(R.style.MyHintStyle)
+                .setCounterMaxLength(25)
+                .setCounterOverflowAppearance(android.R.color.holo_orange_dark)
+                .setErrorIconColor(android.R.color.holo_orange_dark)
+                .build();
+
+        CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
+                .setTextColor(R.color.colorAccent)
+                .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CustomNotification customNotification = new CustomNotification.Builder(context)
+                                .setSimpleMode()
+                                .setDuration(CustomNotification.LENGTH_SHORT)
+                                .build();
+                        customNotification.showText(customEditText.getText());
+                    }
+                })
+                .build();
+
+        CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, "CANCELAR")
+                .setTextColor(android.R.color.darker_gray)
+                .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        CustomNotification customNotification = new CustomNotification.Builder(context)
+                                .setSimpleMode()
+                                .setDuration(CustomNotification.LENGTH_SHORT)
+                                .build();
+                        customNotification.showText("Cancelado...");
+                    }
+                })
+                .build();
+
+        new CustomSmartDialog.Builder(context)
+                .setTitle(customTitle)
+                .addView(message)
+                .addView(customEditText)
+                .addButton(buttonAceptar)
+                .addButton(buttonCancelar)
+                .build();
     }
 
     private void crearDialog3() {
@@ -159,5 +234,6 @@ public class MainActivity extends Activity {
         void onClickBtn3(View view);
         void onClickBtn4(View view);
         void onClickBtn5(View view);
+        void onClickBtn6(View view);
     }
 }

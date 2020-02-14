@@ -42,5 +42,11 @@
             android:onClick="@{handler::onClickBtn5}"
             android:text="MOSTRAR DIÁLOGO CON EDITTEXT SETERROR 1" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn6}"
+            android:text="MOSTRAR SMARTDIALOG CON INPUT" />
+
     </LinearLayout>
 </layout>
