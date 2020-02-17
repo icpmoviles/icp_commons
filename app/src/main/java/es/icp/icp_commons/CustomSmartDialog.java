@@ -104,7 +104,7 @@ public class CustomSmartDialog {
                     .build();
 
             final CustomEditText customEditText = new CustomEditText.Builder(context)
-                    .setHintText("Nombre y apellidos")
+                    .setHintText(hint)
                     .setStartIconDrawable(iconoEditText)
                     .setStartIconColor(R.color.colorPrimary)
                     .setTextAppearance(R.style.MyHintStyle)
