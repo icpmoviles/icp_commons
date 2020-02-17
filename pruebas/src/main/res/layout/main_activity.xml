@@ -46,7 +46,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{handler::onClickBtn6}"
-            android:text="MOSTRAR SMARTDIALOG CON INPUT" />
+            android:text="MOSTRAR SMARTDIALOG CON INPUT 1" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn7}"
+            android:text="MOSTRAR SMARTDIALOG CON INPUT 2" />
 
     </LinearLayout>
 </layout>

@@ -3,7 +3,7 @@ package es.icp.icp_commons;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
-import android.text.Layout;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.icp.icp_commons.Helpers.Utils;
+import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 
 public class CustomSmartDialog {
 
@@ -24,12 +25,21 @@ public class CustomSmartDialog {
     private List<Button> buttons;
     private boolean isCancellable;
     private Message message;
+    private AlertDialog dialog;
 
     public CustomSmartDialog(Context context) {
         this.context = context;
         layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
         buttons = new ArrayList<>();
+    }
+
+    public void dismiss() {
+        dialog.dismiss();
+    }
+
+    public void cancel() {
+        dialog.cancel();
     }
 
     public void setView(View view) {
@@ -61,7 +71,7 @@ public class CustomSmartDialog {
                 // TODO : Neutral Type Button
             }
         }
-        final AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface arg0) {
@@ -77,6 +87,63 @@ public class CustomSmartDialog {
             }
         });
         dialog.show();
+    }
+
+    public static void dialogInput(final Context context, String titulo, String mensaje, String hint, Drawable iconoTitulo, Drawable iconoEditText, int maxLength, final CustomSmartDialogInputResponse listener) {
+        try {
+            CustomTitle customTitle = new CustomTitle.Builder(context)
+                    .setTitle(titulo)
+                    .setIcon(iconoTitulo)
+                    .setBackgroundColor(R.color.colorPrimary)
+                    .setTextColor(R.color.white)
+                    .setIconColor(R.color.white)
+                    .build();
+
+            TextView message = new CustomSmartDialog.Message.Builder(context)
+                    .setText(mensaje)
+                    .build();
+
+            final CustomEditText customEditText = new CustomEditText.Builder(context)
+                    .setHintText("Nombre y apellidos")
+                    .setStartIconDrawable(iconoEditText)
+                    .setStartIconColor(R.color.colorPrimary)
+                    .setTextAppearance(R.style.MyHintStyle)
+                    .setCounterMaxLength(maxLength)
+                    .setCounterOverflowAppearance(android.R.color.holo_red_light)
+                    .setErrorIconColor(android.R.color.holo_red_dark)
+                    .build();
+
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
+                    .setTextColor(R.color.colorPrimary)
+                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, customEditText.getText(), dialog);
+                        }
+                    })
+                    .build();
+
+            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, "CANCELAR")
+                    .setTextColor(android.R.color.darker_gray)
+                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            listener.onResponse(CustomSmartDialogInputResponse.CANCELAR, "", dialog);
+                        }
+                    })
+                    .build();
+
+            new CustomSmartDialog.Builder(context)
+                    .setTitle(customTitle)
+                    .addView(message)
+                    .addView(customEditText)
+                    .addButton(buttonAceptar)
+                    .addButton(buttonCancelar)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static class Message {

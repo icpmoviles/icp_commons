@@ -26,6 +26,7 @@ import es.icp.icp_commons.CustomTitle;
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Interfaces.CustomDialogButtonClicked;
 import es.icp.icp_commons.Interfaces.CustomDialogResponse;
+import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
@@ -76,7 +77,33 @@ public class MainActivity extends Activity {
             public void onClickBtn6(View view) {
                 crearDialog5();
             }
+
+            @Override
+            public void onClickBtn7(View view) {
+                crearDialog6();
+            }
         };
+    }
+
+    private void crearDialog6() {
+        CustomSmartDialog.dialogInput(context, "Instalar", "Introduce el código de abonado", "Código abonado", getDrawable(R.drawable.ic_search_black_24dp), getDrawable(R.drawable.ic_person_black_24dp), 25, new CustomSmartDialogInputResponse() {
+            @Override
+            public void onResponse(int retCode, String input, DialogInterface dialog) {
+                if (retCode == ACEPTAR) {
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText(input);
+                } else {
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText("Cancelado...");
+                }
+            }
+        });
     }
 
     private void crearDialog5() {
@@ -235,5 +262,6 @@ public class MainActivity extends Activity {
         void onClickBtn4(View view);
         void onClickBtn5(View view);
         void onClickBtn6(View view);
+        void onClickBtn7(View view);
     }
 }

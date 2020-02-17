@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:id="@+id/mainContainer"
     android:layout_width="match_parent"
@@ -10,18 +11,18 @@
         android:id="@+id/startIcon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_edit_blue_24dp" />
+        tools:src="@drawable/ic_edit_blue_24dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Código abonado"
-        app:hintTextAppearance="@style/MyHintStyle"
-        app:counterEnabled="true"
-        app:counterMaxLength="50"
+        tools:hint="Código abonado"
+        tools:hintTextAppearance="@style/MyHintStyle"
+        tools:counterEnabled="true"
+        tools:counterMaxLength="50"
         app:boxStrokeColor="@color/colorPrimary"
-        app:counterOverflowTextAppearance="@style/AppTheme.CharacterCounter">
+        tools:counterOverflowTextAppearance="@style/AppTheme.CharacterCounter">
 
         <EditText
             android:id="@+id/txtEditText"
@@ -31,9 +32,3 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
-
-<!--<icon>-->
-<!--    app:startIconDrawable="@drawable/ic_edit_blue_24dp"-->
-<!--    app:startIconTint="@color/colorPrimary"-->
-<!--    app:errorIconTint="@color/red"-->
-<!--</icon>-->
