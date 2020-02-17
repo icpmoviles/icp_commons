@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layout_margin="16dp">
+
+    <Button
+        android:id="@+id/btnMenos"
+        style="@style/btn_circle_orange"
+        android:text="-" />
+
+    <TextView
+        android:id="@+id/txtQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        tools:text="8"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center_vertical" />
+
+    <Button
+        android:id="@+id/btnMas"
+        style="@style/btn_circle_orange"
+        android:text="+" />
+
+</LinearLayout>
