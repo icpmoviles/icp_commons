@@ -22,11 +22,14 @@ import es.icp.icp_commons.CustomDialog;
 import es.icp.icp_commons.CustomEditText;
 import es.icp.icp_commons.CustomNotification;
 import es.icp.icp_commons.CustomSmartDialog;
+import es.icp.icp_commons.CustomSmartDialogButton;
 import es.icp.icp_commons.CustomTitle;
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Interfaces.CustomDialogButtonClicked;
 import es.icp.icp_commons.Interfaces.CustomDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
+import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
+import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
@@ -82,7 +85,118 @@ public class MainActivity extends Activity {
             public void onClickBtn7(View view) {
                 crearDialog6();
             }
+
+            @Override
+            public void onClickBtn8(View view) {
+                crearDialog7();
+            }
+
+            @Override
+            public void onClickBtn9(View view) {
+                crearDialog8();
+            }
+
+            @Override
+            public void onClickBtn10(View view) {
+                crearDialog9();
+            }
+
+            @Override
+            public void onClickBtn11(View view) {
+                crearDialog10();
+            }
         };
+    }
+
+    private void crearDialog10() {
+        CustomSmartDialog.dialogImage(context, "Material Recepcionado", getDrawable(R.drawable.ic_search_black_24dp), getDrawable(R.drawable.ic_thumb_up), new CustomSmartDialogResponse() {
+            @Override
+            public void onResponse(int retCode, DialogInterface dialog) {
+                if (retCode == ACEPTAR) {
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText("Aceptado!");
+                }
+            }
+        });
+    }
+
+    private void crearDialog9() {
+        CustomSmartDialog.dialogInputExtra(context, "Instalar", "Introduce el código de abonado", "Código abonado", getDrawable(R.drawable.ic_search_black_24dp), getDrawable(R.drawable.ic_person_black_24dp), 25, "BARCODE", new CustomSmartDialogInputResponse() {
+            @Override
+            public void onResponse(int retCode, String input, DialogInterface dialog) {
+                if (retCode == ACEPTAR) {
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText(input);
+                } else if (retCode == CANCELAR){
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText("Cancelado...");
+                } else {
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText("Neutral...");
+                }
+            }
+        });
+    }
+
+    private void crearDialog8() {
+        CustomSmartDialog.dialogButtons(context, "Selecciona una opción", getDrawable(R.drawable.ic_search_black_24dp),
+                new CustomSmartDialogButton("Activar", R.drawable.rounded_primary_medium_button, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomNotification customNotification = new CustomNotification.Builder(context)
+                                .setSimpleMode()
+                                .setDuration(CustomNotification.LENGTH_SHORT)
+                                .build();
+                        customNotification.showText("Activar seleccionado");
+                    }
+                })
+                , new CustomSmartDialogButton("Editar", R.drawable.rounded_primary_medium_button, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomNotification customNotification = new CustomNotification.Builder(context)
+                                .setSimpleMode()
+                                .setDuration(CustomNotification.LENGTH_SHORT)
+                                .build();
+                        customNotification.showText("Editar seleccionado");
+                    }
+                })
+                , new CustomSmartDialogButton("Eliminar", R.drawable.rounded_primary_medium_button, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomNotification customNotification = new CustomNotification.Builder(context)
+                                .setSimpleMode()
+                                .setDuration(CustomNotification.LENGTH_SHORT)
+                                .build();
+                        customNotification.showText("Eliminar seleccionado");
+                    }
+                }));
+    }
+
+    private void crearDialog7() {
+        CustomSmartDialog.dialogQuantity(context, "Referencia_cliente2_A", "Modifica la cantidad", getDrawable(R.drawable.ic_edit_blue_24dp), 0, new CustomSmartDialogQuantityResponse() {
+            @Override
+            public void onResponse(int retCode, int quantity, DialogInterface dialog) {
+                if (retCode == ACEPTAR) {
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText(String.valueOf(quantity));
+                }
+            }
+        });
     }
 
     private void crearDialog6() {
@@ -263,5 +377,9 @@ public class MainActivity extends Activity {
         void onClickBtn5(View view);
         void onClickBtn6(View view);
         void onClickBtn7(View view);
+        void onClickBtn8(View view);
+        void onClickBtn9(View view);
+        void onClickBtn10(View view);
+        void onClickBtn11(View view);
     }
 }

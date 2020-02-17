@@ -54,5 +54,29 @@
             android:onClick="@{handler::onClickBtn7}"
             android:text="MOSTRAR SMARTDIALOG CON INPUT 2" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn8}"
+            android:text="MOSTRAR SMARTDIALOG CON QUANTITY 1" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn9}"
+            android:text="MOSTRAR SMARTDIALOG CON BUTTONS 1" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn10}"
+            android:text="MOSTRAR SMARTDIALOG CON EXTRAS 1" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn11}"
+            android:text="MOSTRAR SMARTDIALOG CON IMAGE 1" />
+
     </LinearLayout>
 </layout>
