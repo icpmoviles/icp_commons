@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
     private Context context = MainActivity.this;
     private MainActivityBinding binding;
     private Handler handler;
+    private CustomSmartDialog customSmartDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,7 +106,16 @@ public class MainActivity extends Activity {
             public void onClickBtn11(View view) {
                 crearDialog10();
             }
+
+            @Override
+            public void onClickBtn12(View view) {
+                crearDialog11();
+            }
         };
+    }
+
+    private void crearDialog11() {
+        CustomSmartDialog.dialogToast(context, "Toast Dialog", "Mensaje genérico!!!");
     }
 
     private void crearDialog10() {
@@ -124,10 +134,11 @@ public class MainActivity extends Activity {
     }
 
     private void crearDialog9() {
-        CustomSmartDialog.dialogInputExtra(context, "Instalar", "Introduce el código de abonado", "Código abonado", getDrawable(R.drawable.ic_search_black_24dp), getDrawable(R.drawable.ic_person_black_24dp), 25, "BARCODE", new CustomSmartDialogInputResponse() {
+        customSmartDialog = CustomSmartDialog.dialogInputExtra(context, "Instalar", "Introduce el código de abonado", "Código abonado", getDrawable(R.drawable.ic_search_black_24dp), getDrawable(R.drawable.ic_person_black_24dp), 25, "BARCODE", new CustomSmartDialogInputResponse() {
             @Override
             public void onResponse(int retCode, String input, DialogInterface dialog) {
                 if (retCode == ACEPTAR) {
+                    dialog.dismiss();
                     CustomNotification customNotification = new CustomNotification.Builder(context)
                             .setSimpleMode()
                             .setDuration(CustomNotification.LENGTH_SHORT)
@@ -140,14 +151,15 @@ public class MainActivity extends Activity {
                             .build();
                     customNotification.showText("Cancelado...");
                 } else {
-                    CustomNotification customNotification = new CustomNotification.Builder(context)
-                            .setSimpleMode()
-                            .setDuration(CustomNotification.LENGTH_SHORT)
-                            .build();
-                    customNotification.showText("Neutral...");
+                    neutralAction();
                 }
             }
         });
+    }
+
+    private void neutralAction() {
+        CustomEditText customEditText = (CustomEditText) customSmartDialog.getView(1);
+        customEditText.setText("BARCODE");
     }
 
     private void crearDialog8() {
@@ -381,5 +393,6 @@ public class MainActivity extends Activity {
         void onClickBtn9(View view);
         void onClickBtn10(View view);
         void onClickBtn11(View view);
+        void onClickBtn12(View view);
     }
 }
