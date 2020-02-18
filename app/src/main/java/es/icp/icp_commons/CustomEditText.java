@@ -106,6 +106,10 @@ public class CustomEditText extends LinearLayout {
         return txtEditText.getText().toString();
     }
 
+    public void setText(String text) {
+        txtEditText.setText(text);
+    }
+
     public static class Builder {
         private CustomEditText customEditText;
         public Builder(Context context) {

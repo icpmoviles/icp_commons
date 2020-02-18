@@ -50,6 +50,10 @@ public class CustomSmartDialog {
         layout.addView(view);
     }
 
+    public View getView(int index) {
+        return layout.getChildAt(index);
+    }
+
     public void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setCustomTitle(customTitle)
@@ -132,7 +136,7 @@ public class CustomSmartDialog {
         dialog.show();
     }
 
-    public static void dialogImage(final Context context, String titulo, Drawable iconoTitulo, Drawable image, final CustomSmartDialogResponse listener) {
+    public static CustomSmartDialog dialogImage(final Context context, String titulo, Drawable iconoTitulo, Drawable image, final CustomSmartDialogResponse listener) {
         try {
             CustomTitle customTitle = new CustomTitle.Builder(context)
                     .setTitle(titulo)
@@ -158,17 +162,18 @@ public class CustomSmartDialog {
             layoutParams.gravity = Gravity.CENTER;
             imageView.setLayoutParams(layoutParams);
 
-            new CustomSmartDialog.Builder(context)
+            return new CustomSmartDialog.Builder(context)
                     .setTitle(customTitle)
                     .addView(imageView)
                     .addButton(buttonAceptar)
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    public static void dialogInputExtra(final Context context, String titulo, String mensaje, String hint, Drawable iconoTitulo, Drawable iconoEditText, int maxLength, final String neutralButtonText, final CustomSmartDialogInputResponse listener) {
+    public static CustomSmartDialog dialogInputExtra(final Context context, String titulo, String mensaje, String hint, Drawable iconoTitulo, Drawable iconoEditText, int maxLength, final String neutralButtonText, final CustomSmartDialogInputResponse listener) {
         try {
             CustomTitle customTitle = new CustomTitle.Builder(context)
                     .setTitle(titulo)
@@ -225,7 +230,7 @@ public class CustomSmartDialog {
                     .setTextSize(12)
                     .build();
 
-            new CustomSmartDialog.Builder(context)
+            return new CustomSmartDialog.Builder(context)
                     .setTitle(customTitle)
                     .addView(message)
                     .addView(customEditText)
@@ -235,10 +240,11 @@ public class CustomSmartDialog {
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    public static void dialogInput(final Context context, String titulo, String mensaje, String hint, Drawable iconoTitulo, Drawable iconoEditText, int maxLength, final CustomSmartDialogInputResponse listener) {
+    public static CustomSmartDialog dialogInput(final Context context, String titulo, String mensaje, String hint, Drawable iconoTitulo, Drawable iconoEditText, int maxLength, final CustomSmartDialogInputResponse listener) {
         try {
             CustomTitle customTitle = new CustomTitle.Builder(context)
                     .setTitle(titulo)
@@ -283,7 +289,7 @@ public class CustomSmartDialog {
                     })
                     .build();
 
-            new CustomSmartDialog.Builder(context)
+            return new CustomSmartDialog.Builder(context)
                     .setTitle(customTitle)
                     .addView(message)
                     .addView(customEditText)
@@ -292,10 +298,46 @@ public class CustomSmartDialog {
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    public static void dialogQuantity(final Context context, String titulo, String mensaje, Drawable iconoTitulo, int cantidadInicial, final CustomSmartDialogQuantityResponse listener) {
+    public static CustomSmartDialog dialogToast(final Context context, String titulo, String mensaje) {
+        try {
+            CustomTitle customTitle = new CustomTitle.Builder(context)
+                    .setTitle(titulo)
+                    .setIcon(context.getDrawable(R.drawable.ic_info_black_24dp))
+                    .setBackgroundColor(R.color.colorPrimary)
+                    .setTextColor(R.color.white)
+                    .setIconColor(R.color.white)
+                    .build();
+
+            TextView message = new CustomSmartDialog.Message.Builder(context)
+                    .setText(mensaje)
+                    .build();
+
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
+                    .setTextColor(R.color.colorPrimary)
+                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .build();
+
+            return new CustomSmartDialog.Builder(context)
+                    .setTitle(customTitle)
+                    .addView(message)
+                    .addButton(buttonAceptar)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static CustomSmartDialog dialogQuantity(final Context context, String titulo, String mensaje, Drawable iconoTitulo, int cantidadInicial, final CustomSmartDialogQuantityResponse listener) {
         try {
             CustomTitle customTitle = new CustomTitle.Builder(context)
                     .setTitle(titulo)
@@ -332,7 +374,7 @@ public class CustomSmartDialog {
                     })
                     .build();
 
-            new CustomSmartDialog.Builder(context)
+            return new CustomSmartDialog.Builder(context)
                     .setTitle(customTitle)
                     .addView(message)
                     .addView(customQuantity)
@@ -341,10 +383,11 @@ public class CustomSmartDialog {
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    public static void dialogButtons(final Context context, String titulo, Drawable iconoTitulo, CustomSmartDialogButton... buttons) {
+    public static CustomSmartDialog dialogButtons(final Context context, String titulo, Drawable iconoTitulo, CustomSmartDialogButton... buttons) {
         try {
             CustomTitle customTitle = new CustomTitle.Builder(context)
                     .setTitle(titulo)
@@ -377,16 +420,11 @@ public class CustomSmartDialog {
                     .setTextColor(R.color.colorPrimary)
                     .build();
 
-
-
-//            for (android.widget.Button boton : botones) {
-//                builder.addView(boton);
-//            }
-
-            builder.addButton(buttonAceptar).build();
+            return builder.addButton(buttonAceptar).build();
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
