@@ -54,6 +54,10 @@ public class CustomSmartDialog {
         return layout.getChildAt(index);
     }
 
+    public boolean isShowing() {
+        return dialog.isShowing();
+    }
+
     public void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setCustomTitle(customTitle)
