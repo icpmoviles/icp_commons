@@ -1,22 +1,17 @@
 package es.icp.icp_commons;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +67,6 @@ public class CustomSmartDialog {
                 builder.setNegativeButton(button.text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         if (button.onClickListener != null) button.onClickListener.onClick(dialog, which);
                     }
                 });
@@ -106,13 +100,31 @@ public class CustomSmartDialog {
                     if (button.type == Button.Type.POSSITIVE) {
                         if (button.textColor != 0)  dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.getColor(button.textColor));
                         if (button.textSize != 0)  dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize((float) button.textSize);
+                        if (button.onClickListener != null) dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                button.onClickListener.onClick(dialog, 0);
+                            }
+                        });
                     } else if (button.type == Button.Type.NEGATIVE) {
                         if (button.textColor != 0)  dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getColor(button.textColor));
                         if (button.textSize != 0)  dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize((float) button.textSize);
+                        if (button.onClickListener != null) dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                button.onClickListener.onClick(dialog, 0);
+                            }
+                        });
                     } else {
                         if (button.textColor != 0)  dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(context.getColor(button.textColor));
                         if (button.textSize != 0)  dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextSize((float) button.textSize);
 //                        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setGravity(Gravity.CENTER_VERTICAL);
+                        if (button.onClickListener != null) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                button.onClickListener.onClick(dialog, 0);
+                            }
+                        });
                     }
                 }
             }
@@ -342,6 +354,9 @@ public class CustomSmartDialog {
                     .setIconColor(R.color.white)
                     .build();
 
+            CustomSmartDialog.Builder builder = new CustomSmartDialog.Builder(context)
+                    .setTitle(customTitle);
+
             List<android.widget.Button> botones = new ArrayList<>();
             for (CustomSmartDialogButton button : buttons) {
                 android.widget.Button boton = new android.widget.Button(context);
@@ -354,20 +369,22 @@ public class CustomSmartDialog {
                 boton.setAllCaps(false);
                 boton.setTag(button.getOnClickListener());
                 botones.add(boton);
-            }
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
-                    .setTextColor(R.color.colorPrimary)
-                    .build();
-
-            CustomSmartDialog.Builder builder = new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle);
-
-            for (android.widget.Button boton : botones) {
                 builder.addView(boton);
             }
 
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(Button.Type.NEGATIVE, "CANCELAR")
+                    .setTextColor(R.color.colorPrimary)
+                    .build();
+
+
+
+//            for (android.widget.Button boton : botones) {
+//                builder.addView(boton);
+//            }
+
             builder.addButton(buttonAceptar).build();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
