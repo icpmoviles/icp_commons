@@ -355,7 +355,7 @@ public class CustomSmartDialog {
                     .setText(mensaje)
                     .build();
 
-            final CustomQuantity customQuantity = new CustomQuantity.Builder(context).build();
+            final CustomQuantity customQuantity = new CustomQuantity.Builder(context).setQuantity(cantidadInicial).build();
 
             CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
                     .setTextColor(R.color.colorPrimary)
