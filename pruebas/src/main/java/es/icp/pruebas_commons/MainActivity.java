@@ -107,7 +107,27 @@ public class MainActivity extends Activity {
             public void onClickBtn12(View view) {
                 crearDialog11();
             }
+
+            @Override
+            public void onClickBtn13(View view) {
+                crearDialog12();
+            }
         };
+    }
+
+    private void crearDialog12() {
+        CustomSmartDialog.dialogToastListener(context, "Toast Dialog", "<span style='color:red'>Mensaje genérico!!!</span>", new CustomSmartDialogResponse() {
+            @Override
+            public void onResponse(int retCode, DialogInterface dialog) {
+                if (retCode == ACEPTAR) {
+                    CustomNotification customNotification = new CustomNotification.Builder(context)
+                            .setSimpleMode()
+                            .setDuration(CustomNotification.LENGTH_SHORT)
+                            .build();
+                    customNotification.showText("Aceptado!");
+                }
+            }
+        });
     }
 
     private void crearDialog11() {
@@ -160,7 +180,7 @@ public class MainActivity extends Activity {
 
     private void crearDialog8() {
         CustomSmartDialog.dialogButtons(context, "Selecciona una opción", getDrawable(R.drawable.ic_search_black_24dp),
-                new CustomSmartDialogButton("Activar", R.drawable.rounded_primary_medium_button, new View.OnClickListener() {
+                new CustomSmartDialogButton("<span style'color:red'>Activar</span>", R.drawable.rounded_primary_medium_button, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         CustomNotification customNotification = new CustomNotification.Builder(context)
@@ -390,5 +410,6 @@ public class MainActivity extends Activity {
         void onClickBtn10(View view);
         void onClickBtn11(View view);
         void onClickBtn12(View view);
+        void onClickBtn13(View view);
     }
 }
