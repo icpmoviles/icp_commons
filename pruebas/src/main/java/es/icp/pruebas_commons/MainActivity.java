@@ -4,15 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
@@ -197,7 +193,7 @@ public class MainActivity extends Activity {
     }
 
     private void crearDialog7() {
-        CustomSmartDialog.dialogQuantity(context, "Referencia_cliente2_A", "Modifica la cantidad", getDrawable(R.drawable.ic_edit_blue_24dp), 0, new CustomSmartDialogQuantityResponse() {
+        CustomSmartDialog.dialogQuantity(context, "Referencia_cliente2_A", "Modifica la cantidad", getDrawable(R.drawable.ic_edit_blue_24dp), 7, new CustomSmartDialogQuantityResponse() {
             @Override
             public void onResponse(int retCode, int quantity, DialogInterface dialog) {
                 if (retCode == ACEPTAR) {
