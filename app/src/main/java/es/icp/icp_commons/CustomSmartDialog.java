@@ -150,9 +150,9 @@ public class CustomSmartDialog {
                     .setIconColor(R.color.white)
                     .build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
+            CustomSmartDialog.Button buttonAceptar = new Button.Builder(Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
                     .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                    .setOnClickListener(new Button.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, dialog);
@@ -201,7 +201,7 @@ public class CustomSmartDialog {
                     .setErrorIconColor(android.R.color.holo_red_light)
                     .build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
                     .setTextColor(R.color.colorPrimary)
                     .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
                         @Override
@@ -211,9 +211,9 @@ public class CustomSmartDialog {
                     })
                     .build();
 
-            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, "CANCELAR")
+            CustomSmartDialog.Button buttonCancelar = new Button.Builder(Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
                     .setTextColor(android.R.color.darker_gray)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                    .setOnClickListener(new Button.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -272,7 +272,7 @@ public class CustomSmartDialog {
                     .setErrorIconColor(android.R.color.holo_red_light)
                     .build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
                     .setTextColor(R.color.colorPrimary)
                     .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
                         @Override
@@ -282,7 +282,7 @@ public class CustomSmartDialog {
                     })
                     .build();
 
-            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, "CANCELAR")
+            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
                     .setTextColor(android.R.color.darker_gray)
                     .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
                         @Override
@@ -320,7 +320,7 @@ public class CustomSmartDialog {
                     .setText(mensaje)
                     .build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
                     .setTextColor(R.color.colorPrimary)
                     .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
                         @Override
@@ -357,7 +357,7 @@ public class CustomSmartDialog {
 
             final CustomQuantity customQuantity = new CustomQuantity.Builder(context).setQuantity(cantidadInicial).build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, "ACEPTAR")
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
                     .setTextColor(R.color.colorPrimary)
                     .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
                         @Override
@@ -367,7 +367,7 @@ public class CustomSmartDialog {
                     })
                     .build();
 
-            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, "CANCELAR")
+            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
                     .setTextColor(android.R.color.darker_gray)
                     .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
                         @Override
@@ -420,7 +420,7 @@ public class CustomSmartDialog {
                 builder.addView(boton);
             }
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(Button.Type.NEGATIVE, "CANCELAR")
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
                     .setTextColor(R.color.colorPrimary)
                     .build();
 

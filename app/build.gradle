@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 37
-        versionName "1.8.7b"
+        versionCode 38
+        versionName "1.8.8b"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -40,5 +40,7 @@ dependencies {
 
     //Log de App
     implementation 'com.github.icpmoviles:icp_logs:1.0.0.2'
+
+    implementation 'com.google.android.material:material:1.1.0'
 
 }

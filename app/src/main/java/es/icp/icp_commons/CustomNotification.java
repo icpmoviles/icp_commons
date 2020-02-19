@@ -233,7 +233,7 @@ public class CustomNotification extends FrameLayout {
      */
     public synchronized void setProgress(int progress) {
         if (this.mode != NOTIFICATION_PROGRESS) {
-            Toast.makeText(activity, "La notificación no permite progress", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.custom_notification_no_progress, Toast.LENGTH_SHORT).show();
         } else {
             if (hide && built) {
                 hide = false;
@@ -258,7 +258,7 @@ public class CustomNotification extends FrameLayout {
      */
     public void setMax(int max) {
         if (this.mode != NOTIFICATION_PROGRESS) {
-            Toast.makeText(activity, "La notificación no permite progress", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.custom_notification_no_progress, Toast.LENGTH_SHORT).show();
         } else {
             ((ProgressBar) findViewById(R.id.progressBar)).setMax(max);
             actualizarPorcentaje();
@@ -279,7 +279,7 @@ public class CustomNotification extends FrameLayout {
      */
     public int getProgress() {
         if (this.mode != NOTIFICATION_PROGRESS) {
-            Toast.makeText(activity, "La notificación no permite progress", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.custom_notification_no_progress, Toast.LENGTH_SHORT).show();
             return 0;
         } else {
             return ((ProgressBar) findViewById(R.id.progressBar)).getProgress();
@@ -294,7 +294,7 @@ public class CustomNotification extends FrameLayout {
      */
     public int getMax() {
         if (this.mode != NOTIFICATION_PROGRESS) {
-            Toast.makeText(activity, "La notificación no permite progress", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.custom_notification_no_progress, Toast.LENGTH_SHORT).show();
             return 0;
         } else {
             return ((ProgressBar) findViewById(R.id.progressBar)).getMax();
@@ -330,7 +330,7 @@ public class CustomNotification extends FrameLayout {
      */
     public void showText(String text) {
         if (mode != CustomNotification.NOTIFICATION_SIMPLE) {
-            Toast.makeText(activity, "La notificación no permite simple", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.custom_notification_no_simple, Toast.LENGTH_SHORT).show();
         } else {
             this.setText(text);
             this.show();

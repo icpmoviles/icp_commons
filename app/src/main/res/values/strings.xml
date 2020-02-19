@@ -23,6 +23,10 @@
     <string name="deslice_hacia_abajo_para_minimizar">---------- Deslice hacia abajo para minimizar ----------</string>
     <string name="texto_de_ejemplo_esto_es_un_texto_de_ejemplo">Texto de ejemplo. Esto es un texto de ejemplo.</string>
     <string name="contacte_administrador_error">, contacte con un administrador del sistema.</string>
+    <string name="custom_notification_no_progress">La notificación no permite progress</string>
+    <string name="custom_notification_no_simple">La notificación no permite simple</string>
+    <string name="custom_smart_dialog_aceptar">ACEPTAR</string>
+    <string name="custom_smart_dialog_cancelar">CANCELAR</string>
     <string-array name="array_name">
         <item>Equipos</item>
         <item>Tarjetas</item>
