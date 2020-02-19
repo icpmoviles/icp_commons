@@ -84,5 +84,11 @@
             android:onClick="@{handler::onClickBtn12}"
             android:text="MOSTRAR SMARTDIALOG TOAST 1" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{handler::onClickBtn13}"
+            android:text="MOSTRAR SMARTDIALOG TOAST LISTENER 1" />
+
     </LinearLayout>
 </layout>
