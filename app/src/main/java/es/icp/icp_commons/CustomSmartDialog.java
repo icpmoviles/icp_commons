@@ -107,15 +107,15 @@ public class CustomSmartDialog {
                 CustomSmartDialogSiNoResponse listener = customSiNo.getListener();
                 customSiNo.setListener(new CustomSmartDialogSiNoResponse() {
                     @Override
-                    public void si() {
+                    public void positivo() {
                         dialog.dismiss();
-                        listener.si();
+                        listener.positivo();
                     }
 
                     @Override
-                    public void no() {
+                    public void negativo() {
                         dialog.dismiss();
-                        listener.no();
+                        listener.negativo();
                     }
                 });
             }
@@ -185,13 +185,13 @@ public class CustomSmartDialog {
 
             CustomSiNo customSiNo = new CustomSiNo.Builder(context, positivo, negativo).setListener(new CustomSmartDialogSiNoResponse() {
                 @Override
-                public void si() {
-                    listener.si();
+                public void positivo() {
+                    listener.positivo();
                 }
 
                 @Override
-                public void no() {
-                    listener.no();
+                public void negativo() {
+                    listener.negativo();
                 }
             }).build();
 

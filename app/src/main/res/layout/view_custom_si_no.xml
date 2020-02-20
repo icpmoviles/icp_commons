@@ -2,26 +2,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingStart="20dp"
     android:paddingTop="20dp"
-    android:paddingEnd="20dp"
     android:paddingBottom="20dp"
-    android:gravity="center_horizontal">
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:gravity="center">
 
     <Button
         android:id="@+id/btnNo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         style="@style/btn_red"
-        android:layout_marginEnd="30dp"
-        android:text="NO"/>
+        android:layout_marginEnd="5dp"
+        android:padding="5dp"
+        android:text="POSITIVO"/>
 
     <Button
         android:id="@+id/btnSi"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:padding="5dp"
         style="@style/btn_green"
-        android:text="SI"/>
+        android:text="NEGATIVO"/>
 
 </LinearLayout>

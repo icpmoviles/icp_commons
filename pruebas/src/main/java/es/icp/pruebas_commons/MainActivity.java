@@ -122,9 +122,9 @@ public class MainActivity extends Activity {
     }
 
     private void crearDialog13() {
-        CustomSmartDialog.dialogSiNo(context, "¿Te gusta más el McDonalds que el BurgerKing?", new CustomSmartDialogSiNoResponse() {
+        CustomSmartDialog.dialogTextos(context, "¿Te gusta más el McDonalds que el BurgerKing?", "POSITIVO", "NEGATIVO", new CustomSmartDialogSiNoResponse() {
             @Override
-            public void si() {
+            public void positivo() {
                 CustomNotification customNotification = new CustomNotification.Builder(context)
                         .setSimpleMode()
                         .setDuration(CustomNotification.LENGTH_SHORT)
@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
             }
 
             @Override
-            public void no() {
+            public void negativo() {
                 CustomNotification customNotification = new CustomNotification.Builder(context)
                         .setSimpleMode()
                         .setDuration(CustomNotification.LENGTH_SHORT)
@@ -141,6 +141,25 @@ public class MainActivity extends Activity {
                 customNotification.showText("No...");
             }
         });
+//        CustomSmartDialog.dialogSiNo(context, "¿Te gusta más el McDonalds que el BurgerKing?", new CustomSmartDialogSiNoResponse() {
+//            @Override
+//            public void positivo() {
+//                CustomNotification customNotification = new CustomNotification.Builder(context)
+//                        .setSimpleMode()
+//                        .setDuration(CustomNotification.LENGTH_SHORT)
+//                        .build();
+//                customNotification.showText("SIIIII!!!!!");
+//            }
+//
+//            @Override
+//            public void negativo() {
+//                CustomNotification customNotification = new CustomNotification.Builder(context)
+//                        .setSimpleMode()
+//                        .setDuration(CustomNotification.LENGTH_SHORT)
+//                        .build();
+//                customNotification.showText("No...");
+//            }
+//        });
     }
 
     private void crearDialog12() {

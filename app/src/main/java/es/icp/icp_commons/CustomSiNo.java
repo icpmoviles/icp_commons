@@ -60,13 +60,13 @@ public class CustomSiNo extends LinearLayout {
             btnSi.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.si();
+                    listener.positivo();
                 }
             });
             btnNo.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.no();
+                    listener.negativo();
                 }
             });
         }
