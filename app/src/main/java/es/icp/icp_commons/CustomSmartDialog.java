@@ -234,7 +234,6 @@ public class CustomSmartDialog {
                     .setTitle(customTitle)
                     .addView(imageView)
                     .addButton(buttonAceptar)
-                    .isCancelable(true)
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
