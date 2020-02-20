@@ -37,4 +37,15 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="btn_green" parent="TextAppearance.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_green_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="btn_red" parent="btn_green">
+        <item name="android:background">@drawable/rounded_red_button</item>
+    </style>
+
 </resources>

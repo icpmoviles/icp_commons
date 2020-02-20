@@ -26,6 +26,7 @@ import es.icp.icp_commons.Interfaces.CustomDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
+import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
@@ -112,7 +113,34 @@ public class MainActivity extends Activity {
             public void onClickBtn13(View view) {
                 crearDialog12();
             }
+
+            @Override
+            public void onClickBtn14(View view) {
+                crearDialog13();
+            }
         };
+    }
+
+    private void crearDialog13() {
+        CustomSmartDialog.dialogSiNo(context, "¿Te gusta más el McDonalds que el BurgerKing?", new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void si() {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("SIIIII!!!!!");
+            }
+
+            @Override
+            public void no() {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("No...");
+            }
+        });
     }
 
     private void crearDialog12() {
@@ -139,6 +167,7 @@ public class MainActivity extends Activity {
             @Override
             public void onResponse(int retCode, DialogInterface dialog) {
                 if (retCode == ACEPTAR) {
+                    dialog.dismiss();
                     CustomNotification customNotification = new CustomNotification.Builder(context)
                             .setSimpleMode()
                             .setDuration(CustomNotification.LENGTH_SHORT)
@@ -411,5 +440,6 @@ public class MainActivity extends Activity {
         void onClickBtn11(View view);
         void onClickBtn12(View view);
         void onClickBtn13(View view);
+        void onClickBtn14(View view);
     }
 }
