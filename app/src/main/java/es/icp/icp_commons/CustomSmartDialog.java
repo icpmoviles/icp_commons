@@ -158,8 +158,11 @@ public class CustomSmartDialog {
         });
         dialog.show();
     }
-
     public static CustomSmartDialog dialogSiNo(final Context context, String mensaje, final CustomSmartDialogSiNoResponse listener) {
+        return CustomSmartDialog.dialogTextos(context, mensaje, "SI", "NO", listener);
+    }
+
+    public static CustomSmartDialog dialogTextos(final Context context, String mensaje, String positivo, String negativo, final CustomSmartDialogSiNoResponse listener) {
         try {
             CustomTitle customTitle = new CustomTitle.Builder(context)
                     .setTitle(context.getString(R.string.custom_smart_dialog_atencion))
@@ -180,7 +183,7 @@ public class CustomSmartDialog {
             layoutParams.gravity = Gravity.CENTER;
             imageView.setLayoutParams(layoutParams);
 
-            CustomSiNo customSiNo = new CustomSiNo.Builder(context).setListener(new CustomSmartDialogSiNoResponse() {
+            CustomSiNo customSiNo = new CustomSiNo.Builder(context, positivo, negativo).setListener(new CustomSmartDialogSiNoResponse() {
                 @Override
                 public void si() {
                     listener.si();

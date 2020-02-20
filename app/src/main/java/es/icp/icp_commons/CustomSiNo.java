@@ -22,9 +22,13 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 public class CustomSiNo extends LinearLayout {
     private Context                       context;
     private CustomSmartDialogSiNoResponse listener;
+    private String positivo = "SI";
+    private String negativo= "NO";
 
-    public CustomSiNo(Context context) {
+    public CustomSiNo(Context context, String positivo, String negativo) {
         this(context, null);
+        this.positivo = positivo;
+        this.negativo = negativo;
     }
 
     public CustomSiNo(Context context, AttributeSet attrs) {
@@ -48,6 +52,9 @@ public class CustomSiNo extends LinearLayout {
 
         Button btnSi = mainContainer.findViewById(R.id.btnSi);
         Button btnNo = mainContainer.findViewById(R.id.btnNo);
+
+        btnSi.setText(positivo);
+        btnNo.setText(negativo);
 
         if (listener != null) {
             btnSi.setOnClickListener(new OnClickListener() {
@@ -76,8 +83,8 @@ public class CustomSiNo extends LinearLayout {
     public static class Builder {
         private CustomSiNo customSiNo;
 
-        public Builder(Context context) {
-            customSiNo = new CustomSiNo(context);
+        public Builder(Context context, String positivo ,String negativo) {
+            customSiNo = new CustomSiNo(context, positivo, negativo);
         }
 
         public Builder setListener(CustomSmartDialogSiNoResponse listener) {
