@@ -16,12 +16,12 @@ import androidx.core.widget.ImageViewCompat;
 
 @SuppressLint("AppCompatCustomView")
 public class CustomTitle extends LinearLayout {
-    private Context context;
-    private int backgroundColor;
-    private int textColor;
-    private int iconColor;
+    private Context  context;
+    private int      backgroundColor;
+    private int      textColor;
+    private int      iconColor;
     private Drawable icon;
-    private String title;
+    private String   title;
 
     public CustomTitle(Context context) {
         this(context, null);
@@ -41,13 +41,13 @@ public class CustomTitle extends LinearLayout {
     }
 
     public void show() {
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         LinearLayout mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_title, this, true);
         mainContainer.setVisibility(View.VISIBLE);
 
-        ImageView ivIcono = mainContainer.findViewById(R.id.icono);
-        TextView txtTitle = mainContainer.findViewById(R.id.title);
+        ImageView ivIcono  = mainContainer.findViewById(R.id.icono);
+        TextView  txtTitle = mainContainer.findViewById(R.id.title);
 
         ivIcono.setImageDrawable(icon);
         ImageViewCompat.setImageTintList(ivIcono, ColorStateList.valueOf(ContextCompat.getColor(context, iconColor)));
@@ -59,29 +59,36 @@ public class CustomTitle extends LinearLayout {
 
     public static class Builder {
         private CustomTitle customTitle;
+
         public Builder(Context context) {
             customTitle = new CustomTitle(context);
         }
+
         public Builder setBackgroundColor(int backgroundColor) {
             customTitle.backgroundColor = backgroundColor;
             return this;
         }
+
         public Builder setTextColor(int textColor) {
             customTitle.textColor = textColor;
             return this;
         }
+
         public Builder setIcon(Drawable icon) {
             customTitle.icon = icon;
             return this;
         }
+
         public Builder setIconColor(int iconColor) {
             customTitle.iconColor = iconColor;
             return this;
         }
+
         public Builder setTitle(String title) {
             customTitle.title = title;
             return this;
         }
+
         public CustomTitle build() {
             customTitle.show();
             return customTitle;

@@ -27,7 +27,7 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
-    
+
     <style name="btn_circle_orange" parent="TextAppearance.AppCompat.Button">
         <item name="android:background">@drawable/circled_orange_button</item>
         <item name="android:textColor">@color/white</item>

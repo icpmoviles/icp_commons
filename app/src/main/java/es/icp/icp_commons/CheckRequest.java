@@ -33,11 +33,11 @@ public class CheckRequest {
      * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
      * Método asíncrono. Listener de tipo EnvioAccionesCallback.
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context               Context. Contexto de la aplicación.
      * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param idUsuario             int. ID del usuario que está llamando al servicio.
+     * @param urlError              String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @author Ventura de Lucas
      */
     public static void Check(Context context, EnvioAccionesCallback envioAccionesCallback, int idUsuario, String urlError) throws CheckRequestException {
         Check(context, envioAccionesCallback, true, idUsuario, urlError);
@@ -49,21 +49,20 @@ public class CheckRequest {
      * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
      * Método asíncrono. Listener de tipo EnvioAccionesCallback.
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context               Context. Contexto de la aplicación.
      * @param envioAccionesCallback EnvioAccionesCallback. Listener con el resultado de las comprobaciones.
-     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param loader                boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario             int. ID del usuario que está llamando al servicio.
+     * @param urlError              String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @author Ventura de Lucas
      */
     public static void Check(Context context, final EnvioAccionesCallback envioAccionesCallback, boolean loader, int idUsuario, String urlError) throws CheckRequestException {
         GlobalVariables.loader = loader;
-        try{
-            if (Helper.CheckConnection(context))
-            {
+        try {
+            if (Helper.CheckConnection(context)) {
                 EnviarAcciones(context, envioAccionesCallback);
 
-            }else{
+            } else {
                 ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -71,8 +70,7 @@ public class CheckRequest {
                     }
                 });
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Before Sending Request - Check", e, "", urlError);
             throw createException(e, "Before Sending Request", "Check");
         }
@@ -92,12 +90,12 @@ public class CheckRequest {
      * Envía una petición al servidor sin realizar ninguna comprobación antes del envío.
      * Método asíncrono. Listener de tipo VolleyCallBack.
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context    Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario  int. ID del usuario que está llamando al servicio.
+     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @author Ventura de Lucas
      */
     public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, int idUsuario, String urlError) throws CheckRequestException {
         Send(context, parametros, callBack, true, idUsuario, urlError);
@@ -107,13 +105,13 @@ public class CheckRequest {
      * Envía una petición al servidor sin realizar ninguna comprobación antes del envío.
      * Método asíncrono. Listener de tipo VolleyCallBack.
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context    Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param loader     boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario  int. ID del usuario que está llamando al servicio.
+     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @author Ventura de Lucas
      */
     public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
                             final boolean loader, int idUsuario, String urlError) throws CheckRequestException {
@@ -131,7 +129,7 @@ public class CheckRequest {
                                     if (GlobalVariables.loader) Loading.HideLoading();
                                     Object responseObject;
                                     try {
-                                        Class clase = parametros.getClase();
+                                        Class  clase = parametros.getClase();
                                         Object objetoAux;
                                         if (clase != null) {
                                             String data = obtenerStringJSON(response);
@@ -205,7 +203,7 @@ public class CheckRequest {
     }
 
     private static CheckRequestException createException(Exception e, String url, String libMethod) {
-        String function = "WebService Exception (problem in" + libMethod + " method) - " + url;
+        String                function              = "WebService Exception (problem in" + libMethod + " method) - " + url;
         CheckRequestException checkRequestException = ((CheckRequestException) e);
         checkRequestException.setFunction(function);
 
@@ -220,12 +218,12 @@ public class CheckRequest {
      * Método asíncrono. Listener de tipo VolleyCallBack.
      * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context    Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param loader     boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     * @author Ventura de Lucas
      */
     @Deprecated
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, boolean loader) throws CheckRequestException {
@@ -240,13 +238,13 @@ public class CheckRequest {
      * Método asíncrono. Listener de tipo VolleyCallBack.
      * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context    Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario  int. ID del usuario que está llamando al servicio.
+     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     * @author Ventura de Lucas
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, int idUsuario, String urlError) throws CheckRequestException {
         CheckAndSend(context, parametros, callBack, true, idUsuario, urlError, false);
@@ -260,14 +258,14 @@ public class CheckRequest {
      * Método asíncrono. Listener de tipo VolleyCallBack.
      * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
-     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param context       Context. Contexto de la aplicación.
+     * @param parametros    ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack      VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario     int. ID del usuario que está llamando al servicio.
+     * @param urlError      String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @param guardarAccion boolean. Indica si se quiere almacenar la petición en caso 'offline'.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     * @author Ventura de Lucas
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, int idUsuario, String urlError, boolean guardarAccion) throws CheckRequestException {
         CheckAndSend(context, parametros, callBack, true, idUsuario, urlError, guardarAccion);
@@ -281,14 +279,14 @@ public class CheckRequest {
      * Método asíncrono. Listener de tipo VolleyCallBack.
      * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context    Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param loader     boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario  int. ID del usuario que está llamando al servicio.
+     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     * @author Ventura de Lucas
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, boolean loader, int idUsuario, String urlError) throws CheckRequestException {
         CheckAndSend(context, parametros, callBack, loader, idUsuario, urlError, false);
@@ -302,15 +300,15 @@ public class CheckRequest {
      * Método asíncrono. Listener de tipo VolleyCallBack.
      * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
-     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param context       Context. Contexto de la aplicación.
+     * @param parametros    ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack      VolleyCallBack. Listener con el resultado del envío.
+     * @param loader        boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario     int. ID del usuario que está llamando al servicio.
+     * @param urlError      String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @param guardarAccion boolean. Indica si se quiere almacenar la petición en caso 'offline'.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     * @author Ventura de Lucas
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
                                     final boolean loader, final int idUsuario, final String urlError, final boolean guardarAccion) throws CheckRequestException {
@@ -347,12 +345,12 @@ public class CheckRequest {
      * Porteriormente, envía la petición al servidor.
      * Método asíncrono. Listener de tipo VolleyCallBack.
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context    Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario  int. ID del usuario que está llamando al servicio.
+     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @author Ventura de Lucas
      */
     public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
                                                   final VolleyCallBack callBack, int idUsuario, String urlError) throws CheckRequestException {
@@ -364,13 +362,13 @@ public class CheckRequest {
      * Porteriormente, envía la petición al servidor.
      * Método asíncrono. Listener de tipo VolleyCallBack.
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
+     * @param context    Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack VolleyCallBack. Listener con el resultado del envío.
-     * @param loader boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
-     * @param idUsuario int. ID del usuario que está llamando al servicio.
-     * @param  urlError String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param loader     boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario  int. ID del usuario que está llamando al servicio.
+     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @author Ventura de Lucas
      */
     public static void CheckAndSendWithoutActions(final Context context, final ParametrosPeticion parametros,
                                                   final VolleyCallBack callBack, final boolean loader, int idUsuario, String urlError) throws CheckRequestException {

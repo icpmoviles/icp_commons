@@ -15,12 +15,12 @@ public class PreferenciasHelper {
      * Guarda en SharedPreferences el objeto introducido como parámetro junto con su respectiva clave
      *
      * @param context Context. Contexto de la aplicación.
-     * @param key String. Clave o nombre por el que se llamará o recuperará el valor guardado.
-     * @param object Object. Objeto a guardar en SharedPreferences.
+     * @param key     String. Clave o nombre por el que se llamará o recuperará el valor guardado.
+     * @param object  Object. Objeto a guardar en SharedPreferences.
      */
     public static void put(Context context, String key, Object object) {
 
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME,  Context.MODE_PRIVATE);
+        SharedPreferences        sp     = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         if (object instanceof String) {
             editor.putString(key, (String) object);
@@ -41,8 +41,8 @@ public class PreferenciasHelper {
     /**
      * Lee de SharedPreferences el objeto correspondiente a la clave introducida como parámetro
      *
-     * @param context Context. Contexto de la aplicación.
-     * @param key String. Clave o nombre por el que se llamará o recuperará un valor previamente guardado.
+     * @param context       Context. Contexto de la aplicación.
+     * @param key           String. Clave o nombre por el que se llamará o recuperará un valor previamente guardado.
      * @param defaultObject Object. Objeto por defecto en caso de no existir dicha clave. El tipo del objecto tiene que ser igual al del valor a leer deseado.
      */
     public static Object get(Context context, String key, Object defaultObject) {
@@ -68,10 +68,10 @@ public class PreferenciasHelper {
      * Elimina de SharedPreferences el objeto correspondiente a la clave introducida como parámetro
      *
      * @param context Context. Contexto de la aplicación.
-     * @param key String. Clave o nombre por el que se llama o recupera un valor previamente guardado.
+     * @param key     String. Clave o nombre por el que se llama o recupera un valor previamente guardado.
      */
     public static void remove(Context context, String key) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences        sp     = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
         SharedPreferencesCompat.apply(editor);
@@ -83,7 +83,7 @@ public class PreferenciasHelper {
      * @param context Context. Contexto de la aplicación.
      */
     public static void clear(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences        sp     = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
         SharedPreferencesCompat.apply(editor);
@@ -93,7 +93,7 @@ public class PreferenciasHelper {
      * Pregunta si una SharedPreference existe.
      *
      * @param context Context. Contexto de la aplicación.
-     * @param key String. Clave o nombre por el que se llama o recupera un valor previamente guardado.
+     * @param key     String. Clave o nombre por el que se llama o recupera un valor previamente guardado.
      * @return Devuelve un 'boolean'. ('true': existe; 'false': no existe)
      */
     public static boolean contains(Context context, String key) {

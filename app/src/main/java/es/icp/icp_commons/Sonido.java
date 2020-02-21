@@ -2,6 +2,7 @@ package es.icp.icp_commons;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Interfaces.OnCompletionListener;
@@ -12,12 +13,12 @@ public class Sonido {
     /**
      * Reproduce un audio ya existente en la librería.
      *
-     * @author Ventura de Lucas
      * @param context Context. Contexto de la aplicación.
-     * @param audio Constante para indicar el audio a reproducir:
-     *              AUDIO_ERROR: error.wav
-     *              AUDIO_EXITO: exito.wav
-     *              AUDIO_OHOH: ohoh.wav
+     * @param audio   Constante para indicar el audio a reproducir:
+     *                AUDIO_ERROR: error.wav
+     *                AUDIO_EXITO: exito.wav
+     *                AUDIO_OHOH: ohoh.wav
+     * @author Ventura de Lucas
      */
     public static void reproducirSonidoLib(Context context, int audio) {
         reproducirSonidoLib(context, audio, null);
@@ -26,13 +27,13 @@ public class Sonido {
     /**
      * Reproduce un audio ya existente en la librería.
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
-     * @param audio Constante para indicar el audio a reproducir:
-     *              AUDIO_ERROR: error.wav
-     *              AUDIO_EXITO: exito.wav
-     *              AUDIO_OHOH: ohoh.wav
+     * @param context              Context. Contexto de la aplicación.
+     * @param audio                Constante para indicar el audio a reproducir:
+     *                             AUDIO_ERROR: error.wav
+     *                             AUDIO_EXITO: exito.wav
+     *                             AUDIO_OHOH: ohoh.wav
      * @param onCompletionListener OnCompletionListener. Listener para conocer el momento en el que finaliza el audio.
+     * @author Ventura de Lucas
      */
     public static void reproducirSonidoLib(Context context, int audio, OnCompletionListener onCompletionListener) {
         int sonido;
@@ -56,9 +57,9 @@ public class Sonido {
     /**
      * Reproduce un audio propio (no existente en la librería.
      *
-     * @author Ventura de Lucas
      * @param context Context. Contexto de la aplicación.
-     * @param sonido int. Valor id del audio a reproducir.
+     * @param sonido  int. Valor id del audio a reproducir.
+     * @author Ventura de Lucas
      */
     private static void reproducirSonido(Context context, int sonido) {
         reproducirSonido(context, sonido, null);
@@ -67,13 +68,13 @@ public class Sonido {
     /**
      * Reproduce un audio propio (no existente en la librería.
      *
-     * @author Ventura de Lucas
-     * @param context Context. Contexto de la aplicación.
-     * @param sonido int. Valor id del audio a reproducir.
+     * @param context              Context. Contexto de la aplicación.
+     * @param sonido               int. Valor id del audio a reproducir.
      * @param onCompletionListener OnCompletionListener. Listener para conocer el momento en el que finaliza el audio.
+     * @author Ventura de Lucas
      */
-    private static  void reproducirSonido(Context context, int sonido, final OnCompletionListener onCompletionListener) {
-        if (!GlobalVariables.Sonido){
+    private static void reproducirSonido(Context context, int sonido, final OnCompletionListener onCompletionListener) {
+        if (!GlobalVariables.Sonido) {
             final MediaPlayer mp = MediaPlayer.create(context, sonido);
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override

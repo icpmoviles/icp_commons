@@ -221,32 +221,45 @@ public class CustomSmartDialog {
     }
 
     public static CustomSmartDialog dialogGenerico(final Context context, String titulo, String mensaje, final CustomSmartDialogSiNoResponse listener) {
-        return dialogGenerico(context, titulo, mensaje, "", 0, listener);
+        return dialogGenerico(context, new DialogConfig(), listener);
     }
 
-    public static CustomSmartDialog dialogGenerico(final Context context, String titulo, String mensaje, String hint, int maxLength, final CustomSmartDialogSiNoResponse listener) {
+    public static CustomSmartDialog dialogGenerico(final Context context, DialogConfig config, final CustomSmartDialogSiNoResponse listener) {
         try {
             LayoutInflater inflater      = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout   mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_all, null);
 
-            TextView     txtTitulo   = mainContainer.findViewById(R.id.txtTitulo);
-            TextView     txtMensaje  = mainContainer.findViewById(R.id.txtMensaje);
-            LinearLayout llEditText  = mainContainer.findViewById(R.id.editText);
+            TextView        txtTitulo      = mainContainer.findViewById(R.id.txtTitulo);
+            TextView        txtMensaje     = mainContainer.findViewById(R.id.txtMensaje);
+            LinearLayout    llEditText     = mainContainer.findViewById(R.id.editText);
             TextInputLayout txtInputLayout = mainContainer.findViewById(R.id.txtInputLayout);
-            TextView     txtEditText = llEditText.findViewById(R.id.txtEditText);
-            TextView     btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
-            TextView     btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
+            TextView        txtEditText    = llEditText.findViewById(R.id.txtEditText);
+            TextView        btnPositivo    = mainContainer.findViewById(R.id.btnPositivo);
+            TextView        btnNegativo    = mainContainer.findViewById(R.id.btnNegativo);
+            LinearLayout    quantity       = mainContainer.findViewById(R.id.quantity);
+            TextView        txtCantidad    = mainContainer.findViewById(R.id.txtQuantity);
 
-            txtTitulo.setText(titulo);
-            txtMensaje.setText(mensaje);
+            txtTitulo.setText(config.getTitulo());
+            txtMensaje.setText(config.getMensaje());
 
-            if (hint.isEmpty()) {
-                llEditText.setVisibility(View.GONE);
-            } else {
-                txtInputLayout.setHint(hint);
-                txtInputLayout.setCounterMaxLength(maxLength);
+            if (config.isMostrarEditText()) {
+                llEditText.setVisibility(View.VISIBLE);
+                txtInputLayout.setHint(config.getHint());
+                txtInputLayout.setCounterMaxLength(config.getMaxLength());
+            } else if (config.isMostrarBotones()) {
+                // TODO: 21/02/2020 Mostrar botones y configurarlos
+            } else if (config.isMostrarBotonNeutral()) {
+                // TODO: 21/02/2020 Mostrar botón neutral y configurarlo
+            } else if (config.isMostrarCantidad()) {
+                // TODO: 21/02/2020 Mostrar View de cantidad y configurarla
+                quantity.setVisibility(View.VISIBLE);
+                txtCantidad.setText(String.valueOf(config.getCantidadInicial()));
+
+            } else if (config.isMostrarImagen()) {
+                // TODO: 21/02/2020 Mostrar imagen y configurarla
             }
 
+            btnPositivo.setText(config.getTextoPositivo());
             btnPositivo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -254,6 +267,7 @@ public class CustomSmartDialog {
                     listener.positivo();
                 }
             });
+            btnNegativo.setText(config.getTextoNegativo());
             btnNegativo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

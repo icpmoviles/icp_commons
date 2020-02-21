@@ -20,18 +20,18 @@ import com.google.android.material.textfield.TextInputLayout;
 
 @SuppressLint("AppCompatCustomView")
 public class CustomEditText extends LinearLayout {
-    private Context context;
-    private String hintText;
+    private Context  context;
+    private String   hintText;
     private Drawable startIconDrawable;
-    private int startIconColor;
-    private int errorIconColor;
-    private int counterMaxLength;
-    private int counterOverflowTextAppearance;
-    private int textAppearance;
+    private int      startIconColor;
+    private int      errorIconColor;
+    private int      counterMaxLength;
+    private int      counterOverflowTextAppearance;
+    private int      textAppearance;
 
-    private LinearLayout mainContainer;
+    private LinearLayout    mainContainer;
     private TextInputLayout txtInputLayout;
-    private EditText txtEditText;
+    private EditText        txtEditText;
 
     public CustomEditText(Context context) {
         this(context, null);
@@ -51,14 +51,14 @@ public class CustomEditText extends LinearLayout {
     }
 
     public void show() {
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_edittext, this, true);
         mainContainer.setVisibility(View.VISIBLE);
 
         final ImageView startIcon = mainContainer.findViewById(R.id.startIcon);
         txtInputLayout = mainContainer.findViewById(R.id.txtInputLayout);
-        txtEditText = mainContainer.findViewById(R.id.txtEditText);
+        txtEditText    = mainContainer.findViewById(R.id.txtEditText);
 
         if (startIconDrawable != null) {
             startIcon.setImageDrawable(startIconDrawable);
@@ -112,37 +112,46 @@ public class CustomEditText extends LinearLayout {
 
     public static class Builder {
         private CustomEditText customEditText;
+
         public Builder(Context context) {
             customEditText = new CustomEditText(context);
         }
+
         public Builder setHintText(String hintText) {
             customEditText.hintText = hintText;
             return this;
         }
+
         public Builder setStartIconDrawable(Drawable startIconDrawable) {
             customEditText.startIconDrawable = startIconDrawable;
             return this;
         }
+
         public Builder setStartIconColor(int startIconColor) {
             customEditText.startIconColor = startIconColor;
             return this;
         }
+
         public Builder setErrorIconColor(int errorIconColor) {
             customEditText.errorIconColor = errorIconColor;
             return this;
         }
+
         public Builder setCounterMaxLength(int counterMaxLength) {
             customEditText.counterMaxLength = counterMaxLength;
-            return  this;
+            return this;
         }
+
         public Builder setCounterOverflowAppearance(int counterOverflowAppearance) {
             customEditText.counterOverflowTextAppearance = counterOverflowAppearance;
             return this;
         }
+
         public Builder setTextAppearance(int textAppearance) {
             customEditText.textAppearance = textAppearance;
             return this;
         }
+
         public CustomEditText build() {
             customEditText.show();
             return customEditText;

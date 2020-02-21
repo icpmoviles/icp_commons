@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke
         android:width="1dp"
         android:color="@color/white" />
 
     <!--<gradient android:startColor="#e2d7d2" android:centerColor="#e2d7d2" android:endColor="#e2d7d2" android:angle="90" /> -->
-    <gradient android:endColor="@color/white" android:centerColor="@color/white" android:startColor="@color/white" android:angle="90" />
+    <gradient
+        android:endColor="@color/white"
+        android:centerColor="@color/white"
+        android:startColor="@color/white"
+        android:angle="90" />
 
     <padding
         android:left="1dp"

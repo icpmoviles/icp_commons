@@ -51,6 +51,17 @@
             <include
                 android:id="@+id/editText"
                 layout="@layout/view_custom_edittext"
+                tools:visibility="visible"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp" />
+
+            <include
+                android:id="@+id/quantity"
+                layout="@layout/view_custom_smart_dialog_quantity"
+                tools:visibility="visible"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp" />
@@ -69,7 +80,7 @@
                     android:text="Cancelar"
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/rounded_red_button"
-                    android:textColor="#fff"/>
+                    android:textColor="#fff" />
 
                 <Button
                     android:id="@+id/btnPositivo"
@@ -78,7 +89,7 @@
                     android:text="Aceptar"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/rounded_green_button"
-                    android:textColor="#fff"/>
+                    android:textColor="#fff" />
 
             </LinearLayout>
 
@@ -89,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:padding="5dp"
-            android:src="@drawable/ic_help_outline_white_100dp"/>
+            android:src="@drawable/ic_help_outline_white_100dp" />
     </RelativeLayout>
 
 

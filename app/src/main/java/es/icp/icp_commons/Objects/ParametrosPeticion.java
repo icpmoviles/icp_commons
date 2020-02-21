@@ -9,16 +9,18 @@ import org.json.JSONArray;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ParametrosPeticion {
-    private Method method;
-    private String url;
+    private Method     method;
+    private String     url;
     private JSONObject JSONObject;
-    private JSONArray JSONArray;
-    private JsonTypes jsonType;
-    private Class clase;
+    private JSONArray  JSONArray;
+    private JsonTypes  jsonType;
+    private Class      clase;
+
     public enum Method {
         POST,
         GET
     }
+
     public enum JsonTypes {
         SIMPLE,
         ARRAY,
@@ -38,10 +40,10 @@ public class ParametrosPeticion {
     /**
      * Constructor ParametrosPeticion de 3 parámetros.
      *
-     * @author Ventura de Lucas
      * @param method enum Method { POST, GET }. Método HTTP de la petición.
-     * @param url String. Dirección HTTP a la que se enviará la petición.
-     * @param json JSONObject. JSON que se enviará junto con la petición. En caso de no hacer falta, introducir un NULL.
+     * @param url    String. Dirección HTTP a la que se enviará la petición.
+     * @param json   JSONObject. JSON que se enviará junto con la petición. En caso de no hacer falta, introducir un NULL.
+     * @author Ventura de Lucas
      */
     public ParametrosPeticion(Method method, String url, JSONObject json) {
         this(method, url, json, null);
@@ -50,18 +52,18 @@ public class ParametrosPeticion {
     /**
      * Constructor ParametrosPeticion de 4 parámetros.
      *
-     * @author Ventura de Lucas
      * @param method enum Method { POST, GET }. Método HTTP de la petición.
-     * @param url String. Dirección HTTP a la que se enviará la petición.
-     * @param json JSONObject. JSON que se enviará junto con la petición. En caso de no hacer falta, introducir un NULL.
-     * @param clase Class. Tipo de objeto al que se convertirá la respuesta recibida por el servidor.
+     * @param url    String. Dirección HTTP a la que se enviará la petición.
+     * @param json   JSONObject. JSON que se enviará junto con la petición. En caso de no hacer falta, introducir un NULL.
+     * @param clase  Class. Tipo de objeto al que se convertirá la respuesta recibida por el servidor.
+     * @author Ventura de Lucas
      */
     public ParametrosPeticion(Method method, String url, JSONObject json, Class clase) {
         this.method = method;
-        this.url = url;
-        this.clase = clase;
-        JSONObject = json;
-        jsonType = JsonTypes.SIMPLE;
+        this.url    = url;
+        this.clase  = clase;
+        JSONObject  = json;
+        jsonType    = JsonTypes.SIMPLE;
 //
 //        if (json instanceof JSONArray) {
 //            JSONArray = (JSONArray) json;
@@ -102,8 +104,8 @@ public class ParametrosPeticion {
 
     public void setJSONObject(JSONObject JSONObject) {
         this.JSONObject = JSONObject;
-        JSONArray = null;
-        jsonType = JsonTypes.SIMPLE;
+        JSONArray       = null;
+        jsonType        = JsonTypes.SIMPLE;
     }
 
     public JSONArray getJSONArray() {
@@ -112,8 +114,8 @@ public class ParametrosPeticion {
 
     public void setJSONArray(JSONArray JSONArray) {
         this.JSONArray = JSONArray;
-        JSONObject = null;
-        jsonType = JsonTypes.ARRAY;
+        JSONObject     = null;
+        jsonType       = JsonTypes.ARRAY;
     }
 
     public JsonTypes getJsonType() {

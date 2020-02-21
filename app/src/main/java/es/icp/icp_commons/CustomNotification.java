@@ -31,35 +31,35 @@ public class CustomNotification extends FrameLayout {
 
     // PROPIEDADES
 
-    private Context context;
-    private TextView txtDescripcion;
-    private TextView txtDeslizar;
-    private LinearLayout notificationBox;
-    private boolean minimizado = false;
-    private boolean enMovimiento = false;
-    private int mode = NOTIFICATION_SIMPLE;
-    private int showTime = LENGTH_MEDIUM;
-    private Activity activity;
-    private Timer timer;
-    private boolean firstTime = true;
-    private boolean hide = true;
-    private ArrayList<Button> buttons = new ArrayList<>();
-    private boolean built = false;
-    private int alturaMinimizado = 0;
-    private boolean darkness = false;
+    private Context            context;
+    private TextView           txtDescripcion;
+    private TextView           txtDeslizar;
+    private LinearLayout       notificationBox;
+    private boolean            minimizado       = false;
+    private boolean            enMovimiento     = false;
+    private int                mode             = NOTIFICATION_SIMPLE;
+    private int                showTime         = LENGTH_MEDIUM;
+    private Activity           activity;
+    private Timer              timer;
+    private boolean            firstTime        = true;
+    private boolean            hide             = true;
+    private ArrayList<Button>  buttons          = new ArrayList<>();
+    private boolean            built            = false;
+    private int                alturaMinimizado = 0;
+    private boolean            darkness         = false;
     private TransitionDrawable trans;
-    private boolean minimizable = true;
+    private boolean            minimizable      = true;
 
     // CONSTANTES
 
-    public static final int NOTIFICATION_SIMPLE = 0;
-    public static final int NOTIFICATION_BUTTON = 1;
-    public static final int NOTIFICATION_PROGRESS = 2;
-    public static final int NOTIFICATION_MULTIPLE = 3;
-    public static final int LENGTH_SHORT = 2000;
-    public static final int LENGTH_MEDIUM = 5000;
-    public static final int LENGTH_LONG = 8000;
-    public static final int LENGTH_UNDEFINED = 0;
+    public static final  int NOTIFICATION_SIMPLE    = 0;
+    public static final  int NOTIFICATION_BUTTON    = 1;
+    public static final  int NOTIFICATION_PROGRESS  = 2;
+    public static final  int NOTIFICATION_MULTIPLE  = 3;
+    public static final  int LENGTH_SHORT           = 2000;
+    public static final  int LENGTH_MEDIUM          = 5000;
+    public static final  int LENGTH_LONG            = 8000;
+    public static final  int LENGTH_UNDEFINED       = 0;
     private static final int MARGIN_BOTTOM_CABECERO = 2;
 
 
@@ -69,15 +69,15 @@ public class CustomNotification extends FrameLayout {
         super(context);
         this.context = context;
 
-        activity = (Activity) context;
+        activity   = (Activity) context;
         this.trans = null;
     }
 
     /**
      * Obtiene la Activity en la que está siendo usada la notificación.
      *
-     * @author Ventura de Lucas
      * @return Devuelve la Activity de la notificación.
+     * @author Ventura de Lucas
      */
     public Activity getActivity() {
         return activity;
@@ -86,8 +86,8 @@ public class CustomNotification extends FrameLayout {
     /**
      * Modifica la Activity en la que está siendo usada la notificación.
      *
-     * @author Ventura de Lucas
      * @param activity Activity. Activity de la notificación.
+     * @author Ventura de Lucas
      */
     public void setActivity(Activity activity) {
         this.activity = activity;
@@ -108,8 +108,7 @@ public class CustomNotification extends FrameLayout {
                 if (mode == NOTIFICATION_MULTIPLE) {
                     for (Button button : buttons) {
                         LinearLayout linearLayout = findViewById(R.id.linearButtonsNotification);
-                        for (Button btn : buttons)
-                        {
+                        for (Button btn : buttons) {
                             if (btn.getParent() != null) ((ViewGroup) btn.getParent()).removeView(btn);
                             linearLayout.addView(btn);
                         }
@@ -118,7 +117,7 @@ public class CustomNotification extends FrameLayout {
                 if (CustomNotification.this.getParent() != null) {
                     ((ViewGroup) CustomNotification.this.getParent()).removeView(CustomNotification.this);
                 }
-                ((ViewGroup)activity.findViewById(android.R.id.content)).addView(CustomNotification.this);
+                ((ViewGroup) activity.findViewById(android.R.id.content)).addView(CustomNotification.this);
                 hide = false;
             }
         });
@@ -159,18 +158,17 @@ public class CustomNotification extends FrameLayout {
     /**
      * Añade un botón a la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_MULTIPLE)
      *
-     * @author Ventura de Lucas
-     * @param text String. Texto del botón.
+     * @param text     String. Texto del botón.
      * @param response CustomNotificationResponse. Listener para saber cuándo es clicado el botón.
-     * @param style int. Estilo del botón.
+     * @param style    int. Estilo del botón.
+     * @author Ventura de Lucas
      */
-    public void AddButton(String text, final CustomNotificationResponse response, int style)
-    {
+    public void AddButton(String text, final CustomNotificationResponse response, int style) {
         Button btn = new Button(context);
         btn.setBackgroundResource(style);
         btn.setTextColor(Color.WHITE);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0,0,0, 5);
+        params.setMargins(0, 0, 0, 5);
         btn.setLayoutParams(params);
         btn.setText(text);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -211,9 +209,9 @@ public class CustomNotification extends FrameLayout {
     }
 
     private void inicializar() {
-        this.txtDescripcion = findViewById(R.id.txtDecripcion);
+        this.txtDescripcion  = findViewById(R.id.txtDecripcion);
         this.notificationBox = findViewById(R.id.notificationBox);
-        this.txtDeslizar = findViewById(R.id.txtDeslizar);
+        this.txtDeslizar     = findViewById(R.id.txtDeslizar);
         this.crearTouchListener();
         this.bringToFront();
     }
@@ -228,8 +226,8 @@ public class CustomNotification extends FrameLayout {
     /**
      * Modifica el progreso visualizado por la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
      *
-     * @author Ventura de Lucas
      * @param progress int. Valor numérico del nuevo progreso para el progressBar de la notificación.
+     * @author Ventura de Lucas
      */
     public synchronized void setProgress(int progress) {
         if (this.mode != NOTIFICATION_PROGRESS) {
@@ -253,8 +251,8 @@ public class CustomNotification extends FrameLayout {
     /**
      * Modifica el máximo valor del progreso de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
      *
-     * @author Ventura de Lucas
      * @param max int. Valor numérico del nuevo máximo para el progressBar de la notificación.
+     * @author Ventura de Lucas
      */
     public void setMax(int max) {
         if (this.mode != NOTIFICATION_PROGRESS) {
@@ -267,15 +265,15 @@ public class CustomNotification extends FrameLayout {
 
     @SuppressLint("SetTextI18n")
     private void actualizarPorcentaje() {
-        int porcentaje = ( getProgress() * 100 ) / getMax();
+        int porcentaje = (getProgress() * 100) / getMax();
         ((TextView) findViewById(R.id.txtPorcentajeProgress)).setText(porcentaje + "%");
     }
 
     /**
      * Obtiene el progreso actual del progressBar de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
      *
-     * @author Ventura de Lucas
      * @return Devuelve el progreso actual del progressBar de la notificación.
+     * @author Ventura de Lucas
      */
     public int getProgress() {
         if (this.mode != NOTIFICATION_PROGRESS) {
@@ -289,8 +287,8 @@ public class CustomNotification extends FrameLayout {
     /**
      * Obtiene el máximo valor del progreso del progressBar de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
      *
-     * @author Ventura de Lucas
      * @return Devuelve el máximo valor del progressBar de la notificación.
+     * @author Ventura de Lucas
      */
     public int getMax() {
         if (this.mode != NOTIFICATION_PROGRESS) {
@@ -304,29 +302,29 @@ public class CustomNotification extends FrameLayout {
     /**
      * Modifica el texto del cuerpo de la notificación.
      *
-     * @author Ventura de Lucas
      * @param text String. Nuevo texto del cuerpo de la notificación.
+     * @author Ventura de Lucas
      */
     public void setText(String text) {
-        ((TextView)findViewById(R.id.txtDecripcion)).setText(text);
+        ((TextView) findViewById(R.id.txtDecripcion)).setText(text);
     }
 
     /**
      * Modifica el texto del botón de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_BUTTON)
      *
-     * @author Ventura de Lucas
      * @param action String. Nuevo texto del botón de la notificación.
+     * @author Ventura de Lucas
      */
     public void setAction(String action) {
-        ((TextView)findViewById(R.id.btnNormal)).setText(action);
+        ((TextView) findViewById(R.id.btnNormal)).setText(action);
     }
 
     /**
      * Modifica el texto del cuerpo de la notificación.
      * Posteriormente, muestra dicha notificación.
      *
-     * @author Ventura de Lucas
      * @param text String. Nuevo texto del cuerpo de la notificación.
+     * @author Ventura de Lucas
      */
     public void showText(String text) {
         if (mode != CustomNotification.NOTIFICATION_SIMPLE) {
@@ -339,20 +337,20 @@ public class CustomNotification extends FrameLayout {
 
     private void temporizador() {
         if (timer != null) timer.cancel();
-        if (showTime == LENGTH_UNDEFINED) return ;
+        if (showTime == LENGTH_UNDEFINED) return;
         timer = new Timer();
         timer.schedule(reiniciarShowTime(), showTime);
     }
 
-    private void crearTouchListener(){
+    private void crearTouchListener() {
         findViewById(R.id.notificationBox).setOnTouchListener(new OnSwipeTouchListener(this.context) {
-            public void onSwipeBottom(){
+            public void onSwipeBottom() {
                 if (!minimizado && !enMovimiento && minimizable) {
                     CustomNotification.this.minimizar();
                 }
             }
 
-            public void onSwipeTop(){
+            public void onSwipeTop() {
                 if (minimizado && !enMovimiento) {
                     CustomNotification.this.maximizar();
                 }
@@ -363,11 +361,11 @@ public class CustomNotification extends FrameLayout {
     /**
      * Modifica la respuesta del botón de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_BUTTON)
      *
-     * @author Ventura de Lucas
      * @param clickListener CustomNotificationResponse. Nuevo listener para la respuesta del botón de la notificación.
+     * @author Ventura de Lucas
      */
     public void setResponse(final CustomNotificationResponse clickListener) {
-        findViewById(R.id.btnNormal).setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.btnNormal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickListener.onResponse(CustomNotification.this);
@@ -379,8 +377,8 @@ public class CustomNotification extends FrameLayout {
      * Muestra un fondo oscuro detrás de la notificación para resaltarla.
      * Se bloquea el 'touch' de lo que haya detrás de dicho fondo.
      *
-     * @author Ventura de Lucas
      * @param darkness boolean. Sirve para indicar si se desea o no activar este modo. Por defecto, se encuentra a 'false'.
+     * @author Ventura de Lucas
      */
     public void aboveDarkness(boolean darkness) {
         this.darkness = darkness;
@@ -389,8 +387,8 @@ public class CustomNotification extends FrameLayout {
     /**
      * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
      *
-     * @author Ventura de Lucas
      * @return Devuelve 'true' si el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+     * @author Ventura de Lucas
      */
     public boolean isAboveDarkness() {
         return this.darkness;
@@ -400,8 +398,8 @@ public class CustomNotification extends FrameLayout {
      * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
      * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
      *
-     * @author Ventura de Lucas
      * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+     * @author Ventura de Lucas
      */
     public void setMinimizable(boolean minimizable) {
         this.minimizable = minimizable;
@@ -410,8 +408,8 @@ public class CustomNotification extends FrameLayout {
     /**
      * Indica si el usuario puede o no minimizar la notificación.
      *
-     * @author Ventura de Lucas
      * @return Devuelve 'true' si el usuario puede minimizar la notificación; en caso contrario, devuelve 'false'
+     * @author Ventura de Lucas
      */
     public boolean isMinimizable() {
         return this.minimizable;
@@ -422,13 +420,13 @@ public class CustomNotification extends FrameLayout {
         inicializarVistas();
     }
 
-    private synchronized void maximizar(){
-        if (this.enMovimiento) return ;
+    private synchronized void maximizar() {
+        if (this.enMovimiento) return;
         this.enMovimiento = true;
         int alturaMaximizado = this.notificationBox.getHeight();
         int alturaMinimizado = this.txtDeslizar.getHeight();
-        int alturaAuxiliar = (mode == CustomNotification.NOTIFICATION_PROGRESS) ? this.txtDescripcion.getHeight() + CustomNotification.MARGIN_BOTTOM_CABECERO : 0;
-        int deslizamiento = alturaMaximizado - alturaMinimizado - alturaAuxiliar;
+        int alturaAuxiliar   = (mode == CustomNotification.NOTIFICATION_PROGRESS) ? this.txtDescripcion.getHeight() + CustomNotification.MARGIN_BOTTOM_CABECERO : 0;
+        int deslizamiento    = alturaMaximizado - alturaMinimizado - alturaAuxiliar;
 
         final TranslateAnimation mAnimation = new TranslateAnimation(0, 0, deslizamiento, 0);
         mAnimation.setDuration(400);
@@ -442,7 +440,7 @@ public class CustomNotification extends FrameLayout {
             @Override
             public void onAnimationEnd(Animation animation) {
                 txtDeslizar.setText(activity.getString(R.string.custom_notification_maximizar));
-                minimizado = false;
+                minimizado   = false;
                 enMovimiento = false;
             }
 
@@ -460,16 +458,16 @@ public class CustomNotification extends FrameLayout {
         CustomNotification.this.notificationBox.startAnimation(mAnimation);
     }
 
-    private synchronized void minimizar(){
-        if (this.enMovimiento) return ;
+    private synchronized void minimizar() {
+        if (this.enMovimiento) return;
         this.enMovimiento = true;
         int alturaMaximizado = this.notificationBox.getHeight();
         int alturaMinimizado = this.txtDeslizar.getHeight();
-        int alturaAuxiliar = (mode == CustomNotification.NOTIFICATION_PROGRESS) ? this.txtDescripcion.getHeight() + CustomNotification.MARGIN_BOTTOM_CABECERO : 0;
-        int deslizamiento = alturaMaximizado - alturaMinimizado - alturaAuxiliar;
+        int alturaAuxiliar   = (mode == CustomNotification.NOTIFICATION_PROGRESS) ? this.txtDescripcion.getHeight() + CustomNotification.MARGIN_BOTTOM_CABECERO : 0;
+        int deslizamiento    = alturaMaximizado - alturaMinimizado - alturaAuxiliar;
         this.alturaMinimizado = deslizamiento;
 
-        final TranslateAnimation mAnimation = new TranslateAnimation(0,0,0,deslizamiento);
+        final TranslateAnimation mAnimation = new TranslateAnimation(0, 0, 0, deslizamiento);
         mAnimation.setDuration(400);
         mAnimation.setFillAfter(true);
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -480,7 +478,7 @@ public class CustomNotification extends FrameLayout {
             @Override
             public void onAnimationEnd(Animation animation) {
                 txtDeslizar.setText(activity.getString(R.string.custom_notification_minimizar));
-                minimizado = true;
+                minimizado   = true;
                 enMovimiento = false;
             }
 
@@ -527,10 +525,10 @@ public class CustomNotification extends FrameLayout {
     private Animation enterAnimation() {
         this.enMovimiento = true;
         int alturaMaximizado = this.notificationBox.getHeight();
-        int alturaAuxiliar = 0;
+        int alturaAuxiliar   = 0;
         if (minimizado) alturaAuxiliar = alturaMinimizado;
 
-        final TranslateAnimation mAnimation = new TranslateAnimation(0,0, alturaMaximizado, alturaAuxiliar);
+        final TranslateAnimation mAnimation = new TranslateAnimation(0, 0, alturaMaximizado, alturaAuxiliar);
         mAnimation.setDuration(400);
         mAnimation.setFillAfter(true);
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -552,9 +550,9 @@ public class CustomNotification extends FrameLayout {
 
         if (this.darkness) {
             if (this.trans == null) {
-                ColorDrawable colorOscuro = new ColorDrawable(getResources().getColor(R.color.colorDarkness));
-                ColorDrawable colorTransparente = new ColorDrawable(getResources().getColor(R.color.colorTransparent));
-                ColorDrawable[] color = {colorTransparente, colorOscuro};
+                ColorDrawable   colorOscuro       = new ColorDrawable(getResources().getColor(R.color.colorDarkness));
+                ColorDrawable   colorTransparente = new ColorDrawable(getResources().getColor(R.color.colorTransparent));
+                ColorDrawable[] color             = {colorTransparente, colorOscuro};
                 this.trans = new TransitionDrawable(color);
                 findViewById(R.id.touchListenerLayout).setBackground(this.trans);
                 findViewById(R.id.touchListenerLayout).setOnTouchListener(noClickableUnder);
@@ -572,7 +570,7 @@ public class CustomNotification extends FrameLayout {
      */
     public void kill() {
         hide = true;
-        if (CustomNotification.this.getParent() != null) ((ViewGroup)CustomNotification.this.getParent()).removeView(CustomNotification.this);
+        if (CustomNotification.this.getParent() != null) ((ViewGroup) CustomNotification.this.getParent()).removeView(CustomNotification.this);
         firstTime = true;
     }
 
@@ -580,9 +578,9 @@ public class CustomNotification extends FrameLayout {
         this.enMovimiento = true;
         int alturaMaximizado = this.notificationBox.getHeight();
         int alturaMinimizado = this.txtDeslizar.getHeight();
-        int comienzo = (minimizado) ? alturaMaximizado - alturaMinimizado : 0;
+        int comienzo         = (minimizado) ? alturaMaximizado - alturaMinimizado : 0;
 
-        final TranslateAnimation mAnimation = new TranslateAnimation(0,0, comienzo, alturaMaximizado);
+        final TranslateAnimation mAnimation = new TranslateAnimation(0, 0, comienzo, alturaMaximizado);
         mAnimation.setDuration(400);
         mAnimation.setFillAfter(true);
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -593,8 +591,8 @@ public class CustomNotification extends FrameLayout {
             @Override
             public void onAnimationEnd(Animation animation) {
                 enMovimiento = false;
-                hide = true;
-                ((ViewGroup)CustomNotification.this.getParent()).removeView(CustomNotification.this);
+                hide         = true;
+                ((ViewGroup) CustomNotification.this.getParent()).removeView(CustomNotification.this);
                 firstTime = true;
             }
 
@@ -642,8 +640,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Constructor Builder
          *
-         * @author Ventura de Lucas
          * @param context Context. Contexto de la aplicación.
+         * @author Ventura de Lucas
          */
         public Builder(Context context) {
             customNotification = new CustomNotification(context);
@@ -656,8 +654,8 @@ public class CustomNotification extends FrameLayout {
          * LONG: 8 segundos.
          * UNDEFINED: siempre se muestra (tiempo infinito).
          *
-         * @author Ventura de Lucas
          * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         * @author Ventura de Lucas
          */
         public Builder setDuration(int duration) {
             customNotification.setDuration(duration);
@@ -667,8 +665,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Acceso a los métodos propios del modo NOTIFICATION_BUTTON
          *
-         * @author Ventura de Lucas
          * @return Devuelve un BuilderButton para proceder con una construcción más específica del objeto CustomNotification.
+         * @author Ventura de Lucas
          */
         public BuilderButton setButtonMode() {
             customNotification.setMode(NOTIFICATION_BUTTON);
@@ -678,8 +676,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Acceso a los métodos propios del modo NOTIFICATION_SIMPLE
          *
-         * @author Ventura de Lucas
          * @return Devuelve un BuilderSimple para proceder con una construcción más específica del objeto CustomNotification.
+         * @author Ventura de Lucas
          */
         public BuilderSimple setSimpleMode() {
             customNotification.setMode(NOTIFICATION_SIMPLE);
@@ -689,8 +687,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Acceso a los métodos propios del modo NOTIFICATION_PROGRESS
          *
-         * @author Ventura de Lucas
          * @return Devuelve un BuilderProgress para proceder con una construcción más específica del objeto CustomNotification.
+         * @author Ventura de Lucas
          */
         public BuilderProgress setProgressMode() {
             customNotification.setMode(NOTIFICATION_PROGRESS);
@@ -700,8 +698,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Acceso a los métodos propios del modo NOTIFICATION_MULTIPLE
          *
-         * @author Ventura de Lucas
          * @return Devuelve un BuilderMultiple para proceder con una construcción más específica del objeto CustomNotification.
+         * @author Ventura de Lucas
          */
         public BuilderMultiple setMultipleMode() {
             customNotification.setMode(NOTIFICATION_MULTIPLE);
@@ -720,8 +718,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Constructor BuilderButton
          *
-         * @author Ventura de Lucas
          * @param customNotification CustomNotification. Notificación preparada previamente por la clase Builder.
+         * @author Ventura de Lucas
          */
         private BuilderButton(CustomNotification customNotification) {
             this.customNotification = customNotification;
@@ -730,8 +728,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Modifica la respuesta del botón de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_BUTTON)
          *
-         * @author Ventura de Lucas
          * @param response CustomNotificationResponse. Nuevo listener para la respuesta del botón de la notificación.
+         * @author Ventura de Lucas
          */
         public BuilderButton setResponse(CustomNotificationResponse response) {
             customNotification.setResponse(response);
@@ -741,8 +739,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
          *
-         * @author Ventura de Lucas
          * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+         * @author Ventura de Lucas
          */
         public BuilderButton aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
@@ -753,8 +751,8 @@ public class CustomNotification extends FrameLayout {
          * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
          * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
          *
-         * @author Ventura de Lucas
          * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+         * @author Ventura de Lucas
          */
         public BuilderButton setMinimizable(boolean minimizable) {
             customNotification.setMinimizable(minimizable);
@@ -764,8 +762,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Modifica el texto del cuerpo de la notificación.
          *
-         * @author Ventura de Lucas
          * @param text String. Nuevo texto del cuerpo de la notificación.
+         * @author Ventura de Lucas
          */
         public BuilderButton setText(String text) {
             customNotification.setText(text);
@@ -775,8 +773,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Modifica el texto del botón de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_BUTTON)
          *
-         * @author Ventura de Lucas
          * @param action String. Nuevo texto del botón de la notificación.
+         * @author Ventura de Lucas
          */
         public BuilderButton setAction(String action) {
             customNotification.setAction(action);
@@ -790,8 +788,8 @@ public class CustomNotification extends FrameLayout {
          * LONG: 8 segundos.
          * UNDEFINED: siempre se muestra (tiempo infinito).
          *
-         * @author Ventura de Lucas
          * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         * @author Ventura de Lucas
          */
         public BuilderButton setDuration(int duration) {
             customNotification.setDuration(duration);
@@ -801,8 +799,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Se termina la construcción de la notificación.
          *
-         * @author Ventura de Lucas
          * @return CustomNotification. La notificación está lista para mostrarse (llamar al método show())
+         * @author Ventura de Lucas
          */
         public CustomNotification build() {
             return customNotification;
@@ -820,8 +818,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Constructor BuilderSimple
          *
-         * @author Ventura de Lucas
          * @param customNotification CustomNotification. Notificación preparada previamente por la clase Builder.
+         * @author Ventura de Lucas
          */
         private BuilderSimple(CustomNotification customNotification) {
             this.customNotification = customNotification;
@@ -830,8 +828,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Modifica el texto del cuerpo de la notificación.
          *
-         * @author Ventura de Lucas
          * @param text String. Nuevo texto del cuerpo de la notificación.
+         * @author Ventura de Lucas
          */
         public BuilderSimple setText(String text) {
             customNotification.setText(text);
@@ -841,8 +839,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
          *
-         * @author Ventura de Lucas
          * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+         * @author Ventura de Lucas
          */
         public BuilderSimple aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
@@ -853,8 +851,8 @@ public class CustomNotification extends FrameLayout {
          * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
          * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
          *
-         * @author Ventura de Lucas
          * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+         * @author Ventura de Lucas
          */
         public BuilderSimple setMinimizable(boolean minimizable) {
             customNotification.setMinimizable(minimizable);
@@ -868,8 +866,8 @@ public class CustomNotification extends FrameLayout {
          * LONG: 8 segundos.
          * UNDEFINED: siempre se muestra (tiempo infinito).
          *
-         * @author Ventura de Lucas
          * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         * @author Ventura de Lucas
          */
         public BuilderSimple setDuration(int duration) {
             customNotification.setDuration(duration);
@@ -879,8 +877,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Se termina la construcción de la notificación.
          *
-         * @author Ventura de Lucas
          * @return CustomNotification. La notificación está lista para mostrarse (llamar al método show())
+         * @author Ventura de Lucas
          */
         public CustomNotification build() {
             return customNotification;
@@ -899,8 +897,8 @@ public class CustomNotification extends FrameLayout {
          * Constructor BuilderProgress.
          * Por defecto, el progressBar se inicializa con un valor máximo de 100 y un progreso del 0%.
          *
-         * @author Ventura de Lucas
          * @param customNotification CustomNotification. Notificación preparada previamente por la clase Builder.
+         * @author Ventura de Lucas
          */
         private BuilderProgress(CustomNotification customNotification) {
             this.customNotification = customNotification;
@@ -911,8 +909,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Modifica el texto del cuerpo de la notificación.
          *
-         * @author Ventura de Lucas
          * @param text String. Nuevo texto del cuerpo de la notificación.
+         * @author Ventura de Lucas
          */
         public BuilderProgress setText(String text) {
             customNotification.setText(text);
@@ -922,8 +920,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
          *
-         * @author Ventura de Lucas
          * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+         * @author Ventura de Lucas
          */
         public BuilderProgress aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
@@ -934,8 +932,8 @@ public class CustomNotification extends FrameLayout {
          * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
          * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
          *
-         * @author Ventura de Lucas
          * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+         * @author Ventura de Lucas
          */
         public BuilderProgress setMinimizable(boolean minimizable) {
             customNotification.setMinimizable(minimizable);
@@ -949,8 +947,8 @@ public class CustomNotification extends FrameLayout {
          * LONG: 8 segundos.
          * UNDEFINED: siempre se muestra (tiempo infinito).
          *
-         * @author Ventura de Lucas
          * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         * @author Ventura de Lucas
          */
         public BuilderProgress setDuration(int duration) {
             customNotification.setDuration(duration);
@@ -960,8 +958,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Modifica el máximo valor del progreso de la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
          *
-         * @author Ventura de Lucas
          * @param max int. Valor numérico del nuevo máximo para el progressBar de la notificación.
+         * @author Ventura de Lucas
          */
         public BuilderProgress setMax(int max) {
             customNotification.setMax(max);
@@ -971,8 +969,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Modifica el progreso visualizado por la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_PROGRESS)
          *
-         * @author Ventura de Lucas
          * @param progress int. Valor numérico del nuevo progreso para el progressBar de la notificación.
+         * @author Ventura de Lucas
          */
         public BuilderProgress setProgress(int progress) {
             customNotification.setProgress(progress);
@@ -982,8 +980,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Se termina la construcción de la notificación.
          *
-         * @author Ventura de Lucas
          * @return CustomNotification. La notificación está lista para mostrarse (llamar al método show())
+         * @author Ventura de Lucas
          */
         public CustomNotification build() {
             customNotification.built = true;
@@ -998,6 +996,7 @@ public class CustomNotification extends FrameLayout {
      */
     public static class BuilderMultiple {
         private CustomNotification customNotification;
+
         private BuilderMultiple(CustomNotification customNotification) {
             this.customNotification = customNotification;
         }
@@ -1009,8 +1008,8 @@ public class CustomNotification extends FrameLayout {
          * LONG: 8 segundos.
          * UNDEFINED: siempre se muestra (tiempo infinito).
          *
-         * @author Ventura de Lucas
          * @param duration Valor de constantes (SHORT, MEDIUM, LONG, UNDEFINED). También, se permite introducir un valor numérico a desear en milisegundos.
+         * @author Ventura de Lucas
          */
         public BuilderMultiple setDuration(int duration) {
             customNotification.setDuration(duration);
@@ -1020,8 +1019,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Modifica el texto del cuerpo de la notificación.
          *
-         * @author Ventura de Lucas
          * @param text String. Nuevo texto del cuerpo de la notificación.
+         * @author Ventura de Lucas
          */
         public BuilderMultiple setText(String text) {
             customNotification.setText(text);
@@ -1031,8 +1030,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Indica si está o no activado el modo 'Darkness'. (fondo oscuro detrás de la notificación)
          *
-         * @author Ventura de Lucas
          * @return Devuelve 'true' se el modo 'Darkness' se encuentra activo; en caso contrario, devuelve 'false'
+         * @author Ventura de Lucas
          */
         public BuilderMultiple aboveDarkness(boolean darkness) {
             customNotification.aboveDarkness(darkness);
@@ -1043,8 +1042,8 @@ public class CustomNotification extends FrameLayout {
          * Modifica la capacidad de  que el usuario pueda minimizar la notificación.
          * CUIDADO: una notificación con duración 'UNDEFINED', con 'aboveDarkness' activado y no minimizable bloquearía la interfaz de la aplicación.
          *
-         * @author Ventura de Lucas
          * @param minimizable boolean. Sirve para indicar si se desea o no que el usuario pueda minimizar la notificación. Por defecto, se encuentra a 'true'.
+         * @author Ventura de Lucas
          */
         public BuilderMultiple setMinimizable(boolean minimizable) {
             customNotification.setMinimizable(minimizable);
@@ -1054,10 +1053,10 @@ public class CustomNotification extends FrameLayout {
         /**
          * Añade un botón a la notificación. (sólo sirve en el caso de que sea una NOTIFICATION_MULTIPLE)
          *
-         * @author Ventura de Lucas
-         * @param text String. Texto del botón.
+         * @param text     String. Texto del botón.
          * @param response CustomNotificationResponse. Listener para saber cuándo es clicado el botón.
-         * @param style int. Estilo del botón.
+         * @param style    int. Estilo del botón.
+         * @author Ventura de Lucas
          */
         public BuilderMultiple addButton(String text, final CustomNotificationResponse response, int style) {
             this.customNotification.AddButton(text, response, style);
@@ -1067,8 +1066,8 @@ public class CustomNotification extends FrameLayout {
         /**
          * Se termina la construcción de la notificación.
          *
-         * @author Ventura de Lucas
          * @return CustomNotification. La notificación está lista para mostrarse (llamar al método show())
+         * @author Ventura de Lucas
          */
         public CustomNotification build() {
             return customNotification;

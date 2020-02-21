@@ -50,11 +50,11 @@ public class WebService extends Application {
      * Método para tratar excepciones. Requiere de conexión a Internet para funcionar. Envía un log con la excepción introducida.
      * En caso de no introducir url, no envía nada. (solo para funciones internas)
      *
-     * @param mContext Context. Contexto de la aplicación.
-     * @param metodo String. Mensaje de la excepción.
-     * @param idUsuario int. ID del usuario con el que se provocó la excepción.
-     * @param mensaje String. Mensaje informativo sobre el error.
-     * @param exception Exception. Excepción a enviar al servicio.
+     * @param mContext   Context. Contexto de la aplicación.
+     * @param metodo     String. Mensaje de la excepción.
+     * @param idUsuario  int. ID del usuario con el que se provocó la excepción.
+     * @param mensaje    String. Mensaje informativo sobre el error.
+     * @param exception  Exception. Excepción a enviar al servicio.
      * @param parametros todo: por el momento enviar vacío ("").
      */
     public static void TratarExcepcion(final Context mContext, final String metodo, final int idUsuario, final String mensaje, final Exception exception, String parametros) {
@@ -65,16 +65,15 @@ public class WebService extends Application {
      * Método para tratar excepciones. Requiere de conexión a Internet para funcionar. Envía un log con la excepción introducida.
      * En caso de no introducir url, no envía nada. (solo para funciones internas)
      *
-     * @param mContext Context. Contexto de la aplicación.
-     * @param metodo String. Mensaje de la excepción.
-     * @param idUsuario int. ID del usuario con el que se provocó la excepción.
-     * @param mensaje String. Mensaje informativo sobre el error.
-     * @param exception Exception. Excepción a enviar al servicio.
+     * @param mContext   Context. Contexto de la aplicación.
+     * @param metodo     String. Mensaje de la excepción.
+     * @param idUsuario  int. ID del usuario con el que se provocó la excepción.
+     * @param mensaje    String. Mensaje informativo sobre el error.
+     * @param exception  Exception. Excepción a enviar al servicio.
      * @param parametros todo: por el momento enviar vacío ("").
-     * @param url String. URL a la cual se enviará el error.
+     * @param url        String. URL a la cual se enviará el error.
      */
-    public static void TratarExcepcion(final Context mContext, final String metodo, final int idUsuario, final String mensaje, final Exception exception, String parametros, String url)
-    {
+    public static void TratarExcepcion(final Context mContext, final String metodo, final int idUsuario, final String mensaje, final Exception exception, String parametros, String url) {
         if (!url.equals("")) {
 
             MyLog.e("Exception:" + exception.toString());
@@ -100,7 +99,7 @@ public class WebService extends Application {
 
                     @Override
                     public void onError(String error) {
-                        CustomDialog dialog = new CustomDialog(mContext,"Error: " + error, DIALOG_NORMAL);
+                        CustomDialog dialog = new CustomDialog(mContext, "Error: " + error, DIALOG_NORMAL);
                         dialog.Show();
                     }
 
@@ -116,11 +115,10 @@ public class WebService extends Application {
     }
 
     public static void EnviarAcciones(final Context mContext, final EnvioAccionesCallback callback) throws CheckRequestException {
-        final DBHandler dbHandler = new DBHandler(mContext);
-        final List<Accion> acciones = dbHandler.getAcciones();
+        final DBHandler    dbHandler = new DBHandler(mContext);
+        final List<Accion> acciones  = dbHandler.getAcciones();
 
-        if (acciones.size() > 0)
-        {
+        if (acciones.size() > 0) {
             final ProgressDialog mProgress = new ProgressDialog(mContext);
             mProgress.setCancelable(false);
             mProgress.setMessage(mContext.getString(R.string.subiendo_acciones_pendientes_offline));
@@ -133,8 +131,7 @@ public class WebService extends Application {
 
                 @Override
                 public void onFinish() throws CheckRequestException {
-                    if (GlobalVariables.loader && mProgress != null)
-                    {
+                    if (GlobalVariables.loader && mProgress != null) {
                         mProgress.hide();
                         mProgress.dismiss();
                     }
@@ -147,26 +144,22 @@ public class WebService extends Application {
                     callback.onOffline();
                 }
             });
-        }else{
+        } else {
             callback.onFinish();
         }
     }
 
     private static void EnviarAccion(final DBHandler dbHandler, final Context mContext, final List<Accion> acciones, final int contador, final int maximo, final EnvioAccionesCallback callback) throws CheckRequestException {
-        try{
-            if (contador < maximo)
-            {
+        try {
+            if (contador < maximo) {
                 //ENVIO LOS DATOS
                 final Accion accion = acciones.get(contador);
-                String url = accion.getURL();
+                String       url    = accion.getURL();
                 WSHelper.logWS(url, accion.getJSON());
-                if (accion.getMetodo().equals("POST"))
-                {
-                    try
-                    {
+                if (accion.getMetodo().equals("POST")) {
+                    try {
 
-                        if (accion.getJSON().startsWith("["))
-                        {
+                        if (accion.getJSON().startsWith("[")) {
                             JSONArray json = new JSONArray(accion.getJSON());
                             JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, json, new Response.Listener<JSONArray>() {
                                 @Override
@@ -185,15 +178,14 @@ public class WebService extends Application {
                                 }
                             });
                             requestQueue.add(request);
-                        }else
-                        {
+                        } else {
                             JSONObject json = new JSONObject(accion.getJSON());
                             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     dbHandler.removeAccion(accion.getID());
                                     try {
-                                        EnviarAccion(dbHandler, mContext,acciones, contador + 1, maximo, callback);
+                                        EnviarAccion(dbHandler, mContext, acciones, contador + 1, maximo, callback);
                                     } catch (CheckRequestException e) {
                                         e.printStackTrace();
                                     }
@@ -207,20 +199,17 @@ public class WebService extends Application {
                             });
                             AddRequest(request, mContext);
                         }
-                    }catch (JSONException ex)
-                    {
+                    } catch (JSONException ex) {
                         ex.printStackTrace();
                     }
-                }else if (accion.getMetodo().equals("GET"))
-                {
-                    try
-                    {
+                } else if (accion.getMetodo().equals("GET")) {
+                    try {
                         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 dbHandler.removeAccion(accion.getID());
                                 try {
-                                    EnviarAccion(dbHandler,mContext, acciones, contador + 1, maximo, callback);
+                                    EnviarAccion(dbHandler, mContext, acciones, contador + 1, maximo, callback);
                                 } catch (CheckRequestException e) {
                                     e.printStackTrace();
                                 }
@@ -232,26 +221,24 @@ public class WebService extends Application {
                             }
                         });
                         requestQueue.add(request);
-                    }catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
-            }else{
+            } else {
                 if (callback != null)
                     callback.onFinish();
 
             }
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            if(callback != null)
+            if (callback != null)
                 callback.onFinish();
         }
 
     }
 
-    public static void AddRequest(JsonObjectRequest request, Context mContext){
+    public static void AddRequest(JsonObjectRequest request, Context mContext) {
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(mContext);
 
         request.setRetryPolicy(new DefaultRetryPolicy(Constantes.TIMEOUT, Constantes.NUM_RETRY, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
