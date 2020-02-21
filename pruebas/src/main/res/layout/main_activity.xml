@@ -7,94 +7,107 @@
             type="es.icp.pruebas_commons.MainActivity.Handler" />
     </data>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn1}"
-            android:text="MOSTRAR NOTIFICACIÓN 1" />
+            android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn2}"
-            android:text="MOSTRAR DIÁLOGO CON EDITTEXT 1" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn3}"
-            android:text="MOSTRAR DIÁLOGO CON EDITTEXT 2" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn1}"
+                android:text="MOSTRAR NOTIFICACIÓN 1" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn4}"
-            android:text="MOSTRAR DIÁLOGO CON EDITTEXT 3" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn2}"
+                android:text="MOSTRAR DIÁLOGO CON EDITTEXT 1" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn5}"
-            android:text="MOSTRAR DIÁLOGO CON EDITTEXT SETERROR 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn3}"
+                android:text="MOSTRAR DIÁLOGO CON EDITTEXT 2" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn6}"
-            android:text="MOSTRAR SMARTDIALOG CON INPUT 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn4}"
+                android:text="MOSTRAR DIÁLOGO CON EDITTEXT 3" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn7}"
-            android:text="MOSTRAR SMARTDIALOG CON INPUT 2" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn5}"
+                android:text="MOSTRAR DIÁLOGO CON EDITTEXT SETERROR 1" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn8}"
-            android:text="MOSTRAR SMARTDIALOG CON QUANTITY 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn6}"
+                android:text="MOSTRAR SMARTDIALOG CON INPUT 1" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn9}"
-            android:text="MOSTRAR SMARTDIALOG CON BUTTONS 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn7}"
+                android:text="MOSTRAR SMARTDIALOG CON INPUT 2" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn10}"
-            android:text="MOSTRAR SMARTDIALOG CON EXTRAS 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn8}"
+                android:text="MOSTRAR SMARTDIALOG CON QUANTITY 1" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn11}"
-            android:text="MOSTRAR SMARTDIALOG CON IMAGE 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn9}"
+                android:text="MOSTRAR SMARTDIALOG CON BUTTONS 1" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn12}"
-            android:text="MOSTRAR SMARTDIALOG TOAST 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn10}"
+                android:text="MOSTRAR SMARTDIALOG CON EXTRAS 1" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn13}"
-            android:text="MOSTRAR SMARTDIALOG TOAST LISTENER 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn11}"
+                android:text="MOSTRAR SMARTDIALOG CON IMAGE 1" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{handler::onClickBtn14}"
-            android:text="MOSTRAR SMARTDIALOG SINO 1" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn12}"
+                android:text="MOSTRAR SMARTDIALOG TOAST 1" />
 
-    </LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn13}"
+                android:text="MOSTRAR SMARTDIALOG TOAST LISTENER 1" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn14}"
+                android:text="MOSTRAR SMARTDIALOG SINO 1" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn15}"
+                android:text="MOSTRAR SMARTDIALOG ALL" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
 </layout>

@@ -118,7 +118,34 @@ public class MainActivity extends Activity {
             public void onClickBtn14(View view) {
                 crearDialog13();
             }
+
+            @Override
+            public void onClickBtn15(View view) {
+                crearDialog14();
+            }
         };
+    }
+
+    private void crearDialog14() {
+        CustomSmartDialog.dialogGenerico(context, "Diálogo de ejemplo", "Esto es un texto de ejemplo para un diálogo de ejemplo. Esto es un texto de ejemplo para un diálogo de ejemplo. Esto es un texto de ejemplo para un diálogo de ejemplo.", "Nombre y apellidos", 50, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo() {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("SIIIII!!!!!");
+            }
+
+            @Override
+            public void negativo() {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("No...");
+            }
+        });
     }
 
     private void crearDialog13() {
@@ -460,5 +487,6 @@ public class MainActivity extends Activity {
         void onClickBtn12(View view);
         void onClickBtn13(View view);
         void onClickBtn14(View view);
+        void onClickBtn15(View view);
     }
 }

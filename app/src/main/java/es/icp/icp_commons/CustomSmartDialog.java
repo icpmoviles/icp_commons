@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +29,18 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 
 public class CustomSmartDialog {
 
-    private Context context;
-    private CustomTitle customTitle;
-    private LinearLayout layout;
-    private List<Button> buttons;
-    private boolean isCancellable;
-    private Message message;
-    private AlertDialog dialog;
+    private        Context      context;
+    private        CustomTitle  customTitle;
+    private        LinearLayout layout;
+    private        List<Button> buttons;
+    private        boolean      isCancellable;
+    private        Message      message;
+    private static AlertDialog  dialog;
+    private        boolean      generico = false;
 
     public CustomSmartDialog(Context context) {
         this.context = context;
-        layout = new LinearLayout(context);
+        layout       = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
         buttons = new ArrayList<>();
     }
@@ -62,10 +66,18 @@ public class CustomSmartDialog {
     }
 
     public void show() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setCustomTitle(customTitle)
-                .setCancelable(isCancellable)
-                .setView(layout, Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16));
+        AlertDialog.Builder builder;
+        if (generico) {
+            builder = new AlertDialog.Builder(context, R.style.CustomDialog)
+                    .setCustomTitle(customTitle)
+                    .setCancelable(isCancellable)
+                    .setView(layout);
+        } else {
+            builder = new AlertDialog.Builder(context)
+                    .setCustomTitle(customTitle)
+                    .setCancelable(isCancellable)
+                    .setView(layout, Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16));
+        }
         for (final Button button : buttons) {
             if (button.type == Button.Type.POSSITIVE) {
                 builder.setPositiveButton(button.text, new DialogInterface.OnClickListener() {
@@ -103,8 +115,8 @@ public class CustomSmartDialog {
                     }
                 });
             } else if (view instanceof CustomSiNo) {
-                CustomSiNo customSiNo = (CustomSiNo) view;
-                CustomSmartDialogSiNoResponse listener = customSiNo.getListener();
+                CustomSiNo                    customSiNo = (CustomSiNo) view;
+                CustomSmartDialogSiNoResponse listener   = customSiNo.getListener();
                 customSiNo.setListener(new CustomSmartDialogSiNoResponse() {
                     @Override
                     public void positivo() {
@@ -125,8 +137,8 @@ public class CustomSmartDialog {
             public void onShow(DialogInterface arg0) {
                 for (final Button button : buttons) {
                     if (button.type == Button.Type.POSSITIVE) {
-                        if (button.textColor != 0)  dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.getColor(button.textColor));
-                        if (button.textSize != 0)  dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize((float) button.textSize);
+                        if (button.textColor != 0) dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.getColor(button.textColor));
+                        if (button.textSize != 0) dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize((float) button.textSize);
                         if (button.onClickListener != null) dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -134,8 +146,8 @@ public class CustomSmartDialog {
                             }
                         });
                     } else if (button.type == Button.Type.NEGATIVE) {
-                        if (button.textColor != 0)  dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getColor(button.textColor));
-                        if (button.textSize != 0)  dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize((float) button.textSize);
+                        if (button.textColor != 0) dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getColor(button.textColor));
+                        if (button.textSize != 0) dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize((float) button.textSize);
                         if (button.onClickListener != null) dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -143,8 +155,8 @@ public class CustomSmartDialog {
                             }
                         });
                     } else {
-                        if (button.textColor != 0)  dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(context.getColor(button.textColor));
-                        if (button.textSize != 0)  dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextSize((float) button.textSize);
+                        if (button.textColor != 0) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(context.getColor(button.textColor));
+                        if (button.textSize != 0) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextSize((float) button.textSize);
 //                        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setGravity(Gravity.CENTER_VERTICAL);
                         if (button.onClickListener != null) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -158,6 +170,7 @@ public class CustomSmartDialog {
         });
         dialog.show();
     }
+
     public static CustomSmartDialog dialogSiNo(final Context context, String mensaje, final CustomSmartDialogSiNoResponse listener) {
         return CustomSmartDialog.dialogTextos(context, mensaje, "SI", "NO", listener);
     }
@@ -200,6 +213,59 @@ public class CustomSmartDialog {
                     .addView(imageView)
                     .addView(message)
                     .addView(customSiNo)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static CustomSmartDialog dialogGenerico(final Context context, String titulo, String mensaje, final CustomSmartDialogSiNoResponse listener) {
+        return dialogGenerico(context, titulo, mensaje, "", 0, listener);
+    }
+
+    public static CustomSmartDialog dialogGenerico(final Context context, String titulo, String mensaje, String hint, int maxLength, final CustomSmartDialogSiNoResponse listener) {
+        try {
+            LayoutInflater inflater      = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout   mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_all, null);
+
+            TextView     txtTitulo   = mainContainer.findViewById(R.id.txtTitulo);
+            TextView     txtMensaje  = mainContainer.findViewById(R.id.txtMensaje);
+            LinearLayout llEditText  = mainContainer.findViewById(R.id.editText);
+            TextInputLayout txtInputLayout = mainContainer.findViewById(R.id.txtInputLayout);
+            TextView     txtEditText = llEditText.findViewById(R.id.txtEditText);
+            TextView     btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
+            TextView     btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
+
+            txtTitulo.setText(titulo);
+            txtMensaje.setText(mensaje);
+
+            if (hint.isEmpty()) {
+                llEditText.setVisibility(View.GONE);
+            } else {
+                txtInputLayout.setHint(hint);
+                txtInputLayout.setCounterMaxLength(maxLength);
+            }
+
+            btnPositivo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    listener.positivo();
+                }
+            });
+            btnNegativo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    listener.negativo();
+                }
+            });
+
+
+            return new CustomSmartDialog.Builder(context)
+                    .addView(mainContainer)
+                    .isGenerico(true)
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -601,7 +667,7 @@ public class CustomSmartDialog {
                 boton.setBackgroundResource(button.getStyle());
                 boton.setTextColor(context.getColor(R.color.white));
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(0,0,0, 20);
+                params.setMargins(0, 0, 0, 20);
                 boton.setLayoutParams(params);
                 boton.setAllCaps(false);
                 boton.setTag(button.getOnClickListener());
@@ -625,16 +691,18 @@ public class CustomSmartDialog {
 
     public static class Message {
         private TextView mensaje;
-        private String html;
-        private Context context;
+        private String   html;
+        private Context  context;
+
         public Message(Context context) {
-            mensaje = new TextView(context);
+            mensaje      = new TextView(context);
             this.context = context;
         }
+
         public TextView getMensaje() {
             LinearLayout.LayoutParams txtLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            txtLayoutParams.gravity = Gravity.CENTER_VERTICAL;
-            txtLayoutParams.topMargin = Utils.dpToPx(context, 8);
+            txtLayoutParams.gravity      = Gravity.CENTER_VERTICAL;
+            txtLayoutParams.topMargin    = Utils.dpToPx(context, 8);
             txtLayoutParams.bottomMargin = Utils.dpToPx(context, 15);
             mensaje.setLayoutParams(txtLayoutParams);
             mensaje.setTypeface(null, Typeface.BOLD);
@@ -644,16 +712,20 @@ public class CustomSmartDialog {
             if (!html.isEmpty()) mensaje.setText(Html.fromHtml(html));
             return mensaje;
         }
+
         public static class Builder {
             private Message message;
+
             public Builder(Context context) {
                 message = new Message(context);
             }
+
             public Builder setText(String text) {
                 message.html = text;
                 message.mensaje.setText(Html.fromHtml(text).toString());
                 return this;
             }
+
             public TextView build() {
                 return message.getMensaje();
             }
@@ -661,56 +733,70 @@ public class CustomSmartDialog {
     }
 
     public static class Button {
-        private String text;
-        private int textSize;
-        private int textColor;
-        private Type type;
+        private String          text;
+        private int             textSize;
+        private int             textColor;
+        private Type            type;
         private OnClickListener onClickListener;
+
         public enum Type {POSSITIVE, NEGATIVE, NEUTRAL}
+
         public Button() {
         }
+
         public Button(String text) {
             this.text = text;
         }
+
         public Button(String text, int textSize) {
-            this.text = text;
+            this.text     = text;
             this.textSize = textSize;
         }
+
         public Button(String text, int textSize, int textColor) {
-            this.text = text;
-            this.textSize = textSize;
+            this.text      = text;
+            this.textSize  = textSize;
             this.textColor = textColor;
         }
+
         public Button(String text, int textSize, int textColor, Type type) {
-            this.text = text;
-            this.textSize = textSize;
+            this.text      = text;
+            this.textSize  = textSize;
             this.textColor = textColor;
-            this.type = type;
+            this.type      = type;
         }
+
         public Button(Type type, String text) {
             this.type = type;
             this.text = text;
         }
+
         public interface OnClickListener {
             void onClick(DialogInterface dialog, int which);
         }
+
         public static class Builder {
             private Button button;
+
             public Builder(Type type, String text) {
                 button = new Button(type, text);
             }
+
             public Builder setTextSize(int textSize) {
                 button.textSize = textSize;
                 return this;
             }
+
             public Builder setTextColor(int textColor) {
                 button.textColor = textColor;
                 return this;
             }
+
             public Builder setOnClickListener(OnClickListener onClickListener) {
                 button.onClickListener = onClickListener;
                 return this;
             }
+
             public Button build() {
                 return button;
             }
@@ -719,30 +805,42 @@ public class CustomSmartDialog {
 
     public static class Builder {
         private CustomSmartDialog customSmartDialog;
+
         public Builder(Context context) {
-            customSmartDialog = new CustomSmartDialog(context);
+            customSmartDialog               = new CustomSmartDialog(context);
             customSmartDialog.isCancellable = false;
         }
+
         public Builder addView(View view) {
             customSmartDialog.layout.addView(view);
             return this;
         }
+
         public Builder setTitle(CustomTitle customTitle) {
             customSmartDialog.customTitle = customTitle;
             return this;
         }
+
         public Builder setMessage(Message message) {
             customSmartDialog.message = message;
             return this;
         }
+
+        public Builder isGenerico(boolean generico) {
+            customSmartDialog.generico = generico;
+            return this;
+        }
+
         public Builder addButton(Button button) {
             customSmartDialog.buttons.add(button);
             return this;
         }
+
         public Builder isCancelable(boolean isCancellable) {
             customSmartDialog.isCancellable = isCancellable;
             return this;
         }
+
         public CustomSmartDialog build() {
             customSmartDialog.show();
             return customSmartDialog;
