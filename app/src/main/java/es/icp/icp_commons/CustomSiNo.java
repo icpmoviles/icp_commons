@@ -22,8 +22,8 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 public class CustomSiNo extends LinearLayout {
     private Context                       context;
     private CustomSmartDialogSiNoResponse listener;
-    private String positivo = "SI";
-    private String negativo= "NO";
+    private String                        positivo = "SI";
+    private String                        negativo = "NO";
 
     public CustomSiNo(Context context, String positivo, String negativo) {
         this(context, null);
@@ -83,7 +83,7 @@ public class CustomSiNo extends LinearLayout {
     public static class Builder {
         private CustomSiNo customSiNo;
 
-        public Builder(Context context, String positivo ,String negativo) {
+        public Builder(Context context, String positivo, String negativo) {
             customSiNo = new CustomSiNo(context, positivo, negativo);
         }
 

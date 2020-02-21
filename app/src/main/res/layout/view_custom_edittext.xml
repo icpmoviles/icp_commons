@@ -11,23 +11,23 @@
         android:id="@+id/startIcon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        tools:src="@drawable/ic_edit_blue_24dp" />
+        android:src="@drawable/ic_edit_blue_24dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:hint="Código abonado"
-        tools:hintTextAppearance="@style/MyHintStyle"
-        tools:counterEnabled="true"
-        tools:counterMaxLength="50"
+        android:hint="EditText"
+        app:hintTextAppearance="@style/MyHintStyle"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         app:boxStrokeColor="@color/colorPrimary"
-        tools:counterOverflowTextAppearance="@style/AppTheme.CharacterCounter">
+        app:counterOverflowTextAppearance="@style/AppTheme.CharacterCounter">
 
         <EditText
             android:id="@+id/txtEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

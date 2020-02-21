@@ -12,17 +12,17 @@
         android:layout_margin="20dp"
         android:layout_width="match_parent">
 
-            <TextView
-                android:ems="10"
-                android:id="@+id/tituloCustom"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:text="@string/alert_dialog_tituloCustom_text"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:drawableTop="@drawable/logo_icp_top"
-                android:textStyle="bold" />
+        <TextView
+            android:ems="10"
+            android:id="@+id/tituloCustom"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:text="@string/alert_dialog_tituloCustom_text"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:drawableTop="@drawable/logo_icp_top"
+            android:textStyle="bold" />
 
     </FrameLayout>
 

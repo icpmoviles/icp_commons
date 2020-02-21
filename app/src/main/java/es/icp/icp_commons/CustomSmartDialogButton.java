@@ -4,16 +4,16 @@ import android.view.View;
 
 public class CustomSmartDialogButton {
 
-    private String text;
-    private int style;
+    private String               text;
+    private int                  style;
     private View.OnClickListener onClickListener;
 
     public CustomSmartDialogButton() {
     }
 
     public CustomSmartDialogButton(String text, int style, View.OnClickListener onClickListener) {
-        this.text = text;
-        this.style = style;
+        this.text            = text;
+        this.style           = style;
         this.onClickListener = onClickListener;
     }
 

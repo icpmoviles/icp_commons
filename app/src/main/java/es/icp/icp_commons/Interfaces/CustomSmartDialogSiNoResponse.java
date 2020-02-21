@@ -4,5 +4,6 @@ import android.content.DialogInterface;
 
 public interface CustomSmartDialogSiNoResponse {
     void positivo();
+
     void negativo();
 }

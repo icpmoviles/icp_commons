@@ -15,7 +15,7 @@
         style="@style/btn_red"
         android:layout_marginEnd="5dp"
         android:padding="5dp"
-        android:text="POSITIVO"/>
+        android:text="POSITIVO" />
 
     <Button
         android:id="@+id/btnSi"
@@ -24,6 +24,6 @@
         android:layout_marginStart="5dp"
         android:padding="5dp"
         style="@style/btn_green"
-        android:text="NEGATIVO"/>
+        android:text="NEGATIVO" />
 
 </LinearLayout>

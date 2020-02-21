@@ -20,26 +20,26 @@ import es.icp.icp_commons.Interfaces.MultiSpinnerListener;
 public class MultiSpinner extends AppCompatSpinner implements
         DialogInterface.OnMultiChoiceClickListener, DialogInterface.OnCancelListener {
 
-    private List<String> items;
-    private boolean[] selected;
-    private String defaultText;
+    private List<String>         items;
+    private boolean[]            selected;
+    private String               defaultText;
     private MultiSpinnerListener listener;
-    private Context context;
-    private boolean enableMulti;
-    private boolean modificado = false;
+    private Context              context;
+    private boolean              enableMulti;
+    private boolean              modificado = false;
 
     /**
      * Constructor MultiSpinner de 1 parámetro
      *
-     * @author Ventura de Lucas
      * @param context Context. Contexto de la aplicación.
+     * @author Ventura de Lucas
      */
     public MultiSpinner(Context context) {
         super(context);
         this.context = context;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,
-                new String[] { "" });
+                new String[]{""});
         setAdapter(adapter);
     }
 
@@ -47,9 +47,9 @@ public class MultiSpinner extends AppCompatSpinner implements
      * Constructor MultiSpinner de 2 parámetros.
      * Se recomienda su uso exclusivo para los ficheros layout xml.
      *
-     * @author Ventura de Lucas
      * @param context Context. Contexto de la aplicación.
-     * @param attrs AttributeSet. Atributos recibidos desde el fichero layout xml.
+     * @param attrs   AttributeSet. Atributos recibidos desde el fichero layout xml.
+     * @author Ventura de Lucas
      */
     public MultiSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -59,7 +59,7 @@ public class MultiSpinner extends AppCompatSpinner implements
         this.context = context;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,
-                new String[] { "" });
+                new String[]{""});
         setAdapter(adapter);
     }
 
@@ -67,10 +67,10 @@ public class MultiSpinner extends AppCompatSpinner implements
      * Constructor MultiSpinner de 3 parámetros.
      * Se recomienda su uso exclusivo para los ficheros layout xml.
      *
-     * @author Ventura de Lucas
      * @param arg0 Context. Contexto de la aplicación.
      * @param arg1 AttributeSet. Atributos recibidos desde el fichero layout xml.
      * @param arg2 int. Atributos recibidos desde el fichero layout xml.
+     * @author Ventura de Lucas
      */
     public MultiSpinner(Context arg0, AttributeSet arg1, int arg2) {
         super(arg0, arg1, arg2);
@@ -86,14 +86,14 @@ public class MultiSpinner extends AppCompatSpinner implements
             }
         }
         selected[which] = isChecked;
-        modificado = true;
+                          modificado = true;
     }
 
     /**
      * Obtiene los items seleccionados.
      *
-     * @author Ventura de Lucas
      * @return Devuelve un array de 'boolean' con los valores de cada item. ('true': seleccionado; 'false': no seleccionado)
+     * @author Ventura de Lucas
      */
     public boolean[] getSelected() {
         return selected;
@@ -102,8 +102,8 @@ public class MultiSpinner extends AppCompatSpinner implements
     /**
      * Modifica los items seleccionados.
      *
-     * @author Ventura de Lucas
      * @param selected boolean[]. Array de 'boolean' con los valores de cada item. ('true': seleccionado; 'false': no seleccionado)
+     * @author Ventura de Lucas
      */
     public void setSelected(boolean[] selected) {
         this.selected = selected;
@@ -112,9 +112,9 @@ public class MultiSpinner extends AppCompatSpinner implements
     @Override
     public void onCancel(DialogInterface dialog) {
         // refresh text on spinner
-        if (!modificado) return ;
-        StringBuilder spinnerBuffer = new StringBuilder();
-        boolean someUnselected = false;
+        if (!modificado) return;
+        StringBuilder spinnerBuffer  = new StringBuilder();
+        boolean       someUnselected = false;
         for (int i = 0; i < items.size(); i++) {
             if (selected[i]) {
                 spinnerBuffer.append(items.get(i));
@@ -133,7 +133,7 @@ public class MultiSpinner extends AppCompatSpinner implements
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,
-                new String[] { spinnerText });
+                new String[]{spinnerText});
         setAdapter(adapter);
         listener.onItemsSelected(selected);
         modificado = false;
@@ -145,8 +145,8 @@ public class MultiSpinner extends AppCompatSpinner implements
      * @author Ventura de Lucas
      */
     public void rellenarMultiSpinner() {
-        StringBuilder spinnerBuffer = new StringBuilder();
-        boolean someUnselected = false;
+        StringBuilder spinnerBuffer  = new StringBuilder();
+        boolean       someUnselected = false;
         for (int i = 0; i < items.size(); i++) {
             if (selected[i]) {
                 spinnerBuffer.append(items.get(i));
@@ -165,7 +165,7 @@ public class MultiSpinner extends AppCompatSpinner implements
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,
-                new String[] { spinnerText });
+                new String[]{spinnerText});
         setAdapter(adapter);
         listener.onItemsSelected(selected);
     }
@@ -177,7 +177,7 @@ public class MultiSpinner extends AppCompatSpinner implements
             Toast.makeText(context, context.getString(R.string.multi_spinner_sin_informacion), Toast.LENGTH_SHORT).show();
             return false;
         }
-        int size = items.size();
+        int                 size    = items.size();
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMultiChoiceItems(
                 items.toArray(new CharSequence[size]), selected, this);
@@ -197,30 +197,30 @@ public class MultiSpinner extends AppCompatSpinner implements
     /**
      * Modifica la lista de items.
      *
-     * @author Ventura de Lucas
-     * @param items List<String>. Listado de items.
-     * @param allText String. Texto por defecto del TextView.
+     * @param items    List<String>. Listado de items.
+     * @param allText  String. Texto por defecto del TextView.
      * @param listener MultiSpinnerListener. Para detectar la modificación de los items seleccionados al cerrar el diálogo del MultiSpinner.
+     * @author Ventura de Lucas
      */
     public void setItems(List<String> items, String allText,
                          MultiSpinnerListener listener) {
-        this.items = items;
+        this.items       = items;
         this.defaultText = allText;
-        this.listener = listener;
+        this.listener    = listener;
 
         // all selected by default
         selected = new boolean[items.size()];
         for (int i = 0; i < selected.length; i++)
-            selected[i] = false;
+             selected[i] = false;
 
         // all text on the spinner
         if (this.enableMulti) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                    android.R.layout.simple_spinner_item, new String[] { allText });
+                    android.R.layout.simple_spinner_item, new String[]{allText});
             setAdapter(adapter);
         } else {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                    android.R.layout.simple_spinner_item, new String[] { context.getString(R.string.multi_spinner_seleccione) });
+                    android.R.layout.simple_spinner_item, new String[]{context.getString(R.string.multi_spinner_seleccione)});
             setAdapter(adapter);
         }
     }

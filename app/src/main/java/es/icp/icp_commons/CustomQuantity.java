@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 @SuppressLint("AppCompatCustomView")
 public class CustomQuantity extends LinearLayout {
-    private Context context;
-    private int quantity;
+    private Context  context;
+    private int      quantity;
     private TextView txtQuantity;
 
     public CustomQuantity(Context context) {
@@ -30,17 +30,17 @@ public class CustomQuantity extends LinearLayout {
     public CustomQuantity(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.context = context;
-        quantity = 0;
+        quantity     = 0;
     }
 
     public void show() {
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         LinearLayout mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_quantity, this, true);
         mainContainer.setVisibility(View.VISIBLE);
 
         Button btnMenos = mainContainer.findViewById(R.id.btnMenos);
-        Button btnMas = mainContainer.findViewById(R.id.btnMas);
+        Button btnMas   = mainContainer.findViewById(R.id.btnMas);
         txtQuantity = mainContainer.findViewById(R.id.txtQuantity);
 
         pintarCantidad();
@@ -79,13 +79,16 @@ public class CustomQuantity extends LinearLayout {
 
     public static class Builder {
         private CustomQuantity customQuantity;
+
         public Builder(Context context) {
             customQuantity = new CustomQuantity(context);
         }
+
         public Builder setQuantity(int quantity) {
             customQuantity.quantity = quantity;
             return this;
         }
+
         public CustomQuantity build() {
             customQuantity.show();
             return customQuantity;

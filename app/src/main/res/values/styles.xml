@@ -27,7 +27,7 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
-    
+
     <style name="btn_circle_orange" parent="TextAppearance.AppCompat.Button">
         <item name="android:background">@drawable/circled_orange_button</item>
         <item name="android:textColor">@color/white</item>
@@ -46,6 +46,11 @@
 
     <style name="btn_red" parent="btn_green">
         <item name="android:background">@drawable/rounded_red_button</item>
+    </style>
+
+    <style name="CustomDialog" parent="android:Theme.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 </resources>

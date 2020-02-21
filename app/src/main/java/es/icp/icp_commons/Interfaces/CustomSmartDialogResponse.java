@@ -4,9 +4,9 @@ import android.content.DialogInterface;
 
 public interface CustomSmartDialogResponse {
 
-    int ACEPTAR = 0;
+    int ACEPTAR  = 0;
     int CANCELAR = 1;
-    int NEUTRAL = 2;
+    int NEUTRAL  = 2;
 
     void onResponse(int retCode, DialogInterface dialog);
 }
