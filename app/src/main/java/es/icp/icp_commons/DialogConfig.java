@@ -202,104 +202,104 @@ public class DialogConfig {
         private int          maxLength           = 0;
         private int          cantidadInicial     = 0;
 
-        private Builder() {
+        public Builder() {
         }
 
         public static Builder aDialogConfig() {
             return new Builder();
         }
 
-        public Builder setthMostrarEditText(boolean mostrarEditText) {
+        public Builder setMostrarEditText(boolean mostrarEditText) {
             this.mostrarEditText = mostrarEditText;
             return this;
         }
 
-        public Builder setthTextoPositivo(String textoPositivo) {
+        public Builder setTextoPositivo(String textoPositivo) {
             this.textoPositivo = textoPositivo;
             return this;
         }
 
-        public Builder setthTextoNegativo(String textoNegativo) {
+        public Builder setTextoNegativo(String textoNegativo) {
             this.textoNegativo = textoNegativo;
             return this;
         }
 
-        public Builder setthEstiloPositivo(int estiloPositivo) {
+        public Builder setEstiloPositivo(int estiloPositivo) {
             this.estiloPositivo = estiloPositivo;
             return this;
         }
 
-        public Builder setthEstiloNegativo(int estiloNegativo) {
+        public Builder setEstiloNegativo(int estiloNegativo) {
             this.estiloNegativo = estiloNegativo;
             return this;
         }
 
-        public Builder setthMostrarBotonNeutral(boolean mostrarBotonNeutral) {
+        public Builder setMostrarBotonNeutral(boolean mostrarBotonNeutral) {
             this.mostrarBotonNeutral = mostrarBotonNeutral;
             return this;
         }
 
-        public Builder setthTextoNeutral(String textoNeutral) {
+        public Builder setTextoNeutral(String textoNeutral) {
             this.textoNeutral = textoNeutral;
             return this;
         }
 
-        public Builder setthEstiloNeutral(int estiloNeutral) {
+        public Builder setEstiloNeutral(int estiloNeutral) {
             this.estiloNeutral = estiloNeutral;
             return this;
         }
 
-        public Builder setthMostrarCantidad(boolean mostrarCantidad) {
+        public Builder setMostrarCantidad(boolean mostrarCantidad) {
             this.mostrarCantidad = mostrarCantidad;
             return this;
         }
 
-        public Builder setthMostrarImagen(boolean mostrarImagen) {
+        public Builder setMostrarImagen(boolean mostrarImagen) {
             this.mostrarImagen = mostrarImagen;
             return this;
         }
 
-        public Builder setthMostrarBotones(boolean mostrarBotones) {
+        public Builder setMostrarBotones(boolean mostrarBotones) {
             this.mostrarBotones = mostrarBotones;
             return this;
         }
 
-        public Builder setthBotones(List<Button> botones) {
+        public Builder setBotones(List<Button> botones) {
             this.botones = botones;
             return this;
         }
 
-        public Builder setthImagen(Drawable imagen) {
+        public Builder setImagen(Drawable imagen) {
             this.imagen = imagen;
             return this;
         }
 
-        public Builder setthTitulo(String titulo) {
+        public Builder setTitulo(String titulo) {
             this.titulo = titulo;
             return this;
         }
 
-        public Builder setthMensaje(String mensaje) {
+        public Builder setMensaje(String mensaje) {
             this.mensaje = mensaje;
             return this;
         }
 
-        public Builder setthIconoTitulo(Drawable iconoTitulo) {
+        public Builder setIconoTitulo(Drawable iconoTitulo) {
             this.iconoTitulo = iconoTitulo;
             return this;
         }
 
-        public Builder setthHint(String hint) {
+        public Builder setHint(String hint) {
             this.hint = hint;
             return this;
         }
 
-        public Builder setthMaxLength(int maxLength) {
+        public Builder setMaxLength(int maxLength) {
             this.maxLength = maxLength;
             return this;
         }
 
-        public Builder setthCantidadInicial(int cantidadInicial) {
+        public Builder setCantidadInicial(int cantidadInicial) {
             this.cantidadInicial = cantidadInicial;
             return this;
         }

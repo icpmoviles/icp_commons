@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -229,15 +230,18 @@ public class CustomSmartDialog {
             LayoutInflater inflater      = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout   mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_all, null);
 
-            TextView        txtTitulo      = mainContainer.findViewById(R.id.txtTitulo);
-            TextView        txtMensaje     = mainContainer.findViewById(R.id.txtMensaje);
+            TextView              txtTitulo   = mainContainer.findViewById(R.id.txtTitulo);
+            TextView              txtMensaje  = mainContainer.findViewById(R.id.txtMensaje);
+            android.widget.Button btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
+            android.widget.Button btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
+
             LinearLayout    llEditText     = mainContainer.findViewById(R.id.editText);
             TextInputLayout txtInputLayout = mainContainer.findViewById(R.id.txtInputLayout);
             TextView        txtEditText    = llEditText.findViewById(R.id.txtEditText);
-            TextView        btnPositivo    = mainContainer.findViewById(R.id.btnPositivo);
-            TextView        btnNegativo    = mainContainer.findViewById(R.id.btnNegativo);
-            LinearLayout    quantity       = mainContainer.findViewById(R.id.quantity);
-            TextView        txtCantidad    = mainContainer.findViewById(R.id.txtQuantity);
+
+            LinearLayout          quantity    = mainContainer.findViewById(R.id.quantity);
+            TextView              txtCantidad = mainContainer.findViewById(R.id.txtQuantity);
+            android.widget.Button btnMas      = mainContainer.findViewById(R.id.btnMas);
 
             txtTitulo.setText(config.getTitulo());
             txtMensaje.setText(config.getMensaje());
@@ -248,6 +252,7 @@ public class CustomSmartDialog {
                 txtInputLayout.setCounterMaxLength(config.getMaxLength());
             } else if (config.isMostrarBotones()) {
                 // TODO: 21/02/2020 Mostrar botones y configurarlos
+
             } else if (config.isMostrarBotonNeutral()) {
                 // TODO: 21/02/2020 Mostrar botón neutral y configurarlo
             } else if (config.isMostrarCantidad()) {
