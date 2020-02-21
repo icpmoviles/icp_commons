@@ -2,6 +2,8 @@ package es.icp.icp_commons;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
@@ -120,15 +122,15 @@ public class CustomSmartDialog {
                 CustomSmartDialogSiNoResponse listener   = customSiNo.getListener();
                 customSiNo.setListener(new CustomSmartDialogSiNoResponse() {
                     @Override
-                    public void positivo() {
+                    public void positivo(String valor, AlertDialog dialog) {
                         dialog.dismiss();
-                        listener.positivo();
+                        listener.positivo(valor, dialog);
                     }
 
                     @Override
-                    public void negativo() {
+                    public void negativo(String valor, AlertDialog dialog) {
                         dialog.dismiss();
-                        listener.negativo();
+                        listener.negativo(valor, dialog);
                     }
                 });
             }
@@ -199,13 +201,13 @@ public class CustomSmartDialog {
 
             CustomSiNo customSiNo = new CustomSiNo.Builder(context, positivo, negativo).setListener(new CustomSmartDialogSiNoResponse() {
                 @Override
-                public void positivo() {
-                    listener.positivo();
+                public void positivo(String valor, AlertDialog dialog) {
+                    listener.positivo(valor, dialog);
                 }
 
                 @Override
-                public void negativo() {
-                    listener.negativo();
+                public void negativo(String valor, AlertDialog dialog) {
+                    listener.negativo(valor, dialog);
                 }
             }).build();
 
@@ -230,57 +232,105 @@ public class CustomSmartDialog {
             LayoutInflater inflater      = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout   mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_all, null);
 
+            //-------------------------------------------------------
+            //--------------- BÁSICO -------------------
             TextView              txtTitulo   = mainContainer.findViewById(R.id.txtTitulo);
             TextView              txtMensaje  = mainContainer.findViewById(R.id.txtMensaje);
             android.widget.Button btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
             android.widget.Button btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
+            ImageView             imagen      = mainContainer.findViewById(R.id.imagen);
+            ImageView             iconoTitulo = mainContainer.findViewById(R.id.iconoTitulo);
+            //----------------------------------------------------------------------------------------------------
 
+            //-------------------------------------------------------
+            //--------------- EDITTEXT -------------------
             LinearLayout    llEditText     = mainContainer.findViewById(R.id.editText);
             TextInputLayout txtInputLayout = mainContainer.findViewById(R.id.txtInputLayout);
             TextView        txtEditText    = llEditText.findViewById(R.id.txtEditText);
+            //----------------------------------------------------------------------------------------------------
 
+            //-------------------------------------------------------
+            //--------------- CANTIDAD -------------------
             LinearLayout          quantity    = mainContainer.findViewById(R.id.quantity);
             TextView              txtCantidad = mainContainer.findViewById(R.id.txtQuantity);
             android.widget.Button btnMas      = mainContainer.findViewById(R.id.btnMas);
+            android.widget.Button btnMenos    = mainContainer.findViewById(R.id.btnMenos);
+            //----------------------------------------------------------------------------------------------------
+
+            //-------------------------------------------------------
+            //--------------- IMAGEN -------------------
+            ImageView imagenOpcional = mainContainer.findViewById(R.id.imagenOpcional);
+            //----------------------------------------------------------------------------------------------------
 
             txtTitulo.setText(config.getTitulo());
             txtMensaje.setText(config.getMensaje());
+            if (config.isMostrarIconoTitulo()) {
+                iconoTitulo.setVisibility(View.VISIBLE);
+                iconoTitulo.setImageDrawable(config.getIconoTitulo());
+            } else if (config.isMostrarPositivo()) {
+                btnPositivo.setVisibility(View.VISIBLE);
+                btnPositivo.setText(config.getTextoPositivo());
+                if (!config.isMostrarNegativo()) btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                btnPositivo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (config.isAutoDismiss()) dialog.dismiss();
+                        if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialog);
+                        else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialog);
+                    }
+                });
+            } else if (config.isMostrarNegativo()) {
+                btnNegativo.setVisibility(View.VISIBLE);
+                btnNegativo.setText(config.getTextoNegativo());
+                if (!config.isMostrarPositivo()) btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                btnNegativo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (config.isAutoDismiss()) dialog.dismiss();
+                        if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialog);
+                        else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialog);
+                    }
+                });
+            }
 
-            if (config.isMostrarEditText()) {
+            if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------
                 llEditText.setVisibility(View.VISIBLE);
                 txtInputLayout.setHint(config.getHint());
                 txtInputLayout.setCounterMaxLength(config.getMaxLength());
-            } else if (config.isMostrarBotones()) {
+
+            } else if (config.isMostrarBotones()) { //----------------------------------------------------------------------------
                 // TODO: 21/02/2020 Mostrar botones y configurarlos
 
-            } else if (config.isMostrarBotonNeutral()) {
+            } else if (config.isMostrarBotonNeutral()) { //-----------------------------------------------------------------------
                 // TODO: 21/02/2020 Mostrar botón neutral y configurarlo
-            } else if (config.isMostrarCantidad()) {
+
+            } else if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
                 // TODO: 21/02/2020 Mostrar View de cantidad y configurarla
                 quantity.setVisibility(View.VISIBLE);
                 txtCantidad.setText(String.valueOf(config.getCantidadInicial()));
+                btnMas.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int cantidad = Integer.parseInt(txtCantidad.getText().toString());
+                        cantidad++;
+                        txtCantidad.setText(String.valueOf(cantidad));
+                    }
+                });
+                btnMenos.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int cantidad = Integer.parseInt(txtCantidad.getText().toString());
+                        if (cantidad != 0) cantidad--;
+                        txtCantidad.setText(String.valueOf(cantidad));
+                    }
+                });
 
-            } else if (config.isMostrarImagen()) {
+            } else if (config.isMostrarImagen()) { //----------------------------------------------------------------------------
                 // TODO: 21/02/2020 Mostrar imagen y configurarla
-            }
-
-            btnPositivo.setText(config.getTextoPositivo());
-            btnPositivo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    listener.positivo();
-                }
-            });
-            btnNegativo.setText(config.getTextoNegativo());
-            btnNegativo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    listener.negativo();
-                }
-            });
-
+                imagenOpcional.setVisibility(View.VISIBLE);
+                imagen.setVisibility(View.GONE);
+                imagenOpcional.setImageDrawable(config.getImagen());
+            } //-----------------------------------------------------------------------------------------------------------------
 
             return new CustomSmartDialog.Builder(context)
                     .addView(mainContainer)

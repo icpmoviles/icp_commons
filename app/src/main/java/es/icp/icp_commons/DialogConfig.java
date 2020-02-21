@@ -8,25 +8,61 @@ import java.util.List;
 
 public class DialogConfig {
 
-    private boolean      mostrarEditText     = false;
-    private String       textoPositivo       = "SI";
+    private boolean      mostrarEditText     = false; 
+    private String       textoPositivo       = "SI";  
     private String       textoNegativo       = "NO";
-    private int          estiloPositivo      = 0;
-    private int          estiloNegativo      = 0;
-    private boolean      mostrarBotonNeutral = false;
-    private String       textoNeutral        = "";
-    private int          estiloNeutral       = 0;
+    private int          estiloPositivo      = 0; // TODO: 21/02/2020  
+    private int          estiloNegativo      = 0; // TODO: 21/02/2020  
+    private boolean      mostrarBotonNeutral = false; // TODO: 21/02/2020  
+    private String       textoNeutral        = ""; // TODO: 21/02/2020  
+    private int          estiloNeutral       = 0; // TODO: 21/02/2020  
     private boolean      mostrarCantidad     = false;
     private boolean      mostrarImagen       = false;
-    private boolean      mostrarBotones      = false;
-    private List<Button> botones             = new ArrayList<>();
+    private boolean      mostrarBotones      = false; // TODO: 21/02/2020  
+    private List<Button> botones             = new ArrayList<>(); // TODO: 21/02/2020  
     private Drawable     imagen              = null;
     private String       titulo              = "";
     private String       mensaje             = "";
     private Drawable     iconoTitulo         = null;
+    private boolean      mostrarIconoTitulo  = false;
     private String       hint                = "";
     private int          maxLength           = 0;
     private int          cantidadInicial     = 0;
+    private boolean      autoDismiss         = false;
+    private boolean      mostrarPositivo     = true;
+    private boolean      mostrarNegativo     = true;
+
+    public boolean isMostrarPositivo() {
+        return mostrarPositivo;
+    }
+
+    private void setMostrarPositivo(boolean mostrarPositivo) {
+        this.mostrarPositivo = mostrarPositivo;
+    }
+
+    public boolean isMostrarNegativo() {
+        return mostrarNegativo;
+    }
+
+    private void setMostrarNegativo(boolean mostrarNegativo) {
+        this.mostrarNegativo = mostrarNegativo;
+    }
+
+    public boolean isAutoDismiss() {
+        return autoDismiss;
+    }
+
+    private void setAutoDismiss(boolean autoDismiss) {
+        this.autoDismiss = autoDismiss;
+    }
+
+    public boolean isMostrarIconoTitulo() {
+        return mostrarIconoTitulo;
+    }
+
+    private void setMostrarIconoTitulo(boolean mostrarIconoTitulo) {
+        this.mostrarIconoTitulo = mostrarIconoTitulo;
+    }
 
     public int getCantidadInicial() {
         return cantidadInicial;
@@ -198,9 +234,13 @@ public class DialogConfig {
         private String       titulo              = "";
         private String       mensaje             = "";
         private Drawable     iconoTitulo         = null;
+        private boolean      mostrarIconoTitulo  = false;
         private String       hint                = "";
         private int          maxLength           = 0;
         private int          cantidadInicial     = 0;
+        private boolean      autoDismiss         = false;
+        private boolean      mostrarPositivo     = true;
+        private boolean      mostrarNegativo     = true;
 
         public Builder() {
         }
@@ -289,6 +329,11 @@ public class DialogConfig {
             return this;
         }
 
+        public Builder setMostrarIconoTitulo(boolean mostrarIconoTitulo) {
+            this.mostrarIconoTitulo = mostrarIconoTitulo;
+            return this;
+        }
+
         public Builder setHint(String hint) {
             this.hint = hint;
             return this;
@@ -304,6 +349,21 @@ public class DialogConfig {
             return this;
         }
 
+        public Builder setAutoDismiss(boolean autoDismiss) {
+            this.autoDismiss = autoDismiss;
+            return this;
+        }
+
+        public Builder setMostrarPositivo(boolean mostrarPositivo) {
+            this.mostrarPositivo = mostrarPositivo;
+            return this;
+        }
+
+        public Builder setMostrarNegativo(boolean mostrarNegativo) {
+            this.mostrarNegativo = mostrarNegativo;
+            return this;
+        }
+
         public DialogConfig build() {
             DialogConfig dialogConfig = new DialogConfig();
             dialogConfig.mostrarEditText     = this.mostrarEditText;
@@ -311,10 +371,12 @@ public class DialogConfig {
             dialogConfig.estiloNegativo      = this.estiloNegativo;
             dialogConfig.mostrarCantidad     = this.mostrarCantidad;
             dialogConfig.textoNegativo       = this.textoNegativo;
+            dialogConfig.mostrarNegativo     = this.mostrarNegativo;
             dialogConfig.mensaje             = this.mensaje;
             dialogConfig.iconoTitulo         = this.iconoTitulo;
             dialogConfig.mostrarImagen       = this.mostrarImagen;
             dialogConfig.mostrarBotones      = this.mostrarBotones;
+            dialogConfig.autoDismiss         = this.autoDismiss;
             dialogConfig.hint                = this.hint;
             dialogConfig.estiloPositivo      = this.estiloPositivo;
             dialogConfig.botones             = this.botones;
@@ -322,7 +384,9 @@ public class DialogConfig {
             dialogConfig.imagen              = this.imagen;
             dialogConfig.estiloNeutral       = this.estiloNeutral;
             dialogConfig.mostrarBotonNeutral = this.mostrarBotonNeutral;
+            dialogConfig.mostrarPositivo     = this.mostrarPositivo;
             dialogConfig.cantidadInicial     = this.cantidadInicial;
+            dialogConfig.mostrarIconoTitulo  = this.mostrarIconoTitulo;
             dialogConfig.textoNeutral        = this.textoNeutral;
             dialogConfig.titulo              = this.titulo;
             return dialogConfig;
