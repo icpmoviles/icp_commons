@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import es.icp.icp_commons.CustomNotification;
 import es.icp.icp_commons.CustomSmartDialog;
 import es.icp.icp_commons.CustomSmartDialogButton;
 import es.icp.icp_commons.CustomTitle;
+import es.icp.icp_commons.DialogConfig;
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Interfaces.CustomDialogButtonClicked;
 import es.icp.icp_commons.Interfaces.CustomDialogResponse;
@@ -28,15 +32,16 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
+import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 
 public class MainActivity extends Activity {
 
-    private Context context = MainActivity.this;
+    private Context             context = MainActivity.this;
     private MainActivityBinding binding;
-    private Handler handler;
-    private CustomSmartDialog customSmartDialog;
+    private Handler             handler;
+    private CustomSmartDialog   customSmartDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,22 +128,146 @@ public class MainActivity extends Activity {
             public void onClickBtn15(View view) {
                 crearDialog14();
             }
+
+            @Override
+            public void onClickBtn16(View view) {
+                crearDialog15();
+            }
+
+            @Override
+            public void onClickBtn17(View view) {
+                crearDialog16();
+            }
+
+            @Override
+            public void onClickBtn18(View view) {
+                crearDialog17();
+            }
+
+            @Override
+            public void onClickBtn19(View view) {
+                crearDialog18();
+            }
+
+            @Override
+            public void onClickBtn20(View view) {
+                crearDialog19();
+            }
+
+            @Override
+            public void onClickBtn21(View view) {
+                crearDialog20();
+            }
         };
     }
 
-    private void crearDialog14() {
-        CustomSmartDialog.dialogGenerico(context, "Diálogo de ejemplo", "Esto es un texto de ejemplo para un diálogo de ejemplo. Esto es un texto de ejemplo para un diálogo de ejemplo. Esto es un texto de ejemplo para un diálogo de ejemplo.", "Nombre y apellidos", 50, new CustomSmartDialogSiNoResponse() {
+    private void crearDialog20() {
+
+    }
+
+    private void crearDialog19() {
+        List<SmartButton> botones  = new ArrayList<>();
+        SmartButton       btnCrear = new SmartButton(context);
+        btnCrear.setText("Crear");
+        btnCrear.setCustomListener(new SmartButton.CustomListener() {
             @Override
-            public void positivo() {
+            public void onClick(String valor, AlertDialog dialog) {
                 CustomNotification customNotification = new CustomNotification.Builder(context)
                         .setSimpleMode()
                         .setDuration(CustomNotification.LENGTH_SHORT)
                         .build();
-                customNotification.showText("SIIIII!!!!!");
+                customNotification.showText("Creando...");
+            }
+        });
+        botones.add(btnCrear);
+        SmartButton btnEditar = new SmartButton(context);
+        btnEditar.setText("Editar");
+        btnEditar.setCustomListener(new SmartButton.CustomListener() {
+            @Override
+            public void onClick(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("Editando...");
+            }
+        });
+        botones.add(btnEditar);
+        SmartButton btnEliminar = new SmartButton(context);
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setCustomListener(new SmartButton.CustomListener() {
+            @Override
+            public void onClick(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("Eliminando...");
+            }
+        });
+        botones.add(btnEliminar);
+
+        DialogConfig config = new DialogConfig.Builder()
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setTitulo("Elija una opción")
+                .setMostrarNegativo(false)
+                .setMostrarPositivo(false)
+                .setAutoDismiss(true)
+                .setMostrarBotones(true)
+                .setBotones(botones)
+                .setCancelable(true)
+                .setMostrarImagenPredeterminada(false)
+                .build();
+
+        CustomSmartDialog.dialogGenerico(context, config, null);
+    }
+
+    private void crearDialog18() {
+        List<SmartButton> botones = new ArrayList<>();
+        SmartButton       boton   = new SmartButton(context);
+        boton.setText("BARCODE");
+        boton.setCustomListener(new SmartButton.CustomListener() {
+            @Override
+            public void onClick(String valor, AlertDialog dialog) {
+                EditText editText = dialog.findViewById(R.id.txtEditText);
+                if (editText != null) {
+                    editText.setText("Barcode leído");
+                }
+            }
+        });
+        botones.add(boton);
+
+        DialogConfig config = new DialogConfig.Builder()
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setTitulo("Pruebas #4")
+                .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.")
+                .setMostrarNegativo(true)
+                .setMostrarPositivo(true)
+                .setAutoDismiss(true)
+                .setTextoNegativo("CANCELAR")
+                .setTextoPositivo("ACEPTAR")
+                .setMostrarEditText(true)
+                .setIconoEditText(context.getDrawable(R.drawable.ic_person_black_24dp))
+                .setMaxLength(10)
+                .setHint("Nombre y apellidos")
+                .setMostrarBotones(true)
+                .setBotones(botones)
+                .build();
+
+        CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText(valor);
             }
 
             @Override
-            public void negativo() {
+            public void negativo(String valor, AlertDialog dialog) {
                 CustomNotification customNotification = new CustomNotification.Builder(context)
                         .setSimpleMode()
                         .setDuration(CustomNotification.LENGTH_SHORT)
@@ -148,19 +277,33 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void crearDialog13() {
-        CustomSmartDialog.dialogTextos(context, "¿Te gusta más el McDonalds que el BurgerKing?", "POSITIVO", "NEGATIVO", new CustomSmartDialogSiNoResponse() {
+    private void crearDialog17() {
+        DialogConfig config = new DialogConfig.Builder()
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setTitulo("Pruebas #3")
+                .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un quantity y dos botones positivo yt negativo.")
+                .setMostrarNegativo(true)
+                .setMostrarPositivo(true)
+                .setAutoDismiss(true)
+                .setTextoNegativo("CANCELAR")
+                .setTextoPositivo("ACEPTAR")
+                .setMostrarCantidad(true)
+                .setCantidadInicial(7)
+                .build();
+
+        CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
-            public void positivo() {
+            public void positivo(String valor, AlertDialog dialog) {
                 CustomNotification customNotification = new CustomNotification.Builder(context)
                         .setSimpleMode()
                         .setDuration(CustomNotification.LENGTH_SHORT)
                         .build();
-                customNotification.showText("SIIIII!!!!!");
+                customNotification.showText(valor);
             }
 
             @Override
-            public void negativo() {
+            public void negativo(String valor, AlertDialog dialog) {
                 CustomNotification customNotification = new CustomNotification.Builder(context)
                         .setSimpleMode()
                         .setDuration(CustomNotification.LENGTH_SHORT)
@@ -168,6 +311,106 @@ public class MainActivity extends Activity {
                 customNotification.showText("No...");
             }
         });
+    }
+
+    private void crearDialog16() {
+        DialogConfig config = new DialogConfig.Builder()
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setTitulo("Pruebas #2")
+                .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y dos botones positivo yt negativo.")
+                .setMostrarNegativo(true)
+                .setMostrarPositivo(true)
+                .setAutoDismiss(true)
+                .setTextoNegativo("CANCELAR")
+                .setTextoPositivo("ACEPTAR")
+                .setMostrarEditText(true)
+                .setIconoEditText(context.getDrawable(R.drawable.ic_person_black_24dp))
+                .setMaxLength(10)
+                .setHint("Nombre y apellidos")
+                .build();
+
+        CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText(valor);
+            }
+
+            @Override
+            public void negativo(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("No...");
+            }
+        });
+    }
+
+    private void crearDialog15() {
+        DialogConfig config = new DialogConfig.Builder()
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setTitulo("Pruebas #1")
+                .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.")
+                .setMostrarNegativo(true)
+                .setMostrarPositivo(false)
+                .setTextoNegativo("CANCELAR")
+                .setMostrarImagen(true)
+                .setImagen(context.getDrawable(R.drawable.ic_thumb_up))
+                .build();
+
+        CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, AlertDialog dialog) {
+                dialog.dismiss();
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("SIIIIII");
+            }
+
+            @Override
+            public void negativo(String valor, AlertDialog dialog) {
+                dialog.dismiss();
+                CustomNotification customNotification = new CustomNotification.Builder(context)
+                        .setSimpleMode()
+                        .setDuration(CustomNotification.LENGTH_SHORT)
+                        .build();
+                customNotification.showText("No...");
+            }
+        });
+    }
+
+    private void crearDialog14() {
+//        CustomSmartDialog.dialogGenerico(context, "Diálogo de ejemplo", "Esto es un texto de ejemplo para un diálogo de ejemplo. Esto es un texto de ejemplo para un diálogo de ejemplo. Esto es un texto de ejemplo para un diálogo de ejemplo.", "Nombre y apellidos", 50, new CustomSmartDialogInputResponse());
+    }
+
+    private void crearDialog13() {
+//        CustomSmartDialog.dialogTextos(context, "¿Te gusta más el McDonalds que el BurgerKing?", "POSITIVO", "NEGATIVO", new CustomSmartDialogSiNoResponse() {
+//            @Override
+//            public void positivo() {
+//                CustomNotification customNotification = new CustomNotification.Builder(context)
+//                        .setSimpleMode()
+//                        .setDuration(CustomNotification.LENGTH_SHORT)
+//                        .build();
+//                customNotification.showText("SIIIII!!!!!");
+//            }
+//
+//            @Override
+//            public void negativo() {
+//                CustomNotification customNotification = new CustomNotification.Builder(context)
+//                        .setSimpleMode()
+//                        .setDuration(CustomNotification.LENGTH_SHORT)
+//                        .build();
+//                customNotification.showText("No...");
+//            }
+//        });
 //        CustomSmartDialog.dialogSiNo(context, "¿Te gusta más el McDonalds que el BurgerKing?", new CustomSmartDialogSiNoResponse() {
 //            @Override
 //            public void positivo() {
@@ -235,7 +478,7 @@ public class MainActivity extends Activity {
                             .setDuration(CustomNotification.LENGTH_SHORT)
                             .build();
                     customNotification.showText(input);
-                } else if (retCode == CANCELAR){
+                } else if (retCode == CANCELAR) {
                     CustomNotification customNotification = new CustomNotification.Builder(context)
                             .setSimpleMode()
                             .setDuration(CustomNotification.LENGTH_SHORT)
@@ -402,7 +645,7 @@ public class MainActivity extends Activity {
     }
 
     private void crearDialog4() {
-        CustomDialog dialog = new CustomDialog(context, Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
+        CustomDialog                   dialog         = new CustomDialog(context, Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
         final ArrayList<StringBuilder> stringBuilders = new ArrayList<>();
         dialog.setTitulo("Rellene la incidencia");
         dialog.setTituloAdvertencia("Incidencia");
@@ -444,8 +687,8 @@ public class MainActivity extends Activity {
     }
 
     private void crearDialog1() {
-        final StringBuilder nombre = new StringBuilder();
-        CustomDialog customDialog = new CustomDialog(context, "Diálogo con editText", Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
+        final StringBuilder nombre       = new StringBuilder();
+        CustomDialog        customDialog = new CustomDialog(context, "Diálogo con editText", Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
         customDialog.AddMensaje("Este diálogo es la primera prueba de un diálogo con editText");
         customDialog.AddEditText("Introduzca su nombre", nombre, 0);
         customDialog.AddButton("Aceptar", new CustomDialogResponse() {
@@ -470,23 +713,47 @@ public class MainActivity extends Activity {
     }
 
 
-
-
     public interface Handler {
         void onClickBtn1(View view);
+
         void onClickBtn2(View view);
+
         void onClickBtn3(View view);
+
         void onClickBtn4(View view);
+
         void onClickBtn5(View view);
+
         void onClickBtn6(View view);
+
         void onClickBtn7(View view);
+
         void onClickBtn8(View view);
+
         void onClickBtn9(View view);
+
         void onClickBtn10(View view);
+
         void onClickBtn11(View view);
+
         void onClickBtn12(View view);
+
         void onClickBtn13(View view);
+
         void onClickBtn14(View view);
+
         void onClickBtn15(View view);
+
+        void onClickBtn16(View view);
+
+        void onClickBtn17(View view);
+
+        void onClickBtn18(View view);
+
+        void onClickBtn19(View view);
+
+        void onClickBtn20(View view);
+
+        void onClickBtn21(View view);
     }
 }

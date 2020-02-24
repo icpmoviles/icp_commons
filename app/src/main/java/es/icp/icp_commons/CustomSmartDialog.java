@@ -6,16 +6,20 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,6 +33,7 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogQResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
+import es.icp.icp_commons.Objects.SmartButton;
 
 public class CustomSmartDialog {
 
@@ -40,6 +45,7 @@ public class CustomSmartDialog {
     private        Message      message;
     private static AlertDialog  dialog;
     private        boolean      generico = false;
+    private static EditText     txtEditText;
 
     public CustomSmartDialog(Context context) {
         this.context = context;
@@ -66,6 +72,30 @@ public class CustomSmartDialog {
 
     public boolean isShowing() {
         return dialog.isShowing();
+    }
+
+    public void setText(String text) {
+        if (txtEditText != null) {
+            txtEditText.setText(text);
+        }
+    }
+
+    @Nullable
+    public String getText() {
+        if (txtEditText != null) {
+            return txtEditText.getText().toString();
+        } else {
+            return null;
+        }
+    }
+
+    @Nullable
+    public EditText getEditText() {
+        if (txtEditText != null) {
+            return txtEditText;
+        } else {
+            return null;
+        }
     }
 
     public void show() {
@@ -246,7 +276,8 @@ public class CustomSmartDialog {
             //--------------- EDITTEXT -------------------
             LinearLayout    llEditText     = mainContainer.findViewById(R.id.editText);
             TextInputLayout txtInputLayout = mainContainer.findViewById(R.id.txtInputLayout);
-            TextView        txtEditText    = llEditText.findViewById(R.id.txtEditText);
+            txtEditText = llEditText.findViewById(R.id.txtEditText);
+            ImageView startIcon = llEditText.findViewById(R.id.startIcon);
             //----------------------------------------------------------------------------------------------------
 
             //-------------------------------------------------------
@@ -262,12 +293,18 @@ public class CustomSmartDialog {
             ImageView imagenOpcional = mainContainer.findViewById(R.id.imagenOpcional);
             //----------------------------------------------------------------------------------------------------
 
+            //-------------------------------------------------------
+            //--------------- BUTTONS -------------------
+            LinearLayout llBotones = mainContainer.findViewById(R.id.llBotones);
+            //----------------------------------------------------------------------------------------------------
+
             txtTitulo.setText(config.getTitulo());
             txtMensaje.setText(config.getMensaje());
             if (config.isMostrarIconoTitulo()) {
                 iconoTitulo.setVisibility(View.VISIBLE);
                 iconoTitulo.setImageDrawable(config.getIconoTitulo());
-            } else if (config.isMostrarPositivo()) {
+            }
+            if (config.isMostrarPositivo()) {
                 btnPositivo.setVisibility(View.VISIBLE);
                 btnPositivo.setText(config.getTextoPositivo());
                 if (!config.isMostrarNegativo()) btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
@@ -277,9 +314,11 @@ public class CustomSmartDialog {
                         if (config.isAutoDismiss()) dialog.dismiss();
                         if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialog);
                         else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialog);
+                        else listener.negativo("Negativo", dialog);
                     }
                 });
-            } else if (config.isMostrarNegativo()) {
+            }
+            if (config.isMostrarNegativo()) {
                 btnNegativo.setVisibility(View.VISIBLE);
                 btnNegativo.setText(config.getTextoNegativo());
                 if (!config.isMostrarPositivo()) btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
@@ -289,6 +328,7 @@ public class CustomSmartDialog {
                         if (config.isAutoDismiss()) dialog.dismiss();
                         if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialog);
                         else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialog);
+                        else listener.negativo("Negativo", dialog);
                     }
                 });
             }
@@ -296,16 +336,60 @@ public class CustomSmartDialog {
             if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------
                 llEditText.setVisibility(View.VISIBLE);
                 txtInputLayout.setHint(config.getHint());
-                txtInputLayout.setCounterMaxLength(config.getMaxLength());
+                if (config.getIconoEditText() != null) startIcon.setImageDrawable(config.getIconoEditText());
+                if (config.getMaxLength() != 0) {
+                    txtInputLayout.setCounterMaxLength(config.getMaxLength());
+                    txtEditText.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            } else if (config.isMostrarBotones()) { //----------------------------------------------------------------------------
-                // TODO: 21/02/2020 Mostrar botones y configurarlos
+                        }
 
-            } else if (config.isMostrarBotonNeutral()) { //-----------------------------------------------------------------------
-                // TODO: 21/02/2020 Mostrar botón neutral y configurarlo
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            } else if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
-                // TODO: 21/02/2020 Mostrar View de cantidad y configurarla
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            if (s.toString().length() > config.getMaxLength()) {
+                                startIcon.setImageTintList(ColorStateList.valueOf(context.getColor(android.R.color.holo_red_light)));
+                            } else {
+                                startIcon.setImageTintList(null);
+                            }
+                        }
+                    });
+                }
+
+            }
+            if (config.isMostrarBotones()) { //----------------------------------------------------------------------------
+                llBotones.setVisibility(View.VISIBLE);
+                List<SmartButton> botones = config.getBotones();
+                for (SmartButton boton : botones) {
+//                    if (boton.getBackground() == null) {
+//                        boton.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
+//                    }
+                    android.widget.Button b = new android.widget.Button(context);
+                    b.setText(boton.getText());
+                    b.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
+                    b.setAllCaps(false);
+                    b.setTextColor(context.getColor(R.color.white));
+                    b.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (config.isAutoDismiss()) dialog.dismiss();
+                            boton.getCustomListener().onClick("", dialog);
+                        }
+                    });
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, Utils.dpToPx(context, 5), 0, Utils.dpToPx(context, 5));
+                    b.setLayoutParams(layoutParams);
+                    b.setVisibility(View.VISIBLE);
+                    llBotones.addView(b);
+                }
+
+            }
+            if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
                 quantity.setVisibility(View.VISIBLE);
                 txtCantidad.setText(String.valueOf(config.getCantidadInicial()));
                 btnMas.setOnClickListener(new View.OnClickListener() {
@@ -325,16 +409,19 @@ public class CustomSmartDialog {
                     }
                 });
 
-            } else if (config.isMostrarImagen()) { //----------------------------------------------------------------------------
-                // TODO: 21/02/2020 Mostrar imagen y configurarla
+            }
+            if (config.isMostrarImagen()) { //----------------------------------------------------------------------------
                 imagenOpcional.setVisibility(View.VISIBLE);
                 imagen.setVisibility(View.GONE);
                 imagenOpcional.setImageDrawable(config.getImagen());
             } //-----------------------------------------------------------------------------------------------------------------
-
+            if (!config.isMostrarImagenPredeterminada()) {
+                imagen.setVisibility(View.GONE);
+            }
             return new CustomSmartDialog.Builder(context)
                     .addView(mainContainer)
                     .isGenerico(true)
+                    .isCancelable(config.isCancelable())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

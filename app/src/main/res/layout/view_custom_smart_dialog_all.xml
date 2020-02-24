@@ -78,6 +78,39 @@
                 android:layout_margin="16dp" />
 
             <LinearLayout
+                android:id="@+id/llBotones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_blue_button"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="#fff"
+                    android:text="button1"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_blue_button"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="#fff"
+                    android:text="button222222222222222222222222"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/botonesSiNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
