@@ -1,6 +1,7 @@
 package es.icp.icp_commons;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -60,13 +61,13 @@ public class CustomSiNo extends LinearLayout {
             btnSi.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.positivo();
+                    listener.positivo("si", null);
                 }
             });
             btnNo.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.negativo();
+                    listener.negativo("no", null);
                 }
             });
         }

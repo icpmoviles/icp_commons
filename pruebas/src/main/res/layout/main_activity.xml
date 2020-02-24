@@ -106,6 +106,42 @@
                 android:onClick="@{handler::onClickBtn15}"
                 android:text="MOSTRAR SMARTDIALOG ALL" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn16}"
+                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 1" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn17}"
+                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 2" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn18}"
+                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 3" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn19}"
+                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 4" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn20}"
+                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 5" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn21}"
+                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 6" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

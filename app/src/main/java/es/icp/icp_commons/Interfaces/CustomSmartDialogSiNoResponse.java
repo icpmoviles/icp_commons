@@ -1,9 +1,9 @@
 package es.icp.icp_commons.Interfaces;
 
-import android.content.DialogInterface;
+
+import androidx.appcompat.app.AlertDialog;
 
 public interface CustomSmartDialogSiNoResponse {
-    void positivo();
-
-    void negativo();
+    void positivo(String valor, AlertDialog dialog);
+    void negativo(String valor, AlertDialog dialog);
 }
