@@ -18,8 +18,8 @@ public class DialogConfig {
     private int               estiloNegativo              = 0; // TODO: 21/02/2020
     private boolean           mostrarCantidad             = false;
     private boolean           mostrarImagen               = false;
-    private boolean           mostrarBotones              = false; // TODO: 21/02/2020
-    private List<SmartButton> botones                     = new ArrayList<>(); // TODO: 21/02/2020
+    private boolean           mostrarBotones              = false;
+    private List<SmartButton> botones                     = new ArrayList<>();
     private Drawable          imagen                      = null;
     private String            titulo                      = "";
     private String            mensaje                     = "";

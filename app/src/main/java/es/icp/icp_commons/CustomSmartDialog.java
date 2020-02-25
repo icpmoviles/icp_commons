@@ -298,15 +298,15 @@ public class CustomSmartDialog {
             LinearLayout llBotones = mainContainer.findViewById(R.id.llBotones);
             //----------------------------------------------------------------------------------------------------
 
-            txtTitulo.setText(config.getTitulo());
-            txtMensaje.setText(config.getMensaje());
+            txtTitulo.setText(Html.fromHtml(config.getTitulo()));
+            txtMensaje.setText(Html.fromHtml(config.getMensaje()));
             if (config.isMostrarIconoTitulo()) {
                 iconoTitulo.setVisibility(View.VISIBLE);
                 iconoTitulo.setImageDrawable(config.getIconoTitulo());
             }
             if (config.isMostrarPositivo()) {
                 btnPositivo.setVisibility(View.VISIBLE);
-                btnPositivo.setText(config.getTextoPositivo());
+                btnPositivo.setText(Html.fromHtml(config.getTextoPositivo()));
                 if (!config.isMostrarNegativo()) btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
                 btnPositivo.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -320,7 +320,7 @@ public class CustomSmartDialog {
             }
             if (config.isMostrarNegativo()) {
                 btnNegativo.setVisibility(View.VISIBLE);
-                btnNegativo.setText(config.getTextoNegativo());
+                btnNegativo.setText(Html.fromHtml(config.getTextoNegativo()));
                 if (!config.isMostrarPositivo()) btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
                 btnNegativo.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -335,7 +335,7 @@ public class CustomSmartDialog {
 
             if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------
                 llEditText.setVisibility(View.VISIBLE);
-                txtInputLayout.setHint(config.getHint());
+                txtInputLayout.setHint(Html.fromHtml(config.getHint()));
                 if (config.getIconoEditText() != null) startIcon.setImageDrawable(config.getIconoEditText());
                 if (config.getMaxLength() != 0) {
                     txtInputLayout.setCounterMaxLength(config.getMaxLength());
@@ -370,7 +370,7 @@ public class CustomSmartDialog {
 //                        boton.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
 //                    }
                     android.widget.Button b = new android.widget.Button(context);
-                    b.setText(boton.getText());
+                    b.setText(Html.fromHtml(boton.getText().toString()));
                     b.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
                     b.setAllCaps(false);
                     b.setTextColor(context.getColor(R.color.white));
@@ -391,7 +391,7 @@ public class CustomSmartDialog {
             }
             if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
                 quantity.setVisibility(View.VISIBLE);
-                txtCantidad.setText(String.valueOf(config.getCantidadInicial()));
+                txtCantidad.setText(Html.fromHtml(String.valueOf(config.getCantidadInicial())));
                 btnMas.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

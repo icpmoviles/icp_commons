@@ -20,127 +20,141 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn1}"
-                android:text="MOSTRAR NOTIFICACIÓN 1" />
+                android:gravity="start|center_vertical"
+                android:text="001 - MOSTRAR NOTIFICACIÓN 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn2}"
-                android:text="MOSTRAR DIÁLOGO CON EDITTEXT 1" />
+                android:gravity="start|center_vertical"
+                android:text="002 - MOSTRAR DIÁLOGO CON EDITTEXT 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn3}"
-                android:text="MOSTRAR DIÁLOGO CON EDITTEXT 2" />
+                android:gravity="start|center_vertical"
+                android:text="003 - MOSTRAR DIÁLOGO CON EDITTEXT 2" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn4}"
-                android:text="MOSTRAR DIÁLOGO CON EDITTEXT 3" />
+                android:gravity="start|center_vertical"
+                android:text="004 - MOSTRAR DIÁLOGO CON EDITTEXT 3" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn5}"
-                android:text="MOSTRAR DIÁLOGO CON EDITTEXT SETERROR 1" />
+                android:gravity="start|center_vertical"
+                android:text="005 - MOSTRAR DIÁLOGO CON EDITTEXT SETERROR 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn6}"
-                android:text="MOSTRAR SMARTDIALOG CON INPUT 1" />
+                android:gravity="start|center_vertical"
+                android:text="006 - MOSTRAR SMARTDIALOG CON INPUT 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn7}"
-                android:text="MOSTRAR SMARTDIALOG CON INPUT 2" />
+                android:gravity="start|center_vertical"
+                android:text="007 - MOSTRAR SMARTDIALOG CON INPUT 2" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn8}"
-                android:text="MOSTRAR SMARTDIALOG CON QUANTITY 1" />
+                android:gravity="start|center_vertical"
+                android:text="008 - MOSTRAR SMARTDIALOG CON QUANTITY 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn9}"
-                android:text="MOSTRAR SMARTDIALOG CON BUTTONS 1" />
+                android:gravity="start|center_vertical"
+                android:text="009 - MOSTRAR SMARTDIALOG CON BUTTONS 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn10}"
-                android:text="MOSTRAR SMARTDIALOG CON EXTRAS 1" />
+                android:gravity="start|center_vertical"
+                android:text="010 - MOSTRAR SMARTDIALOG CON EXTRAS 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn11}"
-                android:text="MOSTRAR SMARTDIALOG CON IMAGE 1" />
+                android:gravity="start|center_vertical"
+                android:text="011 - MOSTRAR SMARTDIALOG CON IMAGE 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn12}"
-                android:text="MOSTRAR SMARTDIALOG TOAST 1" />
+                android:gravity="start|center_vertical"
+                android:text="012 - MOSTRAR SMARTDIALOG TOAST 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn13}"
-                android:text="MOSTRAR SMARTDIALOG TOAST LISTENER 1" />
+                android:gravity="start|center_vertical"
+                android:text="013 - MOSTRAR SMARTDIALOG TOAST LISTENER 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn14}"
-                android:text="MOSTRAR SMARTDIALOG SINO 1" />
+                android:gravity="start|center_vertical"
+                android:text="014 - MOSTRAR SMARTDIALOG SINO 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn15}"
-                android:text="MOSTRAR SMARTDIALOG ALL" />
+                android:gravity="start|center_vertical"
+                android:text="015 - MOSTRAR SMARTDIALOG ALL" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn16}"
-                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 1" />
+                android:gravity="start|center_vertical"
+                android:text="016 - MOSTRAR SMARTDIALOG DIALOGCONFIG 1" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn17}"
-                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 2" />
+                android:gravity="start|center_vertical"
+                android:text="017 - MOSTRAR SMARTDIALOG DIALOGCONFIG 2" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn18}"
-                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 3" />
+                android:gravity="start|center_vertical"
+                android:text="018 - MOSTRAR SMARTDIALOG DIALOGCONFIG 3" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn19}"
-                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 4" />
+                android:gravity="start|center_vertical"
+                android:text="019 - MOSTRAR SMARTDIALOG DIALOGCONFIG 4" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn20}"
-                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 5" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="@{handler::onClickBtn21}"
-                android:text="MOSTRAR SMARTDIALOG DIALOGCONFIG 6" />
+                android:gravity="start|center_vertical"
+                android:text="020 - MOSTRAR SMARTDIALOG DIALOGCONFIG 5" />
 
             </LinearLayout>
 
