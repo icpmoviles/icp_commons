@@ -270,6 +270,7 @@ public class CustomSmartDialog {
             android.widget.Button btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
             ImageView             imagen      = mainContainer.findViewById(R.id.imagen);
             ImageView             iconoTitulo = mainContainer.findViewById(R.id.iconoTitulo);
+            LinearLayout botonesSiNo = mainContainer.findViewById(R.id.botonesSiNo);
             //----------------------------------------------------------------------------------------------------
 
             //-------------------------------------------------------
@@ -314,7 +315,7 @@ public class CustomSmartDialog {
                         if (config.isAutoDismiss()) dialog.dismiss();
                         if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialog);
                         else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialog);
-                        else listener.positivo("Negativo", dialog);
+                        else listener.positivo("Positivo", dialog);
                     }
                 });
             }
@@ -382,10 +383,11 @@ public class CustomSmartDialog {
                         }
                     });
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, Utils.dpToPx(context, 5), 0, Utils.dpToPx(context, 5));
+                    layoutParams.setMargins(Utils.dpToPx(context, 5), Utils.dpToPx(context, 5), Utils.dpToPx(context, 5), Utils.dpToPx(context, 5));
                     b.setLayoutParams(layoutParams);
                     b.setVisibility(View.VISIBLE);
-                    llBotones.addView(b);
+                    if (botones.size() != 1) llBotones.addView(b);
+                    else botonesSiNo.addView(b, 0);
                 }
 
             }

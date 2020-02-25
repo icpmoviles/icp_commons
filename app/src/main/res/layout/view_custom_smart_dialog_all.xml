@@ -89,10 +89,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_blue_button"
-                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
                     android:visibility="gone"
                     tools:visibility="visible"
-                    android:layout_marginBottom="5dp"
                     android:textColor="#fff"
                     android:text="button1"/>
 
@@ -102,20 +101,30 @@
                     android:background="@drawable/rounded_blue_button"
                     android:visibility="gone"
                     tools:visibility="visible"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_margin="5dp"
                     android:textColor="#fff"
-                    android:text="button222222222222222222222222"/>
+                    android:text="button2"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/botonesSiNo"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="8dp"
                 android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:text="NEUTRAL"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/rounded_blue_button"
+                    android:textColor="#fff" />
 
                 <Button
                     android:id="@+id/btnNegativo"
@@ -124,7 +133,7 @@
                     android:visibility="gone"
                     tools:visibility="visible"
                     android:text="@string/custom_smart_dialog_cancelar"
-                    android:layout_marginEnd="5dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/rounded_red_button"
                     android:textColor="#fff" />
 
@@ -132,7 +141,7 @@
                     android:id="@+id/btnPositivo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/rounded_green_button"
                     android:text="@string/custom_smart_dialog_aceptar"
                     android:textColor="#fff"
