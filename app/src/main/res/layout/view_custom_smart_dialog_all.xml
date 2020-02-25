@@ -132,12 +132,12 @@
                     android:id="@+id/btnPositivo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:text="@string/custom_smart_dialog_aceptar"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/rounded_green_button"
-                    android:textColor="#fff" />
+                    android:text="@string/custom_smart_dialog_aceptar"
+                    android:textColor="#fff"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
