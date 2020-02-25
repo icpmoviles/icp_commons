@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -153,16 +152,7 @@ public class MainActivity extends Activity {
             public void onClickBtn20(View view) {
                 crearDialog19();
             }
-
-            @Override
-            public void onClickBtn21(View view) {
-                crearDialog20();
-            }
         };
-    }
-
-    private void crearDialog20() {
-
     }
 
     private void crearDialog19() {
@@ -318,7 +308,7 @@ public class MainActivity extends Activity {
                 .setMostrarIconoTitulo(true)
                 .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
                 .setTitulo("Pruebas #2")
-                .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y dos botones positivo yt negativo.")
+                .setMensaje("<span style='color:red'>Mensaje de prueba 1número1 con un diálogo que acepta un editText y dos botones positivo yt negativo.</span>")
                 .setMostrarNegativo(true)
                 .setMostrarPositivo(true)
                 .setAutoDismiss(true)
@@ -753,7 +743,5 @@ public class MainActivity extends Activity {
         void onClickBtn19(View view);
 
         void onClickBtn20(View view);
-
-        void onClickBtn21(View view);
     }
 }
