@@ -235,7 +235,7 @@ public class MainActivity extends Activity {
                 .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.")
                 .setMostrarNegativo(true)
                 .setMostrarPositivo(true)
-                .setAutoDismiss(true)
+                .setAutoDismiss(false)
                 .setTextoNegativo("CANCELAR")
                 .setTextoPositivo("ACEPTAR")
                 .setMostrarEditText(true)
@@ -249,6 +249,7 @@ public class MainActivity extends Activity {
         CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
             public void positivo(String valor, AlertDialog dialog) {
+                dialog.dismiss();
                 CustomNotification customNotification = new CustomNotification.Builder(context)
                         .setSimpleMode()
                         .setDuration(CustomNotification.LENGTH_SHORT)
@@ -258,6 +259,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void negativo(String valor, AlertDialog dialog) {
+                dialog.dismiss();
                 CustomNotification customNotification = new CustomNotification.Builder(context)
                         .setSimpleMode()
                         .setDuration(CustomNotification.LENGTH_SHORT)
