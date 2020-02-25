@@ -314,7 +314,7 @@ public class CustomSmartDialog {
                         if (config.isAutoDismiss()) dialog.dismiss();
                         if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialog);
                         else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialog);
-                        else listener.negativo("Negativo", dialog);
+                        else listener.positivo("Negativo", dialog);
                     }
                 });
             }
