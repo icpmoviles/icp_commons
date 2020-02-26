@@ -1,7 +1,6 @@
 package es.icp.icp_commons;
 
 import android.graphics.drawable.Drawable;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,15 @@ public class DialogConfig {
     private boolean           mostrarNegativo             = true;
     private boolean           mostrarImagenPredeterminada = true;
     private boolean           cancelable                  = false;
+    private int               colorTitulo                 = 0;
+
+    public int getColorTitulo() {
+        return colorTitulo;
+    }
+
+    private void setColorTitulo(int colorTitulo) {
+        this.colorTitulo = colorTitulo;
+    }
 
     public boolean isCancelable() {
         return cancelable;
@@ -242,6 +250,7 @@ public class DialogConfig {
         private boolean           mostrarNegativo             = true;
         private boolean           mostrarImagenPredeterminada = true;
         private boolean           cancelable                  = false;
+        private int               colorTitulo                 = 0;
 
         public Builder() {
         }
@@ -365,6 +374,11 @@ public class DialogConfig {
             return this;
         }
 
+        public Builder setColorTitulo(int colorTitulo) {
+            this.colorTitulo = colorTitulo;
+            return this;
+        }
+
         public DialogConfig build() {
             DialogConfig dialogConfig = new DialogConfig();
             dialogConfig.mostrarEditText             = this.mostrarEditText;
@@ -390,6 +404,7 @@ public class DialogConfig {
             dialogConfig.titulo                      = this.titulo;
             dialogConfig.mostrarImagenPredeterminada = this.mostrarImagenPredeterminada;
             dialogConfig.cancelable                  = this.cancelable;
+            dialogConfig.colorTitulo                 = this.colorTitulo;
             return dialogConfig;
         }
     }

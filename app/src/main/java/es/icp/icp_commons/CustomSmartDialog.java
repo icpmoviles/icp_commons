@@ -301,6 +301,9 @@ public class CustomSmartDialog {
 
             txtTitulo.setText(Html.fromHtml(config.getTitulo()));
             txtMensaje.setText(Html.fromHtml(config.getMensaje()));
+            if (config.getColorTitulo() != 0){
+                txtTitulo.setBackgroundColor(context.getColor(config.getColorTitulo()));
+            }
             if (config.isMostrarIconoTitulo()) {
                 iconoTitulo.setVisibility(View.VISIBLE);
                 iconoTitulo.setImageDrawable(config.getIconoTitulo());
@@ -308,7 +311,13 @@ public class CustomSmartDialog {
             if (config.isMostrarPositivo()) {
                 btnPositivo.setVisibility(View.VISIBLE);
                 btnPositivo.setText(Html.fromHtml(config.getTextoPositivo()));
-                if (!config.isMostrarNegativo()) btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                if (!config.isMostrarNegativo()) {
+                    if (config.getColorTitulo() != 0){
+                        btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
+                    } else {
+                        btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                    }
+                }
                 btnPositivo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -322,7 +331,13 @@ public class CustomSmartDialog {
             if (config.isMostrarNegativo()) {
                 btnNegativo.setVisibility(View.VISIBLE);
                 btnNegativo.setText(Html.fromHtml(config.getTextoNegativo()));
-                if (!config.isMostrarPositivo()) btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                if (!config.isMostrarPositivo()) {
+                    if (config.getColorTitulo() != 0){
+                        btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
+                    } else {
+                        btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                    }
+                }
                 btnNegativo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
