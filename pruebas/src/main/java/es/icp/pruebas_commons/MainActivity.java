@@ -235,6 +235,7 @@ public class MainActivity extends Activity {
                 .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.")
                 .setMostrarNegativo(true)
                 .setMostrarPositivo(true)
+                .setColorTitulo(android.R.color.holo_red_light)
                 .setAutoDismiss(false)
                 .setTextoNegativo("CANCELAR")
                 .setTextoPositivo("ACEPTAR")
@@ -352,6 +353,7 @@ public class MainActivity extends Activity {
                 .setMostrarNegativo(true)
                 .setMostrarPositivo(false)
                 .setTextoNegativo("CANCELAR")
+                .setColorTitulo(android.R.color.holo_red_light)
                 .setMostrarImagen(true)
                 .setImagen(context.getDrawable(R.drawable.ic_thumb_up))
                 .build();
