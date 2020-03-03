@@ -266,8 +266,11 @@ public class CustomNotification extends FrameLayout {
 
     @SuppressLint("SetTextI18n")
     private void actualizarPorcentaje() {
-        int porcentaje = ( getProgress() * 100 ) / getMax();
-        ((TextView) findViewById(R.id.txtPorcentajeProgress)).setText(porcentaje + "%");
+        int max = getMax();
+        if (max > 0) {
+            int porcentaje = (getProgress() * 100) / getMax();
+            ((TextView) findViewById(R.id.txtPorcentajeProgress)).setText(porcentaje + "%");
+        }
     }
 
     /**
