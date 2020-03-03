@@ -265,8 +265,11 @@ public class CustomNotification extends FrameLayout {
 
     @SuppressLint("SetTextI18n")
     private void actualizarPorcentaje() {
-        int porcentaje = (getProgress() * 100) / getMax();
-        ((TextView) findViewById(R.id.txtPorcentajeProgress)).setText(porcentaje + "%");
+        int max = getMax();
+        if (max > 0) {
+            int porcentaje = (getProgress() * 100) / getMax();
+            ((TextView) findViewById(R.id.txtPorcentajeProgress)).setText(porcentaje + "%");
+        }
     }
 
     /**
@@ -278,7 +281,7 @@ public class CustomNotification extends FrameLayout {
     public int getProgress() {
         if (this.mode != NOTIFICATION_PROGRESS) {
             Toast.makeText(activity, R.string.custom_notification_no_progress, Toast.LENGTH_SHORT).show();
-            return 0;
+            return 1;
         } else {
             return ((ProgressBar) findViewById(R.id.progressBar)).getProgress();
         }
@@ -293,7 +296,7 @@ public class CustomNotification extends FrameLayout {
     public int getMax() {
         if (this.mode != NOTIFICATION_PROGRESS) {
             Toast.makeText(activity, R.string.custom_notification_no_progress, Toast.LENGTH_SHORT).show();
-            return 0;
+            return 1;
         } else {
             return ((ProgressBar) findViewById(R.id.progressBar)).getMax();
         }
