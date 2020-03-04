@@ -1,5 +1,6 @@
 package es.icp.icp_commons;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
@@ -99,6 +100,7 @@ public class CustomSmartDialog {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     public void show() {
         AlertDialog.Builder builder;
         if (generico) {
