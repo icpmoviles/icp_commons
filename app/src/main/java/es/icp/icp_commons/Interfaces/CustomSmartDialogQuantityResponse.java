@@ -2,6 +2,9 @@ package es.icp.icp_commons.Interfaces;
 
 import android.content.DialogInterface;
 
+/**
+ * @deprecated Usar CustomSmartDialogQResponse
+ */
 @Deprecated
 public interface CustomSmartDialogQuantityResponse {
 

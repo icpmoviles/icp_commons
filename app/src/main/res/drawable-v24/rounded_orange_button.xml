@@ -2,14 +2,14 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke
         android:width="1dp"
-        android:color="@color/btnOrange" />
+        android:color="@color/colorAccent" />
 
     <!--<gradient android:startColor="#e2d7d2" android:centerColor="#e2d7d2" android:endColor="#e2d7d2" android:angle="90" /> -->
     <gradient
         android:angle="90"
-        android:centerColor="@color/btnOrange"
-        android:endColor="@color/btnOrange"
-        android:startColor="@color/btnOrange" />
+        android:centerColor="@color/colorAccent"
+        android:endColor="@color/colorAccent"
+        android:startColor="@color/colorAccent" />
 
     <padding
         android:left="1dp"
