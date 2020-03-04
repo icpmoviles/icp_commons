@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.internal.$Gson$Preconditions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -298,6 +299,10 @@ public class CustomSmartDialog {
             //--------------- BUTTONS -------------------
             LinearLayout llBotones = mainContainer.findViewById(R.id.llBotones);
             //----------------------------------------------------------------------------------------------------
+
+            if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(context);
+            if (config.getIconoEditText() == null && config.getIconoEditTextInt() != 0) config.setIconoEditText(context);
+            if (config.getIconoTitulo() == null && config.getIconoTituloInt() != 0) config.setIconoTitulo(context);
 
             txtTitulo.setText(Html.fromHtml(config.getTitulo()));
             txtMensaje.setText(Html.fromHtml(config.getMensaje()));

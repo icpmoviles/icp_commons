@@ -54,25 +54,33 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put("RUTA_IMAGEN", accion.getRUTA_IMAGEN());
 
         db.insert("ACCIONES", null, values);
+        db.close();
     }
 
     public List<Accion> getAcciones() {
-        List<Accion> acciones = new ArrayList<>();
-
-        SQLiteDatabase db     = this.getReadableDatabase();
-        Cursor         cursor = db.rawQuery("SELECT * FROM ACCIONES ORDER BY ID ASC", null);
-        if (cursor.moveToFirst()) {
-            do {
-                Accion accion = new Accion(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
-                acciones.add(accion);
-            } while (cursor.moveToNext());
+        List<Accion>   acciones = new ArrayList<>();
+        SQLiteDatabase db       = this.getReadableDatabase();
+        Cursor         cursor   = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM ACCIONES ORDER BY ID ASC", null);
+            if (cursor.moveToFirst()) {
+                do {
+                    Accion accion = new Accion(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+                    acciones.add(accion);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+            db.close();
         }
-        cursor.close();
         return acciones;
     }
 
     public void removeAccion(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM ACCIONES WHERE ID = " + id);
+        db.close();
     }
 }
