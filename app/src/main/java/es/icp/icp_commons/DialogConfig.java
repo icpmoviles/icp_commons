@@ -1,7 +1,9 @@
 package es.icp.icp_commons;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import java.net.ContentHandler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ public class DialogConfig {
 
     private boolean           mostrarEditText             = false;
     private Drawable          iconoEditText               = null;
+    private int               iconoEditTextInt            = 0;
     private String            textoPositivo               = "SI";
     private String            textoNegativo               = "NO";
     private int               estiloPositivo              = 0; // TODO: 21/02/2020
@@ -20,9 +23,11 @@ public class DialogConfig {
     private boolean           mostrarBotones              = false;
     private List<SmartButton> botones                     = new ArrayList<>();
     private Drawable          imagen                      = null;
+    private int               imagenInt                   = 0;
     private String            titulo                      = "";
     private String            mensaje                     = "";
     private Drawable          iconoTitulo                 = null;
+    private int               iconoTituloInt              = 0;
     private boolean           mostrarIconoTitulo          = false;
     private String            hint                        = "";
     private int               maxLength                   = 0;
@@ -33,6 +38,30 @@ public class DialogConfig {
     private boolean           mostrarImagenPredeterminada = true;
     private boolean           cancelable                  = false;
     private int               colorTitulo                 = 0;
+
+    public int getIconoEditTextInt() {
+        return iconoEditTextInt;
+    }
+
+    private void setIconoEditTextInt(int iconoEditTextInt) {
+        this.iconoEditTextInt = iconoEditTextInt;
+    }
+
+    public int getImagenInt() {
+        return imagenInt;
+    }
+
+    private void setImagenInt(int imagenInt) {
+        this.imagenInt = imagenInt;
+    }
+
+    public int getIconoTituloInt() {
+        return iconoTituloInt;
+    }
+
+    private void setIconoTituloInt(int iconoTituloInt) {
+        this.iconoTituloInt = iconoTituloInt;
+    }
 
     public int getColorTitulo() {
         return colorTitulo;
@@ -64,6 +93,10 @@ public class DialogConfig {
 
     private void setIconoEditText(Drawable iconoEditText) {
         this.iconoEditText = iconoEditText;
+    }
+
+    public void setIconoEditText(Context context) {
+        if (iconoEditTextInt != 0) iconoEditText = context.getDrawable(iconoEditTextInt);
     }
 
     public boolean isMostrarPositivo() {
@@ -206,6 +239,10 @@ public class DialogConfig {
         this.imagen = imagen;
     }
 
+    public void setImagen(Context context) {
+        if (imagenInt != 0) imagen = context.getDrawable(imagenInt);
+    }
+
     private void setTitulo(String titulo) {
         this.titulo = titulo;
     }
@@ -216,6 +253,10 @@ public class DialogConfig {
 
     private void setIconoTitulo(Drawable iconoTitulo) {
         this.iconoTitulo = iconoTitulo;
+    }
+
+    public void setIconoTitulo(Context context) {
+        if (iconoTituloInt != 0) iconoTitulo = context.getDrawable(iconoTituloInt);
     }
 
     private void setHint(String hint) {
@@ -229,6 +270,7 @@ public class DialogConfig {
     public static final class Builder {
         private boolean           mostrarEditText             = false;
         private Drawable          iconoEditText               = null;
+        private int               iconoEditTextInt            = 0;
         private String            textoPositivo               = "SI";
         private String            textoNegativo               = "NO";
         private int               estiloPositivo              = 0;
@@ -238,9 +280,11 @@ public class DialogConfig {
         private boolean           mostrarBotones              = false;
         private List<SmartButton> botones                     = new ArrayList<>();
         private Drawable          imagen                      = null;
+        private int               imagenInt                   = 0;
         private String            titulo                      = "";
         private String            mensaje                     = "";
         private Drawable          iconoTitulo                 = null;
+        private int               iconoTituloInt              = 0;
         private boolean           mostrarIconoTitulo          = false;
         private String            hint                        = "";
         private int               maxLength                   = 0;
@@ -266,6 +310,11 @@ public class DialogConfig {
 
         public Builder setIconoEditText(Drawable iconoEditText) {
             this.iconoEditText = iconoEditText;
+            return this;
+        }
+
+        public Builder setIconoEditText(int iconoEditTextInt) {
+            this.iconoEditTextInt = iconoEditTextInt;
             return this;
         }
 
@@ -314,6 +363,11 @@ public class DialogConfig {
             return this;
         }
 
+        public Builder setImagen(int imagenInt) {
+            this.imagenInt = imagenInt;
+            return this;
+        }
+
         public Builder setTitulo(String titulo) {
             this.titulo = titulo;
             return this;
@@ -326,6 +380,11 @@ public class DialogConfig {
 
         public Builder setIconoTitulo(Drawable iconoTitulo) {
             this.iconoTitulo = iconoTitulo;
+            return this;
+        }
+
+        public Builder setIconoTitulo(int iconoTituloInt) {
+            this.iconoTituloInt = iconoTituloInt;
             return this;
         }
 
@@ -383,6 +442,7 @@ public class DialogConfig {
             DialogConfig dialogConfig = new DialogConfig();
             dialogConfig.mostrarEditText             = this.mostrarEditText;
             dialogConfig.iconoEditText               = this.iconoEditText;
+            dialogConfig.iconoEditTextInt            = this.iconoEditTextInt;
             dialogConfig.textoPositivo               = this.textoPositivo;
             dialogConfig.estiloNegativo              = this.estiloNegativo;
             dialogConfig.mostrarCantidad             = this.mostrarCantidad;
@@ -390,6 +450,7 @@ public class DialogConfig {
             dialogConfig.mostrarNegativo             = this.mostrarNegativo;
             dialogConfig.mensaje                     = this.mensaje;
             dialogConfig.iconoTitulo                 = this.iconoTitulo;
+            dialogConfig.iconoTituloInt              = this.iconoTituloInt;
             dialogConfig.mostrarImagen               = this.mostrarImagen;
             dialogConfig.mostrarBotones              = this.mostrarBotones;
             dialogConfig.autoDismiss                 = this.autoDismiss;
@@ -398,6 +459,7 @@ public class DialogConfig {
             dialogConfig.botones                     = this.botones;
             dialogConfig.maxLength                   = this.maxLength;
             dialogConfig.imagen                      = this.imagen;
+            dialogConfig.imagenInt                   = this.imagenInt;
             dialogConfig.mostrarPositivo             = this.mostrarPositivo;
             dialogConfig.cantidadInicial             = this.cantidadInicial;
             dialogConfig.mostrarIconoTitulo          = this.mostrarIconoTitulo;

@@ -199,7 +199,7 @@ public class MainActivity extends Activity {
 
         DialogConfig config = new DialogConfig.Builder()
                 .setMostrarIconoTitulo(true)
-                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTitulo("Elija una opción")
                 .setMostrarNegativo(false)
                 .setMostrarPositivo(false)
@@ -230,7 +230,7 @@ public class MainActivity extends Activity {
 
         DialogConfig config = new DialogConfig.Builder()
                 .setMostrarIconoTitulo(true)
-                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTitulo("Pruebas #4")
                 .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.")
                 .setMostrarNegativo(true)
@@ -240,7 +240,7 @@ public class MainActivity extends Activity {
                 .setTextoNegativo("CANCELAR")
                 .setTextoPositivo("ACEPTAR")
                 .setMostrarEditText(true)
-                .setIconoEditText(context.getDrawable(R.drawable.ic_person_black_24dp))
+                .setIconoEditText(R.drawable.ic_person_black_24dp)
                 .setMaxLength(10)
                 .setHint("Nombre y apellidos")
                 .setMostrarBotones(true)
@@ -273,7 +273,7 @@ public class MainActivity extends Activity {
     private void crearDialog17() {
         DialogConfig config = new DialogConfig.Builder()
                 .setMostrarIconoTitulo(true)
-                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTitulo("Pruebas #3")
                 .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un quantity y dos botones positivo yt negativo.")
                 .setMostrarNegativo(true)
@@ -309,7 +309,7 @@ public class MainActivity extends Activity {
     private void crearDialog16() {
         DialogConfig config = new DialogConfig.Builder()
                 .setMostrarIconoTitulo(true)
-                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTitulo("Pruebas #2")
                 .setMensaje("<span style='color:red'>Mensaje de prueba 1número1 con un diálogo que acepta un editText y dos botones positivo yt negativo.</span>")
                 .setMostrarNegativo(true)
@@ -318,7 +318,7 @@ public class MainActivity extends Activity {
                 .setTextoNegativo("CANCELAR")
                 .setTextoPositivo("ACEPTAR")
                 .setMostrarEditText(true)
-                .setIconoEditText(context.getDrawable(R.drawable.ic_person_black_24dp))
+                .setIconoEditText(R.drawable.ic_person_black_24dp)
                 .setMaxLength(10)
                 .setHint("Nombre y apellidos")
                 .build();
@@ -347,7 +347,7 @@ public class MainActivity extends Activity {
     private void crearDialog15() {
         DialogConfig config = new DialogConfig.Builder()
                 .setMostrarIconoTitulo(true)
-                .setIconoTitulo(context.getDrawable(R.drawable.ic_launcher_round))
+                .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTitulo("Pruebas #1")
                 .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.")
                 .setMostrarNegativo(true)
@@ -355,7 +355,7 @@ public class MainActivity extends Activity {
                 .setTextoNegativo("CANCELAR")
                 .setColorTitulo(android.R.color.holo_red_light)
                 .setMostrarImagen(true)
-                .setImagen(context.getDrawable(R.drawable.ic_thumb_up))
+                .setImagen(R.drawable.ic_thumb_up)
                 .build();
 
         CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
