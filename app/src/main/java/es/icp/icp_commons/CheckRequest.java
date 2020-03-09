@@ -227,7 +227,7 @@ public class CheckRequest {
      */
     @Deprecated
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, boolean loader) throws CheckRequestException {
-        CheckAndSend(context, parametros, callBack, true, 0, "", false);
+        CheckAndSend(context, parametros, callBack, loader, 0, "", false);
     }
 
     /**

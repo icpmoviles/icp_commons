@@ -4,9 +4,16 @@ import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +24,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-import es.icp.icp_commons.BuildConfig;
 import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CustomDialog;
 import es.icp.icp_commons.Database.DBHandler;
@@ -30,15 +36,6 @@ import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.R;
 import es.icp.logs.MyLog;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
