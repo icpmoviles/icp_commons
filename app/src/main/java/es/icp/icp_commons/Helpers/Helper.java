@@ -32,6 +32,7 @@ public class Helper {
                         case TelephonyManager.NETWORK_TYPE_EVDO_B:
                         case TelephonyManager.NETWORK_TYPE_HSPAP:
                         case TelephonyManager.NETWORK_TYPE_LTE: //4G
+                        case TelephonyManager.NETWORK_TYPE_NR: //5G
                             connected = true;
                             break;
 
