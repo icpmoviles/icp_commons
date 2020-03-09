@@ -3,7 +3,9 @@ package es.icp.icp_commons.Objects;
 import androidx.annotation.NonNull;
 
 import com.android.volley.Request;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -50,6 +52,18 @@ public class ParametrosPeticion {
     }
 
     /**
+     * Constructor ParametrosPeticion de 3 parámetros.
+     *
+     * @param method enum Method { POST, GET }. Método HTTP de la petición.
+     * @param url    String. Dirección HTTP a la que se enviará la petición.
+     * @param json   Object. (Se parseará el objeto a JSONObject) JSON que se enviará junto con la petición. En caso de no hacer falta, introducir un NULL.
+     * @author Ventura de Lucas
+     */
+    public ParametrosPeticion(Method method, String url, Object json) {
+        this(method, url, json, null);
+    }
+
+    /**
      * Constructor ParametrosPeticion de 4 parámetros.
      *
      * @param method enum Method { POST, GET }. Método HTTP de la petición.
@@ -64,20 +78,27 @@ public class ParametrosPeticion {
         this.clase  = clase;
         JSONObject  = json;
         jsonType    = JsonTypes.SIMPLE;
-//
-//        if (json instanceof JSONArray) {
-//            JSONArray = (JSONArray) json;
-//            JSONObject = null;
-//            jsonType = JsonTypes.ARRAY;
-//        } else if (json instanceof JSONObject) {
-//            JSONObject = (JSONObject) json;
-//            JSONArray = null;
-//            jsonType = JsonTypes.SIMPLE;
-//        } else {
-//            JSONObject = null;
-//            JSONArray = null;
-//            jsonType = JsonTypes.ERROR;
-//        }
+    }
+
+    /**
+     * Constructor ParametrosPeticion de 4 parámetros.
+     *
+     * @param method enum Method { POST, GET }. Método HTTP de la petición.
+     * @param url    String. Dirección HTTP a la que se enviará la petición.
+     * @param json   Object. (Se parseará el objeto a JSONObject) JSON que se enviará junto con la petición. En caso de no hacer falta, introducir un NULL.
+     * @param clase  Class. Tipo de objeto al que se convertirá la respuesta recibida por el servidor.
+     * @author Ventura de Lucas
+     */
+    public ParametrosPeticion(Method method, String url, Object json, Class clase) {
+        this.method = method;
+        this.url    = url;
+        this.clase  = clase;
+        try {
+            JSONObject  = new JSONObject(new Gson().toJson(json));
+            jsonType    = JsonTypes.SIMPLE;
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public int getMethod() {

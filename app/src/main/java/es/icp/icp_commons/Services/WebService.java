@@ -3,6 +3,7 @@ package es.icp.icp_commons.Services;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -80,7 +81,6 @@ public class WebService extends Application {
             Writer writer = new StringWriter();
             exception.printStackTrace(new PrintWriter(writer));
 
-            //TODO: integrar todos los parámetros de las excepciones
             try {
                 final JSONObject json = new JSONObject();
                 json.put("METODO", metodo);
@@ -88,7 +88,7 @@ public class WebService extends Application {
                 json.put("USUARIO", String.valueOf(idUsuario));
                 json.put("MENSAJE", mensaje);
                 json.put("ERROR", exception.toString());
-                json.put("VERSION", BuildConfig.VERSION_NAME);
+                json.put("VERSION", mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName);
                 json.put("PARAMETROS", parametros);
 
                 CheckRequest.CheckAndSend(mContext, new ParametrosPeticion(ParametrosPeticion.Method.POST, url, json), new VolleyCallBack() {
@@ -108,7 +108,7 @@ public class WebService extends Application {
 
                     }
                 }, false, idUsuario, "");
-            } catch (JSONException | CheckRequestException e) {
+            } catch (JSONException | CheckRequestException | PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
         }

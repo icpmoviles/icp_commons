@@ -156,6 +156,13 @@
                 android:gravity="start|center_vertical"
                 android:text="020 - MOSTRAR SMARTDIALOG DIALOGCONFIG 5" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn21}"
+                android:gravity="start|center_vertical"
+                android:text="021 - CHECKREQUEST PARSEADOR DE OBJETO" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
