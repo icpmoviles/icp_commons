@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CustomDialog;
 import es.icp.icp_commons.CustomEditText;
 import es.icp.icp_commons.CustomNotification;
@@ -31,9 +32,15 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
+import es.icp.icp_commons.Interfaces.VolleyCallBack;
+import es.icp.icp_commons.Objects.CheckRequestException;
+import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
+import es.icp.icp_commons.Services.WebService;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
+import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
+import es.icp.pruebas_commons.helpers.PruebasLoginResult;
 
 public class MainActivity extends Activity {
 
@@ -152,7 +159,36 @@ public class MainActivity extends Activity {
             public void onClickBtn20(View view) {
                 crearDialog19();
             }
+
+            @Override
+            public void onClickBtn21(View view) {
+                checkRequest1();
+            }
+
+            @Override
+            public void onClickBtn22(View view) {
+                checkRequest2();
+            }
         };
+    }
+
+    private void checkRequest2() {
+        WebService.TratarExcepcion(context, "MetodoPrueba", 1234, "Prueba de la version_name", new Exception(), "", "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/save_log");
+    }
+
+    private void checkRequest1() {
+        PruebasLoginRequest loginRequest = new PruebasLoginRequest("Pruebas", "p", "2", "28", "SAMSUNG", "A20e", "12121", "12312313", "cLF5wFYRxZE:APA91bFJHOM1MLBDunVBvzVip-MeLkDbfroplfELJSsCxUcX6pvNdwL_vtHiJdNjiQyXLH9zaTjHi3Lmcs-XmvAPtAcWAYbmfWXxP8kI1I4iD-rJKsbMIWasMTq_ocNFHqB_zMrtVsuh", "1.0.136");
+        try {
+            CheckRequest.CheckAndSend(
+                    context,
+                    new ParametrosPeticion(ParametrosPeticion.Method.POST, "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/Login", loginRequest, PruebasLoginResult.class),
+                    null,
+                    0,
+                    "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/save_log"
+            );
+        } catch (CheckRequestException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void crearDialog19() {
@@ -747,5 +783,9 @@ public class MainActivity extends Activity {
         void onClickBtn19(View view);
 
         void onClickBtn20(View view);
+
+        void onClickBtn21(View view);
+
+        void onClickBtn22(View view);
     }
 }

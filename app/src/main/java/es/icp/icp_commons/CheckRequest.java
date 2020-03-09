@@ -146,13 +146,13 @@ public class CheckRequest {
                                         e.printStackTrace();
                                         responseObject = response;
                                     }
-                                    callBack.onSuccess(responseObject);
+                                    if (callBack != null) callBack.onSuccess(responseObject);
                                 }
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (GlobalVariables.loader) Loading.HideLoading();
-                            callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
+                            if (callBack != null) callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
                         }
                     });
                     WebService.AddRequest(request, context);
@@ -331,7 +331,7 @@ public class CheckRequest {
                     if (guardarAccion) {
                         AddAction.AddActionDatabase(parametros.getJSONObject().toString(), context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "");
                     }
-                    callBack.onOffline();
+                    if (callBack != null) callBack.onOffline();
                 }
             }, loader, idUsuario, urlError);
         } catch (CheckRequestException e) {
@@ -377,7 +377,7 @@ public class CheckRequest {
         if (Helper.CheckConnection(context)) {
             Send(context, parametros, callBack, loader, idUsuario, urlError);
         } else {
-            callBack.onOffline();
+            if (callBack != null) callBack.onOffline();
         }
     }
 }
