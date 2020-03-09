@@ -32,9 +32,11 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
+import es.icp.icp_commons.Interfaces.VolleyCallBack;
 import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
+import es.icp.icp_commons.Services.WebService;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
@@ -162,7 +164,16 @@ public class MainActivity extends Activity {
             public void onClickBtn21(View view) {
                 checkRequest1();
             }
+
+            @Override
+            public void onClickBtn22(View view) {
+                checkRequest2();
+            }
         };
+    }
+
+    private void checkRequest2() {
+        WebService.TratarExcepcion(context, "MetodoPrueba", 1234, "Prueba de la version_name", new Exception(), "", "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/save_log");
     }
 
     private void checkRequest1() {
@@ -774,5 +785,7 @@ public class MainActivity extends Activity {
         void onClickBtn20(View view);
 
         void onClickBtn21(View view);
+
+        void onClickBtn22(View view);
     }
 }

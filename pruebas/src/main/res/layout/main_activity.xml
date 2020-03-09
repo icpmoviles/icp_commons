@@ -163,6 +163,13 @@
                 android:gravity="start|center_vertical"
                 android:text="021 - CHECKREQUEST PARSEADOR DE OBJETO" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn22}"
+                android:gravity="start|center_vertical"
+                android:text="021 - CHECKREQUEST TRATAR EXCEPCION" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
