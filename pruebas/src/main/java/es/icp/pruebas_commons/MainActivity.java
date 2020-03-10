@@ -41,6 +41,8 @@ import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
 import es.icp.pruebas_commons.helpers.PruebasLoginResult;
 
+import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
+
 public class MainActivity extends Activity {
 
     private Context             context = MainActivity.this;
@@ -168,6 +170,11 @@ public class MainActivity extends Activity {
             public void onClickBtn22(View view) {
                 checkRequest2();
             }
+
+            @Override
+            public void onClickBtn23(View view) {
+                crearDialog20();
+            }
         };
     }
 
@@ -188,6 +195,13 @@ public class MainActivity extends Activity {
         } catch (CheckRequestException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void crearDialog20() {
+        CustomDialog dialog = new CustomDialog(context, DIALOG_NORMAL, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
+//        dialog.setTitulo("Error: sdvasvcsdacsdacsdavcasfdvasfvfqsdVBADVASFDBVSFDABADFBVSDBSFGB");
+        dialog.setTitulo("Error: casnjkcsdajkcnsadkcnlsadc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc\nhsdancjksdhuicsjklanbcildn\nasnjcklsjakdncasncasjlc");
+        dialog.Show();
     }
 
     private void crearDialog19() {
@@ -786,5 +800,7 @@ public class MainActivity extends Activity {
         void onClickBtn21(View view);
 
         void onClickBtn22(View view);
+
+        void onClickBtn23(View view);
     }
 }
