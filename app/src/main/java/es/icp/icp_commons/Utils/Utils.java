@@ -1,4 +1,4 @@
-package es.icp.icp_commons.Helpers;
+package es.icp.icp_commons.Utils;
 
 import android.content.Context;
 import android.util.DisplayMetrics;

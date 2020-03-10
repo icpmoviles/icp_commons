@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent"
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
@@ -12,21 +13,45 @@
         android:layout_margin="20dp"
         android:layout_width="match_parent">
 
-        <TextView
-            android:ems="10"
-            android:id="@+id/tituloCustom"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:text="@string/alert_dialog_tituloCustom_text"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:drawableTop="@drawable/logo_icp_top"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/logo_icp_top" />
+
+            <es.icp.icp_commons.Utils.MaxHeightScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fadeScrollbars="false"
+                android:scrollbars="vertical"
+                android:scrollbarFadeDuration="0">
+
+                <TextView
+                    android:ems="10"
+                    android:id="@+id/tituloCustom"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:text="@string/alert_dialog_tituloCustom_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+            </es.icp.icp_commons.Utils.MaxHeightScrollView>
+
+
+        </LinearLayout>
+
 
     </FrameLayout>
 
 
+    <!-- BOTONES SUBMIT Y CANCEL -->
     <LinearLayout
         android:background="@android:color/white"
         android:layout_height="wrap_content"
