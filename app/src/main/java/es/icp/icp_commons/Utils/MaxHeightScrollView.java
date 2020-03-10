@@ -12,7 +12,7 @@ import es.icp.icp_commons.R;
 public class MaxHeightScrollView extends NestedScrollView {
 
     private int maxHeight;
-    private final int defaultHeight = 200;
+    private final int defaultHeight = 500;
 
     public MaxHeightScrollView(Context context) {
         super(context);
@@ -37,8 +37,7 @@ public class MaxHeightScrollView extends NestedScrollView {
             TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.MaxHeightScrollView);
             //200 is a defualt value
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            maxHeight = styledAttrs.getDimensionPixelSize(R.styleable.MaxHeightScrollView_maxHeight, Math.round(defaultHeight * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)));
-
+            maxHeight = styledAttrs.getDimensionPixelSize(R.styleable.MaxHeightScrollView_maxHeight, defaultHeight);
             styledAttrs.recycle();
         }
     }
