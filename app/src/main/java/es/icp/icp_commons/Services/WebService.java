@@ -35,7 +35,7 @@ import es.icp.icp_commons.Objects.Accion;
 import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.R;
-import es.icp.logs.MyLog;
+import es.icp.logs.core.MyLog;
 
 import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 

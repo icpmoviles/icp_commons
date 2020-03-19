@@ -59,7 +59,7 @@ public class CustomNotification extends FrameLayout {
     public static final  int LENGTH_SHORT           = 2000;
     public static final  int LENGTH_MEDIUM          = 5000;
     public static final  int LENGTH_LONG            = 8000;
-    public static final  int LENGTH_UNDEFINED       = 0;
+    public static final  int LENGTH_UNDEFINED       = 0; // INFINITO, importante poner el minimizable a true (para que la notificación pueda borrarse)
     private static final int MARGIN_BOTTOM_CABECERO = 2;
 
 

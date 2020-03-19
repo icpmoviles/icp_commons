@@ -7,7 +7,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 51
-        versionName "1.9.12a"
+        versionName "1.9.13a"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,7 +39,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
     //Log de App
-    implementation 'com.github.icpmoviles:icp_logs:1.0.0.2'
+//    implementation 'com.github.icpmoviles:icp_logs:1.0.0.2'
+    implementation 'com.github.icpmoviles:icp_logs:89fa799ed5'
 
     implementation 'com.google.android.material:material:1.1.0'
 

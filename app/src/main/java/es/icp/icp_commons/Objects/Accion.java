@@ -83,4 +83,16 @@ public class Accion {
     public void setRUTA_IMAGEN(String RUTA_IMAGEN) {
         this.RUTA_IMAGEN = RUTA_IMAGEN;
     }
+
+    @Override
+    public String toString() {
+        return "Accion{" +
+                "ID=" + ID +
+                ", JSON='" + JSON + '\'' +
+                ", URL='" + URL + '\'' +
+                ", Metodo='" + Metodo + '\'' +
+                ", F_insert='" + F_insert + '\'' +
+                ", RUTA_IMAGEN='" + RUTA_IMAGEN + '\'' +
+                '}';
+    }
 }

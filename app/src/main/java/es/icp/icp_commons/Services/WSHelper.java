@@ -1,6 +1,6 @@
 package es.icp.icp_commons.Services;
 
-import es.icp.logs.MyLog;
+import es.icp.logs.core.MyLog;
 
 
 public class WSHelper {
