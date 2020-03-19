@@ -190,7 +190,8 @@ public class MainActivity extends Activity {
                     new ParametrosPeticion(ParametrosPeticion.Method.POST, "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/Login", loginRequest, PruebasLoginResult.class),
                     null,
                     0,
-                    "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/save_log"
+                    "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/save_log",
+                    true
             );
         } catch (CheckRequestException ex) {
             ex.printStackTrace();
@@ -748,11 +749,41 @@ public class MainActivity extends Activity {
     }
 
     private void crearNotif1() {
-        CustomNotification customNotification = new CustomNotification.Builder(context)
-                .setSimpleMode()
-                .setDuration(CustomNotification.LENGTH_SHORT)
+//        CustomNotification customNotification = new CustomNotification.Builder(context)
+//                .setSimpleMode()
+//                .setDuration(CustomNotification.LENGTH_SHORT)
+//                .build();
+//        customNotification.showText("Notificación nº1");
+
+        final CustomNotification customNotification = new CustomNotification.Builder(context)
+                .setProgressMode()
+                .setDuration(CustomNotification.LENGTH_LONG) // .setDuration(CutomNotification.LENGTH_MEDIUM) // .setDuration(CutomNotification.LENGTH_LONG)
+                .setMax(100)
+                .setProgress(40)
+                .setMinimizable(false)
+                .setText("Esto es un progress bar... (40%)")
                 .build();
-        customNotification.showText("Notificación nº1");
+
+        customNotification.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            customNotification.setProgress(60);
+                            customNotification.setText("Esto es un progress bar... (60%)");
+//                            customNotification.show();
+                        }
+                    });
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 

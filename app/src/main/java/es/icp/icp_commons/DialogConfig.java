@@ -3,7 +3,6 @@ package es.icp.icp_commons;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import java.net.ContentHandler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -469,5 +468,7 @@ public class DialogConfig {
             dialogConfig.colorTitulo                 = this.colorTitulo;
             return dialogConfig;
         }
+
+
     }
 }

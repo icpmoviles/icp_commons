@@ -6,7 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import es.icp.icp_commons.Database.DBHandler;
+import es.icp.icp_commons.Helpers.CommonsHBD;
 import es.icp.icp_commons.Objects.Accion;
+import es.icp.logs.core.MyLog;
 
 @SuppressWarnings("unused")
 public class AddAction {
@@ -24,6 +26,9 @@ public class AddAction {
         Accion    accion      = new Accion(0, json, url, metodo, currentTime.toString(), ruta_imagen);
         DBHandler dbHandler   = new DBHandler(context);
         dbHandler.addAccion(accion);
+
+        MyLog.setDEBUG(true);
+        CommonsHBD.muestraTabla(context, "ACCIONES");
     }
 
 }
