@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import es.icp.icp_commons.Helpers.CommonsHBD;
 import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Helpers.Helper;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
@@ -20,6 +21,7 @@ import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Services.WSHelper;
 import es.icp.icp_commons.Services.WebService;
+import es.icp.logs.core.MyLog;
 
 import static es.icp.icp_commons.Services.WebService.EnviarAcciones;
 
@@ -338,6 +340,11 @@ public class CheckRequest {
             throw e;
         }
 
+    }
+
+    public static void ShowActions(Context context) {
+        MyLog.setDEBUG(true);
+        CommonsHBD.muestraTabla(context, "ACCIONES");
     }
 
     /**

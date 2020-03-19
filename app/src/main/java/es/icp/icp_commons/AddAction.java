@@ -28,7 +28,9 @@ public class AddAction {
         dbHandler.addAccion(accion);
 
         MyLog.setDEBUG(true);
-        CommonsHBD.muestraTabla(context, "ACCIONES");
+//        CommonsHBD.muestraTabla(context, "ACCIONES");
+
+        MyLog.d(accion.toString());
     }
 
 }

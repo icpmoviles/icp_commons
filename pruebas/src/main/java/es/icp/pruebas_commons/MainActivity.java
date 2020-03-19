@@ -196,6 +196,8 @@ public class MainActivity extends Activity {
         } catch (CheckRequestException ex) {
             ex.printStackTrace();
         }
+
+        CheckRequest.ShowActions(context);
     }
 
     private void crearDialog20() {
