@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +34,12 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
+import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
 import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.icp_commons.Services.WebService;
+import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
@@ -45,10 +49,10 @@ import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
 public class MainActivity extends Activity {
 
-    private Context             context = MainActivity.this;
+    private Context context = MainActivity.this;
     private MainActivityBinding binding;
-    private Handler             handler;
-    private CustomSmartDialog   customSmartDialog;
+    private Handler handler;
+    private CustomSmartDialog customSmartDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -188,7 +192,22 @@ public class MainActivity extends Activity {
             CheckRequest.CheckAndSend(
                     context,
                     new ParametrosPeticion(ParametrosPeticion.Method.POST, "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/Login", loginRequest, PruebasLoginResult.class),
-                    null,
+                    new NewVolleyCallBack() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            MyLog.d(result);
+                        }
+
+                        @Override
+                        public void onError(VolleyError error) {
+                            MyLog.d(error);
+                        }
+
+                        @Override
+                        public void onOffline() {
+
+                        }
+                    },
                     0,
                     "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/save_log",
                     true
@@ -208,8 +227,8 @@ public class MainActivity extends Activity {
     }
 
     private void crearDialog19() {
-        List<SmartButton> botones  = new ArrayList<>();
-        SmartButton       btnCrear = new SmartButton(context);
+        List<SmartButton> botones = new ArrayList<>();
+        SmartButton btnCrear = new SmartButton(context);
         btnCrear.setText("Crear");
         btnCrear.setCustomListener(new SmartButton.CustomListener() {
             @Override
@@ -267,7 +286,7 @@ public class MainActivity extends Activity {
 
     private void crearDialog18() {
         List<SmartButton> botones = new ArrayList<>();
-        SmartButton       boton   = new SmartButton(context);
+        SmartButton boton = new SmartButton(context);
         boton.setText("BARCODE");
         boton.setCustomListener(new SmartButton.CustomListener() {
             @Override
@@ -691,7 +710,7 @@ public class MainActivity extends Activity {
     }
 
     private void crearDialog4() {
-        CustomDialog                   dialog         = new CustomDialog(context, Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
+        CustomDialog dialog = new CustomDialog(context, Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
         final ArrayList<StringBuilder> stringBuilders = new ArrayList<>();
         dialog.setTitulo("Rellene la incidencia");
         dialog.setTituloAdvertencia("Incidencia");
@@ -733,8 +752,8 @@ public class MainActivity extends Activity {
     }
 
     private void crearDialog1() {
-        final StringBuilder nombre       = new StringBuilder();
-        CustomDialog        customDialog = new CustomDialog(context, "Diálogo con editText", Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
+        final StringBuilder nombre = new StringBuilder();
+        CustomDialog customDialog = new CustomDialog(context, "Diálogo con editText", Constantes.DIALOG_BUTTONS, GlobalVariables.COLOR_APP, GlobalVariables.ICONO_APP);
         customDialog.AddMensaje("Este diálogo es la primera prueba de un diálogo con editText");
         customDialog.AddEditText("Introduzca su nombre", nombre, 0);
         customDialog.AddButton("Aceptar", new CustomDialogResponse() {

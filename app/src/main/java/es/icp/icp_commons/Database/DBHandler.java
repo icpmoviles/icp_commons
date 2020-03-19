@@ -83,4 +83,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM ACCIONES WHERE ID = " + id);
         db.close();
     }
+
+    public void removeAllActions() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM ACCIONES");
+        db.close();
+    }
 }
