@@ -192,6 +192,11 @@ public class WebService extends Application {
                                 public void onErrorResponse(VolleyError error) {
 
                                     error.printStackTrace();
+                                    try {
+                                        callback.onFinish();
+                                    } catch (CheckRequestException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                             AddRequest(request, mContext);
@@ -215,6 +220,12 @@ public class WebService extends Application {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.d("ERRORACCION", "error en accion " + error.getMessage());
+                                error.printStackTrace();
+                                try {
+                                    callback.onFinish();
+                                } catch (CheckRequestException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
                         requestQueue.add(request);
