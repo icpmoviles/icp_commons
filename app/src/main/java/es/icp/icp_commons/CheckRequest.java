@@ -144,7 +144,7 @@ public class CheckRequest {
                                         } else {
                                             responseObject = response;
                                         }
-                                    } catch (JSONException e) {
+                                    } catch (/*JSON*/Exception e) {
                                         e.printStackTrace();
                                         responseObject = response;
                                     }
