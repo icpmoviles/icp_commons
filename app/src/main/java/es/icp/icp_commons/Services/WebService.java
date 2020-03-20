@@ -187,7 +187,8 @@ public class WebService extends Application {
                             });
                             requestQueue.add(request);
                         } else {
-                            JSONObject json = new JSONObject(accion.getJSON());
+                            JSONObject json = null;
+                            if (accion.getJSON() != null) json = new JSONObject(accion.getJSON());
                             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
