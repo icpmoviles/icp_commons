@@ -116,10 +116,17 @@ public class WebService extends Application {
         final List<Accion> acciones  = dbHandler.getAcciones();
 
         if (acciones.size() > 0) {
-            final ProgressDialog mProgress = new ProgressDialog(mContext);
-            mProgress.setCancelable(false);
-            mProgress.setMessage(mContext.getString(R.string.subiendo_acciones_pendientes_offline));
-            if (GlobalVariables.loader) mProgress.show();
+            ProgressDialog mProgres = null;
+            try {
+                mProgres = new ProgressDialog(mContext);
+                mProgres.setCancelable(false);
+                mProgres.setMessage(mContext.getString(R.string.subiendo_acciones_pendientes_offline));
+                if (GlobalVariables.loader) mProgres.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            final ProgressDialog mProgress = mProgres;
 
             EnviarAccion(dbHandler, mContext, acciones, 0, acciones.size(), new EnvioAccionesCallback() {
                 @Override
@@ -128,9 +135,13 @@ public class WebService extends Application {
 
                 @Override
                 public void onFinish() throws CheckRequestException {
-                    if (GlobalVariables.loader && mProgress != null) {
-                        mProgress.hide();
-                        mProgress.dismiss();
+                    try{
+                        if (GlobalVariables.loader && mProgress != null) {
+                            mProgress.hide();
+                            mProgress.dismiss();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     callback.onFinish();
 

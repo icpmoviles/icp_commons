@@ -43,6 +43,7 @@ public class AddAction {
 //        CommonsHBD.muestraTabla(context, "ACCIONES");
 
         MyLog.d(accion.toString());
+//        MyLog.d("Guardado desde :" + MyLog.getTrace(5));
     }
 
     /**

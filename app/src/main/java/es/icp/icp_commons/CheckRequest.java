@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import es.icp.icp_commons.Helpers.CommonsHBD;
 import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Helpers.Helper;
+import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
 import es.icp.icp_commons.Interfaces.VolleyCallBack;
@@ -68,7 +69,7 @@ public class CheckRequest {
                 EnviarAcciones(context, envioAccionesCallback);
 
             } else {
-                ((Activity) context).runOnUiThread(new Runnable() {
+                MyApplication.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         envioAccionesCallback.onOffline();
@@ -140,12 +141,12 @@ public class CheckRequest {
     public static void Send(final Context context, final ParametrosPeticion parametros, @NonNull final NewVolleyCallBack callBack,
                             final boolean loader, int idUsuario, String urlError, boolean guardarAccion) throws CheckRequestException {
         GlobalVariables.loader = loader;
-        WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
         try {
             if (GlobalVariables.loader) Loading.ShowLoading(context);
 
             if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
                 try {
+                    WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
                     JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
                             new Response.Listener<JSONObject>() {
                                 @Override
