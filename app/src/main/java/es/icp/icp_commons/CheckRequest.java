@@ -217,7 +217,7 @@ public class CheckRequest {
     private static void tratarStatusCode(Context context, ParametrosPeticion parametros, boolean guardarAccion, int errorCode) {
         switch (errorCode) {
             case 404:
-                if (guardarAccion) AddAction.AddActionDatabase(parametros.getJSONObject().toString(), context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "", 404);
+                if (guardarAccion) AddAction.AddActionDatabase(parametros.getJSONObject() != null ? parametros.getJSONObject().toString() : "", context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "", 404);
                 break;
         }
     }
