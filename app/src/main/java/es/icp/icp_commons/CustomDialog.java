@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.icp.icp_commons.Helpers.Constantes;
+import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Interfaces.CustomDialogButtonClicked;
 import es.icp.icp_commons.Interfaces.CustomDialogResponse;
 import es.icp.icp_commons.Interfaces.ListenerAccion;
@@ -353,7 +354,7 @@ public class CustomDialog {
      */
     public static void dialogInput(final Context ctx, final String tituloAdvertencia, final String titulo, final int color, final Drawable drawable, final ListenerEditTextAccion listener, final String... inputsHint) {
         Activity activity = (Activity) ctx;
-        activity.runOnUiThread(new Runnable() {
+        MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 CustomDialog                   dialog         = new CustomDialog(ctx, Constantes.DIALOG_BUTTONS, color, drawable);
@@ -410,7 +411,7 @@ public class CustomDialog {
      */
     public static void dialogAdvertencia(final Context ctx, final String tituloAdvertencia, final String titulo, final int color, final Drawable drawable, final ListenerAccion listener) {
         Activity activity = (Activity) ctx;
-        activity.runOnUiThread(new Runnable() {
+        MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 CustomDialog dialog = new CustomDialog(ctx, Constantes.DIALOG_BUTTONS, color, drawable);
@@ -440,7 +441,7 @@ public class CustomDialog {
     //
     public static void dialogSiNO(final Context ctx, final String texto, final int color, final Drawable drawable, final ResponseDialog responseDialog) {
         Activity activity = (Activity) ctx;
-        activity.runOnUiThread(new Runnable() {
+        MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 CustomDialog dialog = new CustomDialog(ctx, Constantes.DIALOG_BUTTONS, color, drawable);

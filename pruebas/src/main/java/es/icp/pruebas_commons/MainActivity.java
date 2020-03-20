@@ -39,6 +39,7 @@ import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.icp_commons.Services.WebService;
+import es.icp.icp_commons.Utils.Utils;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
@@ -187,10 +188,16 @@ public class MainActivity extends Activity {
     }
 
     private void checkRequest1() {
+        CustomNotification customNotification = new CustomNotification.Builder(context)
+                .setSimpleMode()
+                .setDuration(CustomNotification.LENGTH_SHORT)
+                .build();
+        customNotification.showText(String.valueOf(Utils.isDebuggable(getApplicationContext())));
+
         PruebasLoginRequest loginRequest = new PruebasLoginRequest("Pruebas", "p", "2", "28", "SAMSUNG", "A20e", "12121", "12312313", "cLF5wFYRxZE:APA91bFJHOM1MLBDunVBvzVip-MeLkDbfroplfELJSsCxUcX6pvNdwL_vtHiJdNjiQyXLH9zaTjHi3Lmcs-XmvAPtAcWAYbmfWXxP8kI1I4iD-rJKsbMIWasMTq_ocNFHqB_zMrtVsuh", "1.0.136");
         try {
             CheckRequest.CheckAndSend(
-                    context,
+                    getApplicationContext(),
                     new ParametrosPeticion(ParametrosPeticion.Method.POST, "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/Login", loginRequest, PruebasLoginResult.class),
                     new NewVolleyCallBack() {
                         @Override
@@ -216,7 +223,7 @@ public class MainActivity extends Activity {
             ex.printStackTrace();
         }
 
-        CheckRequest.ShowActions(context);
+//        CheckRequest.ShowActions(context);
     }
 
     private void crearDialog20() {

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Helpers.OnSwipeTouchListener;
 import es.icp.icp_commons.Interfaces.CustomNotificationResponse;
 
@@ -101,7 +102,7 @@ public class CustomNotification extends FrameLayout {
      * @author Ventura de Lucas
      */
     public void show() {
-        activity.runOnUiThread(new Runnable() {
+        MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 CustomNotification.this.kill(); // por si acaso la notificación se encontraba ya abierta
@@ -149,7 +150,7 @@ public class CustomNotification extends FrameLayout {
                     Timer timer = new Timer();
                     timer.schedule(reiniciarShowTime(), 100);
                 } else {
-                    activity.runOnUiThread(hiloTerminar);
+                    MyApplication.runOnUiThread(hiloTerminar);
                 }
             }
         };

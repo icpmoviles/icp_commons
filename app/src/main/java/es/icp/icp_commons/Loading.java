@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import es.icp.icp_commons.Helpers.MyApplication;
+
 public class Loading {
 
     private static ProgressDialog progress;
@@ -44,7 +46,7 @@ public class Loading {
      */
     public static void ShowLoading(final Context ctx, String title, String message, boolean cancelable) {
         contextWS = ctx;
-        ((Activity) (ctx)).runOnUiThread(new Runnable() {
+        MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -66,7 +68,7 @@ public class Loading {
      * @author Ventura de Lucas
      */
     public static void HideLoading() {
-        ((Activity) (contextWS)).runOnUiThread(new Runnable() {
+        MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {

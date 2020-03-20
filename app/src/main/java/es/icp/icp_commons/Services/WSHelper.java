@@ -24,10 +24,11 @@ public class WSHelper {
     public static void logWS(String url, Object jsonObject) {
         if (!Boolean.parseBoolean("true")) return;
 
+        MyLog.setDEBUG(true);
         MyLog.d("");
         MyLog.l();
         MyLog.f(url);
-        MyLog.d("Llamada desde :" + MyLog.getTrace(5));
+        MyLog.d("Llamada desde :" + MyLog.getTrace(4));
         if (jsonObject != null) MyLog.d("JSON:" + jsonObject.toString());
         MyLog.l();
         MyLog.d("");
