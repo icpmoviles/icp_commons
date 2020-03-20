@@ -188,8 +188,8 @@ public class WebService extends Application {
                             requestQueue.add(request);
                         } else {
                             JSONObject json = null;
-                            if (accion.getJSON() != null) json = new JSONObject(accion.getJSON());
-                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
+                            if (!accion.getJSON().isEmpty()) json = new JSONObject(accion.getJSON());
+                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, json, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     dbHandler.removeAccion(accion.getID());
