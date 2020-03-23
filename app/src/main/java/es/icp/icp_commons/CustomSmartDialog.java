@@ -34,6 +34,11 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Objects.SmartButton;
 
+/**
+ * Clase CustomSmartDialog. Diálogos creados para el proyecto Securitas Seguridad.
+ *
+ * @author Ventura de Lucas
+ */
 public class CustomSmartDialog {
 
     private        Context      context;
@@ -46,6 +51,12 @@ public class CustomSmartDialog {
     private        boolean      generico = false;
     private static EditText     txtEditText;
 
+    /**
+     * Constructor de 1 parámetro
+     *
+     * @param context Context. Contexto de la Activity.
+     * @author Ventura de Lucas
+     */
     public CustomSmartDialog(Context context) {
         this.context = context;
         layout       = new LinearLayout(context);
@@ -53,32 +64,73 @@ public class CustomSmartDialog {
         buttons = new ArrayList<>();
     }
 
+    /**
+     * Método para ocultar el diálogo.
+     *
+     * @author Ventura de Lucas
+     */
     public void dismiss() {
         dialog.dismiss();
     }
 
+    /**
+     * Método para cancelar y ocultar el diálogo.
+     *
+     * @author Ventura de Lucas
+     */
     public void cancel() {
         dialog.cancel();
     }
 
+    /**
+     * Método para añadir una vista nueva al diálogo.
+     *
+     * @param view View. Vista nueva a añadir.
+     * @author Ventura de Lucas
+     */
     public void setView(View view) {
         layout.addView(view);
     }
 
+    /**
+     * Método para devolver una vista, dependiendo del orden en el que ésta se introdujo. El index empieza en el 0.
+     *
+     * @param index int. Índice para la extracción de la vista.
+     * @return View. Vista devuelta.
+     * @author Ventura de Lucas
+     */
     public View getView(int index) {
         return layout.getChildAt(index);
     }
 
+    /**
+     * Método para indicar si el diálogo se está mostrando actualmente al usuario o no.
+     *
+     * @return boolean. Devuelve 'true' en caso de que se muestre el diálogo; 'false' en el caso contrario.
+     * @author Ventura de Lucas
+     */
     public boolean isShowing() {
         return dialog.isShowing();
     }
 
+    /**
+     * Método para, en caso de tener un EditText, modificar el texto del mismo.
+     *
+     * @param text String. Texto amostrar dentro del EditText.
+     * @author Ventura de Lucas
+     */
     public void setText(String text) {
         if (txtEditText != null) {
             txtEditText.setText(text);
         }
     }
 
+    /**
+     * Método para, en caso de tener un EditText, obtener el texto del mismo.
+     *
+     * @return String. Texto del EditText. Se devuelve 'null' en caso de no encontrar ningún 'EditText'
+     * @author Ventura de Lucas
+     */
     @Nullable
     public String getText() {
         if (txtEditText != null) {
@@ -88,6 +140,12 @@ public class CustomSmartDialog {
         }
     }
 
+    /**
+     * Método para, en caso de tener un EditText, obtenerlo.
+     *
+     * @return EditText. EdiText del diálogo. Se devuelve 'null' en caso de no encontrar ningún 'EditText'
+     * @author Ventura de Lucas
+     */
     @Nullable
     public EditText getEditText() {
         if (txtEditText != null) {
@@ -97,6 +155,11 @@ public class CustomSmartDialog {
         }
     }
 
+    /**
+     * Método para mostrar el diálogo construido anteriormente.
+     *
+     * @author Ventura de Lucas
+     */
     @SuppressLint("RestrictedApi")
     public void show() {
         AlertDialog.Builder builder;
@@ -392,6 +455,7 @@ public class CustomSmartDialog {
                     android.widget.Button b = new android.widget.Button(context);
                     b.setText(Html.fromHtml(boton.getText().toString()));
                     b.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
+                    b.setBackgroundTintList(boton.getBackgroundTintList());
                     b.setAllCaps(false);
                     b.setTextColor(context.getColor(R.color.white));
                     b.setOnClickListener(new View.OnClickListener() {

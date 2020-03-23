@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -237,6 +238,7 @@ public class MainActivity extends Activity {
         List<SmartButton> botones = new ArrayList<>();
         SmartButton btnCrear = new SmartButton(context);
         btnCrear.setText("Crear");
+        btnCrear.setBackgroundTintList(ColorStateList.valueOf(getColor(android.R.color.holo_green_light)));
         btnCrear.setCustomListener(new SmartButton.CustomListener() {
             @Override
             public void onClick(String valor, AlertDialog dialog) {
@@ -250,6 +252,7 @@ public class MainActivity extends Activity {
         botones.add(btnCrear);
         SmartButton btnEditar = new SmartButton(context);
         btnEditar.setText("Editar");
+        btnEditar.setBackgroundTintList(ColorStateList.valueOf(getColor(android.R.color.holo_orange_light)));
         btnEditar.setCustomListener(new SmartButton.CustomListener() {
             @Override
             public void onClick(String valor, AlertDialog dialog) {
@@ -263,6 +266,7 @@ public class MainActivity extends Activity {
         botones.add(btnEditar);
         SmartButton btnEliminar = new SmartButton(context);
         btnEliminar.setText("Eliminar");
+        btnEliminar.setBackgroundTintList(ColorStateList.valueOf(getColor(android.R.color.holo_red_light)));
         btnEliminar.setCustomListener(new SmartButton.CustomListener() {
             @Override
             public void onClick(String valor, AlertDialog dialog) {
@@ -279,6 +283,7 @@ public class MainActivity extends Activity {
                 .setMostrarIconoTitulo(true)
                 .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTitulo("Elija una opción")
+                .setMensaje("Elija una opción entre las tres opciones posibles que puedes ver...")
                 .setMostrarNegativo(false)
                 .setMostrarPositivo(false)
                 .setAutoDismiss(true)

@@ -341,7 +341,7 @@ public class CheckRequest {
                 @Override
                 public void onOffline() {
                     if (guardarAccion) {
-                        AddAction.AddActionDatabase(parametros.getJSONObject().toString(), context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "");
+                        AddAction.AddActionDatabase(parametros.getJSONObject() != null ? parametros.getJSONObject().toString() : "", context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "");
                     }
                     callBack.onOffline();
                 }
@@ -636,7 +636,7 @@ public class CheckRequest {
                 @Override
                 public void onOffline() {
                     if (guardarAccion) {
-                        AddAction.AddActionDatabase(parametros.getJSONObject().toString(), context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "");
+                        AddAction.AddActionDatabase(parametros.getJSONObject() != null ? parametros.getJSONObject().toString() : "", context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "");
                     }
                     if (callBack != null) callBack.onOffline();
                 }
