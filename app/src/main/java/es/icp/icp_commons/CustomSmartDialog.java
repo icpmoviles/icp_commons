@@ -1,6 +1,7 @@
 package es.icp.icp_commons;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
@@ -16,16 +17,23 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.viewpagerindicator.LinePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.icp.icp_commons.Adapters.VisorImagenesAdapter;
+import es.icp.icp_commons.Fragments.VisorImagenFragment;
+import es.icp.icp_commons.Helpers.DepthPageTransformer;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQResponse;
@@ -362,6 +370,13 @@ public class CustomSmartDialog {
             LinearLayout llBotones = mainContainer.findViewById(R.id.llBotones);
             //----------------------------------------------------------------------------------------------------
 
+            //-------------------------------------------------------
+            //--------------- VISOR IMÁGENES -------------------
+            RelativeLayout    rlImagenes = mainContainer.findViewById(R.id.rlImagenes);
+            ViewPager         vpImagenes = mainContainer.findViewById(R.id.vpImagenes);
+            LinePageIndicator pageIndicator = mainContainer.findViewById(R.id.pageIndicator);
+            //----------------------------------------------------------------------------------------------------
+
             if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(context);
             if (config.getIconoEditText() == null && config.getIconoEditTextInt() != 0) config.setIconoEditText(context);
             if (config.getIconoTitulo() == null && config.getIconoTituloInt() != 0) config.setIconoTitulo(context);
@@ -502,6 +517,15 @@ public class CustomSmartDialog {
             } //-----------------------------------------------------------------------------------------------------------------
             if (!config.isMostrarImagenPredeterminada()) {
                 imagen.setVisibility(View.GONE);
+            }
+            if (config.isMostrarVisorImagenes()) {
+                rlImagenes.setVisibility(View.VISIBLE);
+                VisorImagenesAdapter adapter = new VisorImagenesAdapter(context, config.getImagenes(), ((FragmentActivity) context).getSupportFragmentManager());
+                vpImagenes.setAdapter(adapter);
+                vpImagenes.setCurrentItem(0);
+                pageIndicator.setViewPager(vpImagenes);
+                vpImagenes.setPageMargin(20);
+                vpImagenes.setPageTransformer(true, new DepthPageTransformer());
             }
             return new CustomSmartDialog.Builder(context)
                     .addView(mainContainer)

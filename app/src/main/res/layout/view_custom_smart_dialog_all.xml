@@ -79,6 +79,37 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp" />
 
+            <RelativeLayout
+                android:id="@+id/rlImagenes"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vpImagenes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_above="@+id/pageIndicator"
+                    android:background="@color/cardview_shadow_start_color"/>
+
+                <com.viewpagerindicator.LinePageIndicator
+                    android:id="@+id/pageIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_marginVertical="8dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/cardview_shadow_start_color"
+                    app:strokeWidth="5dp"
+                    app:centered="true"
+                    app:gapWidth="10dp"
+                    app:lineWidth="40dp"
+                    android:layout_height="5dp" />
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/llBotones"
                 android:layout_width="wrap_content"

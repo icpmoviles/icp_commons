@@ -20,6 +20,8 @@ public class DialogConfig {
     private boolean           mostrarCantidad             = false;
     private boolean           mostrarImagen               = false;
     private boolean           mostrarBotones              = false;
+    private boolean           mostrarVisorImagenes        = false;
+    private ArrayList<String> imagenes                    = new ArrayList<>();
     private List<SmartButton> botones                     = new ArrayList<>();
     private Drawable          imagen                      = null;
     private int               imagenInt                   = 0;
@@ -37,6 +39,22 @@ public class DialogConfig {
     private boolean           mostrarImagenPredeterminada = true;
     private boolean           cancelable                  = false;
     private int               colorTitulo                 = 0;
+
+    public boolean isMostrarVisorImagenes() {
+        return mostrarVisorImagenes;
+    }
+
+    public void setMostrarVisorImagenes(boolean mostrarVisorImagenes) {
+        this.mostrarVisorImagenes = mostrarVisorImagenes;
+    }
+
+    public ArrayList<String> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(ArrayList<String> imagenes) {
+        this.imagenes = imagenes;
+    }
 
     public int getIconoEditTextInt() {
         return iconoEditTextInt;
@@ -277,6 +295,7 @@ public class DialogConfig {
         private boolean           mostrarCantidad             = false;
         private boolean           mostrarImagen               = false;
         private boolean           mostrarBotones              = false;
+        private boolean           mostrarVisorImagenes        = false;
         private List<SmartButton> botones                     = new ArrayList<>();
         private Drawable          imagen                      = null;
         private int               imagenInt                   = 0;
@@ -294,6 +313,7 @@ public class DialogConfig {
         private boolean           mostrarImagenPredeterminada = true;
         private boolean           cancelable                  = false;
         private int               colorTitulo                 = 0;
+        private ArrayList<String> imagenes                    = new ArrayList<>();
 
         public Builder() {
         }
@@ -349,6 +369,11 @@ public class DialogConfig {
 
         public Builder setMostrarBotones(boolean mostrarBotones) {
             this.mostrarBotones = mostrarBotones;
+            return this;
+        }
+
+        public Builder setMostrarVisorImagenes(boolean mostrarVisorImagenes) {
+            this.mostrarVisorImagenes = mostrarVisorImagenes;
             return this;
         }
 
@@ -437,6 +462,11 @@ public class DialogConfig {
             return this;
         }
 
+        public Builder setImagenes(ArrayList<String> imagenes) {
+            this.imagenes = imagenes;
+            return this;
+        }
+
         public DialogConfig build() {
             DialogConfig dialogConfig = new DialogConfig();
             dialogConfig.mostrarEditText             = this.mostrarEditText;
@@ -452,6 +482,7 @@ public class DialogConfig {
             dialogConfig.iconoTituloInt              = this.iconoTituloInt;
             dialogConfig.mostrarImagen               = this.mostrarImagen;
             dialogConfig.mostrarBotones              = this.mostrarBotones;
+            dialogConfig.mostrarVisorImagenes        = this.mostrarVisorImagenes;
             dialogConfig.autoDismiss                 = this.autoDismiss;
             dialogConfig.hint                        = this.hint;
             dialogConfig.estiloPositivo              = this.estiloPositivo;
@@ -466,9 +497,8 @@ public class DialogConfig {
             dialogConfig.mostrarImagenPredeterminada = this.mostrarImagenPredeterminada;
             dialogConfig.cancelable                  = this.cancelable;
             dialogConfig.colorTitulo                 = this.colorTitulo;
+            dialogConfig.imagenes                    = this.imagenes;
             return dialogConfig;
         }
-
-
     }
 }

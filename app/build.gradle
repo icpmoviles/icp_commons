@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 58
-        versionName "1.9.16a"
+        versionCode 59
+        versionName "1.9.16.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -43,5 +43,12 @@ dependencies {
     implementation 'com.github.icpmoviles:icp_logs:89fa799ed5'
 
     implementation 'com.google.android.material:material:1.1.0'
+
+    //View pager: indicador inferior de los PagerViewer
+    implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
+
+    // GLIDE: Imagenes
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
 }
