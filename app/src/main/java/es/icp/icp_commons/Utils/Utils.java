@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 
 public class Utils {
@@ -26,5 +27,9 @@ public class Utils {
             return (0 != (applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE));
         }
         return false;
+    }
+
+    public static byte[] convertBase64ToByteArray(String base64) {
+        return Base64.decode(base64, Base64.DEFAULT);
     }
 }

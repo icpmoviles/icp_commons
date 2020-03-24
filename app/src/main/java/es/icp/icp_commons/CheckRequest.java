@@ -177,7 +177,7 @@ public class CheckRequest {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (GlobalVariables.loader) Loading.HideLoading();
-                            tratarStatusCode(context, parametros, guardarAccion, error.networkResponse.statusCode);
+                            if (error != null && error.networkResponse != null) tratarStatusCode(context, parametros, guardarAccion, error.networkResponse.statusCode);
                             callBack.onError(error);
                         }
                     });
