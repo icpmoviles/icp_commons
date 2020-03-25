@@ -30,6 +30,7 @@
     <string name="custom_smart_dialog_si">SI</string>
     <string name="custom_smart_dialog_no">NO</string>
     <string name="custom_smart_dialog_atencion">Atención</string>
+    <string name="cargando_espere_porfavor">Cargando... Espere por favor.</string>
     <string-array name="array_name">
         <item>Equipos</item>
         <item>Tarjetas</item>

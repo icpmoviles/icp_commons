@@ -273,6 +273,7 @@ public class CustomSmartDialog {
             }
         });
         dialog.show();
+        Loading.HideLoading();
     }
 
     public static CustomSmartDialog dialogSiNo(final Context context, String mensaje, final CustomSmartDialogSiNoResponse listener) {
@@ -329,6 +330,7 @@ public class CustomSmartDialog {
     }
 
     public static CustomSmartDialog dialogGenerico(final Context context, DialogConfig config, final CustomSmartDialogSiNoResponse listener) {
+        Loading.ShowLoading(context, context.getString(R.string.cargando), context.getString(R.string.cargando_espere_porfavor), false);
         try {
             LayoutInflater inflater      = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout   mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_all, null);
