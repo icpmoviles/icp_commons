@@ -177,7 +177,7 @@ public class CheckRequest {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (GlobalVariables.loader) Loading.HideLoading();
-                            if (error != null && error.networkResponse != null) tratarStatusCode(context, parametros, guardarAccion, error.networkResponse.statusCode);
+                            tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
                             callBack.onError(error);
                         }
                     });
@@ -217,6 +217,9 @@ public class CheckRequest {
     private static void tratarStatusCode(Context context, ParametrosPeticion parametros, boolean guardarAccion, int errorCode) {
         switch (errorCode) {
             case 404:
+                if (guardarAccion) AddAction.AddActionDatabase(parametros.getJSONObject() != null ? parametros.getJSONObject().toString() : "", context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "", 404);
+                break;
+            default:
                 if (guardarAccion) AddAction.AddActionDatabase(parametros.getJSONObject() != null ? parametros.getJSONObject().toString() : "", context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "", 404);
                 break;
         }
