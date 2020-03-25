@@ -51,9 +51,9 @@ public class Loading {
             public void run() {
                 try {
                     progress = new ProgressDialog(ctx);
-                    progress.setTitle(ctx.getString(R.string.cargando));
-                    progress.setMessage(ctx.getString(R.string.obteniendo_informacion));
-                    progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                    progress.setTitle(title);
+                    progress.setMessage(message);
+                    progress.setCancelable(cancelable); // disable dismiss by tapping outside of the dialog
                     progress.show();
                 } catch (Exception e) {
 
