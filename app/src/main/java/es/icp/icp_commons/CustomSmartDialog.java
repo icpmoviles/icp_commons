@@ -34,6 +34,7 @@ import java.util.List;
 import es.icp.icp_commons.Adapters.VisorImagenesAdapter;
 import es.icp.icp_commons.Fragments.VisorImagenFragment;
 import es.icp.icp_commons.Helpers.DepthPageTransformer;
+import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQResponse;
@@ -325,266 +326,276 @@ public class CustomSmartDialog {
         }
     }
 
-    public static CustomSmartDialog dialogGenerico(final Context context, String titulo, String mensaje, final CustomSmartDialogSiNoResponse listener) {
-        return dialogGenerico(context, new DialogConfig(), listener);
+    public static void dialogGenerico(final Context context, String titulo, String mensaje, final CustomSmartDialogSiNoResponse listener) {
+        dialogGenerico(context, new DialogConfig(), listener);
     }
 
-    public static CustomSmartDialog dialogGenerico(final Context context, DialogConfig config, final CustomSmartDialogSiNoResponse listener) {
+    public static void dialogGenerico(final Context context, DialogConfig config, final CustomSmartDialogSiNoResponse listener) {
         Loading.ShowLoading(context, context.getString(R.string.cargando), context.getString(R.string.cargando_espere_porfavor), false);
-        try {
-            LayoutInflater inflater      = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout   mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_all, null);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-            //-------------------------------------------------------
-            //--------------- BÁSICO -------------------
-            TextView              txtTitulo   = mainContainer.findViewById(R.id.txtTitulo);
-            TextView              txtMensaje  = mainContainer.findViewById(R.id.txtMensaje);
-            android.widget.Button btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
-            android.widget.Button btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
-            ImageView             imagen      = mainContainer.findViewById(R.id.imagen);
-            ImageView             iconoTitulo = mainContainer.findViewById(R.id.iconoTitulo);
-            LinearLayout botonesSiNo = mainContainer.findViewById(R.id.botonesSiNo);
-            //----------------------------------------------------------------------------------------------------
+                try {
+                    LayoutInflater inflater      = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    LinearLayout   mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_all, null);
 
-            //-------------------------------------------------------
-            //--------------- EDITTEXT -------------------
-            LinearLayout    llEditText     = mainContainer.findViewById(R.id.editText);
-            TextInputLayout txtInputLayout = mainContainer.findViewById(R.id.txtInputLayout);
-            txtEditText = llEditText.findViewById(R.id.txtEditText);
-            ImageView startIcon = llEditText.findViewById(R.id.startIcon);
-            //----------------------------------------------------------------------------------------------------
+                    //-------------------------------------------------------
+                    //--------------- BÁSICO -------------------
+                    TextView              txtTitulo   = mainContainer.findViewById(R.id.txtTitulo);
+                    TextView              txtMensaje  = mainContainer.findViewById(R.id.txtMensaje);
+                    android.widget.Button btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
+                    android.widget.Button btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
+                    ImageView             imagen      = mainContainer.findViewById(R.id.imagen);
+                    ImageView             iconoTitulo = mainContainer.findViewById(R.id.iconoTitulo);
+                    LinearLayout botonesSiNo = mainContainer.findViewById(R.id.botonesSiNo);
+                    //----------------------------------------------------------------------------------------------------
 
-            //-------------------------------------------------------
-            //--------------- CANTIDAD -------------------
-            LinearLayout          quantity    = mainContainer.findViewById(R.id.quantity);
-            TextView              txtCantidad = mainContainer.findViewById(R.id.txtQuantity);
-            android.widget.Button btnMas      = mainContainer.findViewById(R.id.btnMas);
-            android.widget.Button btnMenos    = mainContainer.findViewById(R.id.btnMenos);
-            //----------------------------------------------------------------------------------------------------
+                    //-------------------------------------------------------
+                    //--------------- EDITTEXT -------------------
+                    LinearLayout    llEditText     = mainContainer.findViewById(R.id.editText);
+                    TextInputLayout txtInputLayout = mainContainer.findViewById(R.id.txtInputLayout);
+                    txtEditText = llEditText.findViewById(R.id.txtEditText);
+                    ImageView startIcon = llEditText.findViewById(R.id.startIcon);
+                    //----------------------------------------------------------------------------------------------------
 
-            //-------------------------------------------------------
-            //--------------- IMAGEN -------------------
-            ImageView imagenOpcional = mainContainer.findViewById(R.id.imagenOpcional);
-            //----------------------------------------------------------------------------------------------------
+                    //-------------------------------------------------------
+                    //--------------- CANTIDAD -------------------
+                    LinearLayout          quantity    = mainContainer.findViewById(R.id.quantity);
+                    TextView              txtCantidad = mainContainer.findViewById(R.id.txtQuantity);
+                    android.widget.Button btnMas      = mainContainer.findViewById(R.id.btnMas);
+                    android.widget.Button btnMenos    = mainContainer.findViewById(R.id.btnMenos);
+                    //----------------------------------------------------------------------------------------------------
 
-            //-------------------------------------------------------
-            //--------------- BUTTONS -------------------
-            LinearLayout llBotones = mainContainer.findViewById(R.id.llBotones);
-            //----------------------------------------------------------------------------------------------------
+                    //-------------------------------------------------------
+                    //--------------- IMAGEN -------------------
+                    ImageView imagenOpcional = mainContainer.findViewById(R.id.imagenOpcional);
+                    //----------------------------------------------------------------------------------------------------
 
-            //-------------------------------------------------------
-            //--------------- VISOR IMÁGENES -------------------
-            RelativeLayout    rlImagenes = mainContainer.findViewById(R.id.rlImagenes);
-            ViewPager         vpImagenes = mainContainer.findViewById(R.id.vpImagenes);
-            LinePageIndicator pageIndicator = mainContainer.findViewById(R.id.pageIndicator);
-            TextView txtConteoImagenes = mainContainer.findViewById(R.id.txtConteoImagenes);
-            ImageView ivPageLeft = mainContainer.findViewById(R.id.ivPageLeft);
-            ImageView ivPageRight = mainContainer.findViewById(R.id.ivPageRight);
-            //----------------------------------------------------------------------------------------------------
+                    //-------------------------------------------------------
+                    //--------------- BUTTONS -------------------
+                    LinearLayout llBotones = mainContainer.findViewById(R.id.llBotones);
+                    //----------------------------------------------------------------------------------------------------
 
-            if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(context);
-            if (config.getIconoEditText() == null && config.getIconoEditTextInt() != 0) config.setIconoEditText(context);
-            if (config.getIconoTitulo() == null && config.getIconoTituloInt() != 0) config.setIconoTitulo(context);
+                    //-------------------------------------------------------
+                    //--------------- VISOR IMÁGENES -------------------
+                    RelativeLayout    rlImagenes = mainContainer.findViewById(R.id.rlImagenes);
+                    ViewPager         vpImagenes = mainContainer.findViewById(R.id.vpImagenes);
+                    LinePageIndicator pageIndicator = mainContainer.findViewById(R.id.pageIndicator);
+                    TextView txtConteoImagenes = mainContainer.findViewById(R.id.txtConteoImagenes);
+                    ImageView ivPageLeft = mainContainer.findViewById(R.id.ivPageLeft);
+                    ImageView ivPageRight = mainContainer.findViewById(R.id.ivPageRight);
+                    //----------------------------------------------------------------------------------------------------
 
-            txtTitulo.setText(Html.fromHtml(config.getTitulo()));
-            txtMensaje.setText(Html.fromHtml(config.getMensaje()));
-            if (config.getColorTitulo() != 0){
-                txtTitulo.setBackgroundColor(context.getColor(config.getColorTitulo()));
-            }
-            if (config.isMostrarIconoTitulo()) {
-                iconoTitulo.setVisibility(View.VISIBLE);
-                iconoTitulo.setImageDrawable(config.getIconoTitulo());
-            }
-            if (config.isMostrarPositivo()) {
-                btnPositivo.setVisibility(View.VISIBLE);
-                btnPositivo.setText(Html.fromHtml(config.getTextoPositivo()));
-                if (!config.isMostrarNegativo()) {
+                    if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(context);
+                    if (config.getIconoEditText() == null && config.getIconoEditTextInt() != 0) config.setIconoEditText(context);
+                    if (config.getIconoTitulo() == null && config.getIconoTituloInt() != 0) config.setIconoTitulo(context);
+
+                    txtTitulo.setText(Html.fromHtml(config.getTitulo()));
+                    txtMensaje.setText(Html.fromHtml(config.getMensaje()));
                     if (config.getColorTitulo() != 0){
-                        btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
-                    } else {
-                        btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                        txtTitulo.setBackgroundColor(context.getColor(config.getColorTitulo()));
                     }
-                }
-                btnPositivo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (config.isAutoDismiss()) dialog.dismiss();
-                        if (listener != null) {
-                            if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialog);
-                            else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialog);
-                            else listener.positivo("Positivo", dialog);
-                        }
+                    if (config.isMostrarIconoTitulo()) {
+                        iconoTitulo.setVisibility(View.VISIBLE);
+                        iconoTitulo.setImageDrawable(config.getIconoTitulo());
                     }
-                });
-            }
-            if (config.isMostrarNegativo()) {
-                btnNegativo.setVisibility(View.VISIBLE);
-                btnNegativo.setText(Html.fromHtml(config.getTextoNegativo()));
-                if (!config.isMostrarPositivo()) {
-                    if (config.getColorTitulo() != 0){
-                        btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
-                    } else {
-                        btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
-                    }
-                }
-                btnNegativo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (config.isAutoDismiss()) dialog.dismiss();
-                        if (listener != null) {
-                            if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialog);
-                            else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialog);
-                            else listener.negativo("Negativo", dialog);
-                        }
-                    }
-                });
-            }
-
-            if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------
-                llEditText.setVisibility(View.VISIBLE);
-                txtInputLayout.setHint(Html.fromHtml(config.getHint()));
-                if (config.getIconoEditText() != null) startIcon.setImageDrawable(config.getIconoEditText());
-                if (config.getMaxLength() != 0) {
-                    txtInputLayout.setCounterMaxLength(config.getMaxLength());
-                    txtEditText.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            if (s.toString().length() > config.getMaxLength()) {
-                                startIcon.setImageTintList(ColorStateList.valueOf(context.getColor(android.R.color.holo_red_light)));
+                    if (config.isMostrarPositivo()) {
+                        btnPositivo.setVisibility(View.VISIBLE);
+                        btnPositivo.setText(Html.fromHtml(config.getTextoPositivo()));
+                        if (!config.isMostrarNegativo()) {
+                            if (config.getColorTitulo() != 0){
+                                btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
                             } else {
-                                startIcon.setImageTintList(null);
+                                btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
                             }
                         }
-                    });
-                }
+                        btnPositivo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (config.isAutoDismiss()) dialog.dismiss();
+                                if (listener != null) {
+                                    if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialog);
+                                    else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialog);
+                                    else listener.positivo("Positivo", dialog);
+                                }
+                            }
+                        });
+                    }
+                    if (config.isMostrarNegativo()) {
+                        btnNegativo.setVisibility(View.VISIBLE);
+                        btnNegativo.setText(Html.fromHtml(config.getTextoNegativo()));
+                        if (!config.isMostrarPositivo()) {
+                            if (config.getColorTitulo() != 0){
+                                btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
+                            } else {
+                                btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                            }
+                        }
+                        btnNegativo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (config.isAutoDismiss()) dialog.dismiss();
+                                if (listener != null) {
+                                    if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialog);
+                                    else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialog);
+                                    else listener.negativo("Negativo", dialog);
+                                }
+                            }
+                        });
+                    }
 
-            }
-            if (config.isMostrarBotones()) { //----------------------------------------------------------------------------
-                llBotones.setVisibility(View.VISIBLE);
-                List<SmartButton> botones = config.getBotones();
-                for (SmartButton boton : botones) {
-//                    if (boton.getBackground() == null) {
-//                        boton.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
-//                    }
-                    android.widget.Button b = new android.widget.Button(context);
-                    b.setText(Html.fromHtml(boton.getText().toString()));
-                    b.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
-                    b.setBackgroundTintList(boton.getBackgroundTintList());
-                    b.setAllCaps(false);
-                    b.setTextColor(context.getColor(R.color.white));
-                    b.setOnClickListener(new View.OnClickListener() {
+                    if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------
+                        llEditText.setVisibility(View.VISIBLE);
+                        txtInputLayout.setHint(Html.fromHtml(config.getHint()));
+                        if (config.getIconoEditText() != null) startIcon.setImageDrawable(config.getIconoEditText());
+                        if (config.getMaxLength() != 0) {
+                            txtInputLayout.setCounterMaxLength(config.getMaxLength());
+                            txtEditText.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+                                    if (s.toString().length() > config.getMaxLength()) {
+                                        startIcon.setImageTintList(ColorStateList.valueOf(context.getColor(android.R.color.holo_red_light)));
+                                    } else {
+                                        startIcon.setImageTintList(null);
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                    if (config.isMostrarBotones()) { //----------------------------------------------------------------------------
+                        llBotones.setVisibility(View.VISIBLE);
+                        List<SmartButton> botones = config.getBotones();
+                        for (SmartButton boton : botones) {
+                            //                    if (boton.getBackground() == null) {
+                            //                        boton.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
+                            //                    }
+                            android.widget.Button b = new android.widget.Button(context);
+                            b.setText(Html.fromHtml(boton.getText().toString()));
+                            b.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
+                            b.setBackgroundTintList(boton.getBackgroundTintList());
+                            b.setAllCaps(false);
+                            b.setTextColor(context.getColor(R.color.white));
+                            b.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (config.isAutoDismiss()) dialog.dismiss();
+                                    boton.getCustomListener().onClick("", dialog);
+                                }
+                            });
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            layoutParams.setMargins(Utils.dpToPx(context, 5), Utils.dpToPx(context, 5), Utils.dpToPx(context, 5), Utils.dpToPx(context, 5));
+                            b.setLayoutParams(layoutParams);
+                            b.setVisibility(View.VISIBLE);
+                            if (botones.size() != 1) llBotones.addView(b);
+                            else botonesSiNo.addView(b, 0);
+                        }
+
+                    }
+                    if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
+                        quantity.setVisibility(View.VISIBLE);
+                        txtCantidad.setText(Html.fromHtml(String.valueOf(config.getCantidadInicial())));
+                        btnMas.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int cantidad = Integer.parseInt(txtCantidad.getText().toString());
+                                cantidad++;
+                                txtCantidad.setText(String.valueOf(cantidad));
+                            }
+                        });
+                        btnMenos.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int cantidad = Integer.parseInt(txtCantidad.getText().toString());
+                                if (cantidad != 0) cantidad--;
+                                txtCantidad.setText(String.valueOf(cantidad));
+                            }
+                        });
+
+                    }
+                    if (config.isMostrarImagen()) { //----------------------------------------------------------------------------
+                        imagenOpcional.setVisibility(View.VISIBLE);
+                        imagen.setVisibility(View.GONE);
+                        imagenOpcional.setImageDrawable(config.getImagen());
+                    } //-----------------------------------------------------------------------------------------------------------------
+                    if (!config.isMostrarImagenPredeterminada()) {
+                        imagen.setVisibility(View.GONE);
+                    }
+                    if (config.isMostrarVisorImagenes() && config.getImagenes().size() > 0) {
+                        rlImagenes.setVisibility(View.VISIBLE);
+                        VisorImagenesAdapter adapter = new VisorImagenesAdapter(context, config.getImagenes());
+                        vpImagenes.setAdapter(adapter);
+                        vpImagenes.setCurrentItem(0);
+                        pageIndicator.setViewPager(vpImagenes);
+                        vpImagenes.setPageMargin(20);
+                        vpImagenes.setPageTransformer(true, new DepthPageTransformer());
+
+                        txtConteoImagenes.setText("1/" + config.getImagenes().size());
+                        ivPageLeft.setVisibility(View.GONE);
+                        if (config.getImagenes().size() == 1) ivPageRight.setVisibility(View.GONE);
+                        ivPageLeft.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() - 1);
+                                if (vpImagenes.getCurrentItem() == 0) ivPageLeft.setVisibility(View.GONE);
+                                ivPageRight.setVisibility(View.VISIBLE);
+                                txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
+                            }
+                        });
+                        ivPageRight.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() + 1);
+                                if (vpImagenes.getCurrentItem() == config.getImagenes().size() - 1) ivPageRight.setVisibility(View.GONE);
+                                ivPageLeft.setVisibility(View.VISIBLE);
+                                txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
+                            }
+                        });
+                        vpImagenes.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                            @Override
+                            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                            }
+
+                            @Override
+                            public void onPageSelected(int position) {
+                                ivPageLeft.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+                                ivPageRight.setVisibility(position == config.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
+                                txtConteoImagenes.setText(position + 1 + "/" + config.getImagenes().size());
+                            }
+
+                            @Override
+                            public void onPageScrollStateChanged(int state) {
+
+                            }
+                        });
+                    }
+                    MyApplication.runOnUiThread(new Runnable() {
                         @Override
-                        public void onClick(View v) {
-                            if (config.isAutoDismiss()) dialog.dismiss();
-                            boton.getCustomListener().onClick("", dialog);
+                        public void run() {
+                            new CustomSmartDialog.Builder(context)
+                                    .addView(mainContainer)
+                                    .isGenerico(true)
+                                    .isCancelable(config.isCancelable())
+                                    .build();
                         }
                     });
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(Utils.dpToPx(context, 5), Utils.dpToPx(context, 5), Utils.dpToPx(context, 5), Utils.dpToPx(context, 5));
-                    b.setLayoutParams(layoutParams);
-                    b.setVisibility(View.VISIBLE);
-                    if (botones.size() != 1) llBotones.addView(b);
-                    else botonesSiNo.addView(b, 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
             }
-            if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
-                quantity.setVisibility(View.VISIBLE);
-                txtCantidad.setText(Html.fromHtml(String.valueOf(config.getCantidadInicial())));
-                btnMas.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int cantidad = Integer.parseInt(txtCantidad.getText().toString());
-                        cantidad++;
-                        txtCantidad.setText(String.valueOf(cantidad));
-                    }
-                });
-                btnMenos.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int cantidad = Integer.parseInt(txtCantidad.getText().toString());
-                        if (cantidad != 0) cantidad--;
-                        txtCantidad.setText(String.valueOf(cantidad));
-                    }
-                });
-
-            }
-            if (config.isMostrarImagen()) { //----------------------------------------------------------------------------
-                imagenOpcional.setVisibility(View.VISIBLE);
-                imagen.setVisibility(View.GONE);
-                imagenOpcional.setImageDrawable(config.getImagen());
-            } //-----------------------------------------------------------------------------------------------------------------
-            if (!config.isMostrarImagenPredeterminada()) {
-                imagen.setVisibility(View.GONE);
-            }
-            if (config.isMostrarVisorImagenes() && config.getImagenes().size() > 0) {
-                rlImagenes.setVisibility(View.VISIBLE);
-                VisorImagenesAdapter adapter = new VisorImagenesAdapter(context, config.getImagenes());
-                vpImagenes.setAdapter(adapter);
-                vpImagenes.setCurrentItem(0);
-                pageIndicator.setViewPager(vpImagenes);
-                vpImagenes.setPageMargin(20);
-                vpImagenes.setPageTransformer(true, new DepthPageTransformer());
-
-                txtConteoImagenes.setText("1/" + config.getImagenes().size());
-                ivPageLeft.setVisibility(View.GONE);
-                if (config.getImagenes().size() == 1) ivPageRight.setVisibility(View.GONE);
-                ivPageLeft.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() - 1);
-                        if (vpImagenes.getCurrentItem() == 0) ivPageLeft.setVisibility(View.GONE);
-                        ivPageRight.setVisibility(View.VISIBLE);
-                        txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
-                    }
-                });
-                ivPageRight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() + 1);
-                        if (vpImagenes.getCurrentItem() == config.getImagenes().size() - 1) ivPageRight.setVisibility(View.GONE);
-                        ivPageLeft.setVisibility(View.VISIBLE);
-                        txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
-                    }
-                });
-                vpImagenes.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                    }
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        ivPageLeft.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
-                        ivPageRight.setVisibility(position == config.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
-                        txtConteoImagenes.setText(position + 1 + "/" + config.getImagenes().size());
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-
-                    }
-                });
-            }
-            return new CustomSmartDialog.Builder(context)
-                    .addView(mainContainer)
-                    .isGenerico(true)
-                    .isCancelable(config.isCancelable())
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        }).start();
     }
 
     public static CustomSmartDialog dialogImage(final Context context, String titulo, Drawable iconoTitulo, Drawable image, final CustomSmartDialogResponse listener) {
