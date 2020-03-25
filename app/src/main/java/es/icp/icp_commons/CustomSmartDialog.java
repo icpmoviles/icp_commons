@@ -375,6 +375,9 @@ public class CustomSmartDialog {
             RelativeLayout    rlImagenes = mainContainer.findViewById(R.id.rlImagenes);
             ViewPager         vpImagenes = mainContainer.findViewById(R.id.vpImagenes);
             LinePageIndicator pageIndicator = mainContainer.findViewById(R.id.pageIndicator);
+            TextView txtConteoImagenes = mainContainer.findViewById(R.id.txtConteoImagenes);
+            ImageView ivPageLeft = mainContainer.findViewById(R.id.ivPageLeft);
+            ImageView ivPageRight = mainContainer.findViewById(R.id.ivPageRight);
             //----------------------------------------------------------------------------------------------------
 
             if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(context);
@@ -522,7 +525,7 @@ public class CustomSmartDialog {
             if (!config.isMostrarImagenPredeterminada()) {
                 imagen.setVisibility(View.GONE);
             }
-            if (config.isMostrarVisorImagenes()) {
+            if (config.isMostrarVisorImagenes() && config.getImagenes().size() > 0) {
                 rlImagenes.setVisibility(View.VISIBLE);
                 VisorImagenesAdapter adapter = new VisorImagenesAdapter(context, config.getImagenes());
                 vpImagenes.setAdapter(adapter);
@@ -530,6 +533,46 @@ public class CustomSmartDialog {
                 pageIndicator.setViewPager(vpImagenes);
                 vpImagenes.setPageMargin(20);
                 vpImagenes.setPageTransformer(true, new DepthPageTransformer());
+
+                txtConteoImagenes.setText("1/" + config.getImagenes().size());
+                ivPageLeft.setVisibility(View.GONE);
+                if (config.getImagenes().size() == 1) ivPageRight.setVisibility(View.GONE);
+                ivPageLeft.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() - 1);
+                        if (vpImagenes.getCurrentItem() == 0) ivPageLeft.setVisibility(View.GONE);
+                        ivPageRight.setVisibility(View.VISIBLE);
+                        txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
+                    }
+                });
+                ivPageRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() + 1);
+                        if (vpImagenes.getCurrentItem() == config.getImagenes().size() - 1) ivPageRight.setVisibility(View.GONE);
+                        ivPageLeft.setVisibility(View.VISIBLE);
+                        txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
+                    }
+                });
+                vpImagenes.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        ivPageLeft.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+                        ivPageRight.setVisibility(position == config.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
+                        txtConteoImagenes.setText(position + 1 + "/" + config.getImagenes().size());
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
             }
             return new CustomSmartDialog.Builder(context)
                     .addView(mainContainer)
