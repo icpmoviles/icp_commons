@@ -1,5 +1,6 @@
 package es.icp.icp_commons.Fragments;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +10,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 
@@ -20,6 +20,9 @@ public class VisorImagenFragment extends Fragment {
     private Context   context;
     private byte[]    imagen;
     private ImageView ivVisorImagen;
+
+    public VisorImagenFragment() {
+    }
 
     public VisorImagenFragment(Context context, byte[] imagen) {
         this.context = context;
@@ -46,7 +49,7 @@ public class VisorImagenFragment extends Fragment {
     private void setUpView(View view) {
         ivVisorImagen = view.findViewById(R.id.ivVisorImagen);
 
-        cargarImagen();
+//        cargarImagen();
     }
 
     private void cargarImagen() {

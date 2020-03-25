@@ -404,9 +404,11 @@ public class CustomSmartDialog {
                     @Override
                     public void onClick(View v) {
                         if (config.isAutoDismiss()) dialog.dismiss();
-                        if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialog);
-                        else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialog);
-                        else listener.positivo("Positivo", dialog);
+                        if (listener != null) {
+                            if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialog);
+                            else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialog);
+                            else listener.positivo("Positivo", dialog);
+                        }
                     }
                 });
             }
@@ -424,9 +426,11 @@ public class CustomSmartDialog {
                     @Override
                     public void onClick(View v) {
                         if (config.isAutoDismiss()) dialog.dismiss();
-                        if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialog);
-                        else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialog);
-                        else listener.negativo("Negativo", dialog);
+                        if (listener != null) {
+                            if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialog);
+                            else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialog);
+                            else listener.negativo("Negativo", dialog);
+                        }
                     }
                 });
             }
@@ -520,7 +524,7 @@ public class CustomSmartDialog {
             }
             if (config.isMostrarVisorImagenes()) {
                 rlImagenes.setVisibility(View.VISIBLE);
-                VisorImagenesAdapter adapter = new VisorImagenesAdapter(context, config.getImagenes(), ((FragmentActivity) context).getSupportFragmentManager());
+                VisorImagenesAdapter adapter = new VisorImagenesAdapter(context, config.getImagenes());
                 vpImagenes.setAdapter(adapter);
                 vpImagenes.setCurrentItem(0);
                 pageIndicator.setViewPager(vpImagenes);
