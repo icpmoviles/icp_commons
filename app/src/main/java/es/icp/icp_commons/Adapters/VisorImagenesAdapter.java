@@ -20,6 +20,7 @@ public class VisorImagenesAdapter extends FragmentPagerAdapter {
     public VisorImagenesAdapter(Context context, ArrayList<String> imagenes, FragmentManager fm) {
         super(fm);
         this.context = context;
+        this.imagenes = new ArrayList<>();
         addImagesToByteArray(imagenes);
     }
 
@@ -31,7 +32,7 @@ public class VisorImagenesAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return imagenes != null ? imagenes.size() : 0;
     }
 
     private void addImagesToByteArray(ArrayList<String> imagenes) {
