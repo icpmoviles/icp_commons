@@ -194,6 +194,7 @@ public class MainActivity extends Activity {
     private void crearDialog21() {
         DialogConfig config = new DialogConfig.Builder()
                 .setMostrarIconoTitulo(true)
+                .setMostrarImagenPredeterminada(false)
                 .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTitulo("Imágenes incidencia")
                 .setMensaje("Esto es un visor de imágenes de las incidencias.")
@@ -202,7 +203,7 @@ public class MainActivity extends Activity {
                 .setAutoDismiss(true)
                 .setTextoPositivo("ACEPTAR")
                 .setMostrarVisorImagenes(true)
-//                .setImagenes(Pru)
+                .setImagenes(new ArrayList<>(Arrays.asList("1", "2")))
                 .build();
         CustomSmartDialog.dialogGenerico(context, config, null);
     }
