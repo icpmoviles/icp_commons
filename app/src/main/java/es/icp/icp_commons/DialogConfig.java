@@ -6,40 +6,50 @@ import android.graphics.drawable.Drawable;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.icp.icp_commons.Interfaces.AdjuntarImagenesListener;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.SmartButton;
 
 public class DialogConfig {
 
-    private boolean                  mostrarEditText      = false;
-    private Drawable                 iconoEditText        = null;
-    private int                      iconoEditTextInt     = 0;
-    private String                   textoPositivo        = "SI";
-    private String                   textoNegativo        = "NO";
-    private int                      estiloPositivo       = 0; // TODO: 21/02/2020
-    private int                      estiloNegativo       = 0; // TODO: 21/02/2020
-    private boolean                  mostrarCantidad      = false;
-    private boolean                  mostrarImagen        = false;
-    private boolean                  mostrarBotones       = false;
-    private boolean                  mostrarVisorImagenes = false;
-    private ArrayList<ImagenCommons> imagenes             = new ArrayList<>();
-    private List<SmartButton>        botones              = new ArrayList<>();
-    private Drawable                 imagen               = null;
-    private int                      imagenInt            = 0;
-    private String                   titulo               = "";
-    private String                   mensaje              = "";
-    private Drawable                 iconoTitulo          = null;
-    private int                      iconoTituloInt       = 0;
-    private boolean           mostrarIconoTitulo          = false;
-    private String            hint                        = "";
-    private int               maxLength                   = 0;
-    private int               cantidadInicial             = 0;
-    private boolean           autoDismiss                 = false;
-    private boolean           mostrarPositivo             = true;
-    private boolean           mostrarNegativo             = true;
-    private boolean           mostrarImagenPredeterminada = true;
-    private boolean           cancelable                  = false;
-    private int               colorTitulo                 = 0;
+    private boolean                  mostrarEditText             = false;
+    private Drawable                 iconoEditText               = null;
+    private int                      iconoEditTextInt            = 0;
+    private String                   textoPositivo               = "SI";
+    private String                   textoNegativo               = "NO";
+    private int                      estiloPositivo              = 0; // TODO: 21/02/2020
+    private int                      estiloNegativo              = 0; // TODO: 21/02/2020
+    private boolean                  mostrarCantidad             = false;
+    private boolean                  mostrarImagen               = false;
+    private boolean                  mostrarBotones              = false;
+    private boolean                  mostrarVisorImagenes        = false;
+    private ArrayList<ImagenCommons> imagenes                    = new ArrayList<>();
+    private List<SmartButton>        botones                     = new ArrayList<>();
+    private Drawable                 imagen                      = null;
+    private int                      imagenInt                   = 0;
+    private String                   titulo                      = "";
+    private String                   mensaje                     = "";
+    private Drawable                 iconoTitulo                 = null;
+    private int                      iconoTituloInt              = 0;
+    private boolean                  mostrarIconoTitulo          = false;
+    private String                   hint                        = "";
+    private int                      maxLength                   = 0;
+    private int                      cantidadInicial             = 0;
+    private boolean                  autoDismiss                 = false;
+    private boolean                  mostrarPositivo             = true;
+    private boolean                  mostrarNegativo             = true;
+    private boolean                  mostrarImagenPredeterminada = true;
+    private boolean                  cancelable                  = false;
+    private int                      colorTitulo                 = 0;
+    private AdjuntarImagenesListener adjuntarImagenesListener    = null;
+
+    public AdjuntarImagenesListener getAdjuntarImagenesListener() {
+        return adjuntarImagenesListener;
+    }
+
+    public void setAdjuntarImagenesListener(AdjuntarImagenesListener adjuntarImagenesListener) {
+        this.adjuntarImagenesListener = adjuntarImagenesListener;
+    }
 
     public boolean isMostrarVisorImagenes() {
         return mostrarVisorImagenes;
@@ -286,41 +296,47 @@ public class DialogConfig {
     }
 
     public static final class Builder {
-        private boolean           mostrarEditText             = false;
-        private Drawable          iconoEditText               = null;
-        private int               iconoEditTextInt            = 0;
-        private String            textoPositivo               = "SI";
-        private String            textoNegativo               = "NO";
-        private int               estiloPositivo              = 0;
-        private int               estiloNegativo              = 0;
-        private boolean           mostrarCantidad             = false;
-        private boolean           mostrarImagen               = false;
-        private boolean           mostrarBotones              = false;
-        private boolean           mostrarVisorImagenes        = false;
-        private List<SmartButton> botones                     = new ArrayList<>();
-        private Drawable          imagen                      = null;
-        private int               imagenInt                   = 0;
-        private String            titulo                      = "";
-        private String            mensaje                     = "";
-        private Drawable          iconoTitulo                 = null;
-        private int               iconoTituloInt              = 0;
-        private boolean           mostrarIconoTitulo          = false;
-        private String            hint                        = "";
-        private int               maxLength                   = 0;
-        private int               cantidadInicial             = 0;
-        private boolean           autoDismiss                 = false;
-        private boolean           mostrarPositivo             = true;
-        private boolean           mostrarNegativo             = true;
-        private boolean           mostrarImagenPredeterminada = true;
-        private boolean           cancelable                  = false;
-        private int               colorTitulo                 = 0;
+        private boolean                  mostrarEditText             = false;
+        private Drawable                 iconoEditText               = null;
+        private int                      iconoEditTextInt            = 0;
+        private String                   textoPositivo               = "SI";
+        private String                   textoNegativo               = "NO";
+        private int                      estiloPositivo              = 0;
+        private int                      estiloNegativo              = 0;
+        private boolean                  mostrarCantidad             = false;
+        private boolean                  mostrarImagen               = false;
+        private boolean                  mostrarBotones              = false;
+        private boolean                  mostrarVisorImagenes        = false;
+        private List<SmartButton>        botones                     = new ArrayList<>();
+        private Drawable                 imagen                      = null;
+        private int                      imagenInt                   = 0;
+        private String                   titulo                      = "";
+        private String                   mensaje                     = "";
+        private Drawable                 iconoTitulo                 = null;
+        private int                      iconoTituloInt              = 0;
+        private boolean                  mostrarIconoTitulo          = false;
+        private String                   hint                        = "";
+        private int                      maxLength                   = 0;
+        private int                      cantidadInicial             = 0;
+        private boolean                  autoDismiss                 = false;
+        private boolean                  mostrarPositivo             = true;
+        private boolean                  mostrarNegativo             = true;
+        private boolean                  mostrarImagenPredeterminada = true;
+        private boolean                  cancelable                  = false;
+        private int                      colorTitulo                 = 0;
         private ArrayList<ImagenCommons> imagenes                    = new ArrayList<>();
+        private AdjuntarImagenesListener adjuntarImagenesListener    = null;
 
         public Builder() {
         }
 
         public static Builder aDialogConfig() {
             return new Builder();
+        }
+
+        public Builder setAdjuntarImagenesListener(AdjuntarImagenesListener adjuntarImagenesListener) {
+            this.adjuntarImagenesListener = adjuntarImagenesListener;
+            return this;
         }
 
         public Builder setMostrarEditText(boolean mostrarEditText) {
@@ -499,6 +515,7 @@ public class DialogConfig {
             dialogConfig.cancelable                  = this.cancelable;
             dialogConfig.colorTitulo                 = this.colorTitulo;
             dialogConfig.imagenes                    = this.imagenes;
+            dialogConfig.adjuntarImagenesListener    = this.adjuntarImagenesListener;
             return dialogConfig;
         }
     }

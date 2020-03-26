@@ -1,12 +1,18 @@
 package es.icp.icp_commons;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.hardware.Camera;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -20,45 +26,84 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.viewpagerindicator.LinePageIndicator;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import es.icp.icp_commons.Adapters.VisorImagenesAdapter;
-import es.icp.icp_commons.Fragments.VisorImagenFragment;
+import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Helpers.DepthPageTransformer;
 import es.icp.icp_commons.Helpers.MyApplication;
-import es.icp.icp_commons.Utils.Utils;
+import es.icp.icp_commons.Interfaces.AdjuntarImagenesListener;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
+import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.SmartButton;
+import es.icp.icp_commons.Utils.Localizacion;
+import es.icp.icp_commons.Utils.Utils;
+import es.icp.icp_commons.Utils.UtilsFechas;
 
 /**
  * Clase CustomSmartDialog. Diálogos creados para el proyecto Securitas Seguridad.
  *
  * @author Ventura de Lucas
  */
-public class CustomSmartDialog {
+public class CustomSmartDialog extends AppCompatActivity {
 
-    private        Context      context;
-    private        CustomTitle  customTitle;
-    private        LinearLayout layout;
-    private        List<Button> buttons;
-    private        boolean      isCancellable;
-    private        Message      message;
-    private static AlertDialog  dialog;
-    private        boolean      generico = false;
-    private static EditText     txtEditText;
+    private        Context                  context;
+    private        CustomTitle              customTitle;
+    private        LinearLayout             layout;
+    private        List<Button>             buttons;
+    private        boolean                  isCancellable;
+    private        Message                  message;
+    private static AlertDialog              dialog;
+    private        boolean                  generico = false;
+    private static EditText                 txtEditText;
+    private static File                     archivoTemporal;
+    private static VisorImagenesAdapter     visorImagenesAdapter;
+    private static ArrayList<ImagenCommons> imagenes = new ArrayList<>();
+    private static AdjuntarImagenesListener ail;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) { // TODO: 26/03/2020 aqui no llega!!!!!!!!! 
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constantes.CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            agregarImagenAdapter();
+        }
+    }
+
+    private void agregarImagenAdapter() {
+        imagenes.add(new ImagenCommons(Utils.fromFileToBase64Image(archivoTemporal), Utils.getFormatFromFile(archivoTemporal.getAbsolutePath()), Utils.getCameraPhotoOrientation(archivoTemporal.getAbsolutePath()), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas)));
+        visorImagenesAdapter.setData(imagenes);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == Constantes.CODE_PERMISSIONS) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    adjuntarImagen(context);
+                }
+            }
+        }
+    }
 
     /**
      * Constructor de 1 parámetro
@@ -173,15 +218,9 @@ public class CustomSmartDialog {
     public void show() {
         AlertDialog.Builder builder;
         if (generico) {
-            builder = new AlertDialog.Builder(context, R.style.CustomDialog)
-                    .setCustomTitle(customTitle)
-                    .setCancelable(isCancellable)
-                    .setView(layout);
+            builder = new AlertDialog.Builder(context, R.style.CustomDialog).setCustomTitle(customTitle).setCancelable(isCancellable).setView(layout);
         } else {
-            builder = new AlertDialog.Builder(context)
-                    .setCustomTitle(customTitle)
-                    .setCancelable(isCancellable)
-                    .setView(layout, Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16));
+            builder = new AlertDialog.Builder(context).setCustomTitle(customTitle).setCancelable(isCancellable).setView(layout, Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16));
         }
         for (final Button button : buttons) {
             if (button.type == Button.Type.POSSITIVE) {
@@ -262,7 +301,7 @@ public class CustomSmartDialog {
                     } else {
                         if (button.textColor != 0) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(context.getColor(button.textColor));
                         if (button.textSize != 0) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextSize((float) button.textSize);
-//                        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setGravity(Gravity.CENTER_VERTICAL);
+                        //                        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setGravity(Gravity.CENTER_VERTICAL);
                         if (button.onClickListener != null) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -283,18 +322,9 @@ public class CustomSmartDialog {
 
     public static CustomSmartDialog dialogTextos(final Context context, String mensaje, String positivo, String negativo, final CustomSmartDialogSiNoResponse listener) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(context.getString(R.string.custom_smart_dialog_atencion))
-                    .setIcon(context.getDrawable(R.drawable.ic_help_outline_black_24dp))
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(context.getString(R.string.custom_smart_dialog_atencion)).setIcon(context.getDrawable(R.drawable.ic_help_outline_black_24dp)).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            TextView message = new CustomSmartDialog.Message.Builder(context)
-                    .setText(mensaje)
-                    .build();
-
+            TextView message = new CustomSmartDialog.Message.Builder(context).setText(mensaje).build();
 
             ImageView imageView = new ImageView(context);
             imageView.setImageDrawable(context.getDrawable(R.drawable.ic_help_outline_black_100dp));
@@ -314,12 +344,7 @@ public class CustomSmartDialog {
                 }
             }).build();
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(imageView)
-                    .addView(message)
-                    .addView(customSiNo)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(imageView).addView(message).addView(customSiNo).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -346,9 +371,10 @@ public class CustomSmartDialog {
                     TextView              txtMensaje  = mainContainer.findViewById(R.id.txtMensaje);
                     android.widget.Button btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
                     android.widget.Button btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
+                    android.widget.Button btnNeutral  = mainContainer.findViewById(R.id.btnNeutral);
                     ImageView             imagen      = mainContainer.findViewById(R.id.imagen);
                     ImageView             iconoTitulo = mainContainer.findViewById(R.id.iconoTitulo);
-                    LinearLayout botonesSiNo = mainContainer.findViewById(R.id.botonesSiNo);
+                    LinearLayout          botonesSiNo = mainContainer.findViewById(R.id.botonesSiNo);
                     //----------------------------------------------------------------------------------------------------
 
                     //-------------------------------------------------------
@@ -379,12 +405,12 @@ public class CustomSmartDialog {
 
                     //-------------------------------------------------------
                     //--------------- VISOR IMÁGENES -------------------
-                    RelativeLayout    rlImagenes = mainContainer.findViewById(R.id.rlImagenes);
-                    ViewPager         vpImagenes = mainContainer.findViewById(R.id.vpImagenes);
-                    LinePageIndicator pageIndicator = mainContainer.findViewById(R.id.pageIndicator);
-                    TextView txtConteoImagenes = mainContainer.findViewById(R.id.txtConteoImagenes);
-                    ImageView ivPageLeft = mainContainer.findViewById(R.id.ivPageLeft);
-                    ImageView ivPageRight = mainContainer.findViewById(R.id.ivPageRight);
+                    RelativeLayout    rlImagenes        = mainContainer.findViewById(R.id.rlImagenes);
+                    ViewPager         vpImagenes        = mainContainer.findViewById(R.id.vpImagenes);
+                    LinePageIndicator pageIndicator     = mainContainer.findViewById(R.id.pageIndicator);
+                    TextView          txtConteoImagenes = mainContainer.findViewById(R.id.txtConteoImagenes);
+                    ImageView         ivPageLeft        = mainContainer.findViewById(R.id.ivPageLeft);
+                    ImageView         ivPageRight       = mainContainer.findViewById(R.id.ivPageRight);
                     //----------------------------------------------------------------------------------------------------
 
                     if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(context);
@@ -393,7 +419,7 @@ public class CustomSmartDialog {
 
                     txtTitulo.setText(Html.fromHtml(config.getTitulo()));
                     txtMensaje.setText(Html.fromHtml(config.getMensaje()));
-                    if (config.getColorTitulo() != 0){
+                    if (config.getColorTitulo() != 0) {
                         txtTitulo.setBackgroundColor(context.getColor(config.getColorTitulo()));
                     }
                     if (config.isMostrarIconoTitulo()) {
@@ -404,7 +430,7 @@ public class CustomSmartDialog {
                         btnPositivo.setVisibility(View.VISIBLE);
                         btnPositivo.setText(Html.fromHtml(config.getTextoPositivo()));
                         if (!config.isMostrarNegativo()) {
-                            if (config.getColorTitulo() != 0){
+                            if (config.getColorTitulo() != 0) {
                                 btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
                             } else {
                                 btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
@@ -426,7 +452,7 @@ public class CustomSmartDialog {
                         btnNegativo.setVisibility(View.VISIBLE);
                         btnNegativo.setText(Html.fromHtml(config.getTextoNegativo()));
                         if (!config.isMostrarPositivo()) {
-                            if (config.getColorTitulo() != 0){
+                            if (config.getColorTitulo() != 0) {
                                 btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
                             } else {
                                 btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
@@ -472,7 +498,6 @@ public class CustomSmartDialog {
                                 }
                             });
                         }
-
                     }
                     if (config.isMostrarBotones()) { //----------------------------------------------------------------------------
                         llBotones.setVisibility(View.VISIBLE);
@@ -501,7 +526,6 @@ public class CustomSmartDialog {
                             if (botones.size() != 1) llBotones.addView(b);
                             else botonesSiNo.addView(b, 0);
                         }
-
                     }
                     if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
                         quantity.setVisibility(View.VISIBLE);
@@ -522,7 +546,6 @@ public class CustomSmartDialog {
                                 txtCantidad.setText(String.valueOf(cantidad));
                             }
                         });
-
                     }
                     if (config.isMostrarImagen()) { //----------------------------------------------------------------------------
                         imagenOpcional.setVisibility(View.VISIBLE);
@@ -531,11 +554,11 @@ public class CustomSmartDialog {
                     } //-----------------------------------------------------------------------------------------------------------------
                     if (!config.isMostrarImagenPredeterminada()) {
                         imagen.setVisibility(View.GONE);
-                    }
-                    if (config.isMostrarVisorImagenes() && config.getImagenes().size() > 0) {
+                    } //-----------------------------------------------------------------------------------------------------------------
+                    if (config.isMostrarVisorImagenes()) {
                         rlImagenes.setVisibility(View.VISIBLE);
-                        VisorImagenesAdapter adapter = new VisorImagenesAdapter(context, config.getImagenes());
-                        vpImagenes.setAdapter(adapter);
+                        visorImagenesAdapter = new VisorImagenesAdapter(context, config.getImagenes());
+                        vpImagenes.setAdapter(visorImagenesAdapter);
                         vpImagenes.setCurrentItem(0);
                         pageIndicator.setViewPager(vpImagenes);
                         vpImagenes.setPageMargin(20);
@@ -580,15 +603,27 @@ public class CustomSmartDialog {
 
                             }
                         });
-                    }
+                        if (config.getAdjuntarImagenesListener() != null) { //el visor de imágenes estará en modo edición
+                            imagenes = new ArrayList<>();
+                            ail = config.getAdjuntarImagenesListener();
+                            btnNeutral.setVisibility(View.VISIBLE);
+                            btnNeutral.setText(R.string.dialog_visor_imagenes_adjuntar_imagen);
+                            btnNeutral.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    String[] permisos = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+
+                                    if (Utils.comprobarPermisos(context, permisos)) {
+                                        adjuntarImagen(context);
+                                    }
+                                }
+                            });
+                        }
+                    } //-----------------------------------------------------------------------------------------------------------------
                     MyApplication.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            new CustomSmartDialog.Builder(context)
-                                    .addView(mainContainer)
-                                    .isGenerico(true)
-                                    .isCancelable(config.isCancelable())
-                                    .build();
+                            new Builder(context).addView(mainContainer).isGenerico(true).isCancelable(config.isCancelable()).build();
                         }
                     });
                 } catch (Exception e) {
@@ -598,25 +633,34 @@ public class CustomSmartDialog {
         }).start();
     }
 
+    private static void adjuntarImagen(Context context) {
+        archivoTemporal = new File(context.getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()), "/temporalpicture_" + System.currentTimeMillis() + ".jpg"); // TODO: 26/03/2020 Permitir la introduccion de tipo JPG / PNG
+        if (!archivoTemporal.exists()) {
+            try {
+                if (archivoTemporal.createNewFile()) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName(), archivoTemporal));
+                    intent.putExtra("android.intent.extras.CAMERA_FACING", Camera.CameraInfo.CAMERA_FACING_BACK);
+                    CustomSmartDialog customSmartDialog = new CustomSmartDialog(context);
+                    ((Activity) context).startActivityForResult(intent, Constantes.CAMERA_REQUEST_CODE);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static CustomSmartDialog dialogImage(final Context context, String titulo, Drawable iconoTitulo, Drawable image, final CustomSmartDialogResponse listener) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(iconoTitulo)
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(iconoTitulo).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            CustomSmartDialog.Button buttonAceptar = new Button.Builder(Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
-                    .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new Button.Builder(Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar)).setTextColor(R.color.colorPrimary).setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, dialog);
+                }
+            }).build();
 
             ImageView imageView = new ImageView(context);
             imageView.setImageDrawable(image);
@@ -624,11 +668,7 @@ public class CustomSmartDialog {
             layoutParams.gravity = Gravity.CENTER;
             imageView.setLayoutParams(layoutParams);
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(imageView)
-                    .addButton(buttonAceptar)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(imageView).addButton(buttonAceptar).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -637,69 +677,36 @@ public class CustomSmartDialog {
 
     public static CustomSmartDialog dialogInputExtra(final Context context, String titulo, String mensaje, String hint, Drawable iconoTitulo, Drawable iconoEditText, int maxLength, final String neutralButtonText, final CustomSmartDialogInputResponse listener) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(iconoTitulo)
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(iconoTitulo).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            TextView message = new CustomSmartDialog.Message.Builder(context)
-                    .setText(mensaje)
-                    .build();
+            TextView message = new CustomSmartDialog.Message.Builder(context).setText(mensaje).build();
 
-            final CustomEditText customEditText = new CustomEditText.Builder(context)
-                    .setHintText(hint)
-                    .setStartIconDrawable(iconoEditText)
-                    .setStartIconColor(R.color.colorPrimary)
-                    .setTextAppearance(R.style.MyHintStyle)
-                    .setCounterMaxLength(maxLength)
-                    .setCounterOverflowAppearance(android.R.color.holo_red_light)
-                    .setErrorIconColor(android.R.color.holo_red_light)
-                    .build();
+            final CustomEditText customEditText = new CustomEditText.Builder(context).setHintText(hint).setStartIconDrawable(iconoEditText).setStartIconColor(R.color.colorPrimary).setTextAppearance(R.style.MyHintStyle).setCounterMaxLength(maxLength).setCounterOverflowAppearance(android.R.color.holo_red_light).setErrorIconColor(android.R.color.holo_red_light).build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
-                    .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, customEditText.getText(), dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar)).setTextColor(R.color.colorPrimary).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, customEditText.getText(), dialog);
+                }
+            }).build();
 
-            CustomSmartDialog.Button buttonCancelar = new Button.Builder(Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
-                    .setTextColor(android.R.color.darker_gray)
-                    .setOnClickListener(new Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            listener.onResponse(CustomSmartDialogInputResponse.CANCELAR, "", dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonCancelar = new Button.Builder(Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar)).setTextColor(android.R.color.darker_gray).setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    listener.onResponse(CustomSmartDialogInputResponse.CANCELAR, "", dialog);
+                }
+            }).build();
 
-            CustomSmartDialog.Button buttonNeutral = new CustomSmartDialog.Button.Builder(Button.Type.NEUTRAL, neutralButtonText)
-                    .setTextColor(android.R.color.darker_gray)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-                            listener.onResponse(CustomSmartDialogInputResponse.NEUTRAL, "", dialog);
-                        }
-                    })
-                    .setTextSize(12)
-                    .build();
+            CustomSmartDialog.Button buttonNeutral = new CustomSmartDialog.Button.Builder(Button.Type.NEUTRAL, neutralButtonText).setTextColor(android.R.color.darker_gray).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //                            dialog.dismiss();
+                    listener.onResponse(CustomSmartDialogInputResponse.NEUTRAL, "", dialog);
+                }
+            }).setTextSize(12).build();
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(message)
-                    .addView(customEditText)
-                    .addButton(buttonAceptar)
-                    .addButton(buttonCancelar)
-                    .addButton(buttonNeutral)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(message).addView(customEditText).addButton(buttonAceptar).addButton(buttonCancelar).addButton(buttonNeutral).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -708,56 +715,28 @@ public class CustomSmartDialog {
 
     public static CustomSmartDialog dialogInput(final Context context, String titulo, String mensaje, String hint, Drawable iconoTitulo, Drawable iconoEditText, int maxLength, final CustomSmartDialogInputResponse listener) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(iconoTitulo)
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(iconoTitulo).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            TextView message = new CustomSmartDialog.Message.Builder(context)
-                    .setText(mensaje)
-                    .build();
+            TextView message = new CustomSmartDialog.Message.Builder(context).setText(mensaje).build();
 
-            final CustomEditText customEditText = new CustomEditText.Builder(context)
-                    .setHintText(hint)
-                    .setStartIconDrawable(iconoEditText)
-                    .setStartIconColor(R.color.colorPrimary)
-                    .setTextAppearance(R.style.MyHintStyle)
-                    .setCounterMaxLength(maxLength)
-                    .setCounterOverflowAppearance(android.R.color.holo_red_light)
-                    .setErrorIconColor(android.R.color.holo_red_light)
-                    .build();
+            final CustomEditText customEditText = new CustomEditText.Builder(context).setHintText(hint).setStartIconDrawable(iconoEditText).setStartIconColor(R.color.colorPrimary).setTextAppearance(R.style.MyHintStyle).setCounterMaxLength(maxLength).setCounterOverflowAppearance(android.R.color.holo_red_light).setErrorIconColor(android.R.color.holo_red_light).build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
-                    .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, customEditText.getText(), dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar)).setTextColor(R.color.colorPrimary).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, customEditText.getText(), dialog);
+                }
+            }).build();
 
-            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
-                    .setTextColor(android.R.color.darker_gray)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            listener.onResponse(CustomSmartDialogInputResponse.CANCELAR, "", dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar)).setTextColor(android.R.color.darker_gray).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    listener.onResponse(CustomSmartDialogInputResponse.CANCELAR, "", dialog);
+                }
+            }).build();
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(message)
-                    .addView(customEditText)
-                    .addButton(buttonAceptar)
-                    .addButton(buttonCancelar)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(message).addView(customEditText).addButton(buttonAceptar).addButton(buttonCancelar).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -766,34 +745,19 @@ public class CustomSmartDialog {
 
     public static CustomSmartDialog dialogToast(final Context context, String titulo, String mensaje, final CustomSmartDialogResponse listener) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(context.getDrawable(R.drawable.ic_info_black_24dp))
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(context.getDrawable(R.drawable.ic_info_black_24dp)).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            TextView message = new CustomSmartDialog.Message.Builder(context)
-                    .setText(mensaje)
-                    .build();
+            TextView message = new CustomSmartDialog.Message.Builder(context).setText(mensaje).build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
-                    .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar)).setTextColor(R.color.colorPrimary).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, dialog);
+                }
+            }).build();
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(message)
-                    .addButton(buttonAceptar)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(message).addButton(buttonAceptar).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -803,34 +767,19 @@ public class CustomSmartDialog {
     @Deprecated
     public static CustomSmartDialog dialogToastListener(final Context context, String titulo, String mensaje, final CustomSmartDialogResponse listener) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(context.getDrawable(R.drawable.ic_info_black_24dp))
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(context.getDrawable(R.drawable.ic_info_black_24dp)).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            TextView message = new CustomSmartDialog.Message.Builder(context)
-                    .setText(mensaje)
-                    .build();
+            TextView message = new CustomSmartDialog.Message.Builder(context).setText(mensaje).build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
-                    .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar)).setTextColor(R.color.colorPrimary).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, dialog);
+                }
+            }).build();
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(message)
-                    .addButton(buttonAceptar)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(message).addButton(buttonAceptar).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -839,33 +788,18 @@ public class CustomSmartDialog {
 
     public static CustomSmartDialog dialogToast(final Context context, String titulo, String mensaje) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(context.getDrawable(R.drawable.ic_info_black_24dp))
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(context.getDrawable(R.drawable.ic_info_black_24dp)).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            TextView message = new CustomSmartDialog.Message.Builder(context)
-                    .setText(mensaje)
-                    .build();
+            TextView message = new CustomSmartDialog.Message.Builder(context).setText(mensaje).build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
-                    .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar)).setTextColor(R.color.colorPrimary).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).build();
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(message)
-                    .addButton(buttonAceptar)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(message).addButton(buttonAceptar).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -874,48 +808,28 @@ public class CustomSmartDialog {
 
     public static CustomSmartDialog dialogQuantity(final Context context, String titulo, String mensaje, Drawable iconoTitulo, int cantidadInicial, final CustomSmartDialogQResponse listener) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(iconoTitulo)
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(iconoTitulo).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            TextView message = new CustomSmartDialog.Message.Builder(context)
-                    .setText(mensaje)
-                    .build();
+            TextView message = new CustomSmartDialog.Message.Builder(context).setText(mensaje).build();
 
             final CustomQuantity customQuantity = new CustomQuantity.Builder(context).setQuantity(cantidadInicial).build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
-                    .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            listener.onAccept(CustomSmartDialogInputResponse.ACEPTAR, customQuantity.getQuantity(), dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar)).setTextColor(R.color.colorPrimary).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    listener.onAccept(CustomSmartDialogInputResponse.ACEPTAR, customQuantity.getQuantity(), dialog);
+                }
+            }).build();
 
-            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
-                    .setTextColor(android.R.color.darker_gray)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            listener.onCancel(CustomSmartDialogInputResponse.CANCELAR, 0, dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar)).setTextColor(android.R.color.darker_gray).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    listener.onCancel(CustomSmartDialogInputResponse.CANCELAR, 0, dialog);
+                }
+            }).build();
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(message)
-                    .addView(customQuantity)
-                    .addButton(buttonAceptar)
-                    .addButton(buttonCancelar)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(message).addView(customQuantity).addButton(buttonAceptar).addButton(buttonCancelar).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -925,48 +839,28 @@ public class CustomSmartDialog {
     @Deprecated
     public static CustomSmartDialog dialogQuantity(final Context context, String titulo, String mensaje, Drawable iconoTitulo, int cantidadInicial, final CustomSmartDialogQuantityResponse listener) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(iconoTitulo)
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(iconoTitulo).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            TextView message = new CustomSmartDialog.Message.Builder(context)
-                    .setText(mensaje)
-                    .build();
+            TextView message = new CustomSmartDialog.Message.Builder(context).setText(mensaje).build();
 
             final CustomQuantity customQuantity = new CustomQuantity.Builder(context).setQuantity(cantidadInicial).build();
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar))
-                    .setTextColor(R.color.colorPrimary)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, customQuantity.getQuantity(), dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.POSSITIVE, context.getString(R.string.custom_smart_dialog_aceptar)).setTextColor(R.color.colorPrimary).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    listener.onResponse(CustomSmartDialogInputResponse.ACEPTAR, customQuantity.getQuantity(), dialog);
+                }
+            }).build();
 
-            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
-                    .setTextColor(android.R.color.darker_gray)
-                    .setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            listener.onResponse(CustomSmartDialogInputResponse.CANCELAR, 0, dialog);
-                        }
-                    })
-                    .build();
+            CustomSmartDialog.Button buttonCancelar = new CustomSmartDialog.Button.Builder(CustomSmartDialog.Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar)).setTextColor(android.R.color.darker_gray).setOnClickListener(new CustomSmartDialog.Button.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    listener.onResponse(CustomSmartDialogInputResponse.CANCELAR, 0, dialog);
+                }
+            }).build();
 
-            return new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle)
-                    .addView(message)
-                    .addView(customQuantity)
-                    .addButton(buttonAceptar)
-                    .addButton(buttonCancelar)
-                    .build();
+            return new CustomSmartDialog.Builder(context).setTitle(customTitle).addView(message).addView(customQuantity).addButton(buttonAceptar).addButton(buttonCancelar).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -975,16 +869,9 @@ public class CustomSmartDialog {
 
     public static CustomSmartDialog dialogButtons(final Context context, String titulo, Drawable iconoTitulo, CustomSmartDialogButton... buttons) {
         try {
-            CustomTitle customTitle = new CustomTitle.Builder(context)
-                    .setTitle(titulo)
-                    .setIcon(iconoTitulo)
-                    .setBackgroundColor(R.color.colorPrimary)
-                    .setTextColor(R.color.white)
-                    .setIconColor(R.color.white)
-                    .build();
+            CustomTitle customTitle = new CustomTitle.Builder(context).setTitle(titulo).setIcon(iconoTitulo).setBackgroundColor(R.color.colorPrimary).setTextColor(R.color.white).setIconColor(R.color.white).build();
 
-            CustomSmartDialog.Builder builder = new CustomSmartDialog.Builder(context)
-                    .setTitle(customTitle);
+            CustomSmartDialog.Builder builder = new CustomSmartDialog.Builder(context).setTitle(customTitle);
 
             List<android.widget.Button> botones = new ArrayList<>();
             for (CustomSmartDialogButton button : buttons) {
@@ -1002,12 +889,9 @@ public class CustomSmartDialog {
                 builder.addView(boton);
             }
 
-            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar))
-                    .setTextColor(R.color.colorPrimary)
-                    .build();
+            CustomSmartDialog.Button buttonAceptar = new CustomSmartDialog.Button.Builder(Button.Type.NEGATIVE, context.getString(R.string.custom_smart_dialog_cancelar)).setTextColor(R.color.colorPrimary).build();
 
             return builder.addButton(buttonAceptar).build();
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
