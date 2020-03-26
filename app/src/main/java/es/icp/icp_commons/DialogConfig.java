@@ -6,29 +6,30 @@ import android.graphics.drawable.Drawable;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.SmartButton;
 
 public class DialogConfig {
 
-    private boolean           mostrarEditText             = false;
-    private Drawable          iconoEditText               = null;
-    private int               iconoEditTextInt            = 0;
-    private String            textoPositivo               = "SI";
-    private String            textoNegativo               = "NO";
-    private int               estiloPositivo              = 0; // TODO: 21/02/2020
-    private int               estiloNegativo              = 0; // TODO: 21/02/2020
-    private boolean           mostrarCantidad             = false;
-    private boolean           mostrarImagen               = false;
-    private boolean           mostrarBotones              = false;
-    private boolean           mostrarVisorImagenes        = false;
-    private ArrayList<String> imagenes                    = new ArrayList<>();
-    private List<SmartButton> botones                     = new ArrayList<>();
-    private Drawable          imagen                      = null;
-    private int               imagenInt                   = 0;
-    private String            titulo                      = "";
-    private String            mensaje                     = "";
-    private Drawable          iconoTitulo                 = null;
-    private int               iconoTituloInt              = 0;
+    private boolean                  mostrarEditText      = false;
+    private Drawable                 iconoEditText        = null;
+    private int                      iconoEditTextInt     = 0;
+    private String                   textoPositivo        = "SI";
+    private String                   textoNegativo        = "NO";
+    private int                      estiloPositivo       = 0; // TODO: 21/02/2020
+    private int                      estiloNegativo       = 0; // TODO: 21/02/2020
+    private boolean                  mostrarCantidad      = false;
+    private boolean                  mostrarImagen        = false;
+    private boolean                  mostrarBotones       = false;
+    private boolean                  mostrarVisorImagenes = false;
+    private ArrayList<ImagenCommons> imagenes             = new ArrayList<>();
+    private List<SmartButton>        botones              = new ArrayList<>();
+    private Drawable                 imagen               = null;
+    private int                      imagenInt            = 0;
+    private String                   titulo               = "";
+    private String                   mensaje              = "";
+    private Drawable                 iconoTitulo          = null;
+    private int                      iconoTituloInt       = 0;
     private boolean           mostrarIconoTitulo          = false;
     private String            hint                        = "";
     private int               maxLength                   = 0;
@@ -48,11 +49,11 @@ public class DialogConfig {
         this.mostrarVisorImagenes = mostrarVisorImagenes;
     }
 
-    public ArrayList<String> getImagenes() {
+    public ArrayList<ImagenCommons> getImagenes() {
         return imagenes;
     }
 
-    public void setImagenes(ArrayList<String> imagenes) {
+    public void setImagenes(ArrayList<ImagenCommons> imagenes) {
         this.imagenes = imagenes;
     }
 
@@ -313,7 +314,7 @@ public class DialogConfig {
         private boolean           mostrarImagenPredeterminada = true;
         private boolean           cancelable                  = false;
         private int               colorTitulo                 = 0;
-        private ArrayList<String> imagenes                    = new ArrayList<>();
+        private ArrayList<ImagenCommons> imagenes                    = new ArrayList<>();
 
         public Builder() {
         }
@@ -462,7 +463,7 @@ public class DialogConfig {
             return this;
         }
 
-        public Builder setImagenes(ArrayList<String> imagenes) {
+        public Builder setImagenes(ArrayList<ImagenCommons> imagenes) {
             this.imagenes = imagenes;
             return this;
         }

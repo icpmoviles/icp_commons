@@ -203,7 +203,7 @@ public class MainActivity extends Activity {
                 .setAutoDismiss(true)
                 .setTextoPositivo("ACEPTAR")
                 .setMostrarVisorImagenes(true)
-                .setImagenes(new ArrayList<>(Arrays.asList("1", "2")))
+//                .setImagenes(new ArrayList<>(Arrays.asList("1", "2")))
                 .build();
         CustomSmartDialog.dialogGenerico(context, config, null);
     }

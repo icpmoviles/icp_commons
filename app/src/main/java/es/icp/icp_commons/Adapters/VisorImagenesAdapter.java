@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.R;
 import es.icp.icp_commons.Utils.Utils;
 
@@ -22,7 +23,7 @@ public class VisorImagenesAdapter extends PagerAdapter {
     private Context           context;
     private ArrayList<byte[]> imagenes;
 
-    public VisorImagenesAdapter(Context context, ArrayList<String> imagenes) {
+    public VisorImagenesAdapter(Context context, ArrayList<ImagenCommons> imagenes) {
         this.context  = context;
         this.imagenes = new ArrayList<>();
         addImagesToByteArray(imagenes);
@@ -57,11 +58,11 @@ public class VisorImagenesAdapter extends PagerAdapter {
         return view == object;
     }
 
-    private void addImagesToByteArray(ArrayList<String> imagenes) {
-        for (String imagen : imagenes) this.imagenes.add(Utils.convertBase64ToByteArray(imagen));
+    private void addImagesToByteArray(ArrayList<ImagenCommons> imagenes) {
+        for (ImagenCommons imagen : imagenes) this.imagenes.add(Utils.convertBase64ToByteArray(imagen));
     }
 
-    public void setData(ArrayList<String> imagenes) {
+    public void setData(ArrayList<ImagenCommons> imagenes) {
         addImagesToByteArray(imagenes);
         notifyDataSetChanged();
     }
