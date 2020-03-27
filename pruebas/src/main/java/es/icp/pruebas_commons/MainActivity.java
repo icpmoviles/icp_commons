@@ -226,7 +226,7 @@ public class MainActivity extends VisorImagenes {
                     }
 
                     @Override
-                    public void imagenEliminada(ImagenCommons imagen) {
+                    public void imagenEliminada(int position, ImagenCommons imagen) {
 
                     }
                 })
