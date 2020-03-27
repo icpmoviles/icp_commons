@@ -522,8 +522,9 @@ public class CustomSmartDialog {
                         MyApplication.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                VisorImagenes visorImagenes = VisorImagenes.getVisor(context);
-                                visorImagenes.cargarVisorImagenes(context, mainContainer, config);
+//                                VisorImagenes visorImagenes = VisorImagenes.getVisor(context);
+                                VisorImagenes visorImagenes = new VisorImagenes(context, mainContainer, config);
+//                                visorImagenes.cargarVisorImagenes(context, mainContainer, config);
                             }
                         });
                     } //-----------------------------------------------------------------------------------------------------------------
