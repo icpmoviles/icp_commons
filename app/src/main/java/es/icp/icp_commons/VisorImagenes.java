@@ -36,12 +36,13 @@ import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Utils.Localizacion;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.icp_commons.Utils.UtilsFechas;
+import id.zelory.compressor.Compressor;
 
 public class VisorImagenes extends AppCompatActivity {
 
     private static VisorImagenes visorImagenes;
 
-    private        Context      context;
+    private static Context      context;
     private        LinearLayout mainContainer;
     private static DialogConfig config;
 
@@ -82,9 +83,10 @@ public class VisorImagenes extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == Constantes.CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            agregarImagenAdapter();
+        if (resultCode != RESULT_CANCELED) {
+            if (requestCode == Constantes.CAMERA_REQUEST_CODE) {
+                agregarImagenAdapter();
+            }
         }
     }
 
@@ -114,7 +116,6 @@ public class VisorImagenes extends AppCompatActivity {
             ivPageLeft.setVisibility(View.GONE);
             if (config.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
         }
-
     }
 
     private void inicializarComponentes() {
@@ -203,12 +204,26 @@ public class VisorImagenes extends AppCompatActivity {
 
     private void agregarImagenAdapter() {
         rlImagenes.setVisibility(View.VISIBLE);
-        ImagenCommons imagenCommons = new ImagenCommons(Utils.fromFileToBase64Image(archivoTemporal), Utils.getFormatFromFile(archivoTemporal.getAbsolutePath()), Utils.getCameraPhotoOrientation(archivoTemporal.getAbsolutePath()), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
-        config.getImagenes().add(imagenCommons);
-        visorImagenesAdapter.setData(config.getImagenes());
-        actualizarViewPager();
-        ail.imagenAdjuntada(imagenCommons);
-        archivoTemporal.delete();
+
+        File compressedImgFile = comprimirArchivo();
+        if (compressedImgFile != null) {
+            ImagenCommons imagenCommons = new ImagenCommons(Utils.fromFileToBase64Image(compressedImgFile), Utils.getFormatFromFile(compressedImgFile.getAbsolutePath()), Utils.getCameraPhotoOrientation(compressedImgFile.getAbsolutePath()), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
+            config.getImagenes().add(imagenCommons);
+            visorImagenesAdapter.setData(config.getImagenes());
+            actualizarViewPager();
+            ail.imagenAdjuntada(imagenCommons);
+            archivoTemporal.delete();
+            compressedImgFile.delete();
+        }
+    }
+
+    private File comprimirArchivo() {
+        try {
+            return new Compressor(context).compressToFile(archivoTemporal);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void adjuntarImagen(Context context) {
