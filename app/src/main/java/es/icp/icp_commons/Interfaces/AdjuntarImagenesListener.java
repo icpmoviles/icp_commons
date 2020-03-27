@@ -6,6 +6,6 @@ public interface AdjuntarImagenesListener {
 
     void imagenAdjuntada(ImagenCommons imagen);
 
-    void imagenEliminada(ImagenCommons imagen);
+    void imagenEliminada(int position, ImagenCommons imagen);
 
 }

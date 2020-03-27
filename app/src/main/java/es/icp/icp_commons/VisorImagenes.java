@@ -104,7 +104,7 @@ public class VisorImagenes extends AppCompatActivity {
     private void eliminarImagen(int position) {
         ImagenCommons imagenCommons = config.getImagenes().remove(position);
         visorImagenesAdapter.setData(config.getImagenes());
-        ail.imagenEliminada(imagenCommons);
+        ail.imagenEliminada(position, imagenCommons);
         actualizarViewPager();
 
         if (config.getImagenes().size() > 0) {
