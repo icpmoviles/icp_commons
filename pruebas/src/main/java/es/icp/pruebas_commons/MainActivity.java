@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -208,6 +209,11 @@ public class MainActivity extends VisorImagenes {
     }
 
     private void crearDialog21() {
+        ArrayList<ImagenCommons> imagenes = new ArrayList<>();
+        imagenes.add(new ImagenCommons());
+        imagenes.add(new ImagenCommons());
+        imagenes.add(new ImagenCommons());
+
         DialogConfig config = new DialogConfig.Builder()
                 .setMostrarIconoTitulo(true)
                 .setMostrarImagenPredeterminada(false)
@@ -219,6 +225,7 @@ public class MainActivity extends VisorImagenes {
                 .setAutoDismiss(true)
                 .setTextoPositivo("ACEPTAR")
                 .setMostrarVisorImagenes(true)
+                .setImagenes(imagenes)
                 .setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
                     @Override
                     public void imagenAdjuntada(ImagenCommons imagen) {
