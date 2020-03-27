@@ -42,9 +42,9 @@ public class VisorImagenes extends AppCompatActivity {
 
 //    private static VisorImagenes visorImagenes;
 
-    private static Context      context;
+    private static Context      ctx;
     private        LinearLayout mainContainer;
-    private static DialogConfig config;
+    private static DialogConfig cnf;
 
     private static RelativeLayout    rlImagenes;
     private static ViewPager         vpImagenes;
@@ -62,7 +62,7 @@ public class VisorImagenes extends AppCompatActivity {
     }
 
     public VisorImagenes(Context context) {
-        this.context = context;
+        ctx = context;
     }
 
     public VisorImagenes(Context context, LinearLayout mainContainer, DialogConfig config) {
@@ -75,9 +75,9 @@ public class VisorImagenes extends AppCompatActivity {
 //    }
 
     public void cargarVisorImagenes(Context context, LinearLayout mainContainer, DialogConfig config) {
-        this.context       = context;
+        ctx                = context;
         this.mainContainer = mainContainer;
-        this.config        = config;
+        cnf           = config;
 
         setUpView();
 
@@ -101,32 +101,32 @@ public class VisorImagenes extends AppCompatActivity {
         if (requestCode == Constantes.CODE_PERMISSIONS) {
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    adjuntarImagen(context);
+                    adjuntarImagen(ctx);
                 }
             }
         }
     }
 
     private void eliminarImagen(int position) {
-        ImagenCommons imagenCommons = config.getImagenes().remove(position);
-        visorImagenesAdapter.setData(config.getImagenes());
+        ImagenCommons imagenCommons = cnf.getImagenes().remove(position);
+        visorImagenesAdapter.setData(cnf.getImagenes());
         ail.imagenEliminada(position, imagenCommons);
         actualizarViewPager();
 
-        if (config.getImagenes().size() > 0) {
+        if (cnf.getImagenes().size() > 0) {
             vpImagenes.setCurrentItem(0);
-            if (config.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
-            if (config.getImagenes().size() > 0) txtConteoImagenes.setText("1/" + config.getImagenes().size());
+            if (cnf.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
+            if (cnf.getImagenes().size() > 0) txtConteoImagenes.setText("1/" + cnf.getImagenes().size());
             ivPageLeft.setVisibility(View.GONE);
-            if (config.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
+            if (cnf.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
         }
     }
 
     private void inicializarComponentes() {
         rlImagenes.setVisibility(View.VISIBLE);
 
-        if (config.getAdjuntarImagenesListener() == null) visorImagenesAdapter = new VisorImagenesAdapter(context, config.getImagenes());
-        else visorImagenesAdapter = new VisorImagenesAdapter(context, config.getImagenes(), new ListenerAccion() {
+        if (cnf.getAdjuntarImagenesListener() == null) visorImagenesAdapter = new VisorImagenesAdapter(ctx, cnf.getImagenes());
+        else visorImagenesAdapter = new VisorImagenesAdapter(ctx, cnf.getImagenes(), new ListenerAccion() {
             @Override
             public void accion(int code, Object object) {
                 int position = (Integer) object;
@@ -140,11 +140,11 @@ public class VisorImagenes extends AppCompatActivity {
         vpImagenes.setPageMargin(20);
         vpImagenes.setPageTransformer(true, new DepthPageTransformer());
 
-        if (config.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
+        if (cnf.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
 
-        if (config.getImagenes().size() > 0) txtConteoImagenes.setText("1/" + config.getImagenes().size());
+        if (cnf.getImagenes().size() > 0) txtConteoImagenes.setText("1/" + cnf.getImagenes().size());
         ivPageLeft.setVisibility(View.GONE);
-        if (config.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
+        if (cnf.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
         ivPageLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +158,7 @@ public class VisorImagenes extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() + 1);
-                if (vpImagenes.getCurrentItem() == config.getImagenes().size() - 1) ivPageRight.setVisibility(View.GONE);
+                if (vpImagenes.getCurrentItem() == cnf.getImagenes().size() - 1) ivPageRight.setVisibility(View.GONE);
                 ivPageLeft.setVisibility(View.VISIBLE);
                 actualizarViewPager();
             }
@@ -172,8 +172,8 @@ public class VisorImagenes extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 ivPageLeft.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
-                ivPageRight.setVisibility(position == config.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
-                txtConteoImagenes.setText(position + 1 + "/" + config.getImagenes().size());
+                ivPageRight.setVisibility(position == cnf.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
+                txtConteoImagenes.setText(position + 1 + "/" + cnf.getImagenes().size());
             }
 
             @Override
@@ -181,9 +181,9 @@ public class VisorImagenes extends AppCompatActivity {
 
             }
         });
-        if (config.getAdjuntarImagenesListener() != null) { //el visor de imágenes estará en modo edición
-            config.setImagenes(new ArrayList<>());
-            ail = config.getAdjuntarImagenesListener();
+        if (cnf.getAdjuntarImagenesListener() != null) { //el visor de imágenes estará en modo edición
+            cnf.setImagenes(cnf.getImagenes().size() == 0 ? new ArrayList<>() : cnf.getImagenes());
+            ail = cnf.getAdjuntarImagenesListener();
             btnNeutral.setVisibility(View.VISIBLE);
             btnNeutral.setText(R.string.dialog_visor_imagenes_adjuntar_imagen);
             btnNeutral.setOnClickListener(new View.OnClickListener() {
@@ -191,8 +191,8 @@ public class VisorImagenes extends AppCompatActivity {
                 public void onClick(View v) {
                     String[] permisos = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
 
-                    if (Utils.comprobarPermisos(context, permisos)) {
-                        adjuntarImagen(context);
+                    if (Utils.comprobarPermisos(ctx, permisos)) {
+                        adjuntarImagen(ctx);
                     }
                 }
             });
@@ -200,10 +200,10 @@ public class VisorImagenes extends AppCompatActivity {
     }
 
     private void actualizarViewPager() {
-        rlImagenes.setVisibility(config.getImagenes().size() == 0 ? View.GONE : View.VISIBLE);
-        txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
+        rlImagenes.setVisibility(cnf.getImagenes().size() == 0 ? View.GONE : View.VISIBLE);
+        txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + cnf.getImagenes().size());
         ivPageLeft.setVisibility(vpImagenes.getCurrentItem() == 0 ? View.GONE : View.VISIBLE);
-        ivPageRight.setVisibility(vpImagenes.getCurrentItem() == config.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
+        ivPageRight.setVisibility(vpImagenes.getCurrentItem() == cnf.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
     }
 
     private void agregarImagenAdapter() {
@@ -212,8 +212,8 @@ public class VisorImagenes extends AppCompatActivity {
         File compressedImgFile = comprimirArchivo();
         if (compressedImgFile != null) {
             ImagenCommons imagenCommons = new ImagenCommons(Utils.fromFileToBase64Image(compressedImgFile), Utils.getFormatFromFile(compressedImgFile.getAbsolutePath()), Utils.getCameraPhotoOrientation(compressedImgFile.getAbsolutePath()), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
-            config.getImagenes().add(imagenCommons);
-            visorImagenesAdapter.setData(config.getImagenes());
+            cnf.getImagenes().add(imagenCommons);
+            visorImagenesAdapter.setData(cnf.getImagenes());
             actualizarViewPager();
             ail.imagenAdjuntada(imagenCommons);
             archivoTemporal.delete();
@@ -223,7 +223,7 @@ public class VisorImagenes extends AppCompatActivity {
 
     private File comprimirArchivo() {
         try {
-            return new Compressor(context).compressToFile(archivoTemporal);
+            return new Compressor(ctx).compressToFile(archivoTemporal);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
