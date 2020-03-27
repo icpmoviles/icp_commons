@@ -45,6 +45,7 @@ import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.icp_commons.Services.WebService;
 import es.icp.icp_commons.Utils.Utils;
+import es.icp.icp_commons.VisorImagenes;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
@@ -53,12 +54,25 @@ import es.icp.pruebas_commons.helpers.PruebasLoginResult;
 
 import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
-public class MainActivity extends Activity {
+public class MainActivity extends VisorImagenes {
 
     private Context             context = MainActivity.this;
     private MainActivityBinding binding;
     private Handler             handler;
     private CustomSmartDialog   customSmartDialog;
+
+    public MainActivity() {
+    }
+
+    /**
+     * Constructor de 1 parámetro
+     *
+     * @param context Context. Contexto de la Activity.
+     * @author Ventura de Lucas
+     */
+    public MainActivity(Context context) {
+        super(context);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -2,15 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center">
 
-    <ImageView
-        android:id="@+id/ivVisorImagen"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/prueba_visor_imagenes_1"
-        android:scaleType="fitCenter"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivVisorImagen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/prueba_visor_imagenes_1"
+            android:scaleType="fitCenter"/>
+
+        <ImageView
+            android:id="@+id/btnEliminarImagen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ivVisorImagen"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:background="@drawable/rounded_red_button"
+            android:textColor="#fff" />
+
+    </RelativeLayout>
+
 
 
 </LinearLayout>

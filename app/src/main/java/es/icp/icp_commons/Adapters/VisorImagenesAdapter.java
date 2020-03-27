@@ -14,19 +14,28 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import es.icp.icp_commons.Interfaces.ListenerAccion;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.R;
 import es.icp.icp_commons.Utils.Utils;
 
 public class VisorImagenesAdapter extends PagerAdapter {
 
-    private Context           context;
-    private ArrayList<byte[]> imagenes;
+    private Context                  context;
+    private ArrayList<byte[]>        imagenes;
+    private ArrayList<ImagenCommons> imagenesCommons;
+    private ListenerAccion           listenerAccion;
 
     public VisorImagenesAdapter(Context context, ArrayList<ImagenCommons> imagenes) {
-        this.context  = context;
-        this.imagenes = new ArrayList<>();
-        addImagesToByteArray(imagenes);
+        this(context, imagenes, null);
+    }
+
+    public VisorImagenesAdapter(Context context, ArrayList<ImagenCommons> imagenesCommons, ListenerAccion listenerAccion) {
+        this.context         = context;
+        this.imagenes        = new ArrayList<>();
+        this.imagenesCommons = imagenesCommons;
+        this.listenerAccion  = listenerAccion;
+        addImagesToByteArray(imagenesCommons);
     }
 
     @NonNull
@@ -37,10 +46,25 @@ public class VisorImagenesAdapter extends PagerAdapter {
         LayoutInflater                      inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View layout   = inflater != null ? inflater.inflate(R.layout.fragment_visor_imagen, null) : new View(context);
 
-        layout.setVisibility(View.VISIBLE);
+        setUpView(layout, position);
+
         container.addView(layout);
         cargarImagen(imagen, layout.findViewById(R.id.ivVisorImagen));
         return layout;
+    }
+
+    private void setUpView(View layout, int position) {
+        layout.setVisibility(View.VISIBLE);
+        if (listenerAccion != null) {
+            ImageView btnEliminarImagen = layout.findViewById(R.id.btnEliminarImagen);
+            btnEliminarImagen.setVisibility(View.VISIBLE);
+            btnEliminarImagen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listenerAccion.accion(0, position);
+                }
+            });
+        }
     }
 
     @Override
@@ -59,10 +83,12 @@ public class VisorImagenesAdapter extends PagerAdapter {
     }
 
     private void addImagesToByteArray(ArrayList<ImagenCommons> imagenes) {
+        this.imagenes = new ArrayList<>();
         for (ImagenCommons imagen : imagenes) this.imagenes.add(Utils.convertBase64ToByteArray(imagen));
     }
 
     public void setData(ArrayList<ImagenCommons> imagenes) {
+        this.imagenesCommons = imagenes;
         addImagesToByteArray(imagenes);
         notifyDataSetChanged();
     }

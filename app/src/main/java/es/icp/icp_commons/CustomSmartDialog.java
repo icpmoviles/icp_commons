@@ -62,9 +62,9 @@ import es.icp.icp_commons.Utils.UtilsFechas;
  *
  * @author Ventura de Lucas
  */
-public class CustomSmartDialog extends AppCompatActivity {
+public class CustomSmartDialog {
 
-    private        Context                  context;
+    private static Context                  context;
     private        CustomTitle              customTitle;
     private        LinearLayout             layout;
     private        List<Button>             buttons;
@@ -73,36 +73,8 @@ public class CustomSmartDialog extends AppCompatActivity {
     private static AlertDialog              dialog;
     private        boolean                  generico = false;
     private static EditText                 txtEditText;
-    private static File                     archivoTemporal;
-    private static VisorImagenesAdapter     visorImagenesAdapter;
-    private static ArrayList<ImagenCommons> imagenes = new ArrayList<>();
-    private static AdjuntarImagenesListener ail;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) { // TODO: 26/03/2020 aqui no llega!!!!!!!!! 
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == Constantes.CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            agregarImagenAdapter();
-        }
-    }
-
-    private void agregarImagenAdapter() {
-        imagenes.add(new ImagenCommons(Utils.fromFileToBase64Image(archivoTemporal), Utils.getFormatFromFile(archivoTemporal.getAbsolutePath()), Utils.getCameraPhotoOrientation(archivoTemporal.getAbsolutePath()), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas)));
-        visorImagenesAdapter.setData(imagenes);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == Constantes.CODE_PERMISSIONS) {
-            for (int i = 0; i < permissions.length; i++) {
-                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    adjuntarImagen(context);
-                }
-            }
-        }
+    public CustomSmartDialog() {
     }
 
     /**
@@ -355,14 +327,15 @@ public class CustomSmartDialog extends AppCompatActivity {
         dialogGenerico(context, new DialogConfig(), listener);
     }
 
-    public static void dialogGenerico(final Context context, DialogConfig config, final CustomSmartDialogSiNoResponse listener) {
-        Loading.ShowLoading(context, context.getString(R.string.cargando), context.getString(R.string.cargando_espere_porfavor), false);
+    public static void dialogGenerico(final Context mContext, DialogConfig config, final CustomSmartDialogSiNoResponse listener) {
+        context = mContext;
+        Loading.ShowLoading(mContext, mContext.getString(R.string.cargando), mContext.getString(R.string.cargando_espere_porfavor), false);
         new Thread(new Runnable() {
             @Override
             public void run() {
 
                 try {
-                    LayoutInflater inflater      = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    LayoutInflater inflater      = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     LinearLayout   mainContainer = (LinearLayout) inflater.inflate(R.layout.view_custom_smart_dialog_all, null);
 
                     //-------------------------------------------------------
@@ -403,24 +376,14 @@ public class CustomSmartDialog extends AppCompatActivity {
                     LinearLayout llBotones = mainContainer.findViewById(R.id.llBotones);
                     //----------------------------------------------------------------------------------------------------
 
-                    //-------------------------------------------------------
-                    //--------------- VISOR IMÁGENES -------------------
-                    RelativeLayout    rlImagenes        = mainContainer.findViewById(R.id.rlImagenes);
-                    ViewPager         vpImagenes        = mainContainer.findViewById(R.id.vpImagenes);
-                    LinePageIndicator pageIndicator     = mainContainer.findViewById(R.id.pageIndicator);
-                    TextView          txtConteoImagenes = mainContainer.findViewById(R.id.txtConteoImagenes);
-                    ImageView         ivPageLeft        = mainContainer.findViewById(R.id.ivPageLeft);
-                    ImageView         ivPageRight       = mainContainer.findViewById(R.id.ivPageRight);
-                    //----------------------------------------------------------------------------------------------------
-
-                    if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(context);
-                    if (config.getIconoEditText() == null && config.getIconoEditTextInt() != 0) config.setIconoEditText(context);
-                    if (config.getIconoTitulo() == null && config.getIconoTituloInt() != 0) config.setIconoTitulo(context);
+                    if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(mContext);
+                    if (config.getIconoEditText() == null && config.getIconoEditTextInt() != 0) config.setIconoEditText(mContext);
+                    if (config.getIconoTitulo() == null && config.getIconoTituloInt() != 0) config.setIconoTitulo(mContext);
 
                     txtTitulo.setText(Html.fromHtml(config.getTitulo()));
                     txtMensaje.setText(Html.fromHtml(config.getMensaje()));
                     if (config.getColorTitulo() != 0) {
-                        txtTitulo.setBackgroundColor(context.getColor(config.getColorTitulo()));
+                        txtTitulo.setBackgroundColor(mContext.getColor(config.getColorTitulo()));
                     }
                     if (config.isMostrarIconoTitulo()) {
                         iconoTitulo.setVisibility(View.VISIBLE);
@@ -431,9 +394,9 @@ public class CustomSmartDialog extends AppCompatActivity {
                         btnPositivo.setText(Html.fromHtml(config.getTextoPositivo()));
                         if (!config.isMostrarNegativo()) {
                             if (config.getColorTitulo() != 0) {
-                                btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
+                                btnPositivo.setBackgroundTintList(ColorStateList.valueOf(mContext.getColor(config.getColorTitulo())));
                             } else {
-                                btnPositivo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                                btnPositivo.setBackgroundTintList(ColorStateList.valueOf(mContext.getColor(R.color.colorPrimary)));
                             }
                         }
                         btnPositivo.setOnClickListener(new View.OnClickListener() {
@@ -453,9 +416,9 @@ public class CustomSmartDialog extends AppCompatActivity {
                         btnNegativo.setText(Html.fromHtml(config.getTextoNegativo()));
                         if (!config.isMostrarPositivo()) {
                             if (config.getColorTitulo() != 0) {
-                                btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(config.getColorTitulo())));
+                                btnNegativo.setBackgroundTintList(ColorStateList.valueOf(mContext.getColor(config.getColorTitulo())));
                             } else {
-                                btnNegativo.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.colorPrimary)));
+                                btnNegativo.setBackgroundTintList(ColorStateList.valueOf(mContext.getColor(R.color.colorPrimary)));
                             }
                         }
                         btnNegativo.setOnClickListener(new View.OnClickListener() {
@@ -491,7 +454,7 @@ public class CustomSmartDialog extends AppCompatActivity {
                                 @Override
                                 public void afterTextChanged(Editable s) {
                                     if (s.toString().length() > config.getMaxLength()) {
-                                        startIcon.setImageTintList(ColorStateList.valueOf(context.getColor(android.R.color.holo_red_light)));
+                                        startIcon.setImageTintList(ColorStateList.valueOf(mContext.getColor(android.R.color.holo_red_light)));
                                     } else {
                                         startIcon.setImageTintList(null);
                                     }
@@ -506,12 +469,12 @@ public class CustomSmartDialog extends AppCompatActivity {
                             //                    if (boton.getBackground() == null) {
                             //                        boton.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
                             //                    }
-                            android.widget.Button b = new android.widget.Button(context);
+                            android.widget.Button b = new android.widget.Button(mContext);
                             b.setText(Html.fromHtml(boton.getText().toString()));
-                            b.setBackground(context.getDrawable(R.drawable.rounded_blue_button));
+                            b.setBackground(mContext.getDrawable(R.drawable.rounded_blue_button));
                             b.setBackgroundTintList(boton.getBackgroundTintList());
                             b.setAllCaps(false);
-                            b.setTextColor(context.getColor(R.color.white));
+                            b.setTextColor(mContext.getColor(R.color.white));
                             b.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -520,7 +483,7 @@ public class CustomSmartDialog extends AppCompatActivity {
                                 }
                             });
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            layoutParams.setMargins(Utils.dpToPx(context, 5), Utils.dpToPx(context, 5), Utils.dpToPx(context, 5), Utils.dpToPx(context, 5));
+                            layoutParams.setMargins(Utils.dpToPx(mContext, 5), Utils.dpToPx(mContext, 5), Utils.dpToPx(mContext, 5), Utils.dpToPx(mContext, 5));
                             b.setLayoutParams(layoutParams);
                             b.setVisibility(View.VISIBLE);
                             if (botones.size() != 1) llBotones.addView(b);
@@ -556,74 +519,18 @@ public class CustomSmartDialog extends AppCompatActivity {
                         imagen.setVisibility(View.GONE);
                     } //-----------------------------------------------------------------------------------------------------------------
                     if (config.isMostrarVisorImagenes()) {
-                        rlImagenes.setVisibility(View.VISIBLE);
-                        visorImagenesAdapter = new VisorImagenesAdapter(context, config.getImagenes());
-                        vpImagenes.setAdapter(visorImagenesAdapter);
-                        vpImagenes.setCurrentItem(0);
-                        pageIndicator.setViewPager(vpImagenes);
-                        vpImagenes.setPageMargin(20);
-                        vpImagenes.setPageTransformer(true, new DepthPageTransformer());
-
-                        txtConteoImagenes.setText("1/" + config.getImagenes().size());
-                        ivPageLeft.setVisibility(View.GONE);
-                        if (config.getImagenes().size() == 1) ivPageRight.setVisibility(View.GONE);
-                        ivPageLeft.setOnClickListener(new View.OnClickListener() {
+                        MyApplication.runOnUiThread(new Runnable() {
                             @Override
-                            public void onClick(View v) {
-                                vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() - 1);
-                                if (vpImagenes.getCurrentItem() == 0) ivPageLeft.setVisibility(View.GONE);
-                                ivPageRight.setVisibility(View.VISIBLE);
-                                txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
+                            public void run() {
+                                VisorImagenes visorImagenes = VisorImagenes.getVisor(context);
+                                visorImagenes.cargarVisorImagenes(context, mainContainer, config);
                             }
                         });
-                        ivPageRight.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() + 1);
-                                if (vpImagenes.getCurrentItem() == config.getImagenes().size() - 1) ivPageRight.setVisibility(View.GONE);
-                                ivPageLeft.setVisibility(View.VISIBLE);
-                                txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + config.getImagenes().size());
-                            }
-                        });
-                        vpImagenes.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                            @Override
-                            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                            }
-
-                            @Override
-                            public void onPageSelected(int position) {
-                                ivPageLeft.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
-                                ivPageRight.setVisibility(position == config.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
-                                txtConteoImagenes.setText(position + 1 + "/" + config.getImagenes().size());
-                            }
-
-                            @Override
-                            public void onPageScrollStateChanged(int state) {
-
-                            }
-                        });
-                        if (config.getAdjuntarImagenesListener() != null) { //el visor de imágenes estará en modo edición
-                            imagenes = new ArrayList<>();
-                            ail = config.getAdjuntarImagenesListener();
-                            btnNeutral.setVisibility(View.VISIBLE);
-                            btnNeutral.setText(R.string.dialog_visor_imagenes_adjuntar_imagen);
-                            btnNeutral.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    String[] permisos = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-
-                                    if (Utils.comprobarPermisos(context, permisos)) {
-                                        adjuntarImagen(context);
-                                    }
-                                }
-                            });
-                        }
                     } //-----------------------------------------------------------------------------------------------------------------
                     MyApplication.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            new Builder(context).addView(mainContainer).isGenerico(true).isCancelable(config.isCancelable()).build();
+                            new Builder(mContext).addView(mainContainer).isGenerico(true).isCancelable(config.isCancelable()).build();
                         }
                     });
                 } catch (Exception e) {
@@ -631,24 +538,6 @@ public class CustomSmartDialog extends AppCompatActivity {
                 }
             }
         }).start();
-    }
-
-    private static void adjuntarImagen(Context context) {
-        archivoTemporal = new File(context.getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()), "/temporalpicture_" + System.currentTimeMillis() + ".jpg"); // TODO: 26/03/2020 Permitir la introduccion de tipo JPG / PNG
-        if (!archivoTemporal.exists()) {
-            try {
-                if (archivoTemporal.createNewFile()) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName(), archivoTemporal));
-                    intent.putExtra("android.intent.extras.CAMERA_FACING", Camera.CameraInfo.CAMERA_FACING_BACK);
-                    CustomSmartDialog customSmartDialog = new CustomSmartDialog(context);
-                    ((Activity) context).startActivityForResult(intent, Constantes.CAMERA_REQUEST_CODE);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static CustomSmartDialog dialogImage(final Context context, String titulo, Drawable iconoTitulo, Drawable image, final CustomSmartDialogResponse listener) {
