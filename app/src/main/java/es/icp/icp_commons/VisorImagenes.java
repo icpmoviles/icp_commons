@@ -40,7 +40,7 @@ import id.zelory.compressor.Compressor;
 
 public class VisorImagenes extends AppCompatActivity {
 
-    private static VisorImagenes visorImagenes;
+//    private static VisorImagenes visorImagenes;
 
     private static Context      context;
     private        LinearLayout mainContainer;
@@ -65,10 +65,14 @@ public class VisorImagenes extends AppCompatActivity {
         this.context = context;
     }
 
-    public static VisorImagenes getVisor(Context context) {
-        if (visorImagenes == null) visorImagenes = new VisorImagenes(context);
-        return visorImagenes;
+    public VisorImagenes(Context context, LinearLayout mainContainer, DialogConfig config) {
+        cargarVisorImagenes(context, mainContainer, config);
     }
+
+//    public static VisorImagenes getVisor(Context context) {
+//        if (visorImagenes == null) visorImagenes = new VisorImagenes(context);
+//        return visorImagenes;
+//    }
 
     public void cargarVisorImagenes(Context context, LinearLayout mainContainer, DialogConfig config) {
         this.context       = context;
