@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,9 +37,9 @@ import es.icp.icp_commons.Utils.Utils;
 import es.icp.icp_commons.Utils.UtilsFechas;
 import id.zelory.compressor.Compressor;
 
-public class VisorImagenes extends AppCompatActivity {
+//import android.widget.ImageView;
 
-//    private static VisorImagenes visorImagenes;
+public class VisorImagenes extends AppCompatActivity {
 
     private static Context      ctx;
     private        LinearLayout mainContainer;
@@ -50,8 +49,8 @@ public class VisorImagenes extends AppCompatActivity {
     private static ViewPager         vpImagenes;
     private        LinePageIndicator pageIndicator;
     private static TextView          txtConteoImagenes;
-    private static ImageView         ivPageLeft;
-    private static ImageView         ivPageRight;
+    //    private static ImageView         ivPageLeft;
+    //    private static ImageView         ivPageRight;
     private        Button            btnNeutral;
 
     private static File                     archivoTemporal;
@@ -69,24 +68,19 @@ public class VisorImagenes extends AppCompatActivity {
         cargarVisorImagenes(context, mainContainer, config);
     }
 
-//    public static VisorImagenes getVisor(Context context) {
-//        if (visorImagenes == null) visorImagenes = new VisorImagenes(context);
-//        return visorImagenes;
-//    }
-
     public void cargarVisorImagenes(Context context, LinearLayout mainContainer, DialogConfig config) {
         ctx                = context;
         this.mainContainer = mainContainer;
-        cnf           = config;
+        cnf                = config;
 
         setUpView();
 
         inicializarComponentes();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//    @Override
+    public static void onActivityResult(int requestCode, int resultCode) {
+//        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_CANCELED) {
             if (requestCode == Constantes.CAMERA_REQUEST_CODE) {
                 agregarImagenAdapter();
@@ -94,10 +88,9 @@ public class VisorImagenes extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+//    @Override
+    public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, int diferencial) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constantes.CODE_PERMISSIONS) {
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
@@ -117,8 +110,8 @@ public class VisorImagenes extends AppCompatActivity {
             vpImagenes.setCurrentItem(0);
             if (cnf.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
             if (cnf.getImagenes().size() > 0) txtConteoImagenes.setText("1/" + cnf.getImagenes().size());
-            ivPageLeft.setVisibility(View.GONE);
-            if (cnf.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
+            //            ivPageLeft.setVisibility(View.GONE);
+            //            if (cnf.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
         }
     }
 
@@ -143,26 +136,26 @@ public class VisorImagenes extends AppCompatActivity {
         if (cnf.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
 
         if (cnf.getImagenes().size() > 0) txtConteoImagenes.setText("1/" + cnf.getImagenes().size());
-        ivPageLeft.setVisibility(View.GONE);
-        if (cnf.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
-        ivPageLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() - 1);
-                if (vpImagenes.getCurrentItem() == 0) ivPageLeft.setVisibility(View.GONE);
-                ivPageRight.setVisibility(View.VISIBLE);
-                actualizarViewPager();
-            }
-        });
-        ivPageRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() + 1);
-                if (vpImagenes.getCurrentItem() == cnf.getImagenes().size() - 1) ivPageRight.setVisibility(View.GONE);
-                ivPageLeft.setVisibility(View.VISIBLE);
-                actualizarViewPager();
-            }
-        });
+        //        ivPageLeft.setVisibility(View.GONE);
+        //        if (cnf.getImagenes().size() == 1/* || config.getImagenes().size() == 0*/) ivPageRight.setVisibility(View.GONE);
+        //        ivPageLeft.setOnClickListener(new View.OnClickListener() {
+        //            @Override
+        //            public void onClick(View v) {
+        //                vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() - 1);
+        //                if (vpImagenes.getCurrentItem() == 0) ivPageLeft.setVisibility(View.GONE);
+        //                ivPageRight.setVisibility(View.VISIBLE);
+        //                actualizarViewPager();
+        //            }
+        //        });
+        //        ivPageRight.setOnClickListener(new View.OnClickListener() {
+        //            @Override
+        //            public void onClick(View v) {
+        //                vpImagenes.setCurrentItem(vpImagenes.getCurrentItem() + 1);
+        //                if (vpImagenes.getCurrentItem() == cnf.getImagenes().size() - 1) ivPageRight.setVisibility(View.GONE);
+        //                ivPageLeft.setVisibility(View.VISIBLE);
+        //                actualizarViewPager();
+        //            }
+        //        });
         vpImagenes.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -171,8 +164,8 @@ public class VisorImagenes extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                ivPageLeft.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
-                ivPageRight.setVisibility(position == cnf.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
+                //                ivPageLeft.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+                //                ivPageRight.setVisibility(position == cnf.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
                 txtConteoImagenes.setText(position + 1 + "/" + cnf.getImagenes().size());
             }
 
@@ -199,14 +192,14 @@ public class VisorImagenes extends AppCompatActivity {
         }
     }
 
-    private void actualizarViewPager() {
+    private static void actualizarViewPager() {
         rlImagenes.setVisibility(cnf.getImagenes().size() == 0 ? View.GONE : View.VISIBLE);
         txtConteoImagenes.setText(vpImagenes.getCurrentItem() + 1 + "/" + cnf.getImagenes().size());
-        ivPageLeft.setVisibility(vpImagenes.getCurrentItem() == 0 ? View.GONE : View.VISIBLE);
-        ivPageRight.setVisibility(vpImagenes.getCurrentItem() == cnf.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
+        //        ivPageLeft.setVisibility(vpImagenes.getCurrentItem() == 0 ? View.GONE : View.VISIBLE);
+        //        ivPageRight.setVisibility(vpImagenes.getCurrentItem() == cnf.getImagenes().size() - 1 ? View.GONE : View.VISIBLE);
     }
 
-    private void agregarImagenAdapter() {
+    private static void agregarImagenAdapter() {
         rlImagenes.setVisibility(View.VISIBLE);
 
         File compressedImgFile = comprimirArchivo();
@@ -221,7 +214,7 @@ public class VisorImagenes extends AppCompatActivity {
         }
     }
 
-    private File comprimirArchivo() {
+    private static File comprimirArchivo() {
         try {
             return new Compressor(ctx).compressToFile(archivoTemporal);
         } catch (IOException e) {
@@ -230,7 +223,7 @@ public class VisorImagenes extends AppCompatActivity {
         }
     }
 
-    private void adjuntarImagen(Context context) {
+    private static void adjuntarImagen(Context context) {
         archivoTemporal = new File(context.getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()), "/temporalpicture_" + System.currentTimeMillis() + ".jpg"); // TODO: 26/03/2020 Permitir la introduccion de tipo JPG / PNG
         if (!archivoTemporal.exists()) {
             try {
@@ -239,7 +232,7 @@ public class VisorImagenes extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName(), archivoTemporal));
                     intent.putExtra("android.intent.extras.CAMERA_FACING", Camera.CameraInfo.CAMERA_FACING_BACK);
-                    ((Activity) context).startActivityForResult(intent, Constantes.CAMERA_REQUEST_CODE);
+                    ((Activity) ctx).startActivityForResult(intent, Constantes.CAMERA_REQUEST_CODE);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -252,8 +245,8 @@ public class VisorImagenes extends AppCompatActivity {
         vpImagenes        = mainContainer.findViewById(R.id.vpImagenes);
         pageIndicator     = mainContainer.findViewById(R.id.pageIndicator);
         txtConteoImagenes = mainContainer.findViewById(R.id.txtConteoImagenes);
-        ivPageLeft        = mainContainer.findViewById(R.id.ivPageLeft);
-        ivPageRight       = mainContainer.findViewById(R.id.ivPageRight);
-        btnNeutral        = mainContainer.findViewById(R.id.btnNeutral);
+        //        ivPageLeft        = mainContainer.findViewById(R.id.ivPageLeft);
+        //        ivPageRight       = mainContainer.findViewById(R.id.ivPageRight);
+        btnNeutral = mainContainer.findViewById(R.id.btnNeutral);
     }
 }

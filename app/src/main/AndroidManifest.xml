@@ -11,7 +11,9 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".VisorImagenes"/>
+            android:name=".VisorImagenes">
+
+        </activity>
 
     </application>
 </manifest>

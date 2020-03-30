@@ -1,11 +1,9 @@
 package es.icp.pruebas_commons;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,9 +15,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.VolleyError;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import es.icp.icp_commons.CheckRequest;
@@ -46,16 +42,16 @@ import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.icp_commons.Services.WebService;
 import es.icp.icp_commons.Utils.Utils;
-import es.icp.icp_commons.VisorImagenes;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
+import es.icp.pruebas_commons.helpers.CommonsBaseApp;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
 import es.icp.pruebas_commons.helpers.PruebasLoginResult;
 
 import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
-public class MainActivity extends VisorImagenes {
+public class MainActivity extends CommonsBaseApp {
 
     private Context             context = MainActivity.this;
     private MainActivityBinding binding;
@@ -65,15 +61,9 @@ public class MainActivity extends VisorImagenes {
     public MainActivity() {
     }
 
-    /**
-     * Constructor de 1 parámetro
-     *
-     * @param context Context. Contexto de la Activity.
-     * @author Ventura de Lucas
-     */
-    public MainActivity(Context context) {
-        super(context);
-    }
+    //    public MainActivity(Context context) {
+    //        super(context);
+    //    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -214,30 +204,18 @@ public class MainActivity extends VisorImagenes {
         imagenes.add(new ImagenCommons());
         imagenes.add(new ImagenCommons());
 
-        DialogConfig config = new DialogConfig.Builder()
-                .setMostrarIconoTitulo(true)
-                .setMostrarImagenPredeterminada(false)
-                .setIconoTitulo(R.drawable.ic_launcher_round)
-                .setTitulo("Imágenes incidencia")
-                .setMensaje("Esto es un visor de imágenes de las incidencias.")
-                .setMostrarNegativo(false)
-                .setMostrarPositivo(true)
-                .setAutoDismiss(true)
-                .setTextoPositivo("ACEPTAR")
-                .setMostrarVisorImagenes(true)
-                .setImagenes(imagenes)
-                .setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
-                    @Override
-                    public void imagenAdjuntada(ImagenCommons imagen) {
+        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setMostrarImagenPredeterminada(false).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Imágenes incidencia").setMensaje("Esto es un visor de imágenes de las incidencias.").setMostrarNegativo(false).setMostrarPositivo(true).setAutoDismiss(true).setTextoPositivo("ACEPTAR").setMostrarVisorImagenes(true).setImagenes(imagenes).setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
+            @Override
+            public void imagenAdjuntada(ImagenCommons imagen) {
 
-                    }
+            }
 
-                    @Override
-                    public void imagenEliminada(int position, ImagenCommons imagen) {
+            @Override
+            public void imagenEliminada(int position, ImagenCommons imagen) {
 
-                    }
-                })
-//                .setImagenes(new ArrayList<>(Arrays.asList("1", "2")))
+            }
+        })
+                //                .setImagenes(new ArrayList<>(Arrays.asList("1", "2")))
                 .build();
         CustomSmartDialog.dialogGenerico(context, config, null);
     }
@@ -591,7 +569,7 @@ public class MainActivity extends VisorImagenes {
             @Override
             public void accion(int code, List<String> inputs) {
                 CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
-                StringBuilder text = new StringBuilder();
+                StringBuilder      text               = new StringBuilder();
                 for (String input : inputs) {
                     text.append(input).append(" - ");
                 }
@@ -627,7 +605,7 @@ public class MainActivity extends VisorImagenes {
             @Override
             public void accion(int code, List<String> inputs) {
                 CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
-                StringBuilder text = new StringBuilder();
+                StringBuilder      text               = new StringBuilder();
                 for (String input : inputs) {
                     text.append(input).append(" - ");
                 }
