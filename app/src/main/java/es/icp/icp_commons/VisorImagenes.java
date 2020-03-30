@@ -94,7 +94,7 @@ public class VisorImagenes extends AppCompatActivity {
         if (requestCode == Constantes.CODE_PERMISSIONS) {
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    adjuntarImagen(ctx);
+                    if (ctx != null) adjuntarImagen(ctx);
                 }
             }
         }
