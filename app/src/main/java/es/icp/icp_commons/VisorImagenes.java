@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.viewpagerindicator.LinePageIndicator;
@@ -101,12 +102,29 @@ public class VisorImagenes extends AppCompatActivity {
     }
 
     private void eliminarImagen(int position) {
+        vpImagenes.setCurrentItem(1);
+
         ImagenCommons imagenCommons = cnf.getImagenes().remove(position);
-        visorImagenesAdapter.setData(cnf.getImagenes());
+//        visorImagenesAdapter.setData(cnf.getImagenes());
         ail.imagenEliminada(position, imagenCommons);
         actualizarViewPager();
 
+
+        if (cnf.getAdjuntarImagenesListener() == null) visorImagenesAdapter = new VisorImagenesAdapter(ctx, cnf.getImagenes());
+        else visorImagenesAdapter = new VisorImagenesAdapter(ctx, cnf.getImagenes(), new ListenerAccion() {
+            @Override
+            public void accion(int code, Object object) {
+                int position = (Integer) object;
+                eliminarImagen(position);
+            }
+        });
+        vpImagenes.setAdapter(visorImagenesAdapter);
+//        vpImagenes.setCurrentItem(0);
+//        pageIndicator.setViewPager(vpImagenes);
+//        visorImagenesAdapter.notifyDataSetChanged();
+
         if (cnf.getImagenes().size() > 0) {
+//            if (position == 0) vpImagenes.setCurrentItem(1);
             vpImagenes.setCurrentItem(0);
             if (cnf.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
             if (cnf.getImagenes().size() > 0) txtConteoImagenes.setText("1/" + cnf.getImagenes().size());
@@ -132,6 +150,13 @@ public class VisorImagenes extends AppCompatActivity {
         pageIndicator.setViewPager(vpImagenes);
         vpImagenes.setPageMargin(20);
         vpImagenes.setPageTransformer(true, new DepthPageTransformer());
+
+        vpImagenes.addOnAdapterChangeListener(new ViewPager.OnAdapterChangeListener() {
+            @Override
+            public void onAdapterChanged(@NonNull ViewPager viewPager, @Nullable PagerAdapter oldAdapter, @Nullable PagerAdapter newAdapter) {
+                vpImagenes.setCurrentItem(0);
+            }
+        });
 
         if (cnf.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
 
