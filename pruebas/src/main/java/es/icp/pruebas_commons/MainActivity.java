@@ -217,7 +217,7 @@ public class MainActivity extends CommonsBaseApp {
         })
                 //                .setImagenes(new ArrayList<>(Arrays.asList("1", "2")))
                 .build();
-        CustomSmartDialog.dialogGenerico(context, config, null);
+        new CustomSmartDialog().dialogGenerico(context, config, null);
     }
 
     private void checkRequest2() {
@@ -298,7 +298,7 @@ public class MainActivity extends CommonsBaseApp {
 
         DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Elija una opción").setMensaje("Elija una opción entre las tres opciones posibles que puedes ver...").setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setMostrarBotones(true).setBotones(botones).setCancelable(true).setMostrarImagenPredeterminada(false).build();
 
-        CustomSmartDialog.dialogGenerico(context, config, null);
+        new CustomSmartDialog().dialogGenerico(context, config, null);
     }
 
     private void crearDialog18() {
@@ -318,7 +318,7 @@ public class MainActivity extends CommonsBaseApp {
 
         DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #4").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.").setMostrarNegativo(true).setMostrarPositivo(true).setColorTitulo(android.R.color.holo_red_light).setAutoDismiss(false).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarEditText(true).setIconoEditText(R.drawable.ic_person_black_24dp).setMaxLength(10).setHint("Nombre y apellidos").setMostrarBotones(true).setBotones(botones).build();
 
-        CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
             public void positivo(String valor, AlertDialog dialog) {
                 dialog.dismiss();
@@ -338,7 +338,7 @@ public class MainActivity extends CommonsBaseApp {
     private void crearDialog17() {
         DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #3").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un quantity y dos botones positivo yt negativo.").setMostrarNegativo(true).setMostrarPositivo(true).setAutoDismiss(true).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarCantidad(true).setCantidadInicial(7).build();
 
-        CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
             public void positivo(String valor, AlertDialog dialog) {
                 CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
@@ -356,7 +356,7 @@ public class MainActivity extends CommonsBaseApp {
     private void crearDialog16() {
         DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #2").setMensaje("<span style='color:red'>Mensaje de prueba 1número1 con un diálogo que acepta un editText y dos botones positivo yt negativo.</span>").setMostrarNegativo(true).setMostrarPositivo(true).setAutoDismiss(true).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarEditText(true).setIconoEditText(R.drawable.ic_person_black_24dp).setMaxLength(10).setHint("Nombre y apellidos").build();
 
-        CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
             public void positivo(String valor, AlertDialog dialog) {
                 CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
@@ -374,7 +374,7 @@ public class MainActivity extends CommonsBaseApp {
     private void crearDialog15() {
         DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #1").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.").setMostrarNegativo(true).setMostrarPositivo(false).setTextoNegativo("CANCELAR").setColorTitulo(android.R.color.holo_red_light).setMostrarImagen(true).setImagen(R.drawable.ic_thumb_up).build();
 
-        CustomSmartDialog.dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
             public void positivo(String valor, AlertDialog dialog) {
                 dialog.dismiss();
