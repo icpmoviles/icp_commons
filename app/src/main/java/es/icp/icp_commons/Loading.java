@@ -45,6 +45,7 @@ public class Loading {
      * @author Ventura de Lucas
      */
     public static void ShowLoading(final Context ctx, String title, String message, boolean cancelable) {
+        if (progress != null) return;
         contextWS = ctx;
         MyApplication.runOnUiThread(new Runnable() {
             @Override
@@ -74,6 +75,7 @@ public class Loading {
                 try {
                     if (progress != null) {
                         progress.dismiss();
+                        progress = null;
                     }
                 } catch (Exception e) {
 
