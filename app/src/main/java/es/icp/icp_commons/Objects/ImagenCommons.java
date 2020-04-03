@@ -2,6 +2,7 @@ package es.icp.icp_commons.Objects;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 import es.icp.icp_commons.R;
 import es.icp.icp_commons.Utils.CommonsUtilsImagenes;
@@ -15,8 +16,12 @@ public class ImagenCommons {
     private int                   orientacion;
     private String                fecha;
 
-    public ImagenCommons(Context context) {
-        this(CommonsUtilsImagenes.fromDrawableToBase64Image(context.getDrawable(R.drawable.imagen_demo_comprimida)), Bitmap.CompressFormat.JPEG, 0, UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
+    public ImagenCommons(Drawable drawable) {
+        this(CommonsUtilsImagenes.fromDrawableToBase64Image(drawable), Bitmap.CompressFormat.JPEG, 0, UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
+    }
+
+    public ImagenCommons(Drawable drawable, Bitmap.CompressFormat formato, int orientacion) {
+        this(CommonsUtilsImagenes.fromDrawableToBase64Image(drawable), formato, orientacion, UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
     }
 
     public ImagenCommons(String contenido, Bitmap.CompressFormat formato, int orientacion) {
