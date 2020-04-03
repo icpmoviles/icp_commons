@@ -99,34 +99,4 @@ public class Utils {
             return false;
         } else return true;
     }
-
-    public static String fromFileToBase64Image(File file) {
-        //        int degrees = getCameraPhotoOrientation(file.getAbsolutePath());
-
-        Bitmap                bm   = BitmapFactory.decodeFile(file.getAbsolutePath());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-        byte[] b = baos.toByteArray();
-
-        return Base64.encodeToString(b, Base64.DEFAULT)/* + "|" + degrees*/;
-    }
-
-    public static byte[] convertBase64ToByteArray(ImagenCommons imagenCommons) {
-//        String[] cadenaSplit = cadena.split("\\|");
-//        String base64 = cadenaSplit[0];
-//        int degrees = Integer.parseInt(cadenaSplit[1]);
-//        byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
-        int degrees = imagenCommons.getOrientacion();
-        byte[] bytes = Base64.decode(imagenCommons.getContenido(), Base64.DEFAULT);
-
-        Bitmap storedBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
-
-        Matrix mat = new Matrix();
-        if (degrees == 90 || degrees == 270) mat.postRotate(degrees);
-        storedBitmap = Bitmap.createBitmap(storedBitmap, 0, 0, storedBitmap.getWidth(), storedBitmap.getHeight(), mat, true);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        storedBitmap.compress(imagenCommons.getFormato(), 100, stream);
-
-        return stream.toByteArray();
-    }
 }

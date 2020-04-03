@@ -200,9 +200,9 @@ public class MainActivity extends CommonsBaseApp {
 
     private void crearDialog21() {
         ArrayList<ImagenCommons> imagenes = new ArrayList<>();
-        imagenes.add(new ImagenCommons());
-        imagenes.add(new ImagenCommons());
-        imagenes.add(new ImagenCommons());
+        imagenes.add(new ImagenCommons(context));
+        imagenes.add(new ImagenCommons(context));
+        imagenes.add(new ImagenCommons(context));
 
         DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setMostrarImagenPredeterminada(false).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Imágenes incidencia").setMensaje("Esto es un visor de imágenes de las incidencias.").setMostrarNegativo(false).setMostrarPositivo(true).setAutoDismiss(true).setTextoPositivo("ACEPTAR").setMostrarVisorImagenes(true).setImagenes(imagenes).setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
             @Override
