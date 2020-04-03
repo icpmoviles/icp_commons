@@ -165,7 +165,7 @@ public class CustomSmartDialog {
      * @author Ventura de Lucas
      */
     @SuppressLint("RestrictedApi")
-    public void show() {
+    public synchronized void show() {
         AlertDialog.Builder builder;
         if (generico) {
             builder = new AlertDialog.Builder(context, R.style.CustomDialog).setCustomTitle(customTitle).setCancelable(isCancellable).setView(layout);

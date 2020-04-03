@@ -36,6 +36,7 @@ import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Utils.Localizacion;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.icp_commons.Utils.UtilsFechas;
+import es.icp.icp_commons.Utils.CommonsUtilsImagenes;
 import id.zelory.compressor.Compressor;
 
 //import android.widget.ImageView;
@@ -79,9 +80,9 @@ public class VisorImagenes extends AppCompatActivity {
         inicializarComponentes();
     }
 
-//    @Override
+    //    @Override
     public static void onActivityResult(int requestCode, int resultCode) {
-//        super.onActivityResult(requestCode, resultCode, data);
+        //        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_CANCELED) {
             if (requestCode == Constantes.CAMERA_REQUEST_CODE) {
                 agregarImagenAdapter();
@@ -89,9 +90,9 @@ public class VisorImagenes extends AppCompatActivity {
         }
     }
 
-//    @Override
+    //    @Override
     public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, int diferencial) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constantes.CODE_PERMISSIONS) {
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
@@ -105,10 +106,9 @@ public class VisorImagenes extends AppCompatActivity {
         vpImagenes.setCurrentItem(1);
 
         ImagenCommons imagenCommons = cnf.getImagenes().remove(position);
-//        visorImagenesAdapter.setData(cnf.getImagenes());
+        //        visorImagenesAdapter.setData(cnf.getImagenes());
         ail.imagenEliminada(position, imagenCommons);
         actualizarViewPager();
-
 
         if (cnf.getAdjuntarImagenesListener() == null) visorImagenesAdapter = new VisorImagenesAdapter(ctx, cnf.getImagenes());
         else visorImagenesAdapter = new VisorImagenesAdapter(ctx, cnf.getImagenes(), new ListenerAccion() {
@@ -119,12 +119,12 @@ public class VisorImagenes extends AppCompatActivity {
             }
         });
         vpImagenes.setAdapter(visorImagenesAdapter);
-//        vpImagenes.setCurrentItem(0);
-//        pageIndicator.setViewPager(vpImagenes);
-//        visorImagenesAdapter.notifyDataSetChanged();
+        //        vpImagenes.setCurrentItem(0);
+        //        pageIndicator.setViewPager(vpImagenes);
+        //        visorImagenesAdapter.notifyDataSetChanged();
 
         if (cnf.getImagenes().size() > 0) {
-//            if (position == 0) vpImagenes.setCurrentItem(1);
+            //            if (position == 0) vpImagenes.setCurrentItem(1);
             vpImagenes.setCurrentItem(0);
             if (cnf.getImagenes().size() == 0) rlImagenes.setVisibility(View.GONE);
             if (cnf.getImagenes().size() > 0) txtConteoImagenes.setText("1/" + cnf.getImagenes().size());
@@ -229,7 +229,7 @@ public class VisorImagenes extends AppCompatActivity {
 
         File compressedImgFile = comprimirArchivo();
         if (compressedImgFile != null) {
-            ImagenCommons imagenCommons = new ImagenCommons(Utils.fromFileToBase64Image(compressedImgFile), Utils.getFormatFromFile(compressedImgFile.getAbsolutePath()), Utils.getCameraPhotoOrientation(compressedImgFile.getAbsolutePath()), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
+            ImagenCommons imagenCommons = new ImagenCommons(CommonsUtilsImagenes.fromFileToBase64Image(compressedImgFile), Utils.getFormatFromFile(compressedImgFile.getAbsolutePath()), Utils.getCameraPhotoOrientation(compressedImgFile.getAbsolutePath()), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
             cnf.getImagenes().add(imagenCommons);
             visorImagenesAdapter.setData(cnf.getImagenes());
             actualizarViewPager();

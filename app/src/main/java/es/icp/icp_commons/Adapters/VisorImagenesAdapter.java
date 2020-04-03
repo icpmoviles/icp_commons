@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import es.icp.icp_commons.Interfaces.ListenerAccion;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.R;
-import es.icp.icp_commons.Utils.Utils;
+import es.icp.icp_commons.Utils.CommonsUtilsImagenes;
 
 public class VisorImagenesAdapter extends PagerAdapter {
 
@@ -84,7 +84,7 @@ public class VisorImagenesAdapter extends PagerAdapter {
 
     private void addImagesToByteArray(ArrayList<ImagenCommons> imagenes) {
         this.imagenes = new ArrayList<>();
-        for (ImagenCommons imagen : imagenes) this.imagenes.add(Utils.convertBase64ToByteArray(imagen));
+        for (ImagenCommons imagen : imagenes) this.imagenes.add(CommonsUtilsImagenes.convertBase64ToByteArray(imagen));
     }
 
     public void setData(ArrayList<ImagenCommons> imagenes) {
