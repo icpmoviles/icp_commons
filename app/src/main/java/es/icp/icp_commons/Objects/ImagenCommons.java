@@ -1,10 +1,8 @@
 package es.icp.icp_commons.Objects;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
-import es.icp.icp_commons.R;
 import es.icp.icp_commons.Utils.CommonsUtilsImagenes;
 import es.icp.icp_commons.Utils.Localizacion;
 import es.icp.icp_commons.Utils.UtilsFechas;
@@ -33,6 +31,10 @@ public class ImagenCommons {
         this.formato     = formato;
         this.orientacion = orientacion;
         this.fecha       = fecha;
+    }
+
+    public ImagenCommons(Drawable drawable, Bitmap.CompressFormat formato, int orientacion, String fecha) {
+        this(CommonsUtilsImagenes.fromDrawableToBase64Image(drawable), formato, orientacion, fecha);
     }
 
     public String getContenido() {
