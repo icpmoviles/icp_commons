@@ -17,6 +17,8 @@ import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CustomDialog;
@@ -36,6 +38,7 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
+import es.icp.icp_commons.Loading;
 import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
@@ -195,7 +198,25 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn24(View view) {
                 crearDialog21();
             }
+
+            @Override
+            public void onClickBtn25(View view) {
+                mostrarSmartLoading();
+            }
         };
+    }
+
+    private void mostrarSmartLoading() {
+        Loading.ShowSmartLoading(context, "Cargando...", "Por favor, espere mientras se carga la información...", true);
+        final Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                Loading.HideSmartLoading();
+                timer.cancel();
+            }
+        };
+        timer.schedule(timerTask, 5000);
     }
 
     private void crearDialog21() {
@@ -214,8 +235,7 @@ public class MainActivity extends CommonsBaseApp {
             public void imagenEliminada(int position, ImagenCommons imagen) {
 
             }
-        })
-                .build();
+        }).build();
         new CustomSmartDialog().dialogGenerico(context, config, null);
     }
 
@@ -708,5 +728,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn23(View view);
 
         void onClickBtn24(View view);
+
+        void onClickBtn25(View view);
     }
 }
