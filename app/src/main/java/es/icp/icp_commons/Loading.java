@@ -81,7 +81,27 @@ public class Loading {
         MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mostrarCustomSmartDialog(ctx, title, message, cancelable, null);
+                mostrarCustomSmartDialog(ctx, title, message, cancelable, R.raw.loading_gif, true, null);
+            }
+        });
+    }
+
+    /**
+     * Muestra un diálogo de carga.
+     *
+     * @param ctx        Context. Contexto de la aplicación.
+     * @param title      String. Título del diálogo de carga.
+     * @param message    String. Mensaje del diálogo de carga.
+     * @param cancelable boolean. Indica si el diálogo se puede cancelar o no por el usuario haciendo click fuera del mismo. ('true': cancelable; 'false': no cancelable)
+     * @author Ventura de Lucas
+     */
+    public static void ShowSmartLoading(final Context ctx, String title, String message, boolean cancelable, int icono, boolean esGif) {
+        if (customSmartDialog != null/* && customSmartDialog.isShowingLoading()*/) return;
+        contextWS = ctx;
+        MyApplication.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mostrarCustomSmartDialog(ctx, title, message, cancelable, icono, esGif, null);
             }
         });
     }
@@ -101,13 +121,13 @@ public class Loading {
         MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mostrarCustomSmartDialog(ctx, title, message, cancelable, loadingListener);
+                mostrarCustomSmartDialog(ctx, title, message, cancelable, R.raw.loading_gif, true, loadingListener);
             }
         });
     }
 
-    private static void mostrarCustomSmartDialog(Context context, String title, String message, boolean cancelable, CustomSmartDialog.LoadingListener loadingListener) {
-        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).isIconoGif(true).setMostrarLoading(true).setMostrarImagenPredeterminada(false).setIconoTitulo(R.raw.loading_gif).setTitulo(title).setMensaje(message).setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setCancelable(cancelable)
+    private static void mostrarCustomSmartDialog(Context context, String title, String message, boolean cancelable, int icono, boolean esGif, CustomSmartDialog.LoadingListener loadingListener) {
+        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).isIconoGif(esGif).setMostrarLoading(true).setMostrarImagenPredeterminada(false).setIconoTitulo(icono).setTitulo(title).setMensaje(message).setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setCancelable(cancelable)
                 .build();
         customSmartDialog = new CustomSmartDialog();
         customSmartDialog.dialogGenerico(context, config, null, loadingListener);
