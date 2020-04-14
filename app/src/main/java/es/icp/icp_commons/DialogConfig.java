@@ -43,6 +43,15 @@ public class DialogConfig {
     private boolean                  cancelable                  = false;
     private int                      colorTitulo                 = 0;
     private AdjuntarImagenesListener adjuntarImagenesListener    = null;
+    private boolean                  isIconoGif                  = false;
+
+    public boolean isIconoGif() {
+        return isIconoGif;
+    }
+
+    public void setIconoGif(boolean iconoGif) {
+        isIconoGif = iconoGif;
+    }
 
     public boolean isMostrarLoading() {
         return mostrarLoading;
@@ -336,12 +345,18 @@ public class DialogConfig {
         private int                      colorTitulo                 = 0;
         private ArrayList<ImagenCommons> imagenes                    = new ArrayList<>();
         private AdjuntarImagenesListener adjuntarImagenesListener    = null;
+        private boolean                  isIconoGif                  = false;
 
         public Builder() {
         }
 
         public static Builder aDialogConfig() {
             return new Builder();
+        }
+
+        public Builder isIconoGif(boolean isIconoGif) {
+            this.isIconoGif = isIconoGif;
+            return this;
         }
 
         public Builder setMostrarLoading(boolean mostrarLoading) {
@@ -532,6 +547,7 @@ public class DialogConfig {
             dialogConfig.colorTitulo                 = this.colorTitulo;
             dialogConfig.imagenes                    = this.imagenes;
             dialogConfig.adjuntarImagenesListener    = this.adjuntarImagenesListener;
+            dialogConfig.isIconoGif                  = this.isIconoGif;
             return dialogConfig;
         }
     }
