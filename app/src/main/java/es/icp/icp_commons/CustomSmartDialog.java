@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.icp.icp_commons.CommonsCore.CommonsExecutors;
 import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQResponse;
@@ -380,7 +381,7 @@ public class CustomSmartDialog {
     public void dialogGenerico(final Context mContext, DialogConfig config, final CustomSmartDialogSiNoResponse listener, LoadingListener loadingListener) {
         enConstruccion = true;
         context        = mContext;
-        if (!config.isMostrarLoading()) {
+        if (!config.isMostrarLoading() && config.isWithLoading()) {
             Loading.ShowSmartLoading(mContext, mContext.getString(R.string.cargando), mContext.getString(R.string.cargando_espere_porfavor), false, new LoadingListener() {
                 @Override
                 public void onLoadingFinished() {
@@ -393,7 +394,7 @@ public class CustomSmartDialog {
     }
 
     private void crearDialogGenerico(final Context mContext, DialogConfig config, final CustomSmartDialogSiNoResponse listener, LoadingListener loadingListener) {
-        new Thread(new Runnable() {
+        CommonsExecutors.getExecutor().Sec().execute(new Runnable() {
             @Override
             public void run() {
 
@@ -441,7 +442,7 @@ public class CustomSmartDialog {
 
                     //-------------------------------------------------------
                     //--------------- LOADING -------------------
-                    ProgressBar pbLoading = mainContainer.findViewById(R.id.pbLoading);
+//                    ProgressBar pbLoading = mainContainer.findViewById(R.id.pbLoading);
                     //----------------------------------------------------------------------------------------------------
 
                     if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(mContext);
@@ -514,7 +515,7 @@ public class CustomSmartDialog {
                     }
 
                     if (config.isMostrarLoading()) { //----------------------------------------------------------------------------------
-                        pbLoading.setVisibility(View.VISIBLE);
+//                        pbLoading.setVisibility(View.VISIBLE);
                         isLoadingDialog = true;
                     }
                     if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------
@@ -612,7 +613,7 @@ public class CustomSmartDialog {
                             }
                         });
                     } //-----------------------------------------------------------------------------------------------------------------
-                    MyApplication.runOnUiThread(new Runnable() {
+                    CommonsExecutors.getExecutor().Main().execute(new Runnable() {
                         @Override
                         public void run() {
                             new Builder(mContext).addView(mainContainer).isGenerico(true).isLoadingDialog(config.isMostrarLoading()).setLoadingListener(loadingListener).isCancelable(config.isCancelable()).build();
@@ -622,7 +623,7 @@ public class CustomSmartDialog {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
     }
 
     public static CustomSmartDialog dialogImage(final Context context, String titulo, Drawable iconoTitulo, Drawable image, final CustomSmartDialogResponse listener) {

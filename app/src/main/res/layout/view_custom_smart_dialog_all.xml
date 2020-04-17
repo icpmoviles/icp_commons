@@ -44,15 +44,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ProgressBar
-                    android:id="@+id/pbLoading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:indeterminate="true"
-                    tools:visibility="visible"
-                    android:visibility="gone"
-                    android:progressTint="@color/colorPrimary"/>
+<!--                <ProgressBar-->
+<!--                    android:id="@+id/pbLoading"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginStart="16dp"-->
+<!--                    android:indeterminate="true"-->
+<!--                    tools:visibility="visible"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:progressTint="@color/colorPrimary"/>-->
 
                 <TextView
                     android:id="@+id/txtMensaje"

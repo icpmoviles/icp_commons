@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import es.icp.icp_commons.CommonsCore.CommonsExecutors;
 import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Interfaces.AdjuntarImagenesListener;
 import es.icp.icp_commons.Objects.ImagenCommons;
@@ -13,6 +14,11 @@ public class Loading {
     private static ProgressDialog progress;
     private static Context        contextWS;
     private static CustomSmartDialog customSmartDialog;
+
+    public enum LoaderType {
+        NORMAL_DIALOG,
+        SMART_DIALOG
+    }
 
     /**
      * Muestra un diálogo de carga.
@@ -118,7 +124,7 @@ public class Loading {
     public static void ShowSmartLoading(final Context ctx, String title, String message, boolean cancelable, CustomSmartDialog.LoadingListener loadingListener) {
         if (customSmartDialog != null/* && customSmartDialog.isShowingLoading()*/) return;
         contextWS = ctx;
-        MyApplication.runOnUiThread(new Runnable() {
+        CommonsExecutors.getExecutor().Main().execute(new Runnable() {
             @Override
             public void run() {
                 mostrarCustomSmartDialog(ctx, title, message, cancelable, R.raw.loading_gif, true, loadingListener);
@@ -158,7 +164,7 @@ public class Loading {
      * @author Ventura de Lucas
      */
     public static void HideLoading() {
-        MyApplication.runOnUiThread(new Runnable() {
+        CommonsExecutors.getExecutor().Main().execute(new Runnable() {
             @Override
             public void run() {
                 try {

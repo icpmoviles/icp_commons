@@ -26,11 +26,13 @@ import java.util.List;
 
 import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CustomDialog;
+import es.icp.icp_commons.CustomSmartDialog;
 import es.icp.icp_commons.Database.DBHandler;
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Helpers.GlobalVariables;
 import es.icp.icp_commons.Interfaces.EnvioAccionesCallback;
 import es.icp.icp_commons.Interfaces.VolleyCallBack;
+import es.icp.icp_commons.Loading;
 import es.icp.icp_commons.Objects.Accion;
 import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
@@ -41,8 +43,17 @@ import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
 public class WebService extends Application {
 
+    private static Loading.LoaderType loaderType = Loading.LoaderType.NORMAL_DIALOG;
 
     private static RequestQueue requestQueue;
+
+    public static Loading.LoaderType getLoaderType() {
+        return loaderType;
+    }
+
+    public static void setLoaderType(Loading.LoaderType loaderType) {
+        WebService.loaderType = loaderType;
+    }
 
     /**
      * Método para tratar excepciones. Requiere de conexión a Internet para funcionar. Envía un log con la excepción introducida.
@@ -118,10 +129,17 @@ public class WebService extends Application {
         if (acciones.size() > 0) {
             ProgressDialog mProgres = null;
             try {
-                mProgres = new ProgressDialog(mContext);
-                mProgres.setCancelable(false);
-                mProgres.setMessage(mContext.getString(R.string.subiendo_acciones_pendientes_offline));
-                if (GlobalVariables.loader) mProgres.show();
+                switch (loaderType) {
+                    case NORMAL_DIALOG:
+                        mProgres = new ProgressDialog(mContext);
+                        mProgres.setCancelable(false);
+                        mProgres.setMessage(mContext.getString(R.string.subiendo_acciones_pendientes_offline));
+                        if (GlobalVariables.loader) mProgres.show();
+                        break;
+                    case SMART_DIALOG:
+                        Loading.ShowSmartLoading(mContext, mContext.getString(R.string.cargando), mContext.getString(R.string.subiendo_acciones_pendientes_offline), false);
+                        break;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -136,9 +154,15 @@ public class WebService extends Application {
                 @Override
                 public void onFinish() throws CheckRequestException {
                     try{
-                        if (GlobalVariables.loader && mProgress != null) {
-                            mProgress.hide();
-                            mProgress.dismiss();
+                        switch (loaderType) {
+                            case NORMAL_DIALOG:
+                                if (GlobalVariables.loader && mProgress != null) {
+                                    mProgress.hide();
+                                    mProgress.dismiss();
+                                }
+                                break;
+                            case SMART_DIALOG:
+                                Loading.HideSmartLoading();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -150,6 +174,16 @@ public class WebService extends Application {
                 @Override
                 public void onOffline() {
                     callback.onOffline();
+                    switch (loaderType) {
+                        case NORMAL_DIALOG:
+                            if (GlobalVariables.loader && mProgress != null) {
+                                mProgress.hide();
+                                mProgress.dismiss();
+                            }
+                            break;
+                        case SMART_DIALOG:
+                            Loading.HideSmartLoading();
+                    }
                 }
             });
         } else {
