@@ -160,27 +160,33 @@ public class CheckRequest {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    if (GlobalVariables.loader) Loading.HideLoading();
+                                    if (GlobalVariables.loader) {
+                                        switch (WebService.getLoaderType()) {
+                                            case NORMAL_DIALOG:
+                                                Loading.HideLoading();
+                                                break;
+                                            case SMART_DIALOG:
+                                                Loading.HideSmartLoading();
+                                                break;
+                                        }
+                                    }
                                     Object responseObject;
                                     try {
                                         Class  clase = parametros.getClase();
                                         Object objetoAux;
                                         if (clase != null) {
                                             String data = obtenerStringJSON(response);
-//                                            if (data.startsWith("[")) {
-//                                                responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
-//                                            } else {
-//                                                responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
-//                                            }
+
                                             responseObject = new Gson().fromJson(data, clase);
                                         } else {
                                             responseObject = response;
                                         }
-                                    } catch (/*JSON*/Exception e) {
+                                        callBack.onSuccess(responseObject);
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                         responseObject = response;
+                                        callBack.onError(new VolleyError("No se ha podido castear al objeto. Error en GSON al crear la instancia. ¿Clase abstracta?"));
                                     }
-                                    callBack.onSuccess(responseObject);
                                 }
                             }, new Response.ErrorListener() {
                         @Override
@@ -464,27 +470,33 @@ public class CheckRequest {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    if (GlobalVariables.loader) Loading.HideLoading();
+                                    if (GlobalVariables.loader) {
+                                        switch (WebService.getLoaderType()) {
+                                            case NORMAL_DIALOG:
+                                                Loading.HideLoading();
+                                                break;
+                                            case SMART_DIALOG:
+                                                Loading.HideSmartLoading();
+                                                break;
+                                        }
+                                    }
                                     Object responseObject;
                                     try {
                                         Class  clase = parametros.getClase();
                                         Object objetoAux;
                                         if (clase != null) {
                                             String data = obtenerStringJSON(response);
-//                                            if (data.startsWith("[")) {
-//                                                responseObject = new Gson().fromJson(response.getJSONArray("data").toString(), clase);
-//                                            } else {
-//                                                responseObject = new Gson().fromJson(response.getJSONObject("data").toString(), clase);
-//                                            }
+
                                             responseObject = new Gson().fromJson(data, clase);
                                         } else {
                                             responseObject = response;
                                         }
-                                    } catch (/*JSON*/Exception e) {
+                                        if (callBack != null) callBack.onSuccess(responseObject);
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                         responseObject = response;
+                                        callBack.onError("No se ha podido castear al objeto. Error en GSON al crear la instancia. ¿Clase abstracta?");
                                     }
-                                    if (callBack != null) callBack.onSuccess(responseObject);
                                 }
                             }, new Response.ErrorListener() {
                         @Override
