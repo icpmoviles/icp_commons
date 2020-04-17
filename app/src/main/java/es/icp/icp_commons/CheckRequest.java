@@ -142,7 +142,16 @@ public class CheckRequest {
                             final boolean loader, int idUsuario, String urlError, boolean guardarAccion) throws CheckRequestException {
         GlobalVariables.loader = loader;
         try {
-            if (GlobalVariables.loader) Loading.ShowLoading(context);
+            if (GlobalVariables.loader) {
+                switch (WebService.getLoaderType()) {
+                    case NORMAL_DIALOG:
+                        Loading.ShowLoading(context);
+                        break;
+                    case SMART_DIALOG:
+                        Loading.ShowSmartLoading(context, context.getString(R.string.cargando), context.getString(R.string.obteniendo_informacion), false);
+                        break;
+                }
+            }
 
             if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
                 try {
@@ -176,39 +185,49 @@ public class CheckRequest {
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            if (GlobalVariables.loader) Loading.HideLoading();
+                            if (GlobalVariables.loader) {
+                                switch (WebService.getLoaderType()) {
+                                    case NORMAL_DIALOG:
+                                        Loading.HideLoading();
+                                        break;
+                                    case SMART_DIALOG:
+                                        Loading.HideSmartLoading();
+                                        break;
+                                }
+                            }
                             tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
                             callBack.onError(error);
                         }
                     });
                     WebService.AddRequest(request, context);
                 } catch (Exception e) {
-                    if (GlobalVariables.loader) Loading.HideLoading();
+                    if (GlobalVariables.loader) {
+                        switch (WebService.getLoaderType()) {
+                            case NORMAL_DIALOG:
+                                Loading.HideLoading();
+                                break;
+                            case SMART_DIALOG:
+                                Loading.HideSmartLoading();
+                                break;
+                        }
+                    }
                     WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
                     throw createException(e, parametros.getUrl(), "Send");
                 }
 
-            } // else if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.ARRAY) {
-//                JsonArrayRequest request = new JsonArrayRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONArray(),
-//                        new Response.Listener<JSONArray>() {
-//                            @Override
-//                            public void onResponse(JSONArray response) {
-//                                if (GlobalVariables.loader) WebService.HideLoading();
-//                                callBack.onSuccess(response);
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        if (GlobalVariables.loader) WebService.HideLoading();
-//                        callBack.onError(error);
-//                    }
-//                });
-//            }
+            }
 
         } catch (Exception e) {
-            if (GlobalVariables.loader) Loading.HideLoading();
-//            e.printStackTrace();
-//            callBack.onOffline();
+            if (GlobalVariables.loader) {
+                switch (WebService.getLoaderType()) {
+                    case NORMAL_DIALOG:
+                        Loading.HideLoading();
+                        break;
+                    case SMART_DIALOG:
+                        Loading.HideSmartLoading();
+                        break;
+                }
+            }
             WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
             throw createException(e, parametros.getUrl(), "Send");
         }
@@ -428,7 +447,16 @@ public class CheckRequest {
         GlobalVariables.loader = loader;
         WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
         try {
-            if (GlobalVariables.loader) Loading.ShowLoading(context);
+            if (GlobalVariables.loader) {
+                switch (WebService.getLoaderType()) {
+                    case NORMAL_DIALOG:
+                        Loading.ShowLoading(context);
+                        break;
+                    case SMART_DIALOG:
+                        Loading.ShowSmartLoading(context, context.getString(R.string.cargando), context.getString(R.string.obteniendo_informacion), false);
+                        break;
+                }
+            }
 
             if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
                 try {
@@ -461,38 +489,48 @@ public class CheckRequest {
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            if (GlobalVariables.loader) Loading.HideLoading();
+                            if (GlobalVariables.loader) {
+                                switch (WebService.getLoaderType()) {
+                                    case NORMAL_DIALOG:
+                                        Loading.HideLoading();
+                                        break;
+                                    case SMART_DIALOG:
+                                        Loading.HideSmartLoading();
+                                        break;
+                                }
+                            }
                             if (callBack != null) callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
                         }
                     });
                     WebService.AddRequest(request, context);
                 } catch (Exception e) {
-                    if (GlobalVariables.loader) Loading.HideLoading();
+                    if (GlobalVariables.loader) {
+                        switch (WebService.getLoaderType()) {
+                            case NORMAL_DIALOG:
+                                Loading.HideLoading();
+                                break;
+                            case SMART_DIALOG:
+                                Loading.HideSmartLoading();
+                                break;
+                        }
+                    }
                     WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
                     throw createException(e, parametros.getUrl(), "Send");
                 }
 
-            } // else if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.ARRAY) {
-//                JsonArrayRequest request = new JsonArrayRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONArray(),
-//                        new Response.Listener<JSONArray>() {
-//                            @Override
-//                            public void onResponse(JSONArray response) {
-//                                if (GlobalVariables.loader) WebService.HideLoading();
-//                                callBack.onSuccess(response);
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        if (GlobalVariables.loader) WebService.HideLoading();
-//                        callBack.onError(error);
-//                    }
-//                });
-//            }
+            }
 
         } catch (Exception e) {
-            if (GlobalVariables.loader) Loading.HideLoading();
-//            e.printStackTrace();
-//            callBack.onOffline();
+            if (GlobalVariables.loader) {
+                switch (WebService.getLoaderType()) {
+                    case NORMAL_DIALOG:
+                        Loading.HideLoading();
+                        break;
+                    case SMART_DIALOG:
+                        Loading.HideSmartLoading();
+                        break;
+                }
+            }
             WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
             throw createException(e, parametros.getUrl(), "Send");
         }

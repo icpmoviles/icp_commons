@@ -247,6 +247,8 @@ public class MainActivity extends CommonsBaseApp {
         CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
         customNotification.showText(String.valueOf(Utils.isDebuggable(getApplicationContext())));
 
+        WebService.setLoaderType(Loading.LoaderType.SMART_DIALOG);
+
         PruebasLoginRequest loginRequest = new PruebasLoginRequest("Pruebas", "p", "2", "28", "SAMSUNG", "A20e", "12121", "12312313", "cLF5wFYRxZE:APA91bFJHOM1MLBDunVBvzVip-MeLkDbfroplfELJSsCxUcX6pvNdwL_vtHiJdNjiQyXLH9zaTjHi3Lmcs-XmvAPtAcWAYbmfWXxP8kI1I4iD-rJKsbMIWasMTq_ocNFHqB_zMrtVsuh", "1.0.136");
         try {
             CheckRequest.CheckAndSend(getApplicationContext(), new ParametrosPeticion(ParametrosPeticion.Method.POST, "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/Login", loginRequest, PruebasLoginResult.class), new NewVolleyCallBack() {
@@ -264,7 +266,7 @@ public class MainActivity extends CommonsBaseApp {
                 public void onOffline() {
 
                 }
-            }, 0, "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/save_log", true);
+            }, true, 0, "http://integracion.icp.es/WS_Orange_RFID_DES/api/orange.rfid/save_log", true);
         } catch (CheckRequestException ex) {
             ex.printStackTrace();
         }
@@ -315,7 +317,7 @@ public class MainActivity extends CommonsBaseApp {
         });
         botones.add(btnEliminar);
 
-        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Elija una opción").setMensaje("Elija una opción entre las tres opciones posibles que puedes ver...").setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setMostrarBotones(true).setBotones(botones).setCancelable(true).setMostrarImagenPredeterminada(false).build();
+        DialogConfig config = new DialogConfig.Builder().isWithLoading(true).setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Elija una opción").setMensaje("Elija una opción entre las tres opciones posibles que puedes ver...").setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setMostrarBotones(true).setBotones(botones).setCancelable(true).setMostrarImagenPredeterminada(false).build();
 
         new CustomSmartDialog().dialogGenerico(context, config, null);
     }
