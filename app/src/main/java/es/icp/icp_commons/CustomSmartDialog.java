@@ -457,7 +457,7 @@ public class CustomSmartDialog {
                     if (config.isMostrarIconoTitulo()) {
                         iconoTitulo.setVisibility(View.VISIBLE);
                         if (config.isIconoGif()) {
-                            MyApplication.runOnUiThread(new Runnable() {
+                            CommonsExecutors.getExecutor().Main().execute(new Runnable() {
                                 @Override
                                 public void run() {
                                     Glide.with(context).asGif().load(config.getIconoTituloInt()).into(iconoTitulo);
@@ -604,7 +604,7 @@ public class CustomSmartDialog {
                         imagen.setVisibility(View.GONE);
                     } //-----------------------------------------------------------------------------------------------------------------
                     if (config.isMostrarVisorImagenes()) {
-                        MyApplication.runOnUiThread(new Runnable() {
+                        CommonsExecutors.getExecutor().Main().execute(new Runnable() {
                             @Override
                             public void run() {
                                 //                                VisorImagenes visorImagenes = VisorImagenes.getVisor(context);
