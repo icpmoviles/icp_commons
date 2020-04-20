@@ -55,7 +55,7 @@ public class CustomSmartDialog {
     private        LoadingListener         loadingListener;
     private        Message                 message;
     private static boolean                 enConstruccion  = false;
-    private static ArrayList<AlertDialog2> dialogs         = new ArrayList<>();
+    public static ArrayList<AlertDialog2> dialogs         = new ArrayList<>();
     private        boolean                 generico        = false;
     private static EditText                txtEditText;
     private VisorImagenes visorImagenes;
