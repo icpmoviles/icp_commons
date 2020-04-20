@@ -146,81 +146,23 @@ public class CheckRequest {
                 switch (WebService.getLoaderType()) {
                     case NORMAL_DIALOG:
                         Loading.ShowLoading(context);
+                        send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
                         break;
                     case SMART_DIALOG:
-                        Loading.ShowSmartLoading(context, context.getString(R.string.cargando), context.getString(R.string.obteniendo_informacion), false);
-                        break;
-                }
-            }
-
-            if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
-                try {
-                    WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
-                    JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    if (GlobalVariables.loader) {
-                                        switch (WebService.getLoaderType()) {
-                                            case NORMAL_DIALOG:
-                                                Loading.HideLoading();
-                                                break;
-                                            case SMART_DIALOG:
-                                                Loading.HideSmartLoading();
-                                                break;
-                                        }
-                                    }
-                                    Object responseObject;
-                                    try {
-                                        Class  clase = parametros.getClase();
-                                        Object objetoAux;
-                                        if (clase != null) {
-                                            String data = obtenerStringJSON(response);
-
-                                            responseObject = new Gson().fromJson(data, clase);
-                                        } else {
-                                            responseObject = response;
-                                        }
-                                        callBack.onSuccess(responseObject);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        responseObject = response;
-                                        callBack.onError(new VolleyError("No se ha podido castear al objeto. Error en GSON al crear la instancia. ¿Clase abstracta?"));
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if (GlobalVariables.loader) {
-                                switch (WebService.getLoaderType()) {
-                                    case NORMAL_DIALOG:
-                                        Loading.HideLoading();
-                                        break;
-                                    case SMART_DIALOG:
-                                        Loading.HideSmartLoading();
-                                        break;
+                        Loading.ShowSmartLoading(context, context.getString(R.string.cargando), context.getString(R.string.obteniendo_informacion), false, new CustomSmartDialog.LoadingListener() {
+                            @Override
+                            public void onLoadingFinished() {
+                                try {
+                                    send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
+                                } catch (CheckRequestException e) {
+                                    e.printStackTrace();
                                 }
                             }
-                            tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
-                            callBack.onError(error);
-                        }
-                    });
-                    WebService.AddRequest(request, context);
-                } catch (Exception e) {
-                    if (GlobalVariables.loader) {
-                        switch (WebService.getLoaderType()) {
-                            case NORMAL_DIALOG:
-                                Loading.HideLoading();
-                                break;
-                            case SMART_DIALOG:
-                                Loading.HideSmartLoading();
-                                break;
-                        }
-                    }
-                    WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
-                    throw createException(e, parametros.getUrl(), "Send");
+                        });
+                        break;
                 }
-
+            } else {
+                send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
             }
 
         } catch (Exception e) {
@@ -457,79 +399,23 @@ public class CheckRequest {
                 switch (WebService.getLoaderType()) {
                     case NORMAL_DIALOG:
                         Loading.ShowLoading(context);
+                        send2(context, parametros, callBack, idUsuario, urlError);
                         break;
                     case SMART_DIALOG:
-                        Loading.ShowSmartLoading(context, context.getString(R.string.cargando), context.getString(R.string.obteniendo_informacion), false);
-                        break;
-                }
-            }
-
-            if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
-                try {
-                    JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    if (GlobalVariables.loader) {
-                                        switch (WebService.getLoaderType()) {
-                                            case NORMAL_DIALOG:
-                                                Loading.HideLoading();
-                                                break;
-                                            case SMART_DIALOG:
-                                                Loading.HideSmartLoading();
-                                                break;
-                                        }
-                                    }
-                                    Object responseObject;
-                                    try {
-                                        Class  clase = parametros.getClase();
-                                        Object objetoAux;
-                                        if (clase != null) {
-                                            String data = obtenerStringJSON(response);
-
-                                            responseObject = new Gson().fromJson(data, clase);
-                                        } else {
-                                            responseObject = response;
-                                        }
-                                        if (callBack != null) callBack.onSuccess(responseObject);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        responseObject = response;
-                                        callBack.onError("No se ha podido castear al objeto. Error en GSON al crear la instancia. ¿Clase abstracta?");
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if (GlobalVariables.loader) {
-                                switch (WebService.getLoaderType()) {
-                                    case NORMAL_DIALOG:
-                                        Loading.HideLoading();
-                                        break;
-                                    case SMART_DIALOG:
-                                        Loading.HideSmartLoading();
-                                        break;
+                        Loading.ShowSmartLoading(context, context.getString(R.string.cargando), context.getString(R.string.obteniendo_informacion), false, new CustomSmartDialog.LoadingListener() {
+                            @Override
+                            public void onLoadingFinished() {
+                                try {
+                                    send2(context, parametros, callBack, idUsuario, urlError);
+                                } catch (CheckRequestException e) {
+                                    e.printStackTrace();
                                 }
                             }
-                            if (callBack != null) callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
-                        }
-                    });
-                    WebService.AddRequest(request, context);
-                } catch (Exception e) {
-                    if (GlobalVariables.loader) {
-                        switch (WebService.getLoaderType()) {
-                            case NORMAL_DIALOG:
-                                Loading.HideLoading();
-                                break;
-                            case SMART_DIALOG:
-                                Loading.HideSmartLoading();
-                                break;
-                        }
-                    }
-                    WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
-                    throw createException(e, parametros.getUrl(), "Send");
+                        });
+                        break;
                 }
-
+            } else {
+                send2(context, parametros, callBack, idUsuario, urlError);
             }
 
         } catch (Exception e) {
@@ -545,6 +431,147 @@ public class CheckRequest {
             }
             WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
             throw createException(e, parametros.getUrl(), "Send");
+        }
+    }
+
+    private static void send1(Context context, ParametrosPeticion parametros, NewVolleyCallBack callBack, int idUsuario, String urlError, boolean guardarAccion) throws CheckRequestException {
+        if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
+            try {
+                WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
+                JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(), new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (GlobalVariables.loader) {
+                            switch (WebService.getLoaderType()) {
+                                case NORMAL_DIALOG:
+                                    Loading.HideLoading();
+                                    break;
+                                case SMART_DIALOG:
+                                    Loading.HideSmartLoading();
+                                    break;
+                            }
+                        }
+                        Object responseObject;
+                        try {
+                            Class  clase = parametros.getClase();
+                            Object objetoAux;
+                            if (clase != null) {
+                                String data = obtenerStringJSON(response);
+
+                                responseObject = new Gson().fromJson(data, clase);
+                            } else {
+                                responseObject = response;
+                            }
+                            callBack.onSuccess(responseObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            responseObject = response;
+                            callBack.onError(new VolleyError("No se ha podido castear al objeto. Error en GSON al crear la instancia. ¿Clase abstracta?"));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (GlobalVariables.loader) {
+                            switch (WebService.getLoaderType()) {
+                                case NORMAL_DIALOG:
+                                    Loading.HideLoading();
+                                    break;
+                                case SMART_DIALOG:
+                                    Loading.HideSmartLoading();
+                                    break;
+                            }
+                        }
+                        tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
+                        callBack.onError(error);
+                    }
+                });
+                WebService.AddRequest(request, context);
+            } catch (Exception e) {
+                if (GlobalVariables.loader) {
+                    switch (WebService.getLoaderType()) {
+                        case NORMAL_DIALOG:
+                            Loading.HideLoading();
+                            break;
+                        case SMART_DIALOG:
+                            Loading.HideSmartLoading();
+                            break;
+                    }
+                }
+                WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
+                throw createException(e, parametros.getUrl(), "Send");
+            }
+        }
+    }
+
+
+    private static void send2(Context context, ParametrosPeticion parametros, VolleyCallBack callBack, int idUsuario, String urlError) throws CheckRequestException {
+        if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
+            try {
+                JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                if (GlobalVariables.loader) {
+                                    switch (WebService.getLoaderType()) {
+                                        case NORMAL_DIALOG:
+                                            Loading.HideLoading();
+                                            break;
+                                        case SMART_DIALOG:
+                                            Loading.HideSmartLoading();
+                                            break;
+                                    }
+                                }
+                                Object responseObject;
+                                try {
+                                    Class  clase = parametros.getClase();
+                                    Object objetoAux;
+                                    if (clase != null) {
+                                        String data = obtenerStringJSON(response);
+
+                                        responseObject = new Gson().fromJson(data, clase);
+                                    } else {
+                                        responseObject = response;
+                                    }
+                                    if (callBack != null) callBack.onSuccess(responseObject);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    responseObject = response;
+                                    callBack.onError("No se ha podido castear al objeto. Error en GSON al crear la instancia. ¿Clase abstracta?");
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (GlobalVariables.loader) {
+                            switch (WebService.getLoaderType()) {
+                                case NORMAL_DIALOG:
+                                    Loading.HideLoading();
+                                    break;
+                                case SMART_DIALOG:
+                                    Loading.HideSmartLoading();
+                                    break;
+                            }
+                        }
+                        if (callBack != null) callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
+                    }
+                });
+                WebService.AddRequest(request, context);
+            } catch (Exception e) {
+                if (GlobalVariables.loader) {
+                    switch (WebService.getLoaderType()) {
+                        case NORMAL_DIALOG:
+                            Loading.HideLoading();
+                            break;
+                        case SMART_DIALOG:
+                            Loading.HideSmartLoading();
+                            break;
+                    }
+                }
+                WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
+                throw createException(e, parametros.getUrl(), "Send");
+            }
+
         }
     }
 
