@@ -228,12 +228,17 @@ public class MainActivity extends CommonsBaseApp {
         DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setMostrarImagenPredeterminada(false).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Imágenes incidencia").setMensaje("Esto es un visor de imágenes de las incidencias.").setMostrarNegativo(false).setMostrarPositivo(true).setAutoDismiss(true).setTextoPositivo("ACEPTAR").setMostrarVisorImagenes(true).setImagenes(imagenes).setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
             @Override
             public void imagenAdjuntada(ImagenCommons imagen) {
-
+                imagen.getFormato();
             }
 
             @Override
             public void imagenEliminada(int position, ImagenCommons imagen) {
+                imagen.getFormato();
+            }
 
+            @Override
+            public void aceptar(ArrayList<ImagenCommons> imagenes) {
+                imagenes.size();
             }
         }).build();
         new CustomSmartDialog().dialogGenerico(context, config, null);
