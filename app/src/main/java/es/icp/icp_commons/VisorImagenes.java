@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import es.icp.icp_commons.Adapters.VisorImagenesAdapter;
+import es.icp.icp_commons.CommonsCore.CommonsExecutors;
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Helpers.DepthPageTransformer;
 import es.icp.icp_commons.Interfaces.AdjuntarImagenesListener;
@@ -233,7 +234,12 @@ public class VisorImagenes extends AppCompatActivity {
             cnf.getImagenes().add(imagenCommons);
             visorImagenesAdapter.setData(cnf.getImagenes());
             actualizarViewPager();
-            ail.imagenAdjuntada(imagenCommons);
+            CommonsExecutors.getExecutor().Main().execute(new Runnable() {
+                @Override
+                public void run() {
+                    ail.imagenAdjuntada(imagenCommons);
+                }
+            });
             archivoTemporal.delete();
             compressedImgFile.delete();
         }
@@ -273,11 +279,15 @@ public class VisorImagenes extends AppCompatActivity {
         //        ivPageLeft        = mainContainer.findViewById(R.id.ivPageLeft);
         //        ivPageRight       = mainContainer.findViewById(R.id.ivPageRight);
         btnNeutral = mainContainer.findViewById(R.id.btnNeutral);
-
-        ((Button) mainContainer.findViewById(R.id.btnPositivo)).setOnClickListener(new View.OnClickListener() {
+        Button btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
+//        View.OnClickListener onClickListener = btnPositivo.getOn
+//
+        btnPositivo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cnf.getAdjuntarImagenesListener() != null) cnf.getAdjuntarImagenesListener().aceptar(cnf.getImagenes());
+                CustomSmartDialog.dialogs.get(CustomSmartDialog.dialogs.size() - 1).getDialog().dismiss();
+                CustomSmartDialog.dialogs.remove(CustomSmartDialog.dialogs.size() - 1);
             }
         });
     }
