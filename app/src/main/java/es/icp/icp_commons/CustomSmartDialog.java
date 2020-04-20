@@ -58,6 +58,7 @@ public class CustomSmartDialog {
     private static ArrayList<AlertDialog2> dialogs         = new ArrayList<>();
     private        boolean                 generico        = false;
     private static EditText                txtEditText;
+    private VisorImagenes visorImagenes;
 
     public CustomSmartDialog() {
     }
@@ -482,6 +483,7 @@ public class CustomSmartDialog {
                             public void onClick(View v) {
                                 if (config.isAutoDismiss()) dialogs.get(dialogs.size() - 1).getDialog().dismiss();
                                 if (listener != null) {
+                                    if (config.getAdjuntarImagenesListener() != null) config.getAdjuntarImagenesListener().aceptar(config.getImagenes());
                                     if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
                                     else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
                                     else listener.positivo("Positivo", dialogs.get(dialogs.size() - 1).getDialog());
@@ -608,7 +610,7 @@ public class CustomSmartDialog {
                             @Override
                             public void run() {
                                 //                                VisorImagenes visorImagenes = VisorImagenes.getVisor(context);
-                                VisorImagenes visorImagenes = new VisorImagenes(context, mainContainer, config);
+                                visorImagenes = new VisorImagenes(context, mainContainer, config);
                                 //                                visorImagenes.cargarVisorImagenes(context, mainContainer, config);
                             }
                         });

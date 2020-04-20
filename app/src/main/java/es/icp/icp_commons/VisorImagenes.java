@@ -45,7 +45,7 @@ public class VisorImagenes extends AppCompatActivity {
 
     private static Context      ctx;
     private        LinearLayout mainContainer;
-    private static DialogConfig cnf;
+    public static DialogConfig cnf;
 
     private static RelativeLayout    rlImagenes;
     private static ViewPager         vpImagenes;
@@ -273,5 +273,12 @@ public class VisorImagenes extends AppCompatActivity {
         //        ivPageLeft        = mainContainer.findViewById(R.id.ivPageLeft);
         //        ivPageRight       = mainContainer.findViewById(R.id.ivPageRight);
         btnNeutral = mainContainer.findViewById(R.id.btnNeutral);
+
+        ((Button) mainContainer.findViewById(R.id.btnPositivo)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cnf.getAdjuntarImagenesListener() != null) cnf.getAdjuntarImagenesListener().aceptar(cnf.getImagenes());
+            }
+        });
     }
 }
