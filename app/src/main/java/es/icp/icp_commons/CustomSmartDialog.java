@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -27,9 +26,10 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import es.icp.icp_commons.CommonsCore.CommonsExecutors;
-import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
@@ -46,19 +46,21 @@ import es.icp.icp_commons.Utils.Utils;
  */
 public class CustomSmartDialog {
 
-    private static Context                 context;
-    private        CustomTitle             customTitle;
-    private        LinearLayout            layout;
-    private        List<Button>            buttons;
-    private        boolean                 isCancellable;
-    private        boolean                 isLoadingDialog = false;
-    private        LoadingListener         loadingListener;
-    private        Message                 message;
-    private static boolean                 enConstruccion  = false;
-    public static ArrayList<AlertDialog2> dialogs         = new ArrayList<>();
-    private        boolean                 generico        = false;
-    private static EditText                txtEditText;
-    private VisorImagenes visorImagenes;
+    private static      Context                 context;
+    private             CustomTitle             customTitle;
+    private             LinearLayout            layout;
+    private             List<Button>            buttons;
+    private             boolean                 isCancellable;
+    private             boolean                 isLoadingDialog  = false;
+    private             LoadingListener         loadingListener;
+    private             Message                 message;
+    private static      boolean                 enConstruccion   = false;
+    public static       ArrayList<AlertDialog2> dialogs          = new ArrayList<>();
+    private             boolean                 generico         = false;
+    private static      EditText                txtEditText;
+    private             VisorImagenes           visorImagenes;
+    public static final int                     MAX_HIDE_LOADING = 10;
+    public static       int                     contadorLoading  = 0;
 
     public CustomSmartDialog() {
     }
@@ -104,12 +106,24 @@ public class CustomSmartDialog {
      * @author Ventura de Lucas
      */
     public void dismissLoading() {
+        boolean encontrado = false;
         for (int i = 0; i < dialogs.size(); i++) {
             AlertDialog2 dialog2 = dialogs.get(i);
             if (dialog2.isLoadingDialog()) {
+                encontrado = true;
                 dialog2.getDialog().dismiss();
                 removeLoading(i);
             }
+        }
+        if (!encontrado && contadorLoading < MAX_HIDE_LOADING) {
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    dismissLoading();
+                }
+            };
+            timer.schedule(timerTask, 500);
         }
     }
 
@@ -443,7 +457,7 @@ public class CustomSmartDialog {
 
                     //-------------------------------------------------------
                     //--------------- LOADING -------------------
-//                    ProgressBar pbLoading = mainContainer.findViewById(R.id.pbLoading);
+                    //                    ProgressBar pbLoading = mainContainer.findViewById(R.id.pbLoading);
                     //----------------------------------------------------------------------------------------------------
 
                     if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(mContext);
@@ -517,7 +531,7 @@ public class CustomSmartDialog {
                     }
 
                     if (config.isMostrarLoading()) { //----------------------------------------------------------------------------------
-//                        pbLoading.setVisibility(View.VISIBLE);
+                        //                        pbLoading.setVisibility(View.VISIBLE);
                         isLoadingDialog = true;
                     }
                     if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------

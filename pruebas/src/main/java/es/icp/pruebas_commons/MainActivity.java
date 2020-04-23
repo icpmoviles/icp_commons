@@ -1,5 +1,6 @@
 package es.icp.pruebas_commons;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -56,7 +57,7 @@ import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
 public class MainActivity extends CommonsBaseApp {
 
-    private Context             context = MainActivity.this;
+    private Activity            context = MainActivity.this;
     private MainActivityBinding binding;
     private Handler             handler;
     private CustomSmartDialog   customSmartDialog;
