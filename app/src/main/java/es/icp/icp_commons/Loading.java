@@ -141,6 +141,7 @@ public class Loading {
 
     public static void HideSmartLoading() {
         if (customSmartDialog != null) {
+            CustomSmartDialog.contadorLoading = 0;
 //            new Thread(new Runnable() {
 //                @Override
 //                public void run() {

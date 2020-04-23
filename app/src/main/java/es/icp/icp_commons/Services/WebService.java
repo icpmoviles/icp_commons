@@ -41,7 +41,7 @@ import es.icp.logs.core.MyLog;
 
 import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
-public class WebService extends Application {
+public class WebService {
 
     private static Loading.LoaderType loaderType = Loading.LoaderType.NORMAL_DIALOG;
 
