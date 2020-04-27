@@ -87,7 +87,7 @@ public class Loading {
         MyApplication.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mostrarCustomSmartDialog(ctx, title, message, cancelable, R.raw.loading_gif, true, null);
+                mostrarCustomSmartDialog(ctx, title, message, cancelable, R.raw.loading_gif_a, true, null);
             }
         });
     }
@@ -127,7 +127,7 @@ public class Loading {
         CommonsExecutors.getExecutor().Main().execute(new Runnable() {
             @Override
             public void run() {
-                mostrarCustomSmartDialog(ctx, title, message, cancelable, R.raw.loading_gif, true, loadingListener);
+                mostrarCustomSmartDialog(ctx, title, message, cancelable, R.raw.loading_gif_a, true, loadingListener);
             }
         });
     }

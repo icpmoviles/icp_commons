@@ -232,11 +232,13 @@
 
         <ImageView
             android:id="@+id/iconoTitulo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:visibility="gone"
             tools:visibility="visible"
+            android:layout_centerHorizontal="true"
             android:padding="5dp"
+            android:elevation="5dp"
             android:src="@drawable/ic_help_outline_white_100dp" />
     </RelativeLayout>
 
