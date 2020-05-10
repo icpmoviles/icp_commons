@@ -184,7 +184,8 @@ public class CheckRequest {
     private static void tratarStatusCode(Context context, ParametrosPeticion parametros, boolean guardarAccion, int errorCode) {
         switch (errorCode) {
             case 404:
-                if (guardarAccion) AddAction.AddActionDatabase(parametros.getJSONObject() != null ? parametros.getJSONObject().toString() : "", context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "", 404);
+                // con el 404 no se debe guardar accion nunca
+//                if (guardarAccion) AddAction.AddActionDatabase(parametros.getJSONObject() != null ? parametros.getJSONObject().toString() : "", context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "", 404);
                 break;
             default:
                 if (guardarAccion) AddAction.AddActionDatabase(parametros.getJSONObject() != null ? parametros.getJSONObject().toString() : "", context, parametros.getUrl(), (parametros.getMethod() == Request.Method.POST) ? "POST" : "GET", "", 404);
@@ -553,6 +554,8 @@ public class CheckRequest {
                                     break;
                             }
                         }
+                        // no se deberí guarda la accion pero si tratar el statusCode de la respuesta de error
+//                        tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
                         if (callBack != null) callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
                     }
                 });

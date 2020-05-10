@@ -22,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -476,9 +475,8 @@ public class CustomSmartDialog {
                             CommonsExecutors.getExecutor().Main().execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    iconoTitulo.setBackground(context.getDrawable(R.drawable.circled_background_white));
+                                    //                                    iconoTitulo.setBackground(context.getDrawable(R.drawable.circled_background_white));
                                     Glide.with(context).asGif().load(config.getIconoTituloInt())/*.apply(RequestOptions.circleCropTransform())*/.into(iconoTitulo);
-
                                 }
                             });
                         } else {
