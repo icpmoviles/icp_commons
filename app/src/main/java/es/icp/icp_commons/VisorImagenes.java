@@ -3,6 +3,7 @@ package es.icp.icp_commons;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -34,10 +35,10 @@ import es.icp.icp_commons.Helpers.DepthPageTransformer;
 import es.icp.icp_commons.Interfaces.AdjuntarImagenesListener;
 import es.icp.icp_commons.Interfaces.ListenerAccion;
 import es.icp.icp_commons.Objects.ImagenCommons;
+import es.icp.icp_commons.Utils.CommonsUtilsImagenes;
 import es.icp.icp_commons.Utils.Localizacion;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.icp_commons.Utils.UtilsFechas;
-import es.icp.icp_commons.Utils.CommonsUtilsImagenes;
 import id.zelory.compressor.Compressor;
 
 //import android.widget.ImageView;
@@ -46,7 +47,7 @@ public class VisorImagenes extends AppCompatActivity {
 
     private static Context      ctx;
     private        LinearLayout mainContainer;
-    public static DialogConfig cnf;
+    public static  DialogConfig cnf;
 
     private static RelativeLayout    rlImagenes;
     private static ViewPager         vpImagenes;
@@ -107,8 +108,13 @@ public class VisorImagenes extends AppCompatActivity {
         vpImagenes.setCurrentItem(1);
 
         ImagenCommons imagenCommons = cnf.getImagenes().remove(position);
+        File archivoImagen = new File(imagenCommons.getUrl());
+        if (archivoImagen.exists()) {
+            archivoImagen.delete();
+        }
         //        visorImagenesAdapter.setData(cnf.getImagenes());
         ail.imagenEliminada(position, imagenCommons);
+
         actualizarViewPager();
 
         if (cnf.getAdjuntarImagenesListener() == null) visorImagenesAdapter = new VisorImagenesAdapter(ctx, cnf.getImagenes());
@@ -229,8 +235,14 @@ public class VisorImagenes extends AppCompatActivity {
         rlImagenes.setVisibility(View.VISIBLE);
 
         File compressedImgFile = comprimirArchivo();
+        try {
+            compressedImgFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if (compressedImgFile != null) {
-            ImagenCommons imagenCommons = new ImagenCommons(CommonsUtilsImagenes.fromFileToBase64Image(compressedImgFile), Utils.getFormatFromFile(compressedImgFile.getAbsolutePath()), Utils.getCameraPhotoOrientation(compressedImgFile.getAbsolutePath()), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
+            ImagenCommons imagenCommons = new ImagenCommons(CommonsUtilsImagenes.fromFileToBase64Image(compressedImgFile), Utils.getFormatFromFile(compressedImgFile.getAbsolutePath()), Utils.getCameraPhotoOrientation(compressedImgFile.getAbsolutePath()), compressedImgFile.getAbsolutePath(), UtilsFechas.getHoy(Localizacion.getInstance().formatoFechas));
             cnf.getImagenes().add(imagenCommons);
             visorImagenesAdapter.setData(cnf.getImagenes());
             actualizarViewPager();
@@ -241,13 +253,15 @@ public class VisorImagenes extends AppCompatActivity {
                 }
             });
             archivoTemporal.delete();
-            compressedImgFile.delete();
+//            compressedImgFile.delete();
         }
     }
 
     private static File comprimirArchivo() {
         try {
-            return new Compressor(ctx).compressToFile(archivoTemporal);
+            Compressor compressor = new Compressor(ctx);
+            compressor.setDestinationDirectoryPath(ctx.getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).toString());
+            return new Compressor(ctx).compressToFile(archivoTemporal, "/compressed_picture_" + System.currentTimeMillis() + ".jpg");
         } catch (IOException e) {
             e.printStackTrace();
             return null;

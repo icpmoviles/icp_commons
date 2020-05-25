@@ -12,6 +12,7 @@ public class ImagenCommons {
     private String                contenido;
     private Bitmap.CompressFormat formato;
     private int                   orientacion;
+    private String                url;
     private String                fecha;
 
     public ImagenCommons(Drawable drawable) {
@@ -33,8 +34,24 @@ public class ImagenCommons {
         this.fecha       = fecha;
     }
 
+    public ImagenCommons(String contenido, Bitmap.CompressFormat formato, int orientacion, String url, String fecha) {
+        this.contenido   = contenido;
+        this.formato     = formato;
+        this.orientacion = orientacion;
+        this.url         = url;
+        this.fecha       = fecha;
+    }
+
     public ImagenCommons(Drawable drawable, Bitmap.CompressFormat formato, int orientacion, String fecha) {
         this(CommonsUtilsImagenes.fromDrawableToBase64Image(drawable), formato, orientacion, fecha);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getContenido() {
@@ -71,6 +88,12 @@ public class ImagenCommons {
 
     @Override
     public String toString() {
-        return "ImagenCommons{" + "contenido='" + contenido + '\'' + ", formato=" + formato + ", orientacion=" + orientacion + ", fecha='" + fecha + '\'' + '}';
+        return "ImagenCommons{" +
+                "contenido='" + contenido + '\'' +
+                ", formato=" + formato +
+                ", orientacion=" + orientacion +
+                ", url='" + url + '\'' +
+                ", fecha='" + fecha + '\'' +
+                '}';
     }
 }

@@ -153,20 +153,7 @@ public class WebService {
 
                 @Override
                 public void onFinish() throws CheckRequestException {
-                    try{
-                        switch (loaderType) {
-                            case NORMAL_DIALOG:
-                                if (GlobalVariables.loader && mProgress != null) {
-                                    mProgress.hide();
-                                    mProgress.dismiss();
-                                }
-                                break;
-                            case SMART_DIALOG:
-                                Loading.HideSmartLoading();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    closeLoadingDialog(mProgress);
                     callback.onFinish();
 
                 }
@@ -174,20 +161,28 @@ public class WebService {
                 @Override
                 public void onOffline() {
                     callback.onOffline();
-                    switch (loaderType) {
-                        case NORMAL_DIALOG:
-                            if (GlobalVariables.loader && mProgress != null) {
-                                mProgress.hide();
-                                mProgress.dismiss();
-                            }
-                            break;
-                        case SMART_DIALOG:
-                            Loading.HideSmartLoading();
-                    }
+                    closeLoadingDialog(mProgress);
                 }
             });
         } else {
             callback.onFinish();
+        }
+    }
+
+    private static void closeLoadingDialog(ProgressDialog mProgress) {
+        try{
+            switch (loaderType) {
+                case NORMAL_DIALOG:
+                    if (GlobalVariables.loader && mProgress != null) {
+                        mProgress.hide();
+                        mProgress.dismiss();
+                    }
+                    break;
+                case SMART_DIALOG:
+                    Loading.HideSmartLoading();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
