@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.android.volley.VolleyError;
@@ -22,6 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import es.icp.icp_commons.CheckRequest;
+import es.icp.icp_commons.CommonsGeocoder;
 import es.icp.icp_commons.CustomDialog;
 import es.icp.icp_commons.CustomEditText;
 import es.icp.icp_commons.CustomNotification;
@@ -37,10 +39,13 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
+import es.icp.icp_commons.Interfaces.GeocoderListener;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
+import es.icp.icp_commons.Interfaces.ResponseDialog;
 import es.icp.icp_commons.Loading;
 import es.icp.icp_commons.Objects.CheckRequestException;
+import es.icp.icp_commons.Objects.Coordenada;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
@@ -204,7 +209,62 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn25(View view) {
                 mostrarSmartLoading();
             }
+
+            @Override
+            public void onClickBtn26(View view) {
+                pruebasGeocode1();
+            }
+
+            @Override
+            public void onClickBtn27(View view) {
+                pruebasGeocode2();
+            }
+
+            @Override
+            public void onClickBtn28(View view) {
+                mostrarCustomDialog1();
+            }
         };
+    }
+
+    private void mostrarCustomDialog1() {
+        CustomDialog.dialogSiNO(context, "Esto es un mensaje",
+                R.color.colorPrimaryDesarrollo,
+                //5000032,
+//                R.drawable.rounded_buttons_blue,
+                ContextCompat.getDrawable(context, R.mipmap.ic_launcher),
+                new ResponseDialog() {
+                    @Override
+                    public void si() {
+
+                    }
+
+                    @Override
+                    public void no() {
+
+                    }
+                });
+
+    }
+
+    private void pruebasGeocode1() {
+        CommonsGeocoder.getINSTANCE(context).obtenerDireccion(new GeocoderListener<String>() {
+            @Override
+            public void onDataObtained(String data) {
+                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
+                customNotification.showText(data);
+            }
+        });
+    }
+
+    private void pruebasGeocode2() {
+        CommonsGeocoder.getINSTANCE(context).obtenerCoordenadas(new GeocoderListener<Coordenada>() {
+            @Override
+            public void onDataObtained(Coordenada data) {
+                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
+                customNotification.showText(data.toString());
+            }
+        });
     }
 
     private void mostrarSmartLoading() {
@@ -738,5 +798,11 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn24(View view);
 
         void onClickBtn25(View view);
+
+        void onClickBtn26(View view);
+
+        void onClickBtn27(View view);
+
+        void onClickBtn28(View view);
     }
 }

@@ -19,4 +19,5 @@
     <color name="back_footer">#FAFAFA</color>
     <color name="back_nav">#FAFAFA</color>
     <color name="grey_stroke">#DCDCDC</color>
+    <color name="colorPrimaryDesarrollo">#6BFF02</color>
 </resources>

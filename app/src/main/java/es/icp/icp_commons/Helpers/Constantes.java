@@ -1,5 +1,7 @@
 package es.icp.icp_commons.Helpers;
 
+import android.Manifest;
+
 public class Constantes {
 
     public static final int DIALOG_NORMAL  = 0;
@@ -13,4 +15,6 @@ public class Constantes {
 
     public static final int CAMERA_REQUEST_CODE = 7002;
     public static final int CODE_PERMISSIONS    = 4001;
+
+    public static String[] PERMISOS_LOCALIZACION = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
 }
