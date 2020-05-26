@@ -6,19 +6,14 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 
 import androidx.core.app.ActivityCompat;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import es.icp.icp_commons.Helpers.Constantes;
-import es.icp.icp_commons.Objects.ImagenCommons;
 
 public class Utils {
 
@@ -33,7 +28,7 @@ public class Utils {
     }
 
     public static boolean isDebuggable(Context context) {
-        String packageName = context.getPackageName();
+        String      packageName = context.getPackageName();
         PackageInfo packageInfo = context.getPackageManager().getPackageArchiveInfo(packageName, PackageManager.GET_SIGNATURES);
         if (packageInfo != null) {
             ApplicationInfo applicationInfo = packageInfo.applicationInfo;
@@ -69,7 +64,7 @@ public class Utils {
 
     public static Bitmap.CompressFormat getFormatFromFile(String path) {
         String[] pathSplit = path.split("\\.");
-        String extension = pathSplit[pathSplit.length - 1];
+        String   extension = pathSplit[pathSplit.length - 1];
         switch (extension.toLowerCase()) {
             case "jpg":
             case "jpeg":

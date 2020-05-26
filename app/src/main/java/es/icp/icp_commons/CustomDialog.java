@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -169,7 +170,8 @@ public class CustomDialog {
     public void AddButton(String text, final CustomDialogResponse response, int style) {
 
         Button btn = new Button(context);
-        btn.setBackgroundResource(style);
+//        btn.setBackgroundResource(style);
+        btn.setBackgroundColor(style);
         btn.setTextColor(Color.WHITE);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 64);

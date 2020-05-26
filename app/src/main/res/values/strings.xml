@@ -33,6 +33,7 @@
     <string name="cargando_espere_porfavor">Cargando... Espere por favor.</string>
     <string name="dialog_visor_imagenes_adjuntar_imagen">ADJUNTAR IMAGEN</string>
     <string name="eliminar_imagen">ELIMINAR IMAGEN</string>
+    <string name="geocoder_no_pudo_obtener_ubicacion">El GPS no pudo obtener la última ubicación conocida</string>
     <string-array name="array_name">
         <item>Equipos</item>
         <item>Tarjetas</item>

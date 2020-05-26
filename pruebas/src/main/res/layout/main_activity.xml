@@ -191,6 +191,27 @@
                 android:gravity="start|center_vertical"
                 android:text="025 - MOSTRAR SMART LOADING 1" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn26}"
+                android:gravity="start|center_vertical"
+                android:text="026 - MOSTRAR DIRECCIÓN" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn27}"
+                android:gravity="start|center_vertical"
+                android:text="027 - MOSTRAR COORDENADAS" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn28}"
+                android:gravity="start|center_vertical"
+                android:text="028 - CUSTOM DIALOG STYLE COMPAT" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

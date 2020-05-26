@@ -6,10 +6,11 @@ import android.os.Looper;
 
 
 public class MyApplication extends Application {
-    private static final Handler handler = new Handler();
+    private static final Handler handler = new Handler(Looper.getMainLooper());
 
     public static final void runOnUiThread(Runnable runnable) {
-        if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
+        Looper looper = Looper.getMainLooper();
+        if (Thread.currentThread() == looper.getThread()) {
             runnable.run();
         } else {
             handler.post(runnable);
