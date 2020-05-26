@@ -29,11 +29,16 @@ public class CommonsGeocoder {
 
     private static CommonsGeocoder INSTANCE;
 
-    private Context         context;
-    private LocationManager lm;
-    private Location        bestLocation = null;
-    private List<String> providers;
-    private static Integer contadorProviders = 0;
+    private        Context          context;
+    private        LocationManager  lm;
+    private        Location         bestLocation      = null;
+    private        List<String>     providers;
+    private static Integer          contadorProviders = 0;
+    private        Timer            timer;
+    private        TimerTask        timerTask;
+    private        boolean          disparadoEvento   = false;
+    private        GeocoderMetodo   metodo;
+    private        GeocoderListener listener;
 
     public static CommonsGeocoder getINSTANCE(Context context) {
         if (INSTANCE == null) INSTANCE = new CommonsGeocoder(context);
@@ -42,9 +47,13 @@ public class CommonsGeocoder {
 
     public CommonsGeocoder(Context context) {
         this.context = context;
+        lm           = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
 
     public void obtener(GeocoderMetodo metodo, GeocoderListener listener) {
+        this.metodo     = metodo;
+        this.listener   = listener;
+        disparadoEvento = false;
         if (Utils.comprobarPermisos(context, Constantes.PERMISOS_LOCALIZACION)) {
             if (isGPSOn()) {
                 getLastKnownLocation(metodo, listener);
@@ -63,7 +72,6 @@ public class CommonsGeocoder {
     }
 
     private void getLastKnownLocation(GeocoderMetodo metodo, GeocoderListener listener) {
-        lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         providers = lm.getProviders(true);
         for (String provider : providers) {
             lm.requestLocationUpdates(provider, 0, 0, new LocationListener() {
@@ -90,19 +98,23 @@ public class CommonsGeocoder {
             comprobarMejorUbicacion(metodo, provider, listener);
         }
 
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
+        timer     = new Timer();
+        timerTask = obtenerTimerTask();
+        timer.schedule(timerTask, 500);
+    }
+
+    private TimerTask obtenerTimerTask() {
+        return new TimerTask() {
             @Override
             public void run() {
                 if (bestLocation != null) {
                     MyApplication.runOnUiThread(() -> geocoderAddress(metodo, listener));
                     timer.cancel();
                 } else {
-                    timer.schedule(this, 500);
+                    timer.schedule(obtenerTimerTask(), 500);
                 }
             }
         };
-        timer.schedule(timerTask, 500);
     }
 
     private synchronized void comprobarMejorUbicacion(GeocoderMetodo metodo, String provider, GeocoderListener listener) {
@@ -128,8 +140,7 @@ public class CommonsGeocoder {
                             listener.onDataObtained(context.getString(R.string.geocoder_no_pudo_obtener_ubicacion));
                             listener = null;
                         }
-                    }
-                    else {
+                    } else {
                         if (listener != null) {
                             listener.onDataObtained(new Coordenada());
                             listener = null;
@@ -147,8 +158,11 @@ public class CommonsGeocoder {
 
         synchronized (listener) {
             if (metodo == GeocoderMetodo.COORDENADAS) {
-                if (listener != null) {
+                if (listener != null && !disparadoEvento) {
+                    disparadoEvento = true;
                     listener.onDataObtained(new Coordenada(longitude, latitude));
+                    timerTask.cancel();
+                    timer.cancel();
                     listener = null;
                 }
                 Log.d("DEBUG_ICP", "138");
@@ -158,8 +172,11 @@ public class CommonsGeocoder {
             Geocoder geocoder = new Geocoder(context);
             try {
                 List<Address> direcciones = geocoder.getFromLocation(latitude, longitude, 1);
-                if (listener != null) {
+                if (listener != null && !disparadoEvento) {
+                    disparadoEvento = true;
                     listener.onDataObtained(direcciones.get(0).getAddressLine(0));
+                    timerTask.cancel();
+                    timer.cancel();
                     listener = null;
                 }
                 Log.d("DEBUG_ICP", "146");
@@ -191,8 +208,40 @@ public class CommonsGeocoder {
         });
     }
 
+    private void reprocesarMetodo() {
+        switch (metodo) {
+            case DIRECCION:
+                obtenerDireccion(listener);
+                break;
+            case COORDENADAS:
+                obtenerCoordenadas(listener);
+                break;
+        }
+    }
+
     private void toggleGPS() {
         context.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        lm.requestLocationUpdates("gps", 0, 0, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+                reprocesarMetodo();
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
     }
 
     private boolean isGPSOn() {
