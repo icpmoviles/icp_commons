@@ -230,8 +230,6 @@ public class MainActivity extends CommonsBaseApp {
     private void mostrarCustomDialog1() {
         CustomDialog.dialogSiNO(context, "Esto es un mensaje",
                 R.color.colorPrimaryDesarrollo,
-                //5000032,
-//                R.drawable.rounded_buttons_blue,
                 ContextCompat.getDrawable(context, R.mipmap.ic_launcher),
                 new ResponseDialog() {
                     @Override
