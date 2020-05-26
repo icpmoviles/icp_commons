@@ -195,10 +195,11 @@ public class WebService {
                 WSHelper.logWS(url, accion.getJSON());
                 if (accion.getMetodo().equals("POST")) {
                     try {
+                        int method = accion.getMetodo().toUpperCase().equals("POST") ? Request.Method.POST : Request.Method.GET;
 
                         if (accion.getJSON().startsWith("[")) {
                             JSONArray json = new JSONArray(accion.getJSON());
-                            JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, json, new Response.Listener<JSONArray>() {
+                            JsonArrayRequest request = new JsonArrayRequest(method, url, json, new Response.Listener<JSONArray>() {
                                 @Override
                                 public void onResponse(JSONArray response) {
                                     dbHandler.removeAccion(accion.getID());
@@ -218,7 +219,7 @@ public class WebService {
                         } else {
                             JSONObject json = null;
                             if (!accion.getJSON().isEmpty()) json = new JSONObject(accion.getJSON());
-                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, json, new Response.Listener<JSONObject>() {
+                            JsonObjectRequest request = new JsonObjectRequest(method, url, json, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     dbHandler.removeAccion(accion.getID());
