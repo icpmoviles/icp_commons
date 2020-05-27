@@ -19,8 +19,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import es.icp.icp_commons.Enums.GeocoderMetodo;
 import es.icp.icp_commons.Helpers.Constantes;
@@ -33,16 +31,10 @@ public class CommonsGeocoder {
 
     private static CommonsGeocoder INSTANCE;
 
-    private        Context          context;
-    private        LocationManager  lm;
-    private        Location         bestLocation      = null;
-    private        List<String>     providers;
-    private static Integer          contadorProviders = 0;
-    private        Timer            timer;
-    private        TimerTask        timerTask;
-    private        boolean          disparadoEvento   = false;
-    private        GeocoderMetodo   metodo;
-    private        GeocoderListener listener;
+    private Context          context;
+    private LocationManager  lm;
+    private GeocoderMetodo   metodo;
+    private GeocoderListener listener;
 
     public static CommonsGeocoder getINSTANCE(Context context) {
         if (INSTANCE == null) INSTANCE = new CommonsGeocoder(context);
@@ -55,9 +47,8 @@ public class CommonsGeocoder {
     }
 
     private void obtener(GeocoderMetodo metodo, GeocoderListener listener) {
-        this.metodo     = metodo;
-        this.listener   = listener;
-        disparadoEvento = false;
+        this.metodo   = metodo;
+        this.listener = listener;
         if (Utils.comprobarPermisos(context, Constantes.PERMISOS_LOCALIZACION)) {
             if (isGPSOn()) {
                 getLastKnownLocation(metodo, listener);

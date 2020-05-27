@@ -1,6 +1,5 @@
 package es.icp.icp_commons.Services;
 
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -26,7 +25,6 @@ import java.util.List;
 
 import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CustomDialog;
-import es.icp.icp_commons.CustomSmartDialog;
 import es.icp.icp_commons.Database.DBHandler;
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Helpers.GlobalVariables;
@@ -170,7 +168,7 @@ public class WebService {
     }
 
     private static void closeLoadingDialog(ProgressDialog mProgress) {
-        try{
+        try {
             switch (loaderType) {
                 case NORMAL_DIALOG:
                     if (GlobalVariables.loader && mProgress != null) {

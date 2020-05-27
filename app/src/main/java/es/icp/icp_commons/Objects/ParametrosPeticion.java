@@ -5,9 +5,9 @@ import androidx.annotation.NonNull;
 import com.android.volley.Request;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ParametrosPeticion {
@@ -94,8 +94,8 @@ public class ParametrosPeticion {
         this.url    = url;
         this.clase  = clase;
         try {
-            JSONObject  = new JSONObject(new Gson().toJson(json));
-            jsonType    = JsonTypes.SIMPLE;
+            JSONObject = new JSONObject(new Gson().toJson(json));
+            jsonType   = JsonTypes.SIMPLE;
         } catch (JSONException ex) {
             ex.printStackTrace();
         }

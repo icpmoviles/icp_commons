@@ -1,10 +1,9 @@
 package es.icp.icp_commons.Objects;
 
-import androidx.appcompat.app.AlertDialog;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 
 public class SmartButton extends AppCompatButton {

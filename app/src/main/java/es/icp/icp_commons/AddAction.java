@@ -2,8 +2,6 @@ package es.icp.icp_commons;
 
 import android.content.Context;
 
-import com.android.volley.Request;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,13 +30,13 @@ public class AddAction {
      * @param url         URL HTTP a enviar la petición
      * @param metodo      Método POST/GET. Literal "POST" / "GET"
      * @param ruta_imagen String, en caso de no adjuntar imagen, pasar NULL
-     * @param errorCode int, Código de error por el cual se está guardando la petición. En caso de no ser un error, es 0 (offline).
+     * @param errorCode   int, Código de error por el cual se está guardando la petición. En caso de no ser un error, es 0 (offline).
      * @author Ventura de Lucas
      */
     public static void AddActionDatabase(String json, Context context, String url, String metodo, String ruta_imagen, int errorCode) {
-        Date currentTime = Calendar.getInstance().getTime();
-        Accion accion = new Accion(0, json, url, metodo, currentTime.toString(), ruta_imagen);
-        DBHandler dbHandler = new DBHandler(context);
+        Date      currentTime = Calendar.getInstance().getTime();
+        Accion    accion      = new Accion(0, json, url, metodo, currentTime.toString(), ruta_imagen);
+        DBHandler dbHandler   = new DBHandler(context);
         dbHandler.addAccion(accion);
 
         MyLog.setDEBUG(true);
@@ -50,6 +48,7 @@ public class AddAction {
 
     /**
      * Borra todas las acciones.
+     *
      * @author Ventura de Lucas
      */
     public static void removeAllActions(Context context) {

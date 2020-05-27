@@ -1,7 +1,7 @@
 package es.icp.icp_commons.Objects;
 
 public class Coordenada {
-    
+
     private double longitud;
     private double latitud;
 
