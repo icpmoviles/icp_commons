@@ -1,6 +1,7 @@
 package es.icp.icp_commons;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -12,6 +13,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
@@ -19,7 +24,6 @@ import java.util.TimerTask;
 
 import es.icp.icp_commons.Enums.GeocoderMetodo;
 import es.icp.icp_commons.Helpers.Constantes;
-import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Interfaces.GeocoderListener;
 import es.icp.icp_commons.Objects.Coordenada;
 import es.icp.icp_commons.Utils.Utils;
@@ -72,140 +76,49 @@ public class CommonsGeocoder {
     }
 
     private void getLastKnownLocation(GeocoderMetodo metodo, GeocoderListener listener) {
-        providers = lm.getProviders(true);
-        for (String provider : providers) {
-            lm.requestLocationUpdates(provider, 0, 0, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-//                    comprobarMejorUbicacion(metodo, location.getProvider(), listener);
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-            });
-            comprobarMejorUbicacion(metodo, provider, listener);
-        }
-
-        timer     = new Timer();
-        timerTask = obtenerTimerTask();
-        timer.schedule(timerTask, 500);
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(((Activity) context), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        procesarLocalizacion(metodo, location, listener);
+                    }
+                });
     }
 
-    private TimerTask obtenerTimerTask() {
-        return new TimerTask() {
-            @Override
-            public void run() {
-                if (bestLocation != null) {
-                    MyApplication.runOnUiThread(() -> geocoderAddress(metodo, listener));
-                    timer.cancel();
-                } else {
-                    timer.schedule(obtenerTimerTask(), 500);
-                }
+    private void procesarLocalizacion(GeocoderMetodo metodo, Location location, GeocoderListener listener) {
+        if (location != null) {
+            geocoderAddress(metodo, location, listener);
+        } else {
+            switch (metodo) {
+                case DIRECCION:
+                    listener.onDataObtained(context.getString(R.string.geocoder_no_pudo_obtener_ubicacion));
+                    break;
+                case COORDENADAS:
+                    listener.onDataObtained(new Coordenada());
+                    break;
             }
-        };
+        }
     }
 
-    private synchronized void comprobarMejorUbicacion(GeocoderMetodo metodo, String provider, GeocoderListener listener) {
-        Location l = lm.getLastKnownLocation(provider);
-        if (l == null) {
+    private synchronized void geocoderAddress(GeocoderMetodo metodo, Location location, GeocoderListener listener) {
+        double longitude = location.getLongitude();
+        double latitude  = location.getLatitude();
+
+        if (metodo == GeocoderMetodo.COORDENADAS) {
+            listener.onDataObtained(new Coordenada(longitude, latitude));
             return;
         }
-        if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-            bestLocation = l;
+
+        Geocoder geocoder = new Geocoder(context);
+        try {
+            List<Address> direcciones = geocoder.getFromLocation(latitude, longitude, 1);
+            listener.onDataObtained(direcciones.get(0).getAddressLine(0));
+            Log.d("DEBUG_ICP", "146");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        synchronized (contadorProviders) {
-            contadorProviders++;
-            if (contadorProviders == providers.size()) {
-                contadorProviders = 0;
-
-                if (bestLocation != null) {
-
-                    geocoderAddress(metodo, listener);
-
-                } else {
-                    if (metodo == GeocoderMetodo.DIRECCION) {
-                        if (listener != null) {
-                            listener.onDataObtained(context.getString(R.string.geocoder_no_pudo_obtener_ubicacion));
-                            listener = null;
-                        }
-                    } else {
-                        if (listener != null) {
-                            listener.onDataObtained(new Coordenada());
-                            listener = null;
-                        }
-                    }
-                    Log.d("DEBUG_ICP", "127");
-                }
-            }
-        }
-    }
-
-    private synchronized void geocoderAddress(GeocoderMetodo metodo, GeocoderListener listener) {
-        double longitude = bestLocation.getLongitude();
-        double latitude  = bestLocation.getLatitude();
-
-        synchronized (listener) {
-            if (metodo == GeocoderMetodo.COORDENADAS) {
-                if (listener != null && !disparadoEvento) {
-                    disparadoEvento = true;
-                    listener.onDataObtained(new Coordenada(longitude, latitude));
-                    timerTask.cancel();
-                    timer.cancel();
-                    listener = null;
-                }
-                Log.d("DEBUG_ICP", "138");
-                return;
-            }
-
-            Geocoder geocoder = new Geocoder(context);
-            try {
-                List<Address> direcciones = geocoder.getFromLocation(latitude, longitude, 1);
-                if (listener != null && !disparadoEvento) {
-                    disparadoEvento = true;
-                    listener.onDataObtained(direcciones.get(0).getAddressLine(0));
-                    timerTask.cancel();
-                    timer.cancel();
-                    listener = null;
-                }
-                Log.d("DEBUG_ICP", "146");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        lm.removeUpdates(new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        });
     }
 
     private void reprocesarMetodo() {
@@ -229,7 +142,6 @@ public class CommonsGeocoder {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
             }
 
             @Override
