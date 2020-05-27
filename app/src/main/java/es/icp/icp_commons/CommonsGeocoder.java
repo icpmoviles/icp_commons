@@ -49,12 +49,12 @@ public class CommonsGeocoder {
         return INSTANCE;
     }
 
-    public CommonsGeocoder(Context context) {
+    private CommonsGeocoder(Context context) {
         this.context = context;
         lm           = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
 
-    public void obtener(GeocoderMetodo metodo, GeocoderListener listener) {
+    private void obtener(GeocoderMetodo metodo, GeocoderListener listener) {
         this.metodo     = metodo;
         this.listener   = listener;
         disparadoEvento = false;
@@ -73,6 +73,10 @@ public class CommonsGeocoder {
 
     public void obtenerCoordenadas(GeocoderListener<Coordenada> listener) {
         obtener(GeocoderMetodo.COORDENADAS, listener);
+    }
+
+    public void obtenerDireccion(Coordenada coordenada, GeocoderListener<String> listener) {
+        geocoderAddress(GeocoderMetodo.DIRECCION, coordenada, listener);
     }
 
     private void getLastKnownLocation(GeocoderMetodo metodo, GeocoderListener listener) {
@@ -102,23 +106,27 @@ public class CommonsGeocoder {
         }
     }
 
-    private synchronized void geocoderAddress(GeocoderMetodo metodo, Location location, GeocoderListener listener) {
-        double longitude = location.getLongitude();
-        double latitude  = location.getLatitude();
-
+    private void geocoderAddress(GeocoderMetodo metodo, Coordenada coordenada, GeocoderListener listener) {
         if (metodo == GeocoderMetodo.COORDENADAS) {
-            listener.onDataObtained(new Coordenada(longitude, latitude));
+            listener.onDataObtained(coordenada);
             return;
         }
 
         Geocoder geocoder = new Geocoder(context);
         try {
-            List<Address> direcciones = geocoder.getFromLocation(latitude, longitude, 1);
+            List<Address> direcciones = geocoder.getFromLocation(coordenada.getLatitud(), coordenada.getLongitud(), 1);
             listener.onDataObtained(direcciones.get(0).getAddressLine(0));
             Log.d("DEBUG_ICP", "146");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void geocoderAddress(GeocoderMetodo metodo, Location location, GeocoderListener listener) {
+        double longitude = location.getLongitude();
+        double latitude  = location.getLatitude();
+
+        geocoderAddress(metodo, new Coordenada(longitude, latitude), listener);
     }
 
     private void reprocesarMetodo() {

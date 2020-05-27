@@ -224,6 +224,11 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn28(View view) {
                 mostrarCustomDialog1();
             }
+
+            @Override
+            public void onClickBtn29(View view) {
+                pruebasGeocode3();
+            }
         };
     }
 
@@ -261,6 +266,21 @@ public class MainActivity extends CommonsBaseApp {
             public void onDataObtained(Coordenada data) {
                 CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
                 customNotification.showText(data.toString());
+            }
+        });
+    }
+
+    private void pruebasGeocode3() {
+        CommonsGeocoder.getINSTANCE(context).obtenerCoordenadas(new GeocoderListener<Coordenada>() {
+            @Override
+            public void onDataObtained(Coordenada coordenada) {
+                CommonsGeocoder.getINSTANCE(context).obtenerDireccion(coordenada, new GeocoderListener<String>() {
+                    @Override
+                    public void onDataObtained(String data) {
+                        CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
+                        customNotification.showText(data.toString());
+                    }
+                });
             }
         });
     }
@@ -802,5 +822,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn27(View view);
 
         void onClickBtn28(View view);
+
+        void onClickBtn29(View view);
     }
 }
