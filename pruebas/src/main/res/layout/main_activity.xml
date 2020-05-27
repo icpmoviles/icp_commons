@@ -212,6 +212,13 @@
                 android:gravity="start|center_vertical"
                 android:text="028 - CUSTOM DIALOG STYLE COMPAT" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn29}"
+                android:gravity="start|center_vertical"
+                android:text="029 - MOSTRAR DIRECCIÓN DE COORDENADAS" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
