@@ -11,7 +11,7 @@ import es.icp.icp_commons.R;
 
 public class MaxHeightScrollView extends NestedScrollView {
 
-    private int maxHeight;
+    private       int maxHeight;
     private final int defaultHeight = 500;
 
     public MaxHeightScrollView(Context context) {

@@ -14,13 +14,14 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import es.icp.icp_commons.Enums.GeocoderMetodo;
 import es.icp.icp_commons.Helpers.Constantes;
@@ -33,16 +34,10 @@ public class CommonsGeocoder {
 
     private static CommonsGeocoder INSTANCE;
 
-    private        Context          context;
-    private        LocationManager  lm;
-    private        Location         bestLocation      = null;
-    private        List<String>     providers;
-    private static Integer          contadorProviders = 0;
-    private        Timer            timer;
-    private        TimerTask        timerTask;
-    private        boolean          disparadoEvento   = false;
-    private        GeocoderMetodo   metodo;
-    private        GeocoderListener listener;
+    private Context          context;
+    private LocationManager  lm;
+    private GeocoderMetodo   metodo;
+    private GeocoderListener listener;
 
     public static CommonsGeocoder getINSTANCE(Context context) {
         if (INSTANCE == null) INSTANCE = new CommonsGeocoder(context);
@@ -55,9 +50,8 @@ public class CommonsGeocoder {
     }
 
     private void obtener(GeocoderMetodo metodo, GeocoderListener listener) {
-        this.metodo     = metodo;
-        this.listener   = listener;
-        disparadoEvento = false;
+        this.metodo   = metodo;
+        this.listener = listener;
         if (Utils.comprobarPermisos(context, Constantes.PERMISOS_LOCALIZACION)) {
             if (isGPSOn()) {
                 getLastKnownLocation(metodo, listener);
@@ -80,15 +74,34 @@ public class CommonsGeocoder {
     }
 
     private void getLastKnownLocation(GeocoderMetodo metodo, GeocoderListener listener) {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(((Activity) context), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
+//        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+////
+////        fusedLocationClient.getLastLocation()
+////                .addOnSuccessListener(((Activity) context), new OnSuccessListener<Location>() {
+////                    @Override
+////                    public void onSuccess(Location location) {
+////                        // Got last known location. In some rare situations this can be null.
+////                        procesarLocalizacion(metodo, location, listener);
+////                    }
+////                });
+
+        LocationRequest mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationCallback mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        //TODO: UI updates.
                         procesarLocalizacion(metodo, location, listener);
                     }
-                });
+                }
+            }
+        };
+        LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
 
     private void procesarLocalizacion(GeocoderMetodo metodo, Location location, GeocoderListener listener) {

@@ -3,7 +3,6 @@ package es.icp.icp_commons;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -108,7 +107,7 @@ public class VisorImagenes extends AppCompatActivity {
         vpImagenes.setCurrentItem(1);
 
         ImagenCommons imagenCommons = cnf.getImagenes().remove(position);
-        File archivoImagen = new File(imagenCommons.getUrl());
+        File          archivoImagen = new File(imagenCommons.getUrl());
         if (archivoImagen.exists()) {
             archivoImagen.delete();
         }

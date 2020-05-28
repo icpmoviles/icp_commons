@@ -4,10 +4,6 @@ package es.icp.icp_commons;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -21,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;

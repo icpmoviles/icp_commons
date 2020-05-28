@@ -1,6 +1,5 @@
 package es.icp.icp_commons;
 
-import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -112,11 +111,11 @@ public class CheckRequest {
      * Envía una petición al servidor sin realizar ninguna comprobación antes del envío.
      * Método asíncrono. Listener de tipo VolleyCallBack.
      *
-     * @param context    Context. Contexto de la aplicación.
-     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack   NewVolleyCallBack. Listener con el resultado del envío.
-     * @param idUsuario  int. ID del usuario que está llamando al servicio.
-     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param context       Context. Contexto de la aplicación.
+     * @param parametros    ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack      NewVolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario     int. ID del usuario que está llamando al servicio.
+     * @param urlError      String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @param guardarAccion boolean. Indica si se quiere almacenar la petición en caso 'offline'.
      * @author Ventura de Lucas
      */
@@ -129,12 +128,12 @@ public class CheckRequest {
      * Envía una petición al servidor sin realizar ninguna comprobación antes del envío.
      * Método asíncrono. Listener de tipo VolleyCallBack.
      *
-     * @param context    Context. Contexto de la aplicación.
-     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
-     * @param callBack   NewVolleyCallBack. Listener con el resultado del envío.
-     * @param loader     boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
-     * @param idUsuario  int. ID del usuario que está llamando al servicio.
-     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param context       Context. Contexto de la aplicación.
+     * @param parametros    ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack      NewVolleyCallBack. Listener con el resultado del envío.
+     * @param loader        boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario     int. ID del usuario que está llamando al servicio.
+     * @param urlError      String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @param guardarAccion boolean. Indica si se quiere almacenar la petición en caso 'offline'.
      * @author Ventura de Lucas
      */

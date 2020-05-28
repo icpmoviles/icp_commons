@@ -8,7 +8,8 @@ public class Localizacion {
     public String lenguaje      = "";
     public String formatoFechas = "";
 
-    private Localizacion() {}
+    private Localizacion() {
+    }
 
     public static Localizacion getInstance() {
         return SingletonHolder.INSTANCE;

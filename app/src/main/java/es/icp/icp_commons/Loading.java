@@ -1,18 +1,15 @@
 package es.icp.icp_commons;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 
 import es.icp.icp_commons.CommonsCore.CommonsExecutors;
 import es.icp.icp_commons.Helpers.MyApplication;
-import es.icp.icp_commons.Interfaces.AdjuntarImagenesListener;
-import es.icp.icp_commons.Objects.ImagenCommons;
 
 public class Loading {
 
-    private static ProgressDialog progress;
-    private static Context        contextWS;
+    private static ProgressDialog    progress;
+    private static Context           contextWS;
     private static CustomSmartDialog customSmartDialog;
 
     public enum LoaderType {
@@ -149,8 +146,8 @@ public class Loading {
 //                        while (CustomSmartDialog.isEnConstruccion()) {
 //                            Thread.sleep(100);
 //                        }
-                        customSmartDialog.dismissLoading();
-                        customSmartDialog = null;
+            customSmartDialog.dismissLoading();
+            customSmartDialog = null;
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
