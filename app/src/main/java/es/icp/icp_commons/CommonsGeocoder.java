@@ -14,6 +14,9 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -71,15 +74,34 @@ public class CommonsGeocoder {
     }
 
     private void getLastKnownLocation(GeocoderMetodo metodo, GeocoderListener listener) {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(((Activity) context), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
+//        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+////
+////        fusedLocationClient.getLastLocation()
+////                .addOnSuccessListener(((Activity) context), new OnSuccessListener<Location>() {
+////                    @Override
+////                    public void onSuccess(Location location) {
+////                        // Got last known location. In some rare situations this can be null.
+////                        procesarLocalizacion(metodo, location, listener);
+////                    }
+////                });
+
+        LocationRequest mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationCallback mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        //TODO: UI updates.
                         procesarLocalizacion(metodo, location, listener);
                     }
-                });
+                }
+            }
+        };
+        LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
 
     private void procesarLocalizacion(GeocoderMetodo metodo, Location location, GeocoderListener listener) {
