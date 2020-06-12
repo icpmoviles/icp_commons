@@ -538,6 +538,12 @@ public class CustomSmartDialog {
                     if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------
                         llEditText.setVisibility(View.VISIBLE);
                         txtInputLayout.setHint(Html.fromHtml(config.getHint()));
+                        CommonsExecutors.getExecutor().Main().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!config.getTextoEditText().equals("")) txtEditText.setText(Html.fromHtml(config.getTextoEditText()));
+                            }
+                        });
                         if (config.getIconoEditText() != null) startIcon.setImageDrawable(config.getIconoEditText());
                         if (config.getMaxLength() != 0) {
                             txtInputLayout.setCounterMaxLength(config.getMaxLength());
