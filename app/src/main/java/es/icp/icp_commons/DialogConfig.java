@@ -15,6 +15,7 @@ public class DialogConfig {
     private boolean                  mostrarEditText             = false;
     private Drawable                 iconoEditText               = null;
     private int                      iconoEditTextInt            = 0;
+    private String                   textoEditText               = "";
     private String                   textoPositivo               = "SI";
     private String                   textoNegativo               = "NO";
     private int                      estiloPositivo              = 0; // TODO: 21/02/2020
@@ -56,6 +57,14 @@ public class DialogConfig {
 
     public void setWithLoading(boolean withLoading) {
         this.withLoading = withLoading;
+    }
+
+    public void setTextoEditText(String textoEditText) {
+        this.textoEditText = textoEditText;
+    }
+
+    public String getTextoEditText() {
+        return textoEditText;
     }
 
     public void setIconoGif(boolean iconoGif) {
@@ -326,6 +335,7 @@ public class DialogConfig {
         private boolean                  mostrarEditText             = false;
         private Drawable                 iconoEditText               = null;
         private int                      iconoEditTextInt            = 0;
+        private String                   textoEditText               = "";
         private String                   textoPositivo               = "SI";
         private String                   textoNegativo               = "NO";
         private int                      estiloPositivo              = 0;
@@ -371,6 +381,11 @@ public class DialogConfig {
 
         public Builder isIconoGif(boolean isIconoGif) {
             this.isIconoGif = isIconoGif;
+            return this;
+        }
+
+        public Builder setTextoEditText(String textoEditText) {
+            this.textoEditText = textoEditText;
             return this;
         }
 
@@ -564,6 +579,7 @@ public class DialogConfig {
             dialogConfig.adjuntarImagenesListener    = this.adjuntarImagenesListener;
             dialogConfig.isIconoGif                  = this.isIconoGif;
             dialogConfig.withLoading                 = this.withLoading;
+            dialogConfig.textoEditText               = this.textoEditText;
             return dialogConfig;
         }
     }
