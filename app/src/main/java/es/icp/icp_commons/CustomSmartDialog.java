@@ -343,11 +343,15 @@ public class CustomSmartDialog {
                 }
             }
         });
-        dialogs.get(dialogs.size() - 1).getDialog().show();
-        if (!isLoadingDialog) Loading.HideSmartLoading();
-        isLoadingDialog = false;
-        enConstruccion  = false;
-        if (loadingListener != null) loadingListener.onLoadingFinished();
+        try {
+            dialogs.get(dialogs.size() - 1).getDialog().show();
+            if (!isLoadingDialog) Loading.HideSmartLoading();
+            isLoadingDialog = false;
+            enConstruccion  = false;
+            if (loadingListener != null) loadingListener.onLoadingFinished();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static CustomSmartDialog dialogSiNo(final Context context, String mensaje, final CustomSmartDialogSiNoResponse listener) {
