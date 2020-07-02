@@ -421,7 +421,24 @@ public class MainActivity extends CommonsBaseApp {
         });
         botones.add(boton);
 
-        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTextoEditText("Hola, texto por default :D").setTitulo("Pruebas #4").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.").setMostrarNegativo(true).setMostrarPositivo(true).setColorTitulo(android.R.color.holo_red_light).setAutoDismiss(false).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarEditText(true).setIconoEditText(R.drawable.ic_person_black_24dp).setMaxLength(10).setHint("Nombre y apellidos").setMostrarBotones(true).setBotones(botones).build();
+        DialogConfig config = new DialogConfig.Builder()
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(R.drawable.ic_launcher_round)
+                .setTextoEditText("Hola, texto por default :D")
+                .setTitulo("Pruebas #4")
+                .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.")
+                .setMostrarNegativo(true)
+                .setMostrarPositivo(true)
+                .setColorTitulo(android.R.color.holo_red_light)
+                .setAutoDismiss(false)
+                .setTextoNegativo("CANCELAR")
+                .setTextoPositivo("ACEPTAR")
+                .setMostrarEditText(true)
+                .setIconoEditText(R.drawable.ic_person_black_24dp)
+                .setMaxLength(10)
+                .setHint("Nombre y apellidos")
+                .setMostrarBotones(true)
+                .setBotones(botones).build();
 
         new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
