@@ -28,7 +28,7 @@ public class WSHelper {
         MyLog.d("");
         MyLog.l();
         MyLog.f(url);
-        MyLog.d("Llamada desde :" + MyLog.getTrace(4));
+        MyLog.d("Llamada desde :" + MyLog.getTrace(5));
         if (jsonObject != null) MyLog.d("JSON:" + jsonObject.toString());
         MyLog.l();
         MyLog.d("");
