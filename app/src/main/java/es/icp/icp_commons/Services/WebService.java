@@ -190,6 +190,7 @@ public class WebService {
                 //ENVIO LOS DATOS
                 final Accion accion = acciones.get(contador);
                 String       url    = accion.getURL();
+                Log.d("DEBUG_ICP", "Se está mandando una acción desde el COMMONS!!!");
                 WSHelper.logWS(url, accion.getJSON());
                 if (accion.getMetodo().equals("POST")) {
                     try {
