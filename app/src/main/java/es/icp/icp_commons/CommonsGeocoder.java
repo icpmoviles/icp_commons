@@ -107,6 +107,7 @@ public class CommonsGeocoder {
                 if (location != null) procesarLocalizacion(metodo, locationResult.getLastLocation(), listener);
             }
         };
+        mLocationRequest.setNumUpdates(1);
         LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
 
