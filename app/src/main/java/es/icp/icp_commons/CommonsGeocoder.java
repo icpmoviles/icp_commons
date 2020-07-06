@@ -27,6 +27,7 @@ import es.icp.icp_commons.Enums.GeocoderMetodo;
 import es.icp.icp_commons.Helpers.Constantes;
 import es.icp.icp_commons.Interfaces.GeocoderListener;
 import es.icp.icp_commons.Objects.Coordenada;
+import es.icp.icp_commons.Services.WSHelper;
 import es.icp.icp_commons.Utils.Utils;
 
 @SuppressLint("MissingPermission")
@@ -90,6 +91,8 @@ public class CommonsGeocoder {
         LocationCallback mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
+
+                WSHelper.logWS("Obteniendo la localización...");
                 if (locationResult == null) {
                     return;
                 }
