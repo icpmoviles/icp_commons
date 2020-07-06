@@ -93,12 +93,15 @@ public class CommonsGeocoder {
                 if (locationResult == null) {
                     return;
                 }
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        //TODO: UI updates.
-                        procesarLocalizacion(metodo, location, listener);
-                    }
-                }
+//                for (Location location : locationResult.getLocations()) {
+//                    if (location != null) {
+//                        //TODO: UI updates.
+//                        procesarLocalizacion(metodo, location, listener);
+//                        break;
+//                    }
+//                }
+                Location location = locationResult.getLastLocation();
+                if (location != null) procesarLocalizacion(metodo, locationResult.getLastLocation(), listener);
             }
         };
         LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
