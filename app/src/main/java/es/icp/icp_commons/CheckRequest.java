@@ -555,7 +555,7 @@ public class CheckRequest {
                         }
                         // no se deberí guarda la accion pero si tratar el statusCode de la respuesta de error
 //                        tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
-                        if (callBack != null) callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
+                        if (callBack != null && error.networkResponse != null) callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
                     }
                 });
                 WebService.AddRequest(request, context);
