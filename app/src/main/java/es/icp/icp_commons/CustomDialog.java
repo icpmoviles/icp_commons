@@ -281,12 +281,15 @@ public class CustomDialog {
             }
         }
 
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(dialogView);
-        builder.setCancelable(this.cancelable);
-        dialog = builder.create();
-        dialog.show();
+        try {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setView(dialogView);
+            builder.setCancelable(this.cancelable);
+            dialog = builder.create();
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
