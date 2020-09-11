@@ -15,7 +15,9 @@ public class Helper {
             if (connectivityManager == null) return false;
             if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null) {
                 if (Objects.requireNonNull(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).getState() == NetworkInfo.State.CONNECTED) {
-                    connected = true;
+                    NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+                    if (netInfo != null && netInfo.isConnectedOrConnecting()) connected = true;
+                    else return false;
                 }
             }
             if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null) {

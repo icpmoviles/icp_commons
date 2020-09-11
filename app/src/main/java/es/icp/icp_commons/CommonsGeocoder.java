@@ -70,6 +70,7 @@ public class CommonsGeocoder {
         obtener(GeocoderMetodo.COORDENADAS, listener);
     }
 
+
     public void obtenerDireccion(Coordenada coordenada, GeocoderListener<String> listener) {
         geocoderAddress(GeocoderMetodo.DIRECCION, coordenada, listener);
     }
@@ -160,7 +161,7 @@ public class CommonsGeocoder {
         }
     }
 
-    private void toggleGPS() {
+    public void toggleGPS() {
         context.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         lm.requestLocationUpdates("gps", 0, 0, new LocationListener() {
             @Override
@@ -184,7 +185,7 @@ public class CommonsGeocoder {
         });
     }
 
-    private boolean isGPSOn() {
+    public boolean isGPSOn() {
         String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
         return provider.contains("gps");
     }
