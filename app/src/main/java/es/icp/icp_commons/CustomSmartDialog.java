@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
@@ -58,6 +59,7 @@ public class CustomSmartDialog {
     public static       ArrayList<AlertDialog2> dialogs          = new ArrayList<>();
     private             boolean                 generico         = false;
     private static      EditText                txtEditText;
+    private static      NestedScrollView        nestedMensaje;
     private             VisorImagenes           visorImagenes;
     public static final int                     MAX_HIDE_LOADING = 10;
     public static       int                     contadorLoading  = 0;
@@ -423,14 +425,15 @@ public class CustomSmartDialog {
 
                     //-------------------------------------------------------
                     //--------------- BÁSICO -------------------
-                    TextView              txtTitulo   = mainContainer.findViewById(R.id.txtTitulo);
-                    TextView              txtMensaje  = mainContainer.findViewById(R.id.txtMensaje);
-                    android.widget.Button btnPositivo = mainContainer.findViewById(R.id.btnPositivo);
-                    android.widget.Button btnNegativo = mainContainer.findViewById(R.id.btnNegativo);
-                    android.widget.Button btnNeutral  = mainContainer.findViewById(R.id.btnNeutral);
-                    ImageView             imagen      = mainContainer.findViewById(R.id.imagen);
-                    ImageView             iconoTitulo = mainContainer.findViewById(R.id.iconoTitulo);
-                    LinearLayout          botonesSiNo = mainContainer.findViewById(R.id.botonesSiNo);
+                    TextView              txtTitulo     = mainContainer.findViewById(R.id.txtTitulo);
+                    TextView              txtMensaje    = mainContainer.findViewById(R.id.txtMensaje);
+                    android.widget.Button btnPositivo   = mainContainer.findViewById(R.id.btnPositivo);
+                    android.widget.Button btnNegativo   = mainContainer.findViewById(R.id.btnNegativo);
+                    android.widget.Button btnNeutral    = mainContainer.findViewById(R.id.btnNeutral);
+                    ImageView             imagen        = mainContainer.findViewById(R.id.imagen);
+                    ImageView             iconoTitulo   = mainContainer.findViewById(R.id.iconoTitulo);
+                    LinearLayout          botonesSiNo   = mainContainer.findViewById(R.id.botonesSiNo);
+                    NestedScrollView      nestedMensaje = mainContainer.findViewById(R.id.nestedMensaje);
                     //----------------------------------------------------------------------------------------------------
 
                     //-------------------------------------------------------
@@ -635,6 +638,8 @@ public class CustomSmartDialog {
                             @Override
                             public void run() {
                                 //                                VisorImagenes visorImagenes = VisorImagenes.getVisor(context);
+                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                nestedMensaje.setLayoutParams(layoutParams);
                                 visorImagenes = new VisorImagenes(context, mainContainer, config);
                                 //                                visorImagenes.cargarVisorImagenes(context, mainContainer, config);
                             }
