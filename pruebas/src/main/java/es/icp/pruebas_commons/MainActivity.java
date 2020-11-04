@@ -252,6 +252,22 @@ public class MainActivity extends CommonsBaseApp {
                 .build();
 
         new CustomSmartDialog().dialogGenerico(context, config, null);
+
+//        DialogConfig config2 = new DialogConfig.Builder()
+//                .setMostrarIconoTitulo(true)                                // mostrar icono en el titulo
+//                .setIconoTitulo(R.drawable.ic_launcher_round)               // icono del titulo
+//                .setTitulo("Temporizador")                                  // titulo
+////                .setTiempo(3000)                                            // tiempo para la automorision
+////                .showTemporizador(true)                                     // mostrar progressbar de automorision
+//                .setMensaje("Este diálogo se autodestruirá en 3 segundos")  // mensaje de automorision
+//                .setMostrarNegativo(false)                                  // sin boton negativo
+//                .setMostrarPositivo(false)                                  // sin boton postivo
+//                .setColorTitulo(android.R.color.holo_blue_light)            // color de fondo para la barra del titulo
+//                .setMostrarImagenPredeterminada(false)                      // sin ninguna imagen por defecto
+//                .setCancelable(true)
+//                .build();
+//
+//        new CustomSmartDialog().dialogGenerico(context, config2, null);
     }
 
     private void mostrarCustomDialog1() {
