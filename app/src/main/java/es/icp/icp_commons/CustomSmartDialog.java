@@ -1,5 +1,6 @@
 package es.icp.icp_commons;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,9 +14,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -61,6 +64,7 @@ public class CustomSmartDialog {
     private static      EditText                txtEditText;
     private static      NestedScrollView        nestedMensaje;
     private             VisorImagenes           visorImagenes;
+    private             int                     tiempo = 0;
     public static final int                     MAX_HIDE_LOADING = 10;
     public static       int                     contadorLoading  = 0;
 
@@ -127,6 +131,14 @@ public class CustomSmartDialog {
             };
             timer.schedule(timerTask, 500);
         }
+    }
+
+    public int getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
     }
 
     /**
@@ -345,6 +357,18 @@ public class CustomSmartDialog {
                 }
             }
         });
+        if (tiempo > 0) {
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    dismiss();
+                    remove();
+                }
+            };
+            timer.schedule(timerTask, tiempo);
+        }
+
         try {
             dialogs.get(dialogs.size() - 1).getDialog().show();
             if (!isLoadingDialog) Loading.HideSmartLoading();
@@ -463,9 +487,26 @@ public class CustomSmartDialog {
                     //----------------------------------------------------------------------------------------------------
 
                     //-------------------------------------------------------
+                    //--------------- TIEMPO -------------------
+                    ProgressBar progressTemporizador = mainContainer.findViewById(R.id.progressTemporizador);
+                    //----------------------------------------------------------------------------------------------------
+
+                    //-------------------------------------------------------
                     //--------------- LOADING -------------------
                     //                    ProgressBar pbLoading = mainContainer.findViewById(R.id.pbLoading);
                     //----------------------------------------------------------------------------------------------------
+
+                    if (config.getTiempo() > 0 && config.isShowTemporizador()) {
+                        progressTemporizador.setVisibility(View.VISIBLE);
+                        progressTemporizador.setProgress(0);
+                        progressTemporizador.setMax(1000);
+                        ObjectAnimator animation = ObjectAnimator.ofInt(progressTemporizador, "progress", 0, 1000);
+                        animation.setDuration(config.getTiempo());
+                        animation.setInterpolator(new LinearInterpolator());
+                        CommonsExecutors.getExecutor().Main().execute(animation::start);
+                    } else {
+                        progressTemporizador.setVisibility(View.GONE);
+                    }
 
                     if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(mContext);
                     if (config.getIconoEditText() == null && config.getIconoEditTextInt() != 0) config.setIconoEditText(mContext);
@@ -648,7 +689,7 @@ public class CustomSmartDialog {
                     CommonsExecutors.getExecutor().Main().execute(new Runnable() {
                         @Override
                         public void run() {
-                            new Builder(mContext).addView(mainContainer).isGenerico(true).isLoadingDialog(config.isMostrarLoading()).setLoadingListener(loadingListener).isCancelable(config.isCancelable()).build();
+                            new Builder(mContext).addView(mainContainer).isGenerico(true).setTiempo(config.getTiempo()).isLoadingDialog(config.isMostrarLoading()).setLoadingListener(loadingListener).isCancelable(config.isCancelable()).build();
                         }
                     });
                 } catch (Exception e) {
@@ -1034,6 +1075,11 @@ public class CustomSmartDialog {
 
         public Builder setTitle(CustomTitle customTitle) {
             customSmartDialog.customTitle = customTitle;
+            return this;
+        }
+
+        public Builder setTiempo(int tiempo) {
+            customSmartDialog.setTiempo(tiempo);
             return this;
         }
 
