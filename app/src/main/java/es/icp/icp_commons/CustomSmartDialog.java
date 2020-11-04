@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -64,7 +65,7 @@ public class CustomSmartDialog {
     private static      EditText                txtEditText;
     private static      NestedScrollView        nestedMensaje;
     private             VisorImagenes           visorImagenes;
-    private             int                     tiempo = 0;
+    private             int                     tiempo           = 0;
     public static final int                     MAX_HIDE_LOADING = 10;
     public static       int                     contadorLoading  = 0;
 
@@ -97,6 +98,7 @@ public class CustomSmartDialog {
         dialogs.get(dialogs.size() - 1).getDialog().dismiss();
     }
 
+
     /**
      * Método para eliminar el diálogo.
      *
@@ -104,6 +106,15 @@ public class CustomSmartDialog {
      */
     public void remove() {
         dialogs.remove(dialogs.size() - 1);
+    }
+
+    /**
+     * Método para eliminar todos los diálogos.
+     *
+     * @author Ventura de Lucas
+     */
+    public void removeAll() {
+        dialogs.clear();
     }
 
     /**
@@ -357,13 +368,14 @@ public class CustomSmartDialog {
                 }
             }
         });
+        final int indiceActual = dialogs.size() - 1;
         if (tiempo > 0) {
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    dismiss();
-                    remove();
+                    dialogs.get(indiceActual).getDialog().dismiss();
+                    dialogs.remove(dialogs.get(indiceActual));
                 }
             };
             timer.schedule(timerTask, tiempo);
@@ -489,6 +501,7 @@ public class CustomSmartDialog {
                     //-------------------------------------------------------
                     //--------------- TIEMPO -------------------
                     ProgressBar progressTemporizador = mainContainer.findViewById(R.id.progressTemporizador);
+                    TextView    txtCerrando          = mainContainer.findViewById(R.id.txtCerrando);
                     //----------------------------------------------------------------------------------------------------
 
                     //-------------------------------------------------------
@@ -498,14 +511,30 @@ public class CustomSmartDialog {
 
                     if (config.getTiempo() > 0 && config.isShowTemporizador()) {
                         progressTemporizador.setVisibility(View.VISIBLE);
+                        txtCerrando.setVisibility(View.VISIBLE);
                         progressTemporizador.setProgress(0);
                         progressTemporizador.setMax(1000);
                         ObjectAnimator animation = ObjectAnimator.ofInt(progressTemporizador, "progress", 0, 1000);
                         animation.setDuration(config.getTiempo());
                         animation.setInterpolator(new LinearInterpolator());
                         CommonsExecutors.getExecutor().Main().execute(animation::start);
+                        CommonsExecutors.getExecutor().Main().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                new CountDownTimer(config.getTiempo(), 1000) {
+                                    public void onTick(long millisUntilFinished) {
+                                        txtCerrando.setText("Cerrando en " + (((int) millisUntilFinished) / 900) + " segundos...");
+                                    }
+
+                                    public void onFinish() {
+
+                                    }
+                                }.start();
+                            }
+                        });
                     } else {
                         progressTemporizador.setVisibility(View.GONE);
+                        txtCerrando.setVisibility(View.GONE);
                     }
 
                     if (config.getImagen() == null && config.getImagenInt() != 0) config.setImagen(mContext);
