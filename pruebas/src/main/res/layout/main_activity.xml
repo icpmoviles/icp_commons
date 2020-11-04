@@ -219,6 +219,13 @@
                 android:gravity="start|center_vertical"
                 android:text="029 - MOSTRAR DIRECCIÓN DE COORDENADAS" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn30}"
+                android:gravity="start|center_vertical"
+                android:text="030 - MOSTRAR DIALOG CON TEMPORIZADOR" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

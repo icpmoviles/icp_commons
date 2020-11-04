@@ -46,6 +46,24 @@ public class DialogConfig {
     private AdjuntarImagenesListener adjuntarImagenesListener    = null;
     private boolean                  isIconoGif                  = false;
     private boolean                  withLoading                 = false;
+    private int                      tiempo                      = 0;
+    private boolean                  showTemporizador            = false;
+
+    public boolean isShowTemporizador() {
+        return showTemporizador;
+    }
+
+    public void setShowTemporizador(boolean showTemporizador) {
+        this.showTemporizador = showTemporizador;
+    }
+
+    public int getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
+    }
 
     public boolean isIconoGif() {
         return isIconoGif;
@@ -366,12 +384,24 @@ public class DialogConfig {
         private AdjuntarImagenesListener adjuntarImagenesListener    = null;
         private boolean                  isIconoGif                  = false;
         private boolean                  withLoading                 = false;
+        private int                      tiempo                      = 0;
+        private boolean                  showTemporizador            = false;
 
         public Builder() {
         }
 
         public static Builder aDialogConfig() {
             return new Builder();
+        }
+
+        public Builder showTemporizador(boolean showTemporizador) {
+            this.showTemporizador = showTemporizador;
+            return this;
+        }
+
+        public Builder setTiempo(int tiempo) {
+            this.tiempo = tiempo;
+            return this;
         }
 
         public Builder isWithLoading(boolean withLoading) {
@@ -580,6 +610,8 @@ public class DialogConfig {
             dialogConfig.isIconoGif                  = this.isIconoGif;
             dialogConfig.withLoading                 = this.withLoading;
             dialogConfig.textoEditText               = this.textoEditText;
+            dialogConfig.tiempo                      = this.tiempo;
+            dialogConfig.showTemporizador            = this.showTemporizador;
             return dialogConfig;
         }
     }
