@@ -1,7 +1,6 @@
 package es.icp.icp_commons;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -13,12 +12,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +36,10 @@ public class CommonsGeocoder {
     private LocationManager  lm;
     private GeocoderMetodo   metodo;
     private GeocoderListener listener;
+    private int              numUpdates = PUNTUAL;
+
+    public static final int CONTINUO = 0;
+    public static final int PUNTUAL = 1;
 
     public static CommonsGeocoder getINSTANCE(Context context) {
         if (INSTANCE == null) INSTANCE = new CommonsGeocoder(context);
@@ -48,6 +49,18 @@ public class CommonsGeocoder {
     private CommonsGeocoder(Context context) {
         this.context = context;
         lm           = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    public int getNumUpdates() {
+        return numUpdates;
+    }
+
+    public void makeContinuo() {
+        this.numUpdates = CONTINUO;
+    }
+
+    public void makePuntual() {
+        this.numUpdates = PUNTUAL;
     }
 
     private void obtener(GeocoderMetodo metodo, GeocoderListener listener) {
@@ -108,7 +121,7 @@ public class CommonsGeocoder {
                 if (location != null) procesarLocalizacion(metodo, locationResult.getLastLocation(), listener);
             }
         };
-        mLocationRequest.setNumUpdates(1);
+        if (numUpdates == PUNTUAL) mLocationRequest.setNumUpdates(1);
         LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
 
