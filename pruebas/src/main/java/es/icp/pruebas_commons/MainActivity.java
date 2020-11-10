@@ -242,7 +242,7 @@ public class MainActivity extends CommonsBaseApp {
                 .setMostrarIconoTitulo(true)                                // mostrar icono en el titulo
                 .setIconoTitulo(R.drawable.ic_launcher_round)               // icono del titulo
                 .setTitulo("Temporizador")                                  // titulo
-                .setTiempo(3000)                                            // tiempo para la automorision
+                .setTiempo(8000)                                            // tiempo para la automorision
                 .showTemporizador(true)                                     // mostrar progressbar de automorision
                 .setMensaje("Este diálogo se autodestruirá en 3 segundos")  // mensaje de automorision
                 .setMostrarNegativo(false)                                  // sin boton negativo
