@@ -523,7 +523,7 @@ public class CustomSmartDialog {
                             public void run() {
                                 new CountDownTimer(config.getTiempo(), 1000) {
                                     public void onTick(long millisUntilFinished) {
-                                        txtCerrando.setText("Cerrando en " + (((int) millisUntilFinished) / 900) + " segundos...");
+                                        CommonsExecutors.getExecutor().Main().execute(() -> txtCerrando.setText("Cerrando en " + (((int) millisUntilFinished) / 900) + " segundos..."));
                                     }
 
                                     public void onFinish() {
