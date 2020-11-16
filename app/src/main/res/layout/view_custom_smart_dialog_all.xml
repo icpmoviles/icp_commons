@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center"
     android:layout_marginTop="-20dp"
+    android:gravity="center"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -12,27 +12,29 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_marginTop="55dp"
-            android:paddingBottom="10dp"
-            android:layout_marginBottom="55dp"
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="55dp"
+            android:background="@drawable/rounded_white_back"
             android:gravity="center"
-            android:background="#fff">
+            android:orientation="vertical"
+            android:padding="0dp"
+            android:paddingBottom="10dp">
+
+
 
             <TextView
                 android:id="@+id/txtTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="0dp"
                 android:background="@color/colorPrimary"
                 android:padding="15dp"
-                tools:text="Título del diálogo"
                 android:textAlignment="center"
                 android:textColor="#fff"
-                android:textSize="21sp" />
-
-
+                android:textSize="21sp"
+                tools:text="Título del diálogo" />
 
             <ImageView
                 android:id="@+id/imagen"
@@ -47,9 +49,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:scrollbars="vertical"
                 android:scrollbarAlwaysDrawVerticalTrack="true"
-                android:scrollbarFadeDuration="0">
+                android:scrollbarFadeDuration="0"
+                android:scrollbars="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -86,29 +88,29 @@
                 android:id="@+id/imagenOpcional"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:visibility="gone"
-                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_help_outline_black_100dp" />
+                android:src="@drawable/ic_help_outline_black_100dp"
+                android:visibility="gone"
+                tools:visibility="gone" />
 
             <include
                 android:id="@+id/editText"
                 layout="@layout/view_custom_edittext"
-                tools:visibility="gone"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp" />
+                android:layout_margin="16dp"
+                android:visibility="gone"
+                tools:visibility="gone" />
 
             <include
                 android:id="@+id/quantity"
                 layout="@layout/view_custom_smart_dialog_quantity"
-                tools:visibility="gone"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp" />
+                android:layout_margin="16dp"
+                android:visibility="gone"
+                tools:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rlImagenes"
@@ -122,19 +124,19 @@
                     android:id="@+id/txtConteoImagenes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="2/20"
-                    android:textColor="@color/black"
+                    android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true" />
+                    android:textColor="@color/black"
+                    tools:text="2/20" />
 
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/vpImagenes"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_above="@+id/pageIndicator"
                     android:layout_below="@+id/txtConteoImagenes"
-                    android:layout_above="@+id/pageIndicator" />
+                    android:layout_marginHorizontal="16dp" />
 
                 <!--                <ImageView-->
                 <!--                    android:id="@+id/ivPageLeft"-->
@@ -155,14 +157,14 @@
                 <com.viewpagerindicator.LinePageIndicator
                     android:id="@+id/pageIndicator"
                     android:layout_width="match_parent"
-                    android:layout_marginVertical="8dp"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_height="5dp"
                     android:layout_alignParentBottom="true"
-                    app:strokeWidth="5dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
                     app:centered="true"
                     app:gapWidth="10dp"
                     app:lineWidth="40dp"
-                    android:layout_height="5dp" />
+                    app:strokeWidth="5dp" />
 
             </RelativeLayout>
 
@@ -171,28 +173,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_blue_button"
                     android:layout_margin="5dp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
+                    android:background="@drawable/rounded_blue_button"
+                    android:text="button1"
                     android:textColor="#fff"
-                    android:text="button1" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_blue_button"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:layout_margin="5dp"
+                    android:background="@drawable/rounded_blue_button"
+                    android:text="button2"
                     android:textColor="#fff"
-                    android:text="button2" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
@@ -200,31 +202,31 @@
                 android:id="@+id/botonesSiNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="8dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btnNeutral"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:text="NEUTRAL"
                     android:layout_margin="5dp"
                     android:background="@drawable/rounded_blue_button"
-                    android:textColor="#fff" />
+                    android:text="NEUTRAL"
+                    android:textColor="#fff"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <Button
                     android:id="@+id/btnNegativo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:text="@string/custom_smart_dialog_cancelar"
                     android:layout_margin="5dp"
                     android:background="@drawable/rounded_red_button"
-                    android:textColor="#fff" />
+                    android:text="@string/custom_smart_dialog_cancelar"
+                    android:textColor="#fff"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <Button
                     android:id="@+id/btnPositivo"
@@ -243,11 +245,11 @@
                 android:id="@+id/txtCerrando"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Cerrando en 5 segundos..."
-                android:visibility="gone"
-                tools:visibility="visible"
+                android:textAlignment="viewEnd"
                 android:textSize="12sp"
-                android:textAlignment="viewEnd" />
+                android:visibility="gone"
+                tools:text="Cerrando en 5 segundos..."
+                tools:visibility="visible" />
 
             <ProgressBar
                 android:id="@+id/progressTemporizador"
@@ -261,17 +263,16 @@
 
         </LinearLayout>
 
-
         <ImageView
             android:id="@+id/iconoTitulo"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:layout_centerHorizontal="true"
-            android:padding="5dp"
             android:elevation="5dp"
-            android:src="@drawable/ic_help_outline_white_100dp" />
+            android:padding="5dp"
+            android:src="@drawable/ic_help_outline_white_100dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </RelativeLayout>
 
 

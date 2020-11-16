@@ -2,19 +2,28 @@ package es.icp.icp_commons;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +33,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.Glide;
@@ -68,6 +78,7 @@ public class CustomSmartDialog {
     private             int                     tiempo           = 0;
     public static final int                     MAX_HIDE_LOADING = 10;
     public static       int                     contadorLoading  = 0;
+    private             boolean                 makeULTRA        = false;
 
     public CustomSmartDialog() {
     }
@@ -265,11 +276,15 @@ public class CustomSmartDialog {
      */
     @SuppressLint("RestrictedApi")
     public synchronized void show() {
-        AlertDialog.Builder builder;
-        if (generico) {
-            builder = new AlertDialog.Builder(context, R.style.CustomDialog).setCustomTitle(customTitle).setCancelable(isCancellable).setView(layout);
+        AlertDialog.Builder builder = null;
+        if (makeULTRA) {
+            builder = new AlertDialog.Builder(context, R.style.CustomDialogULTRA).setCustomTitle(customTitle).setCancelable(isCancellable).setView(layout);
         } else {
-            builder = new AlertDialog.Builder(context).setCustomTitle(customTitle).setCancelable(isCancellable).setView(layout, Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16));
+            if (generico) {
+                builder = new AlertDialog.Builder(context, R.style.CustomDialog).setCustomTitle(customTitle).setCancelable(isCancellable).setView(layout);
+            } else {
+                builder = new AlertDialog.Builder(context).setCustomTitle(customTitle).setCancelable(isCancellable).setView(layout, Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16), Utils.dpToPx(context, 16));
+            }
         }
         for (final Button button : buttons) {
             if (button.type == Button.Type.POSSITIVE) {
@@ -295,7 +310,8 @@ public class CustomSmartDialog {
                 });
             }
         }
-        dialogs.add(new AlertDialog2(builder.create(), isLoadingDialog));
+        AlertDialog2 dialog = new AlertDialog2(builder.create(), isLoadingDialog);
+        dialogs.add(dialog);
         //        if (isLoadingDialog) isLoadingDialog = false;
         for (int i = 0; i < layout.getChildCount(); i++) {
             View view = layout.getChildAt(i);
@@ -382,7 +398,22 @@ public class CustomSmartDialog {
         }
 
         try {
-            dialogs.get(dialogs.size() - 1).getDialog().show();
+            AlertDialog2 dialog2 = dialogs.get(dialogs.size() - 1);
+            dialog2.getDialog().show();
+            if (makeULTRA) {
+                Window window = dialog2.getDialog().getWindow();
+                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                window.setGravity(Gravity.BOTTOM);
+                ((Activity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//                ((Activity) context).getWindow().setNavigationBarColor(Color.WHITE);
+
+                window.setBackgroundDrawableResource(android.R.color.transparent);
+//                ((Activity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+                window.setWindowAnimations(R.style.DialogAnimation);
+
+
+            }
             if (!isLoadingDialog) Loading.HideSmartLoading();
             isLoadingDialog = false;
             enConstruccion  = false;
@@ -505,9 +536,18 @@ public class CustomSmartDialog {
                     //----------------------------------------------------------------------------------------------------
 
                     //-------------------------------------------------------
+                    //--------------- ULTRA -------------------
+                    LinearLayout mainLayout = mainContainer.findViewById(R.id.mainLayout);
+                    //----------------------------------------------------------------------------------------------------
+
+                    //-------------------------------------------------------
                     //--------------- LOADING -------------------
                     //                    ProgressBar pbLoading = mainContainer.findViewById(R.id.pbLoading);
                     //----------------------------------------------------------------------------------------------------
+
+                    if (config.isMakeULTRA()) {
+
+                    }
 
                     if (config.getTiempo() > 0 && config.isShowTemporizador()) {
                         progressTemporizador.setVisibility(View.VISIBLE);
@@ -543,8 +583,21 @@ public class CustomSmartDialog {
 
                     txtTitulo.setText(Html.fromHtml(config.getTitulo()));
                     txtMensaje.setText(Html.fromHtml(config.getMensaje()));
-                    if (config.getColorTitulo() != 0) {
-                        txtTitulo.setBackgroundColor(mContext.getColor(config.getColorTitulo()));
+                    if (config.isMakeULTRA()) {
+                        GradientDrawable shape = new GradientDrawable();
+                        shape.setShape(GradientDrawable.RECTANGLE);
+                        int pxRadius = Utils.dpToPx(context, 20);
+                        shape.setCornerRadii(new float[]{pxRadius, pxRadius, pxRadius, pxRadius, 0, 0, 0, 0});
+                        if (config.getColorTitulo() != 0) {
+                            shape.setColor(mContext.getColor(config.getColorTitulo()));
+                        } else {
+                            shape.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                        }
+                        txtTitulo.setBackground(shape);
+                    } else {
+                        if (config.getColorTitulo() != 0) {
+                            txtTitulo.setBackgroundColor(mContext.getColor(config.getColorTitulo()));
+                        }
                     }
                     if (config.isMostrarIconoTitulo()) {
                         iconoTitulo.setVisibility(View.VISIBLE);
@@ -597,13 +650,17 @@ public class CustomSmartDialog {
                         btnNegativo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (config.isAutoDismiss()) dialogs.get(dialogs.size() - 1).getDialog().dismiss();
-                                if (listener != null) {
-                                    if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
-                                    else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
-                                    else listener.negativo("Negativo", dialogs.get(dialogs.size() - 1).getDialog());
+                                try {
+                                    if (config.isAutoDismiss()) dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+                                    if (listener != null) {
+                                        if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
+                                        else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
+                                        else listener.negativo("Negativo", dialogs.get(dialogs.size() - 1).getDialog());
+                                    }
+                                    dialogs.remove(dialogs.size() - 1);
+                                } catch (IndexOutOfBoundsException e) {
+                                    e.printStackTrace();
                                 }
-                                dialogs.remove(dialogs.size() - 1);
                             }
                         });
                     }
@@ -718,7 +775,7 @@ public class CustomSmartDialog {
                     CommonsExecutors.getExecutor().Main().execute(new Runnable() {
                         @Override
                         public void run() {
-                            new Builder(mContext).addView(mainContainer).isGenerico(true).setTiempo(config.getTiempo()).isLoadingDialog(config.isMostrarLoading()).setLoadingListener(loadingListener).isCancelable(config.isCancelable()).build();
+                            new Builder(mContext).addView(mainContainer).isGenerico(true).makeULTRA(config.isMakeULTRA()).setTiempo(config.getTiempo()).isLoadingDialog(config.isMostrarLoading()).setLoadingListener(loadingListener).isCancelable(config.isCancelable()).build();
                         }
                     });
                 } catch (Exception e) {
@@ -1095,6 +1152,11 @@ public class CustomSmartDialog {
         public Builder(Context context) {
             customSmartDialog               = new CustomSmartDialog(context);
             customSmartDialog.isCancellable = false;
+        }
+
+        public Builder makeULTRA(boolean ultra) {
+            customSmartDialog.makeULTRA = ultra;
+            return this;
         }
 
         public Builder addView(View view) {

@@ -239,6 +239,7 @@ public class MainActivity extends CommonsBaseApp {
 
     private void crearDialog22() {
         DialogConfig config = new DialogConfig.Builder()
+                .makeULTRA()
                 .setMostrarIconoTitulo(true)                                // mostrar icono en el titulo
                 .setIconoTitulo(R.drawable.ic_launcher_round)               // icono del titulo
                 .setTitulo("Temporizador")                                  // titulo
@@ -342,7 +343,7 @@ public class MainActivity extends CommonsBaseApp {
         imagenes.add(new ImagenCommons(context.getDrawable(R.drawable.imagen_demo_comprimida)));
         imagenes.add(new ImagenCommons(context.getDrawable(R.drawable.imagen_demo_comprimida)));
 
-        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setMostrarImagenPredeterminada(false).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Imágenes incidencia").setMensaje("Esto es un visor de imágenes de las incidencias.").setMostrarNegativo(false).setMostrarPositivo(true).setAutoDismiss(true).setTextoPositivo("ACEPTAR").setMostrarVisorImagenes(true).setImagenes(imagenes).setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
+        DialogConfig config = new DialogConfig.Builder().makeULTRA().setMostrarIconoTitulo(true).setMostrarImagenPredeterminada(false).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Imágenes incidencia").setMensaje("Esto es un visor de imágenes de las incidencias.").setMostrarNegativo(false).setMostrarPositivo(true).setAutoDismiss(true).setTextoPositivo("ACEPTAR").setMostrarVisorImagenes(true).setImagenes(imagenes).setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
             @Override
             public void imagenAdjuntada(ImagenCommons imagen) {
                 imagen.getFormato();
@@ -439,7 +440,7 @@ public class MainActivity extends CommonsBaseApp {
         });
         botones.add(btnEliminar);
 
-        DialogConfig config = new DialogConfig.Builder().isWithLoading(true).setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Elija una opción").setMensaje("Elija una opción entre las tres opciones posibles que puedes ver...").setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setMostrarBotones(true).setBotones(botones).setCancelable(true).setMostrarImagenPredeterminada(false).build();
+        DialogConfig config = new DialogConfig.Builder().makeULTRA().isWithLoading(true).setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Elija una opción").setMensaje("Elija una opción entre las tres opciones posibles que puedes ver...").setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setMostrarBotones(true).setBotones(botones).setCancelable(true).setMostrarImagenPredeterminada(false).build();
 
         new CustomSmartDialog().dialogGenerico(context, config, null);
     }
@@ -460,6 +461,7 @@ public class MainActivity extends CommonsBaseApp {
         botones.add(boton);
 
         DialogConfig config = new DialogConfig.Builder()
+                .makeULTRA()
                 .setMostrarIconoTitulo(true)
                 .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTextoEditText("Hola, texto por default :D")
@@ -496,7 +498,7 @@ public class MainActivity extends CommonsBaseApp {
     }
 
     private void crearDialog17() {
-        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #3").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un quantity y dos botones positivo yt negativo.").setMostrarNegativo(true).setMostrarPositivo(true).setAutoDismiss(true).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarCantidad(true).setCantidadInicial(7).build();
+        DialogConfig config = new DialogConfig.Builder().makeULTRA().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #3").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un quantity y dos botones positivo yt negativo.").setMostrarNegativo(true).setMostrarPositivo(true).setAutoDismiss(true).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarCantidad(true).setCantidadInicial(7).build();
 
         new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
@@ -514,7 +516,7 @@ public class MainActivity extends CommonsBaseApp {
     }
 
     private void crearDialog16() {
-        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #2").setMensaje("<span style='color:red'>Mensaje de prueba 1número1 con un diálogo que acepta un editText y dos botones positivo yt negativo.</span>").setMostrarNegativo(true).setMostrarPositivo(true).setAutoDismiss(true).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarEditText(true).setIconoEditText(R.drawable.ic_person_black_24dp).setMaxLength(10).setHint("Nombre y apellidos").build();
+        DialogConfig config = new DialogConfig.Builder().makeULTRA().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #2").setMensaje("<span style='color:red'>Mensaje de prueba 1número1 con un diálogo que acepta un editText y dos botones positivo yt negativo.</span>").setMostrarNegativo(true).setMostrarPositivo(true).setAutoDismiss(true).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarEditText(true).setIconoEditText(R.drawable.ic_person_black_24dp).setMaxLength(10).setHint("Nombre y apellidos").build();
 
         new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
@@ -532,7 +534,7 @@ public class MainActivity extends CommonsBaseApp {
     }
 
     private void crearDialog15() {
-        DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #1").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.").setMostrarNegativo(true).setMostrarPositivo(false).setTextoNegativo("CANCELAR").setColorTitulo(android.R.color.holo_red_light).setMostrarImagen(true).setImagen(R.drawable.ic_thumb_up).build();
+        DialogConfig config = new DialogConfig.Builder().makeULTRA().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #1").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta una imagen y un solo boton negativo.Mensaje de prueba 1número1 con un diálogo que acepta").setMostrarNegativo(true).setMostrarPositivo(false).setTextoNegativo("CANCELAR").setColorTitulo(android.R.color.holo_red_light).setMostrarImagen(true).setImagen(R.drawable.ic_thumb_up).build();
 
         new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
