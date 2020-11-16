@@ -48,6 +48,15 @@ public class DialogConfig {
     private boolean                  withLoading                 = false;
     private int                      tiempo                      = 0;
     private boolean                  showTemporizador            = false;
+    private boolean                  makeULTRA                   = false;
+
+    public boolean isMakeULTRA() {
+        return makeULTRA;
+    }
+
+    public void setMakeULTRA() {
+        this.makeULTRA = true;
+    }
 
     public boolean isShowTemporizador() {
         return showTemporizador;
@@ -386,12 +395,18 @@ public class DialogConfig {
         private boolean                  withLoading                 = false;
         private int                      tiempo                      = 0;
         private boolean                  showTemporizador            = false;
+        private boolean                  makeULTRA                   = false;
 
         public Builder() {
         }
 
         public static Builder aDialogConfig() {
             return new Builder();
+        }
+
+        public Builder makeULTRA() {
+            this.makeULTRA = true;
+            return this;
         }
 
         public Builder showTemporizador(boolean showTemporizador) {
@@ -612,6 +627,7 @@ public class DialogConfig {
             dialogConfig.textoEditText               = this.textoEditText;
             dialogConfig.tiempo                      = this.tiempo;
             dialogConfig.showTemporizador            = this.showTemporizador;
+            dialogConfig.makeULTRA                   = this.makeULTRA;
             return dialogConfig;
         }
     }
