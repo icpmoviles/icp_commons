@@ -2,30 +2,24 @@ package es.icp.icp_commons;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroupOverlay;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -79,6 +73,7 @@ public class CustomSmartDialog {
     public static final int                     MAX_HIDE_LOADING = 10;
     public static       int                     contadorLoading  = 0;
     private             boolean                 makeULTRA        = false;
+    private             FrameLayout             frameUltra;
 
     public CustomSmartDialog() {
     }
@@ -404,13 +399,32 @@ public class CustomSmartDialog {
                 Window window = dialog2.getDialog().getWindow();
                 window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 window.setGravity(Gravity.BOTTOM);
-                ((Activity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                ((Activity) context).getWindow().setNavigationBarColor(Color.WHITE);
+
+//                dialog2.getDialog().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+//                final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) ((Activity)context).findViewById(android.R.id.content)).getChildAt(0);
+//                FrameLayout frameLayout = ((Activity) context).
+//
+//                dialog2.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                    @Override
+//                    public void onDismiss(DialogInterface dialog) {
+//
+//                    }
+//                });
+
+//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//                window.setNavigationBarColor(Color.WHITE);
+
+//                dialog2.getDialog().getWindow().set
 
                 window.setBackgroundDrawableResource(android.R.color.transparent);
 //                ((Activity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
                 window.setWindowAnimations(R.style.DialogAnimation);
+
+//                ((View) dialog2.getDialog()).getParent().getParent().getParent()
 
 
             }
@@ -538,6 +552,7 @@ public class CustomSmartDialog {
                     //-------------------------------------------------------
                     //--------------- ULTRA -------------------
                     LinearLayout mainLayout = mainContainer.findViewById(R.id.mainLayout);
+                    FrameLayout frameUltra = mainContainer.findViewById(R.id.frameUltra);
                     //----------------------------------------------------------------------------------------------------
 
                     //-------------------------------------------------------
@@ -545,8 +560,20 @@ public class CustomSmartDialog {
                     //                    ProgressBar pbLoading = mainContainer.findViewById(R.id.pbLoading);
                     //----------------------------------------------------------------------------------------------------
 
-                    if (config.isMakeULTRA()) {
+//                    boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+//                    boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
+//                    ((Activity) context).getWindow().getWindowManager().has
+//                    if (config.isMakeULTRA()) {
+//                        frameUltra.setVisibility(View.VISIBLE);
+//                    } else {
+//                        frameUltra.setVisibility(View.GONE);
+//                    }
 
+                    if (config.isMakeULTRA()) {
+                        if (config.getUltraConfig().getMinHeight() != 0f) {
+                            mainLayout.setMinimumHeight(Utils.pixelsHeightPercent(context, config.getUltraConfig().getMinHeight()));
+                        }
+                        mainLayout.setGravity(Gravity.CENTER);
                     }
 
                     if (config.getTiempo() > 0 && config.isShowTemporizador()) {
@@ -760,6 +787,9 @@ public class CustomSmartDialog {
                     if (!config.isMostrarImagenPredeterminada()) {
                         imagen.setVisibility(View.GONE);
                     } //-----------------------------------------------------------------------------------------------------------------
+                    if (config.isMakeULTRA()) {
+                        mainLayout.setGravity(Gravity.CENTER);
+                    }
                     if (config.isMostrarVisorImagenes()) {
                         CommonsExecutors.getExecutor().Main().execute(new Runnable() {
                             @Override

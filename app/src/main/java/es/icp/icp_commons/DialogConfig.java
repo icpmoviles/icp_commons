@@ -49,6 +49,15 @@ public class DialogConfig {
     private int                      tiempo                      = 0;
     private boolean                  showTemporizador            = false;
     private boolean                  makeULTRA                   = false;
+    private UltraConfig              ultraConfig;
+
+    public UltraConfig getUltraConfig() {
+        return ultraConfig;
+    }
+
+    public void setUltraConfig(UltraConfig ultraConfig) {
+        this.ultraConfig = ultraConfig;
+    }
 
     public boolean isMakeULTRA() {
         return makeULTRA;
@@ -396,6 +405,7 @@ public class DialogConfig {
         private int                      tiempo                      = 0;
         private boolean                  showTemporizador            = false;
         private boolean                  makeULTRA                   = false;
+        private UltraConfig              ultraConfig;
 
         public Builder() {
         }
@@ -405,7 +415,12 @@ public class DialogConfig {
         }
 
         public Builder makeULTRA() {
-            this.makeULTRA = true;
+            return makeULTRA(new UltraConfig.Builder().build());
+        }
+
+        public Builder makeULTRA(UltraConfig ultraConfig) {
+            this.makeULTRA   = true;
+            this.ultraConfig = ultraConfig;
             return this;
         }
 
@@ -628,7 +643,41 @@ public class DialogConfig {
             dialogConfig.tiempo                      = this.tiempo;
             dialogConfig.showTemporizador            = this.showTemporizador;
             dialogConfig.makeULTRA                   = this.makeULTRA;
+            dialogConfig.ultraConfig                 = this.ultraConfig;
             return dialogConfig;
+        }
+    }
+
+    public static final class UltraConfig {
+        private float minHeight = 0f;
+
+        public UltraConfig() {
+        }
+
+        public float getMinHeight() {
+            return minHeight;
+        }
+
+        public void setMinHeight(float minHeight) {
+            this.minHeight = minHeight;
+        }
+
+        public static final class Builder {
+            private float minHeight = 0f;
+
+            public Builder() {
+            }
+
+            public Builder setMinHeight(float minHeight) {
+                this.minHeight = minHeight;
+                return this;
+            }
+
+            public UltraConfig build() {
+                UltraConfig ultraConfig = new UltraConfig();
+                ultraConfig.minHeight = this.minHeight;
+                return ultraConfig;
+            }
         }
     }
 }
