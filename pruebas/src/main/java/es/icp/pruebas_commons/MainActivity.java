@@ -2,7 +2,6 @@ package es.icp.pruebas_commons;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -239,11 +238,13 @@ public class MainActivity extends CommonsBaseApp {
 
     private void crearDialog22() {
         DialogConfig config = new DialogConfig.Builder()
-                .makeULTRA()
+                .makeULTRA(new DialogConfig.UltraConfig.Builder()           // diálogo estética ULTA
+                        .setMinHeight(0.5f)                                 // mínima altura de los diálogos ULTRA
+                        .build())
                 .setMostrarIconoTitulo(true)                                // mostrar icono en el titulo
                 .setIconoTitulo(R.drawable.ic_launcher_round)               // icono del titulo
                 .setTitulo("Temporizador")                                  // titulo
-                .setTiempo(8000)                                            // tiempo para la automorision
+                .setTiempo(3000)                                            // tiempo para la automorision
                 .showTemporizador(true)                                     // mostrar progressbar de automorision
                 .setMensaje("Este diálogo se autodestruirá en 3 segundos")  // mensaje de automorision
                 .setMostrarNegativo(false)                                  // sin boton negativo
@@ -343,22 +344,38 @@ public class MainActivity extends CommonsBaseApp {
         imagenes.add(new ImagenCommons(context.getDrawable(R.drawable.imagen_demo_comprimida)));
         imagenes.add(new ImagenCommons(context.getDrawable(R.drawable.imagen_demo_comprimida)));
 
-        DialogConfig config = new DialogConfig.Builder().makeULTRA().setMostrarIconoTitulo(true).setMostrarImagenPredeterminada(false).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Imágenes incidencia").setMensaje("Esto es un visor de imágenes de las incidencias.").setMostrarNegativo(false).setMostrarPositivo(true).setAutoDismiss(true).setTextoPositivo("ACEPTAR").setMostrarVisorImagenes(true).setImagenes(imagenes).setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
-            @Override
-            public void imagenAdjuntada(ImagenCommons imagen) {
-                imagen.getFormato();
-            }
+        DialogConfig config = new DialogConfig.Builder()
+                .makeULTRA(new DialogConfig.UltraConfig.Builder()
+                        .setMinHeight(0.5f)
+                        .build())
+                .setMostrarIconoTitulo(true)
+                .setMostrarImagenPredeterminada(false)
+                .setIconoTitulo(R.drawable.ic_launcher_round)
+                .setTitulo("Imágenes incidencia")
+                .setMensaje("Esto es un visor de imágenes de las incidencias.")
+                .setMostrarNegativo(false)
+                .setMostrarPositivo(true)
+                .setAutoDismiss(true)
+                .setTextoPositivo("ACEPTAR")
+                .setMostrarVisorImagenes(true)
+                .setImagenes(imagenes)
+                .setAdjuntarImagenesListener(new AdjuntarImagenesListener() {
+                    @Override
+                    public void imagenAdjuntada(ImagenCommons imagen) {
+                        imagen.getFormato();
+                    }
 
-            @Override
-            public void imagenEliminada(int position, ImagenCommons imagen) {
-                imagen.getFormato();
-            }
+                    @Override
+                    public void imagenEliminada(int position, ImagenCommons imagen) {
+                        imagen.getFormato();
+                    }
 
-            @Override
-            public void aceptar(ArrayList<ImagenCommons> imagenes) {
-                imagenes.size();
-            }
-        }).build();
+                    @Override
+                    public void aceptar(ArrayList<ImagenCommons> imagenes) {
+                        imagenes.size();
+                    }
+                })
+                .build();
         new CustomSmartDialog().dialogGenerico(context, config, null);
     }
 
@@ -440,7 +457,23 @@ public class MainActivity extends CommonsBaseApp {
         });
         botones.add(btnEliminar);
 
-        DialogConfig config = new DialogConfig.Builder().makeULTRA().isWithLoading(true).setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Elija una opción").setMensaje("Elija una opción entre las tres opciones posibles que puedes ver...").setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setMostrarBotones(true).setBotones(botones).setCancelable(true).setMostrarImagenPredeterminada(false).build();
+        DialogConfig config = new DialogConfig.Builder()
+                .makeULTRA(new DialogConfig.UltraConfig.Builder()
+                        .setMinHeight(0.5f)
+                        .build())
+                .isWithLoading(true)
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(R.drawable.ic_launcher_round)
+                .setTitulo("Elija una opción")
+                .setMensaje("Elija una opción entre las tres opciones posibles que puedes ver...")
+                .setMostrarNegativo(false)
+                .setMostrarPositivo(false)
+                .setAutoDismiss(true)
+                .setMostrarBotones(true)
+                .setBotones(botones)
+                .setCancelable(true)
+                .setMostrarImagenPredeterminada(false)
+                .build();
 
         new CustomSmartDialog().dialogGenerico(context, config, null);
     }

@@ -6,8 +6,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.media.ExifInterface;
 import android.util.DisplayMetrics;
+import android.view.Display;
 
 import androidx.core.app.ActivityCompat;
 
@@ -93,5 +95,18 @@ public class Utils {
             ActivityCompat.requestPermissions(((Activity) context), permisos, Constantes.CODE_PERMISSIONS);
             return false;
         } else return true;
+    }
+
+    public static int pixelsHeightPercent(Context context) {
+        return pixelsHeightPercent(context, 1f);
+    }
+
+    public static int pixelsHeightPercent(Context context, float percent) {
+        if (percent < 0f || percent > 1f) return 0;
+        Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+        Point   size    = new Point();
+        display.getSize(size);
+        int height = size.y;
+        return (int)(height * percent);
     }
 }
