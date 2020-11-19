@@ -8,12 +8,15 @@ import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
 import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
+import es.icp.icp_commons.Services.GeoTracking;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
 import es.icp.pruebas_commons.helpers.PruebasLoginResult;
 
 public class Init extends Application {
+
+    public static GeoTracking geoTracking;
 
     @Override
     public void onCreate() {
@@ -23,6 +26,13 @@ public class Init extends Application {
         GlobalVariables.ICONO_APP = getApplicationContext().getDrawable(R.drawable.ic_launcher_round);
 
 //        pruebaConApplicationContext();
+
+        startGeoTrackingSystem();
+    }
+
+    private void startGeoTrackingSystem() {
+        geoTracking = GeoTracking.getInstance(getApplicationContext());
+        geoTracking.startGeoTracking();
     }
 
     private void pruebaConApplicationContext() {

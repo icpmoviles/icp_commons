@@ -226,6 +226,13 @@
                 android:gravity="start|center_vertical"
                 android:text="030 - MOSTRAR DIALOG CON TEMPORIZADOR" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn31}"
+                android:gravity="start|center_vertical"
+                android:text="031 - GEOTRACKING" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

@@ -2,6 +2,8 @@ package es.icp.icp_commons.Services;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import es.icp.icp_commons.CommonsGeocoder;
 import es.icp.icp_commons.Interfaces.GeocoderListener;
 import es.icp.icp_commons.Objects.Coordenada;
@@ -12,6 +14,7 @@ public class GeoTracking {
 
     private static GeoTracking INSTANCE;
 
+    @Nullable
     private Coordenada coordenadas;
     private CommonsGeocoder geocoder;
 
@@ -34,12 +37,9 @@ public class GeoTracking {
         });
     }
 
+    @Nullable
     public Coordenada getCoordenadas() {
         return coordenadas;
-    }
-
-    public void setCoordenadas(Coordenada coordenadas) {
-        this.coordenadas = coordenadas;
     }
 
     @Override

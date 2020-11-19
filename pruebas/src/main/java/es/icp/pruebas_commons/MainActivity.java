@@ -233,7 +233,34 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn30(View view) {
                 crearDialog22();
             }
+
+            @Override
+            public void onClickBtn31(View view) {
+                geoTracking();
+            }
         };
+    }
+
+    private void geoTracking() {
+        Coordenada coordenada = Init.geoTracking.getCoordenadas();
+
+        DialogConfig config = new DialogConfig.Builder()
+                .makeULTRA(new DialogConfig.UltraConfig.Builder()
+                        .setMinHeight(0.2f)
+                        .build())
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(R.drawable.ic_launcher_round)
+                .setTitulo("GeoTracking System")
+                .setTiempo(3000)
+                .showTemporizador(true)
+                .setMensaje(coordenada != null ? coordenada.toString() : "Sin coordenadas")
+                .setMostrarNegativo(false)
+                .setMostrarPositivo(false)
+                .setColorTitulo(android.R.color.holo_blue_light)
+                .setMostrarImagenPredeterminada(false)
+                .build();
+
+        new CustomSmartDialog().dialogGenerico(context, config, null);
     }
 
     private void crearDialog22() {
@@ -916,5 +943,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn29(View view);
 
         void onClickBtn30(View view);
+
+        void onClickBtn31(View view);
     }
 }

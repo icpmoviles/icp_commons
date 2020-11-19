@@ -89,17 +89,6 @@ public class CommonsGeocoder {
     }
 
     private void getLastKnownLocation(GeocoderMetodo metodo, GeocoderListener listener) {
-//        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-////
-////        fusedLocationClient.getLastLocation()
-////                .addOnSuccessListener(((Activity) context), new OnSuccessListener<Location>() {
-////                    @Override
-////                    public void onSuccess(Location location) {
-////                        // Got last known location. In some rare situations this can be null.
-////                        procesarLocalizacion(metodo, location, listener);
-////                    }
-////                });
-
         LocationRequest mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationCallback mLocationCallback = new LocationCallback() {
@@ -110,13 +99,6 @@ public class CommonsGeocoder {
                 if (locationResult == null) {
                     return;
                 }
-//                for (Location location : locationResult.getLocations()) {
-//                    if (location != null) {
-//                        //TODO: UI updates.
-//                        procesarLocalizacion(metodo, location, listener);
-//                        break;
-//                    }
-//                }
                 Location location = locationResult.getLastLocation();
                 if (location != null) procesarLocalizacion(metodo, locationResult.getLastLocation(), listener);
             }
@@ -175,7 +157,7 @@ public class CommonsGeocoder {
     }
 
     public void toggleGPS() {
-        context.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        context.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         lm.requestLocationUpdates("gps", 0, 0, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
