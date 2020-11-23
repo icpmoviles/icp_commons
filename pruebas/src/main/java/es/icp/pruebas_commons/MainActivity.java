@@ -66,6 +66,10 @@ public class MainActivity extends CommonsBaseApp {
     private Handler             handler;
     private CustomSmartDialog   customSmartDialog;
 
+    public static DialogConfig.UltraConfig ultraConfig = new DialogConfig.UltraConfig.Builder()
+            .setMinHeight(0.3f)
+            .build();
+
     public MainActivity() {
     }
 
@@ -558,19 +562,25 @@ public class MainActivity extends CommonsBaseApp {
     }
 
     private void crearDialog17() {
-        DialogConfig config = new DialogConfig.Builder().makeULTRA().setMostrarIconoTitulo(true).setIconoTitulo(R.drawable.ic_launcher_round).setTitulo("Pruebas #3").setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un quantity y dos botones positivo yt negativo.").setMostrarNegativo(true).setMostrarPositivo(true).setAutoDismiss(true).setTextoNegativo("CANCELAR").setTextoPositivo("ACEPTAR").setMostrarCantidad(true).setCantidadInicial(7).build();
+        String error = "<b>No se pueden encontrar <b><big>65</big></b> destinos:</b> <br />   <br /> ■ AVENIDA DE LA CIUDAD DE BARCELONA 138 ESC- 2 7º  C MADRID, Madrid, 28007, ES<br/><br/> ■ CALLE GRANADA 42 PLANTA 4 C MADRID, MADRID, 28007, ES<br/><br/> ■ CL DOCTOR ESQUERDO 98 B Piso 003 MADRID, MADRID, 28007, ES<br/><br/> ■ CALLE SANCHEZ BARCAIZTEGUI 31 IZQUIERDA PLANTA 6 F MADRID, MADRID, 28007, ES<br/><br/> ■ C/ Granada, 62,1ºA Madrid, Madrid, 28007, ES<br/><br/> ■ CALLE JESUS APRENDIZ 10 PORTAL B 0 PLANTA 3 B MADRID, MADRID, 28007, ES<br/><br/> ■ TELLEZ 19 7 D MADRID, MADRID, 28007, ES<br/><br/> ■ TELLEZ 19 7 D MADRID, MADRID, 28007, ES<br/><br/> ■ TELLEZ 19 7 D MADRID, MADRID, 28007, ES<br/><br/> ■ TELLEZ 19 7D MADRID, MADRID, 28007, ES<br/><br/> ■ CALLE FOBOS 15 6º B MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE CORREGIDOR JUAN DE BOBADILLA 34 3º B MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE ENCOMIENDA DE PALACIOS 199 B Piso 001 MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE HACIENDA DE PAVONES 280  BAJO A MADRID, Madrid, 28030, ES<br/><br/> ■ CALLE ENCOMIENDA DE PALACIOS 161 PLANTA 7 B MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE PICO DE LOS ARTILLEROS 17 PLANTA 7 C MADRID, MADRID, 28030, ES<br/><br/> ■ CL ANTONIO CUMELLA 20 D Piso 006 MADRID, MADRID, 28030, ES<br/><br/> ■ CL ENCOMIENDA DE PALACIOS 77 A Bajo MADRID, MADRID, 28030, ES<br/><br/> ■ C\\ Hacienda de Pavones 63 PISO 4 PTA D Madrid, MADRID, 28030, ES<br/><br/> ■ C/ CORREGIDOR DIEGO DE VALDERRABANO 74 MADRID, MADRID, 28030, ES<br/><br/> ■ Cº DE LOS VINATEROS 77 01 D MADRID, MADRID, 28030, ES<br/><br/> ■ Cº DE LOS VINATEROS 77 01 D MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE MERIDA 2 PLANTA 3 D MADRID, MADRID, 28030, ES<br/><br/> ■ Cº DE LOS VINATEROS 77 01 D MADRID, MADRID, 28030, ES<br/><br/> ■ C/ DE LA HACIENDA DE PAVONES 49 02 C MADRID, MADRID, 28030, ES<br/><br/> ■ AVD. MORATALAZ 122 01 B MADRID, MADRID, 28030, ES<br/><br/> ■ AVD. MORATALAZ 21 4 B MADRID, MADRID, 28030, ES<br/><br/> ■ CL CAMINO DE LOS VINATEROS 113 C Piso 007 MADRID, MADRID, 28030, ES<br/><br/> ■ AVD. DEL DR GCIA. TAPIA 114 CO B MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE ARROYO FONTARRON 261 Bajo A MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE FELIX RODRIGUEZ DE LA FUENTE 27 BAJO DERECHA MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE CORREGIDOR MENDO DE ZUÑIGA, 8, 2-A MADRID, Madrid, 28030, ES<br/><br/> ■ AGUILAS 26,  2 A MADRID, Madrid, 28030, ES<br/><br/> ■ AVD. DEL DR GCIA. TAPIA 114 CO B MADRID, MADRID, 28030, ES<br/><br/> ■ CL LUIS DE HOYOS SAINZ 68 IZDA Piso 004 MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE FOBOS 9 PLANTA 9 C MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE ENTRE ARROYOS 50 PLANTA 3 A MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE CORREGIDOR DIEGO DE VALDERRABANO 74  2 E Madrid, Madrid, 28030, ES<br/><br/> ■ CL JOSÉ DEL PRADO Y PALACIO 5 LOCL5 Local MADRID, MADRID, 28030, ES<br/><br/> ■ CL ANTONIO CUMELLA 23 C Piso 008 MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE VINATEROS 89 PLANTA 3 C MADRID, MADRID, 28030, ES<br/><br/> ■ CAMINO VINATEROS 135 PLANTA 3 B MADRID, MADRID, 28030, ES<br/><br/> ■ CL HACIENDA DE PAVONES 219 C Piso 008 MADRID, MADRID, 28030, ES<br/><br/> ■ CALLE HACIENDA DE PAVONES 100 PLANTA 3 B MADRID, MADRID, 28030, ES<br/><br/> ■ Marroquina 72 - 6º B MADRID, Madrid, 28030, ES<br/><br/> ■ CALLE TENIENTE CORONEL NOREÑA 30 28045 MADRID, MADRID, 28045, ES<br/><br/> ■ CALLE TEJO 22 BLOQUE 8 PLANTA 2 C MADRID, MADRID, 28045, ES<br/><br/> ■ CALLE JOSE MIGUEL GORDOA 1  B1 MADRID, Madrid, 28045, ES<br/><br/> ■ CL ESTRELLA DENEBOLA 12 C Piso 007 MADRID, MADRID, 28045, ES<br/><br/> ■ CL PARROCO EUSEBIO CUENCA 46 C ESC ESC Piso 005 MADRID, MADRID, 28045, ES<br/><br/> ■ CALLE FERNANDO POO 34 PLANTA 1 C MADRID, MADRID, 28045, ES<br/><br/> ■ CALLE CANARIAS 84 PLANTA 2 B MADRID, MADRID, 28045, ES<br/><br/> ■ CALLE ENRIQUE TROMPETA 8 PLANTA 1 B MADRID, MADRID, 28045, ES<br/><br/> ■ GLORIETA SANTA MARIA DE LA CABEZA 9 PLANTA 10 DERECHA MADRID, MADRID, 28045, ES<br/><br/> ■ Paseo SANTA MARÍA DE LA CABEZA 86 PISO 4 PTA A MADRID, MADRID, 28045, ES<br/><br/> ■ CALLE COMANDANTE BENITEZ 4 11º IZQ MADRID, MADRID, 28045, ES<br/><br/> ■ PASEO DELICIAS 81 PLANTA 1 D MADRID, MADRID, 28045, ES<br/><br/> ■ CL EMBAJADORES 196  Bajo MADRID, MADRID, 28045, ES<br/><br/> ■ Pº DE LAS DELICIAS 139 1 C A MADRID, MADRID, 28045, ES<br/><br/> ■ PS DELICIAS 45 F Piso 001 MADRID, MADRID, 28045, ES<br/><br/> ■ CALLE COMANDANTE BENITEZ 4 11º IZQ MADRID, MADRID, 28045, ES<br/><br/> ■ TELLEZ 19 7 D MADRID, MADRID, 28007, ES<br/><br/> ■ TELLEZ 19 7 D MADRID, MADRID, 28007, ES<br/><br/> ■ TELLEZ 19 7 D MADRID, MADRID, 28007, ES<br/><br/> ■ TELLEZ 19 7D MADRID, MADRID, 28007, ES<br/><br/>";
+        DialogConfig config = new DialogConfig.Builder().makeULTRA(ultraConfig).setMostrarIconoTitulo(true).setIconoTitulo(context.getDrawable(R.drawable.error_ex)).setTitulo("Error").
+                setMensaje(error).setMostrarNegativo(false).setMostrarPositivo(true).setAutoDismiss(true).setColorTitulo(android.R.color.holo_red_light).setMostrarImagenPredeterminada(false).setTextoNegativo(context.getString(R.string.no)).setTextoPositivo(context.getString(R.string.aceptar)).setMostrarCantidad(false).build();
 
         new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
             public void positivo(String valor, AlertDialog dialog) {
-                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
-                customNotification.showText(valor);
+
+//                if (response != null) {
+//                    response.siguiente(0, true);
+//                }
             }
 
             @Override
             public void negativo(String valor, AlertDialog dialog) {
-                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
-                customNotification.showText("No...");
+
+//                if (response != null) {
+//                    response.siguiente(1, false);
+//                }
             }
         });
     }

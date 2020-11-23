@@ -5,6 +5,7 @@ import android.app.Application;
 import com.android.volley.VolleyError;
 
 import es.icp.icp_commons.CheckRequest;
+import es.icp.icp_commons.EasterEgg;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
 import es.icp.icp_commons.Objects.CheckRequestException;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
@@ -28,6 +29,8 @@ public class Init extends Application {
 //        pruebaConApplicationContext();
 
         startGeoTrackingSystem();
+
+        EasterEgg.activar(getApplicationContext());
     }
 
     private void startGeoTrackingSystem() {
