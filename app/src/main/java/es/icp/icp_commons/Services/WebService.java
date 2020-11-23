@@ -94,7 +94,7 @@ public class WebService {
                 json.put("USUARIO", String.valueOf(idUsuario));
                 json.put("MENSAJE", mensaje);
                 json.put("ERROR", exception.toString());
-                json.put("VERSION", mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName);
+                json.put("VERSION", mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode);
                 json.put("PARAMETROS", parametros);
 
                 CheckRequest.CheckAndSend(mContext, new ParametrosPeticion(ParametrosPeticion.Method.POST, url, json), new VolleyCallBack() {
