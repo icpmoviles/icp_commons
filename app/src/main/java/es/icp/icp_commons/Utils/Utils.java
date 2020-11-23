@@ -109,4 +109,17 @@ public class Utils {
         int height = size.y;
         return (int)(height * percent);
     }
+
+    public static int pixelsWidthPercent(Context context) {
+        return pixelsWidthPercent(context, 1f);
+    }
+
+    public static int pixelsWidthPercent(Context context, float percent) {
+        if (percent < 0f || percent > 1f) return 0;
+        Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+        Point   size    = new Point();
+        display.getSize(size);
+        int width = size.x;
+        return (int)(width * percent);
+    }
 }

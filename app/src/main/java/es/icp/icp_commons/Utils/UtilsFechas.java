@@ -27,4 +27,10 @@ public class UtilsFechas {
     }
 
 
+    public static long getNow() {
+        Date date = new Date();
+        return date.getTime();
+    }
+
+
 }
