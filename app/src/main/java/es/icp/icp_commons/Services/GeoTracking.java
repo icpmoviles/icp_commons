@@ -27,8 +27,14 @@ public class GeoTracking {
     }
 
     public void startGeoTracking() {
+        startGeoTracking(0, 0);
+    }
+
+    public void startGeoTracking(long minInterval, long maxInterval) {
         if (geocoder == null) geocoder = CommonsGeocoder.getINSTANCE(context);
         geocoder.makeContinuo();
+        if (minInterval > 0) geocoder.setMinInterval(minInterval);
+        if (maxInterval > 0) geocoder.setMaxInterval(maxInterval);
         geocoder.obtenerCoordenadas(new GeocoderListener<Coordenada>() {
             @Override
             public void onDataObtained(Coordenada data) {
