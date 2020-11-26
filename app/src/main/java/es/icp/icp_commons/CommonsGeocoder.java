@@ -95,12 +95,14 @@ public class CommonsGeocoder {
             @Override
             public void onLocationResult(LocationResult locationResult) {
 
-                WSHelper.logWS("Obteniendo la localización...");
                 if (locationResult == null) {
+                    WSHelper.logWS("Obteniendo la localización... LOCATION RESULT NULL");
                     return;
                 }
                 Location location = locationResult.getLastLocation();
                 if (location != null) procesarLocalizacion(metodo, locationResult.getLastLocation(), listener);
+                else WSHelper.logWS("Obteniendo la localización... LOCATION NULL");
+
             }
         };
         if (numUpdates == PUNTUAL) mLocationRequest.setNumUpdates(1);
@@ -141,6 +143,8 @@ public class CommonsGeocoder {
     private void geocoderAddress(GeocoderMetodo metodo, Location location, GeocoderListener listener) {
         double longitude = location.getLongitude();
         double latitude  = location.getLatitude();
+
+        WSHelper.logWS("Obteniendo la localización... LATITUD: " + latitude + " - LONGITUD: " + longitude);
 
         geocoderAddress(metodo, new Coordenada(longitude, latitude), listener);
     }
