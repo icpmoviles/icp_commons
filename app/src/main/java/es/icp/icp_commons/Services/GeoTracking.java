@@ -15,7 +15,7 @@ public class GeoTracking {
     private static GeoTracking INSTANCE;
 
     @Nullable
-    private Coordenada coordenadas;
+    private Coordenada      coordenadas;
     private CommonsGeocoder geocoder;
 
     private GeoTracking(Context context) {
