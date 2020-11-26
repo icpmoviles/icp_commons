@@ -41,6 +41,9 @@ public class CommonsGeocoder {
     public static final int CONTINUO = 0;
     public static final int PUNTUAL = 1;
 
+    private long minInterval = 5000;
+    private long maxInterval = 10000;
+
     public static CommonsGeocoder getINSTANCE(Context context) {
         if (INSTANCE == null) INSTANCE = new CommonsGeocoder(context);
         return INSTANCE;
@@ -61,6 +64,14 @@ public class CommonsGeocoder {
 
     public void makePuntual() {
         this.numUpdates = PUNTUAL;
+    }
+
+    public void setMaxInterval(long maxInterval) {
+        this.maxInterval = maxInterval;
+    }
+
+    public void setMinInterval(long minInterval) {
+        this.minInterval = minInterval;
     }
 
     private void obtener(GeocoderMetodo metodo, GeocoderListener listener) {
@@ -106,6 +117,10 @@ public class CommonsGeocoder {
             }
         };
         if (numUpdates == PUNTUAL) mLocationRequest.setNumUpdates(1);
+        else if (numUpdates == CONTINUO) {
+            mLocationRequest.setInterval(maxInterval);
+            mLocationRequest.setFastestInterval(minInterval);
+        }
         LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
 
