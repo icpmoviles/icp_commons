@@ -107,12 +107,12 @@ public class CommonsGeocoder {
             public void onLocationResult(LocationResult locationResult) {
 
                 if (locationResult == null) {
-                    WSHelper.logWS("Obteniendo la localización... LOCATION RESULT NULL");
+//                    WSHelper.logWS("Obteniendo la localización... LOCATION RESULT NULL");
                     return;
                 }
                 Location location = locationResult.getLastLocation();
                 if (location != null) procesarLocalizacion(metodo, locationResult.getLastLocation(), listener);
-                else WSHelper.logWS("Obteniendo la localización... LOCATION NULL");
+//                else WSHelper.logWS("Obteniendo la localización... LOCATION NULL");
 
             }
         };
@@ -149,7 +149,7 @@ public class CommonsGeocoder {
         try {
             List<Address> direcciones = geocoder.getFromLocation(coordenada.getLatitud(), coordenada.getLongitud(), 1);
             listener.onDataObtained(direcciones.get(0).getAddressLine(0));
-            Log.d("DEBUG_ICP", "146");
+//            Log.d("DEBUG_ICP", "146");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -159,7 +159,7 @@ public class CommonsGeocoder {
         double longitude = location.getLongitude();
         double latitude  = location.getLatitude();
 
-        WSHelper.logWS("Obteniendo la localización... LATITUD: " + latitude + " - LONGITUD: " + longitude);
+//        WSHelper.logWS("Obteniendo la localización... LATITUD: " + latitude + " - LONGITUD: " + longitude);
 
         geocoderAddress(metodo, new Coordenada(longitude, latitude), listener);
     }
