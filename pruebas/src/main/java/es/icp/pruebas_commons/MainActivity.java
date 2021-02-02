@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -48,6 +49,7 @@ import es.icp.icp_commons.Objects.Coordenada;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
+import es.icp.icp_commons.Services.GeoTracking;
 import es.icp.icp_commons.Services.WebService;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.logs.core.MyLog;
@@ -84,6 +86,17 @@ public class MainActivity extends CommonsBaseApp {
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         setEvents();
         binding.setHandler(handler);
+
+        geoTrackingService();
+    }
+
+    private void geoTrackingService() {
+        Init.geoTracking.setDistanceListener(10, new GeoTracking.DistanceListener() {
+            @Override
+            public void onDistanceUpdated(Coordenada nuevaCoordenada) {
+                Toast.makeText(context, "Coordenadas = LAT: " + nuevaCoordenada.getLatitud() + " - LNG: " + nuevaCoordenada.getLongitud(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setEvents() {

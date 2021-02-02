@@ -8,6 +8,7 @@ import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.EasterEgg;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
 import es.icp.icp_commons.Objects.CheckRequestException;
+import es.icp.icp_commons.Objects.Coordenada;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Services.GeoTracking;
 import es.icp.logs.core.MyLog;
@@ -34,8 +35,24 @@ public class Init extends Application {
     }
 
     private void startGeoTrackingSystem() {
-        geoTracking = GeoTracking.getInstance(getApplicationContext());
-        geoTracking.startGeoTracking();
+//        geoTracking = GeoTracking.getInstance(getApplicationContext());
+        geoTracking = new GeoTracking.Builder(getApplicationContext())
+            .setDistanceListener(10, new GeoTracking.DistanceListener() {
+                @Override
+                public void onDistanceUpdated(Coordenada nuevaCoordenada) {
+                    // cada vez que se mueve más allá de la distancia pasada como parámnetro
+
+
+                }
+            })
+            .setDataUpdatedListener(new GeoTracking.DataUpdatedListener() {
+                @Override
+                public void onDataUpdated(Coordenada nuevaCoordenada) {
+                    // cada vez que se obtienen las coordenadas
+                }
+            })
+        .build();
+        geoTracking.startGeoTracking(); // obligatorio para que el geoTracker comience a trackear coordenadas
     }
 
     private void pruebaConApplicationContext() {
