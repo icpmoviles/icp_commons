@@ -87,7 +87,7 @@ public class MainActivity extends CommonsBaseApp {
         setEvents();
         binding.setHandler(handler);
 
-        geoTrackingService();
+//        geoTrackingService();
     }
 
     private void geoTrackingService() {

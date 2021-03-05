@@ -29,9 +29,9 @@ public class Init extends Application {
 
 //        pruebaConApplicationContext();
 
-        startGeoTrackingSystem();
+//        startGeoTrackingSystem();
 
-        EasterEgg.activar(getApplicationContext());
+//        EasterEgg.activar(getApplicationContext());
     }
 
     private void startGeoTrackingSystem() {
