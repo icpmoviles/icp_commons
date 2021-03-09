@@ -594,7 +594,7 @@ public class CustomSmartDialog {
                                     }
 
                                     public void onFinish() {
-
+                                        if (listener != null) listener.positivo("", dialogs.get(dialogs.size() - 1).getDialog());
                                     }
                                 }.start();
                             }

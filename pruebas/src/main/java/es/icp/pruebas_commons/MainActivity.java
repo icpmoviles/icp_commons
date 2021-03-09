@@ -297,7 +297,18 @@ public class MainActivity extends CommonsBaseApp {
                 .setMostrarImagenPredeterminada(false)                      // sin ninguna imagen por defecto
                 .build();
 
-        new CustomSmartDialog().dialogGenerico(context, config, null);
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
+                customNotification.showText("Temporizador finalizado");
+            }
+
+            @Override
+            public void negativo(String valor, AlertDialog dialog) {
+
+            }
+        });
 
 //        DialogConfig config2 = new DialogConfig.Builder()
 //                .setMostrarIconoTitulo(true)                                // mostrar icono en el titulo
