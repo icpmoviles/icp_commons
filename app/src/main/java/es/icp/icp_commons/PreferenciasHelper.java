@@ -25,7 +25,7 @@ public class PreferenciasHelper {
         if (object instanceof String) {
             editor.putString(key, (String) object);
         }else if (object instanceof Long) {
-            editor.putInt(key, (Integer) object);
+            editor.putLong(key, (Long) object);
         } else if (object instanceof Integer) {
             editor.putInt(key, (Integer) object);
         } else if (object instanceof Boolean) {
