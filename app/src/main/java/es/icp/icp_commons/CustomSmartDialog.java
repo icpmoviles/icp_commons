@@ -11,6 +11,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -699,6 +700,7 @@ public class CustomSmartDialog {
                     if (config.isMostrarEditText()) { //----------------------------------------------------------------------------------
                         llEditText.setVisibility(View.VISIBLE);
                         txtInputLayout.setHint(Html.fromHtml(config.getHint()));
+                        txtInputLayout.getEditText().setInputType(config.getInputType());
                         CommonsExecutors.getExecutor().Main().execute(new Runnable() {
                             @Override
                             public void run() {

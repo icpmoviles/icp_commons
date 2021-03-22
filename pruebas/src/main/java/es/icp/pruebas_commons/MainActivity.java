@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -554,6 +555,7 @@ public class MainActivity extends CommonsBaseApp {
                 .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTextoEditText("Hola, texto por default :D")
                 .setTitulo("Pruebas #4")
+                .setInputType(InputType.TYPE_CLASS_NUMBER)
                 .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.")
                 .setMostrarNegativo(true)
                 .setMostrarPositivo(true)

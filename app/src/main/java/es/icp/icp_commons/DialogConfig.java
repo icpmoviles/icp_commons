@@ -2,6 +2,7 @@ package es.icp.icp_commons;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.InputType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,7 @@ public class DialogConfig {
     private boolean                  showTemporizador            = false;
     private boolean                  makeULTRA                   = false;
     private UltraConfig              ultraConfig;
+    private int                      inputType                   = InputType.TYPE_CLASS_TEXT;
 
     public UltraConfig getUltraConfig() {
         return ultraConfig;
@@ -57,6 +59,14 @@ public class DialogConfig {
 
     public void setUltraConfig(UltraConfig ultraConfig) {
         this.ultraConfig = ultraConfig;
+    }
+
+    public int getInputType() {
+        return inputType;
+    }
+
+    public void setInputType(int inputType) {
+        this.inputType = inputType;
     }
 
     public boolean isMakeULTRA() {
@@ -406,6 +416,7 @@ public class DialogConfig {
         private boolean                  showTemporizador            = false;
         private boolean                  makeULTRA                   = false;
         private UltraConfig              ultraConfig;
+        private int                      inputType                   = InputType.TYPE_CLASS_TEXT;
 
         public Builder() {
         }
@@ -431,6 +442,11 @@ public class DialogConfig {
 
         public Builder setTiempo(int tiempo) {
             this.tiempo = tiempo;
+            return this;
+        }
+
+        public Builder setInputType(int inputType) {
+            this.inputType = inputType;
             return this;
         }
 
@@ -644,6 +660,7 @@ public class DialogConfig {
             dialogConfig.showTemporizador            = this.showTemporizador;
             dialogConfig.makeULTRA                   = this.makeULTRA;
             dialogConfig.ultraConfig                 = this.ultraConfig;
+            dialogConfig.inputType                   = this.inputType;
             return dialogConfig;
         }
     }
