@@ -46,6 +46,7 @@ import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
 import es.icp.icp_commons.Interfaces.ResponseDialog;
 import es.icp.icp_commons.Loading;
 import es.icp.icp_commons.Objects.CheckRequestException;
+import es.icp.icp_commons.Objects.CommonsInputType;
 import es.icp.icp_commons.Objects.Coordenada;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
@@ -555,7 +556,7 @@ public class MainActivity extends CommonsBaseApp {
                 .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTextoEditText("Hola, texto por default :D")
                 .setTitulo("Pruebas #4")
-                .setInputType(InputType.TYPE_CLASS_NUMBER)
+                .setInputType(new CommonsInputType.Builder().setInputType(InputType.TYPE_CLASS_NUMBER).build())
                 .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.")
                 .setMostrarNegativo(true)
                 .setMostrarPositivo(true)

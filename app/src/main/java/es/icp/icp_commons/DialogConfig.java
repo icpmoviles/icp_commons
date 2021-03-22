@@ -2,12 +2,12 @@ package es.icp.icp_commons;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.InputType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.icp.icp_commons.Interfaces.AdjuntarImagenesListener;
+import es.icp.icp_commons.Objects.CommonsInputType;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.SmartButton;
 
@@ -51,7 +51,7 @@ public class DialogConfig {
     private boolean                  showTemporizador            = false;
     private boolean                  makeULTRA                   = false;
     private UltraConfig              ultraConfig;
-    private int                      inputType                   = InputType.TYPE_CLASS_TEXT;
+    private CommonsInputType         inputType                   = new CommonsInputType();
 
     public UltraConfig getUltraConfig() {
         return ultraConfig;
@@ -61,11 +61,11 @@ public class DialogConfig {
         this.ultraConfig = ultraConfig;
     }
 
-    public int getInputType() {
+    public CommonsInputType getInputType() {
         return inputType;
     }
 
-    public void setInputType(int inputType) {
+    public void setInputType(CommonsInputType inputType) {
         this.inputType = inputType;
     }
 
@@ -416,7 +416,7 @@ public class DialogConfig {
         private boolean                  showTemporizador            = false;
         private boolean                  makeULTRA                   = false;
         private UltraConfig              ultraConfig;
-        private int                      inputType                   = InputType.TYPE_CLASS_TEXT;
+        private CommonsInputType         inputType                   = new CommonsInputType();
 
         public Builder() {
         }
@@ -445,7 +445,7 @@ public class DialogConfig {
             return this;
         }
 
-        public Builder setInputType(int inputType) {
+        public Builder setInputType(CommonsInputType inputType) {
             this.inputType = inputType;
             return this;
         }
