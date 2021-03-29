@@ -54,6 +54,29 @@ public class Sonido {
         reproducirSonido(context, sonido, onCompletionListener);
     }
 
+    public static void reproducirSonidoLib(Context context, Pista pista, OnCompletionListener onCompletionListener) {
+        int sonido;
+        switch (pista) {
+            case EXITO:
+                sonido = R.raw.exito;
+                break;
+            case ERROR:
+                sonido = R.raw.error;
+                break;
+            case OHOH:
+                sonido = R.raw.ohoh;
+                break;
+            default:
+                sonido = R.raw.ohoh;
+                break;
+        }
+        reproducirSonido(context, sonido, onCompletionListener);
+    }
+
+    public static void reproducirSonidoLib(Context context, Pista pista) {
+        reproducirSonidoLib(context, pista, null);
+    }
+
     /**
      * Reproduce un audio propio (no existente en la librería.
      *
@@ -88,5 +111,9 @@ public class Sonido {
             mp.start();
             GlobalVariables.Sonido = true;
         }
+    }
+
+    public enum Pista {
+        ERROR, EXITO, OHOH
     }
 }
