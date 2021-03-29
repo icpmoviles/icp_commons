@@ -233,6 +233,13 @@
                 android:gravity="start|center_vertical"
                 android:text="031 - GEOTRACKING" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn32}"
+                android:gravity="start|center_vertical"
+                android:text="032 - SONIDO ENUM" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

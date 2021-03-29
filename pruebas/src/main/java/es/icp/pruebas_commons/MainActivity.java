@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -43,6 +44,7 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.GeocoderListener;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
+import es.icp.icp_commons.Interfaces.OnCompletionListener;
 import es.icp.icp_commons.Interfaces.ResponseDialog;
 import es.icp.icp_commons.Loading;
 import es.icp.icp_commons.Objects.CheckRequestException;
@@ -53,6 +55,7 @@ import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.icp_commons.Services.GeoTracking;
 import es.icp.icp_commons.Services.WebService;
+import es.icp.icp_commons.Sonido;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
@@ -257,7 +260,21 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn31(View view) {
                 geoTracking();
             }
+
+            @Override
+            public void onClickBtn32(View view) {
+                sonidoEnum();
+            }
         };
+    }
+
+    private void sonidoEnum() {
+        Sonido.reproducirSonidoLib(context, Sonido.Pista.EXITO, new OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaplayer) {
+                Toast.makeText(context, "Pista de audio ha terminado de sonar.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void geoTracking() {
@@ -982,5 +999,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn30(View view);
 
         void onClickBtn31(View view);
+
+        void onClickBtn32(View view);
     }
 }
