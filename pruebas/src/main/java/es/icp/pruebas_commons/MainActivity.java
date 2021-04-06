@@ -275,6 +275,36 @@ public class MainActivity extends CommonsBaseApp {
                 Toast.makeText(context, "Pista de audio ha terminado de sonar.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        DialogConfig config = new DialogConfig.Builder()
+                .makeULTRA(new DialogConfig.UltraConfig.Builder()
+                        .setMinHeight(0.2f)
+                        .build())
+                .setMostrarIconoTitulo(true)
+                .setIconoTitulo(R.drawable.ic_launcher_round)
+                .setTitulo("Bultos")
+                .setMensaje("Introduzca la cantidad de bultos: ")
+                .setMostrarNegativo(true)
+                .setMostrarPositivo(true)
+                .setMostrarCantidad(true)
+                .setTextoPositivo("CONFIRMAR")
+                .setTextoNegativo("CANCELAR")
+                .setColorTitulo(android.R.color.holo_blue_light)
+                .setMostrarImagenPredeterminada(false)
+                .build();
+
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, @Nullable AlertDialog dialog) {
+                dialog.hide();
+                Toast.makeText(context, valor, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void negativo(String valor, @Nullable AlertDialog dialog) {
+
+            }
+        });
     }
 
     private void geoTracking() {
