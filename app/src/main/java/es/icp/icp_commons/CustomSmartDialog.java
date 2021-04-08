@@ -11,7 +11,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.Html;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -102,7 +101,11 @@ public class CustomSmartDialog {
      * @author Ventura de Lucas
      */
     public void dismiss() {
-        dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+        try {
+            dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -112,7 +115,11 @@ public class CustomSmartDialog {
      * @author Ventura de Lucas
      */
     public void remove() {
-        dialogs.remove(dialogs.size() - 1);
+        try {
+            dialogs.remove(dialogs.size() - 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -131,23 +138,27 @@ public class CustomSmartDialog {
      */
     public void dismissLoading() {
         boolean encontrado = false;
-        for (int i = 0; i < dialogs.size(); i++) {
-            AlertDialog2 dialog2 = dialogs.get(i);
-            if (dialog2.isLoadingDialog()) {
-                encontrado = true;
-                dialog2.getDialog().dismiss();
-                removeLoading(i);
-            }
-        }
-        if (!encontrado && contadorLoading < MAX_HIDE_LOADING) {
-            Timer timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    dismissLoading();
+        try {
+            for (int i = 0; i < dialogs.size(); i++) {
+                AlertDialog2 dialog2 = dialogs.get(i);
+                if (dialog2.isLoadingDialog()) {
+                    encontrado = true;
+                    dialog2.getDialog().dismiss();
+                    removeLoading(i);
                 }
-            };
-            timer.schedule(timerTask, 500);
+            }
+            if (!encontrado && contadorLoading < MAX_HIDE_LOADING) {
+                Timer timer = new Timer();
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        dismissLoading();
+                    }
+                };
+                timer.schedule(timerTask, 500);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -165,7 +176,11 @@ public class CustomSmartDialog {
      * @author Ventura de Lucas
      */
     public void removeLoading(int i) {
-        dialogs.remove(i);
+        try {
+            dialogs.remove(i);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -174,7 +189,11 @@ public class CustomSmartDialog {
      * @author Ventura de Lucas
      */
     public void cancel() {
-        dialogs.get(dialogs.size() - 1).getDialog().cancel();
+        try {
+            dialogs.get(dialogs.size() - 1).getDialog().cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -205,7 +224,13 @@ public class CustomSmartDialog {
      * @author Ventura de Lucas
      */
     public boolean isShowing() {
-        return dialogs.get(dialogs.size() - 1).getDialog().isShowing();
+        boolean isShowing = false;
+        try {
+            isShowing = dialogs.get(dialogs.size() - 1).getDialog().isShowing();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isShowing;
     }
 
     /**
@@ -215,10 +240,14 @@ public class CustomSmartDialog {
      * @author Ventura de Lucas
      */
     public boolean isShowingLoading() {
-        for (AlertDialog2 dialog2 : dialogs) {
-            if (dialog2.isLoadingDialog()) {
-                return dialogs.get(dialogs.size() - 1).getDialog().isShowing();
+        try {
+            for (AlertDialog2 dialog2 : dialogs) {
+                if (dialog2.isLoadingDialog()) {
+                    return dialogs.get(dialogs.size() - 1).getDialog().isShowing();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -316,8 +345,12 @@ public class CustomSmartDialog {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialogs.get(dialogs.size() - 1).getDialog().dismiss();
-                        dialogs.remove(dialogs.size() - 1);
+                        try {
+                            dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+                            dialogs.remove(dialogs.size() - 1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         ((View.OnClickListener) button.getTag()).onClick(v);
                     }
                 });
@@ -328,66 +361,148 @@ public class CustomSmartDialog {
                     @Override
                     public void positivo(String valor, AlertDialog dialog) {
                         dialog.dismiss();
-                        dialogs.remove(dialogs.size() - 1);
+                        try {
+                            dialogs.remove(dialogs.size() - 1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         listener.positivo(valor, dialog);
                     }
 
                     @Override
                     public void negativo(String valor, AlertDialog dialog) {
                         dialog.dismiss();
-                        dialogs.remove(dialogs.size() - 1);
+                        try {
+                            dialogs.remove(dialogs.size() - 1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         listener.negativo(valor, dialog);
                     }
                 });
             }
         }
-        dialogs.get(dialogs.size() - 1).getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface arg0) {
-                for (final Button button : buttons) {
-                    if (button.type == Button.Type.POSSITIVE) {
-                        if (button.textColor != 0) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.getColor(button.textColor));
-                        if (button.textSize != 0) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_POSITIVE).setTextSize((float) button.textSize);
-                        if (button.onClickListener != null) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                button.onClickListener.onClick(dialogs.get(dialogs.size() - 1).getDialog(), 0);
-                                dialogs.remove(dialogs.size() - 1);
+        try {
+            dialogs.get(dialogs.size() - 1).getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface arg0) {
+                    for (final Button button : buttons) {
+                        if (button.type == Button.Type.POSSITIVE) {
+                            if (button.textColor != 0) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.getColor(button.textColor));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        });
-                    } else if (button.type == Button.Type.NEGATIVE) {
-                        if (button.textColor != 0) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getColor(button.textColor));
-                        if (button.textSize != 0) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize((float) button.textSize);
-                        if (button.onClickListener != null) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                button.onClickListener.onClick(dialogs.get(dialogs.size() - 1).getDialog(), 0);
-                                dialogs.remove(dialogs.size() - 1);
+                            if (button.textSize != 0) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_POSITIVE).setTextSize((float) button.textSize);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        });
-                    } else {
-                        if (button.textColor != 0) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(context.getColor(button.textColor));
-                        if (button.textSize != 0) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEUTRAL).setTextSize((float) button.textSize);
-                        //                        CustomSmartDialog.this.dialog.getDialog().getButton(AlertDialog.BUTTON_NEUTRAL).setGravity(Gravity.CENTER_VERTICAL);
-                        if (button.onClickListener != null) dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                button.onClickListener.onClick(dialogs.get(dialogs.size() - 1).getDialog(), 0);
-                                dialogs.remove(dialogs.size() - 1);
+                            if (button.onClickListener != null) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            try {
+                                                button.onClickListener.onClick(dialogs.get(dialogs.size() - 1).getDialog(), 0);
+                                                dialogs.remove(dialogs.size() - 1);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        });
+                        } else if (button.type == Button.Type.NEGATIVE) {
+                            if (button.textColor != 0) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getColor(button.textColor));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (button.textSize != 0) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize((float) button.textSize);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (button.onClickListener != null) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            try {
+                                                button.onClickListener.onClick(dialogs.get(dialogs.size() - 1).getDialog(), 0);
+                                                dialogs.remove(dialogs.size() - 1);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            if (button.textColor != 0) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(context.getColor(button.textColor));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (button.textSize != 0) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEUTRAL).setTextSize((float) button.textSize);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            //                        CustomSmartDialog.this.dialog.getDialog().getButton(AlertDialog.BUTTON_NEUTRAL).setGravity(Gravity.CENTER_VERTICAL);
+                            if (button.onClickListener != null) {
+                                try {
+                                    dialogs.get(dialogs.size() - 1).getDialog().getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            try {
+                                                button.onClickListener.onClick(dialogs.get(dialogs.size() - 1).getDialog(), 0);
+                                                dialogs.remove(dialogs.size() - 1);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         final int indiceActual = dialogs.size() - 1;
         if (tiempo > 0) {
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    dialogs.get(indiceActual).getDialog().dismiss();
-                    dialogs.remove(dialogs.get(indiceActual));
+                    try {
+                        dialogs.get(indiceActual).getDialog().dismiss();
+                        dialogs.remove(dialogs.get(indiceActual));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             };
             timer.schedule(timerTask, tiempo);
@@ -401,32 +516,9 @@ public class CustomSmartDialog {
                 window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 window.setGravity(Gravity.BOTTOM);
 
-//                dialog2.getDialog().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-
-//                final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) ((Activity)context).findViewById(android.R.id.content)).getChildAt(0);
-//                FrameLayout frameLayout = ((Activity) context).
-//
-//                dialog2.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                    @Override
-//                    public void onDismiss(DialogInterface dialog) {
-//
-//                    }
-//                });
-
-//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                window.setNavigationBarColor(Color.WHITE);
-
-//                dialog2.getDialog().getWindow().set
-
                 window.setBackgroundDrawableResource(android.R.color.transparent);
-//                ((Activity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
                 window.setWindowAnimations(R.style.DialogAnimation);
-
-//                ((View) dialog2.getDialog()).getParent().getParent().getParent()
-
 
             }
             if (!isLoadingDialog) Loading.HideSmartLoading();
@@ -553,7 +645,7 @@ public class CustomSmartDialog {
                     //-------------------------------------------------------
                     //--------------- ULTRA -------------------
                     LinearLayout mainLayout = mainContainer.findViewById(R.id.mainLayout);
-                    FrameLayout frameUltra = mainContainer.findViewById(R.id.frameUltra);
+                    FrameLayout  frameUltra = mainContainer.findViewById(R.id.frameUltra);
                     //----------------------------------------------------------------------------------------------------
 
                     //-------------------------------------------------------
@@ -654,14 +746,40 @@ public class CustomSmartDialog {
                         btnPositivo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (config.isAutoDismiss()) dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+                                if (config.isAutoDismiss()) {
+                                    try {
+                                        dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 if (listener != null) {
                                     if (config.getAdjuntarImagenesListener() != null) config.getAdjuntarImagenesListener().aceptar(config.getImagenes());
-                                    if (config.isMostrarEditText()) listener.positivo(txtEditText.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
-                                    else if (config.isMostrarCantidad()) listener.positivo(txtCantidad.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
-                                    else listener.positivo("Positivo", dialogs.get(dialogs.size() - 1).getDialog());
+                                    if (config.isMostrarEditText()) {
+                                        try {
+                                            listener.positivo(txtEditText.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else if (config.isMostrarCantidad()) {
+                                        try {
+                                            listener.positivo(txtCantidad.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        try {
+                                            listener.positivo("Positivo", dialogs.get(dialogs.size() - 1).getDialog());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                 }
-                                dialogs.remove(dialogs.size() - 1);
+                                try {
+                                    dialogs.remove(dialogs.size() - 1);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
                     }
@@ -679,13 +797,27 @@ public class CustomSmartDialog {
                             @Override
                             public void onClick(View v) {
                                 try {
-                                    if (config.isAutoDismiss()) dialogs.get(dialogs.size() - 1).getDialog().dismiss();
-                                    if (listener != null) {
-                                        if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
-                                        else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
-                                        else listener.negativo("Negativo", dialogs.get(dialogs.size() - 1).getDialog());
+                                    if (config.isAutoDismiss()) {
+                                        try {
+                                            dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                    dialogs.remove(dialogs.size() - 1);
+                                    if (listener != null) {
+                                        try {
+                                            if (config.isMostrarEditText()) listener.negativo(txtEditText.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
+                                            else if (config.isMostrarCantidad()) listener.negativo(txtCantidad.getText().toString(), dialogs.get(dialogs.size() - 1).getDialog());
+                                            else listener.negativo("Negativo", dialogs.get(dialogs.size() - 1).getDialog());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    try {
+                                        dialogs.remove(dialogs.size() - 1);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 } catch (IndexOutOfBoundsException e) {
                                     e.printStackTrace();
                                 }
@@ -748,9 +880,19 @@ public class CustomSmartDialog {
                             b.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (config.isAutoDismiss()) dialogs.get(dialogs.size() - 1).getDialog().dismiss();
-                                    boton.getCustomListener().onClick("", dialogs.get(dialogs.size() - 1).getDialog());
-                                    dialogs.remove(dialogs.size() - 1);
+                                    if (config.isAutoDismiss()) {
+                                        try {
+                                            dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    try {
+                                        boton.getCustomListener().onClick("", dialogs.get(dialogs.size() - 1).getDialog());
+                                        dialogs.remove(dialogs.size() - 1);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
