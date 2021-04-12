@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
@@ -86,6 +87,8 @@ public class MainActivity extends CommonsBaseApp {
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         setEvents();
         binding.setHandler(handler);
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
 //        geoTrackingService();
     }
@@ -255,7 +258,30 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn31(View view) {
                 geoTracking();
             }
+
+            @Override
+            public void onClickBtn32(View view) {
+                cantidades();
+            }
         };
+    }
+
+    private void cantidades() {
+        DialogConfig config = new DialogConfig.Builder()
+                .makeULTRA(new DialogConfig.UltraConfig.Builder()
+                .setMinHeight(0.2f)
+                .build())
+                .setTitulo("Cantidades")
+                .setMensaje("Introduzca cantidad")
+                .setAutoDismiss(true).setMostrarImagenPredeterminada(false)
+                .setTextoPositivo("Aceptar")
+                .setMostrarCantidad(true)
+                .setCantidadInicial(5)
+                .setCantidadMinima(1)
+                .build();
+
+        new CustomSmartDialog().dialogGenerico(context, config, null);
+
     }
 
     private void geoTracking() {
@@ -968,5 +994,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn30(View view);
 
         void onClickBtn31(View view);
+
+        void onClickBtn32(View view);
     }
 }

@@ -37,6 +37,7 @@ public class DialogConfig {
     private String                   hint                        = "";
     private int                      maxLength                   = 0;
     private int                      cantidadInicial             = 0;
+    private int                      cantidadMinima              = 0;
     private boolean                  autoDismiss                 = false;
     private boolean                  mostrarPositivo             = true;
     private boolean                  mostrarNegativo             = true;
@@ -145,6 +146,14 @@ public class DialogConfig {
 
     private void setIconoEditTextInt(int iconoEditTextInt) {
         this.iconoEditTextInt = iconoEditTextInt;
+    }
+
+    public int getCantidadMinima() {
+        return cantidadMinima;
+    }
+
+    public void setCantidadMinima(int cantidadMinima) {
+        this.cantidadMinima = cantidadMinima;
     }
 
     public int getImagenInt() {
@@ -392,6 +401,7 @@ public class DialogConfig {
         private String                   hint                        = "";
         private int                      maxLength                   = 0;
         private int                      cantidadInicial             = 0;
+        private int                      cantidadMinima              = 0;
         private boolean                  autoDismiss                 = false;
         private boolean                  mostrarPositivo             = true;
         private boolean                  mostrarNegativo             = true;
@@ -426,6 +436,11 @@ public class DialogConfig {
 
         public Builder showTemporizador(boolean showTemporizador) {
             this.showTemporizador = showTemporizador;
+            return this;
+        }
+
+        public Builder setCantidadMinima(int cantidadMinima) {
+            this.cantidadMinima = cantidadMinima;
             return this;
         }
 
@@ -644,6 +659,7 @@ public class DialogConfig {
             dialogConfig.showTemporizador            = this.showTemporizador;
             dialogConfig.makeULTRA                   = this.makeULTRA;
             dialogConfig.ultraConfig                 = this.ultraConfig;
+            dialogConfig.cantidadMinima              = this.cantidadMinima;
             return dialogConfig;
         }
     }

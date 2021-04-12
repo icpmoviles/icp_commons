@@ -761,7 +761,14 @@ public class CustomSmartDialog {
                     }
                     if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
                         quantity.setVisibility(View.VISIBLE);
-                        txtCantidad.setText(Html.fromHtml(String.valueOf(config.getCantidadInicial())));
+                        int cantidadInicial = 0;
+                        if(config.getCantidadMinima() > config.getCantidadInicial()) {
+                            cantidadInicial = config.getCantidadMinima();
+                        } else {
+                            cantidadInicial = config.getCantidadInicial();
+                        }
+                        txtCantidad.setText(Html.fromHtml(String.valueOf(cantidadInicial)));
+
                         btnMas.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -774,7 +781,9 @@ public class CustomSmartDialog {
                             @Override
                             public void onClick(View v) {
                                 int cantidad = Integer.parseInt(txtCantidad.getText().toString());
-                                if (cantidad != 0) cantidad--;
+                                if (cantidad != 0 && cantidad > config.getCantidadMinima()) {
+                                    cantidad--;
+                                }
                                 txtCantidad.setText(String.valueOf(cantidad));
                             }
                         });
