@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.icp.icp_commons.Interfaces.AdjuntarImagenesListener;
+import es.icp.icp_commons.Objects.CommonsInputType;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.SmartButton;
 
@@ -51,6 +52,7 @@ public class DialogConfig {
     private boolean                  showTemporizador            = false;
     private boolean                  makeULTRA                   = false;
     private UltraConfig              ultraConfig;
+    private CommonsInputType         inputType                   = new CommonsInputType();
 
     public UltraConfig getUltraConfig() {
         return ultraConfig;
@@ -58,6 +60,14 @@ public class DialogConfig {
 
     public void setUltraConfig(UltraConfig ultraConfig) {
         this.ultraConfig = ultraConfig;
+    }
+
+    public CommonsInputType getInputType() {
+        return inputType;
+    }
+
+    public void setInputType(CommonsInputType inputType) {
+        this.inputType = inputType;
     }
 
     public boolean isMakeULTRA() {
@@ -416,6 +426,7 @@ public class DialogConfig {
         private boolean                  showTemporizador            = false;
         private boolean                  makeULTRA                   = false;
         private UltraConfig              ultraConfig;
+        private CommonsInputType         inputType                   = new CommonsInputType();
 
         public Builder() {
         }
@@ -446,6 +457,11 @@ public class DialogConfig {
 
         public Builder setTiempo(int tiempo) {
             this.tiempo = tiempo;
+            return this;
+        }
+
+        public Builder setInputType(CommonsInputType inputType) {
+            this.inputType = inputType;
             return this;
         }
 
@@ -660,6 +676,7 @@ public class DialogConfig {
             dialogConfig.makeULTRA                   = this.makeULTRA;
             dialogConfig.ultraConfig                 = this.ultraConfig;
             dialogConfig.cantidadMinima              = this.cantidadMinima;
+            dialogConfig.inputType                   = this.inputType;
             return dialogConfig;
         }
     }

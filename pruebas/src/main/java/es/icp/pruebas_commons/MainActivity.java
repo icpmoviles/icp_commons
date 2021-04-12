@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,15 +45,18 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.GeocoderListener;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
+import es.icp.icp_commons.Interfaces.OnCompletionListener;
 import es.icp.icp_commons.Interfaces.ResponseDialog;
 import es.icp.icp_commons.Loading;
 import es.icp.icp_commons.Objects.CheckRequestException;
+import es.icp.icp_commons.Objects.CommonsInputType;
 import es.icp.icp_commons.Objects.Coordenada;
 import es.icp.icp_commons.Objects.ImagenCommons;
 import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.icp_commons.Services.GeoTracking;
 import es.icp.icp_commons.Services.WebService;
+import es.icp.icp_commons.Sonido;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
@@ -281,7 +286,6 @@ public class MainActivity extends CommonsBaseApp {
                 .build();
 
         new CustomSmartDialog().dialogGenerico(context, config, null);
-
     }
 
     private void geoTracking() {
@@ -323,7 +327,18 @@ public class MainActivity extends CommonsBaseApp {
                 .setMostrarImagenPredeterminada(false)                      // sin ninguna imagen por defecto
                 .build();
 
-        new CustomSmartDialog().dialogGenerico(context, config, null);
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
+                customNotification.showText("Temporizador finalizado");
+            }
+
+            @Override
+            public void negativo(String valor, AlertDialog dialog) {
+
+            }
+        });
 
 //        DialogConfig config2 = new DialogConfig.Builder()
 //                .setMostrarIconoTitulo(true)                                // mostrar icono en el titulo
@@ -569,6 +584,7 @@ public class MainActivity extends CommonsBaseApp {
                 .setIconoTitulo(R.drawable.ic_launcher_round)
                 .setTextoEditText("Hola, texto por default :D")
                 .setTitulo("Pruebas #4")
+                .setInputType(new CommonsInputType.Builder().setInputType(InputType.TYPE_CLASS_NUMBER).build())
                 .setMensaje("Mensaje de prueba 1número1 con un diálogo que acepta un editText y tres botones neutral (BARCODE), positivo y negativo.")
                 .setMostrarNegativo(true)
                 .setMostrarPositivo(true)
