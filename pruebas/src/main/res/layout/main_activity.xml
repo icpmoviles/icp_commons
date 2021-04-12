@@ -238,7 +238,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{handler::onClickBtn32}"
                 android:gravity="start|center_vertical"
-                android:text="032 - SONIDO ENUM" />
+                android:text="032 - CANTIDADES" />
 
             </LinearLayout>
 

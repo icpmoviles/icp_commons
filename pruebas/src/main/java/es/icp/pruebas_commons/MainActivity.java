@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
@@ -91,6 +92,8 @@ public class MainActivity extends CommonsBaseApp {
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         setEvents();
         binding.setHandler(handler);
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
 //        geoTrackingService();
     }
@@ -263,48 +266,26 @@ public class MainActivity extends CommonsBaseApp {
 
             @Override
             public void onClickBtn32(View view) {
-                sonidoEnum();
+                cantidades();
             }
         };
     }
 
-    private void sonidoEnum() {
-        Sonido.reproducirSonidoLib(context, Sonido.Pista.EXITO, new OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaplayer) {
-                Toast.makeText(context, "Pista de audio ha terminado de sonar.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+    private void cantidades() {
         DialogConfig config = new DialogConfig.Builder()
                 .makeULTRA(new DialogConfig.UltraConfig.Builder()
-                        .setMinHeight(0.2f)
-                        .build())
-                .setMostrarIconoTitulo(true)
-                .setIconoTitulo(R.drawable.ic_launcher_round)
-                .setTitulo("Bultos")
-                .setMensaje("Introduzca la cantidad de bultos: ")
-                .setMostrarNegativo(true)
-                .setMostrarPositivo(true)
+                .setMinHeight(0.2f)
+                .build())
+                .setTitulo("Cantidades")
+                .setMensaje("Introduzca cantidad")
+                .setAutoDismiss(true).setMostrarImagenPredeterminada(false)
+                .setTextoPositivo("Aceptar")
                 .setMostrarCantidad(true)
-                .setTextoPositivo("CONFIRMAR")
-                .setTextoNegativo("CANCELAR")
-                .setColorTitulo(android.R.color.holo_blue_light)
-                .setMostrarImagenPredeterminada(false)
+                .setCantidadInicial(5)
+                .setCantidadMinima(1)
                 .build();
 
-        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
-            @Override
-            public void positivo(String valor, @Nullable AlertDialog dialog) {
-                dialog.hide();
-                Toast.makeText(context, valor, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void negativo(String valor, @Nullable AlertDialog dialog) {
-
-            }
-        });
+        new CustomSmartDialog().dialogGenerico(context, config, null);
     }
 
     private void geoTracking() {
