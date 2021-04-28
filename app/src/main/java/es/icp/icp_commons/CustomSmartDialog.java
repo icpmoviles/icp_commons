@@ -491,13 +491,14 @@ public class CustomSmartDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        final int indiceActual = dialogs.size() - 1;
+//        final int indiceActual = dialogs.size() - 1;
         if (tiempo > 0) {
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
                     try {
+                        int indiceActual = dialogs.size() - 1;
                         dialogs.get(indiceActual).getDialog().dismiss();
                         dialogs.remove(dialogs.get(indiceActual));
                     } catch (Exception e) {

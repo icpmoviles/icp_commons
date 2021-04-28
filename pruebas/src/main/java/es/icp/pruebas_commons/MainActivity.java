@@ -313,7 +313,7 @@ public class MainActivity extends CommonsBaseApp {
     private void crearDialog22() {
         DialogConfig config = new DialogConfig.Builder()
                 .makeULTRA(new DialogConfig.UltraConfig.Builder()           // diálogo estética ULTA
-                        .setMinHeight(0.5f)                                 // mínima altura de los diálogos ULTRA
+                        .setMinHeight(0.1f)                                 // mínima altura de los diálogos ULTRA
                         .build())
                 .setMostrarIconoTitulo(true)                                // mostrar icono en el titulo
                 .setIconoTitulo(R.drawable.ic_launcher_round)               // icono del titulo
@@ -326,6 +326,19 @@ public class MainActivity extends CommonsBaseApp {
                 .setColorTitulo(android.R.color.holo_blue_light)            // color de fondo para la barra del titulo
                 .setMostrarImagenPredeterminada(false)                      // sin ninguna imagen por defecto
                 .build();
+
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
+                customNotification.showText("Temporizador finalizado");
+            }
+
+            @Override
+            public void negativo(String valor, AlertDialog dialog) {
+
+            }
+        });
 
         new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
