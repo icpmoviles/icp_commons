@@ -94,8 +94,8 @@ public class ParametrosPeticion {
         this.url    = url;
         this.clase  = clase;
         try {
-            JSONObject = new JSONObject(new Gson().toJson(json));
             jsonType   = JsonTypes.SIMPLE;
+            JSONObject = new JSONObject(new Gson().toJson(json));
         } catch (JSONException ex) {
             ex.printStackTrace();
         }

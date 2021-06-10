@@ -240,6 +240,20 @@
                 android:gravity="start|center_vertical"
                 android:text="032 - CANTIDADES" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn33}"
+                android:gravity="start|center_vertical"
+                android:text="033 - PROGRESS ACTUALIZABLE" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn34}"
+                android:gravity="start|center_vertical"
+                android:text="034 - SMART PROGRESS ACTUALIZABLE" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

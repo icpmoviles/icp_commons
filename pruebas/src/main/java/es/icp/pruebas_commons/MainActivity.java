@@ -268,7 +268,44 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn32(View view) {
                 cantidades();
             }
+
+            @Override
+            public void onClickBtn33(View view) {
+                progressActualizable();
+            }
+
+            @Override
+            public void onClickBtn34(View view) {
+                smartProgressActualizable();
+            }
         };
+    }
+
+    private void progressActualizable() {
+        Loading.ShowLoading(context);
+        TimerTask timerTask = new TimerTask() {
+            int seconds = 0;
+            @Override
+            public void run() {
+                Loading.setMessage("Han pasado " + seconds + " segundos...");
+                seconds++;
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 0, 1000);
+    }
+
+    private void smartProgressActualizable() {
+        Loading.ShowSmartLoading(context, "Titulo", "Han pasado 0 segundos", true);
+        TimerTask timerTask = new TimerTask() {
+            int seconds = 0;
+            @Override
+            public void run() {
+                Loading.setSmartMessage("Han pasado " + seconds + " segundos...");
+                seconds++;
+            }
+        };
+        new Timer().schedule(timerTask, 0, 1000);
     }
 
     private void cantidades() {
@@ -1025,5 +1062,9 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn31(View view);
 
         void onClickBtn32(View view);
+
+        void onClickBtn33(View view);
+
+        void onClickBtn34(View view);
     }
 }
