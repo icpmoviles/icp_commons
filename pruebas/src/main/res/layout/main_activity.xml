@@ -254,6 +254,13 @@
                 android:gravity="start|center_vertical"
                 android:text="034 - SMART PROGRESS ACTUALIZABLE" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handler::onClickBtn35}"
+                android:gravity="start|center_vertical"
+                android:text="035 - TEST DE VELOCIDAD" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

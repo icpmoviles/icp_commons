@@ -2,9 +2,12 @@ package es.icp.pruebas_commons;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -45,7 +48,6 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.GeocoderListener;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
-import es.icp.icp_commons.Interfaces.OnCompletionListener;
 import es.icp.icp_commons.Interfaces.ResponseDialog;
 import es.icp.icp_commons.Loading;
 import es.icp.icp_commons.Objects.CheckRequestException;
@@ -56,7 +58,7 @@ import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.icp_commons.Services.GeoTracking;
 import es.icp.icp_commons.Services.WebService;
-import es.icp.icp_commons.Sonido;
+import es.icp.icp_commons.Utils.SpeedTest;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
@@ -278,13 +280,24 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn34(View view) {
                 smartProgressActualizable();
             }
+
+            @Override
+            public void onClickBtn35(View view) {
+                testVelocidad();
+            }
         };
+    }
+
+    private void testVelocidad() {
+        SpeedTest speedTest = SpeedTest.getInstance(context);
+        speedTest.startTest(true);
     }
 
     private void progressActualizable() {
         Loading.ShowLoading(context);
         TimerTask timerTask = new TimerTask() {
             int seconds = 0;
+
             @Override
             public void run() {
                 Loading.setMessage("Han pasado " + seconds + " segundos...");
@@ -299,6 +312,7 @@ public class MainActivity extends CommonsBaseApp {
         Loading.ShowSmartLoading(context, "Titulo", "Han pasado 0 segundos", true);
         TimerTask timerTask = new TimerTask() {
             int seconds = 0;
+
             @Override
             public void run() {
                 Loading.setSmartMessage("Han pasado " + seconds + " segundos...");
@@ -311,8 +325,8 @@ public class MainActivity extends CommonsBaseApp {
     private void cantidades() {
         DialogConfig config = new DialogConfig.Builder()
                 .makeULTRA(new DialogConfig.UltraConfig.Builder()
-                .setMinHeight(0.2f)
-                .build())
+                        .setMinHeight(0.2f)
+                        .build())
                 .setTitulo("Cantidades")
                 .setMensaje("Introduzca cantidad")
                 .setAutoDismiss(true).setMostrarImagenPredeterminada(false)
@@ -1066,5 +1080,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn33(View view);
 
         void onClickBtn34(View view);
+
+        void onClickBtn35(View view);
     }
 }
