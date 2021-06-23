@@ -747,7 +747,11 @@ public class CustomSmartDialog {
                                 @Override
                                 public void run() {
                                     //                                    iconoTitulo.setBackground(context.getDrawable(R.drawable.circled_background_white));
-                                    Glide.with(context).asGif().load(config.getIconoTituloInt())/*.apply(RequestOptions.circleCropTransform())*/.into(iconoTitulo);
+                                    try {
+                                        Glide.with(context).asGif().load(config.getIconoTituloInt())/*.apply(RequestOptions.circleCropTransform())*/.into(iconoTitulo);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                         } else {
