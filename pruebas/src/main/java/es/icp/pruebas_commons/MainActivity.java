@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.icp.icp_commons.Camara.Camara;
 import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CommonsGeocoder;
 import es.icp.icp_commons.CustomDialog;
@@ -284,6 +287,11 @@ public class MainActivity extends CommonsBaseApp {
             @Override
             public void onClickBtn35(View view) {
                 testVelocidad();
+            }
+
+            @Override
+            public void onClickBtn36(View view) {
+                LevantarCamara();
             }
         };
     }
@@ -1012,6 +1020,22 @@ public class MainActivity extends CommonsBaseApp {
         }).start();
     }
 
+    private void LevantarCamara() {
+        startActivityForResult(new Intent(this, Camara.class), Constantes.INTENT_CAMARA);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK){
+            if (requestCode == Constantes.INTENT_CAMARA) {
+                String photoFile = data.getStringExtra(Constantes.INTENT_CAMARAX);
+                Log.e("PHOTOFILE", photoFile);
+            }
+        }
+    }
+
     public interface Handler {
         void onClickBtn1(View view);
 
@@ -1082,5 +1106,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn34(View view);
 
         void onClickBtn35(View view);
+
+        void onClickBtn36(View view);
     }
 }
