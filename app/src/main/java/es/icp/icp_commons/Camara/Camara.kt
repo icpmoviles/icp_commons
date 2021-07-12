@@ -1,9 +1,7 @@
 package es.icp.icp_commons.Camara
 
 
-import es.icp.icp_commons.R;
 import android.Manifest
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -16,37 +14,35 @@ import android.hardware.display.DisplayManager
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
 import android.view.KeyEvent
 import android.view.View
-import androidx.core.net.toFile
-import androidx.core.view.setPadding
-import androidx.lifecycle.lifecycleScope
 import android.webkit.MimeTypeMap
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
+import androidx.core.view.setPadding
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.Navigation
 import androidx.window.WindowManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import es.icp.icp_commons.Helpers.Constantes
+import es.icp.icp_commons.R
 import es.icp.icp_commons.Utils.Utils
-import es.icp.logs.utils.Helper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.ByteBuffer
-import java.security.Permission
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -80,6 +76,9 @@ class Camara : AppCompatActivity() {
     private lateinit var windowManager: WindowManager
     private var size: Size? = null
     private lateinit var view : ConstraintLayout
+
+    private var cameraFront: Boolean = false
+    private var cameraBack: Boolean = false
 
     private val displayManager by lazy {
         this.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -117,13 +116,26 @@ class Camara : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camara)
 
+        getExtras()
+
         setupView()
+    }
+
+    private fun getExtras() {
+        try {
+            cameraFront = intent.extras!![CAMERA_FRONT] as Boolean
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        try {
+            cameraBack = intent.extras!![CAMERA_BACK] as Boolean
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-
-
     }
 
     override fun onRequestPermissionsResult(
@@ -160,6 +172,8 @@ class Camara : AppCompatActivity() {
     companion object {
 
         private const val TAG = "CameraXBasic"
+        const val CAMERA_FRONT = "CAMERA_FRONT"
+        const val CAMERA_BACK = "CAMERA_BACK"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
@@ -301,6 +315,8 @@ class Camara : AppCompatActivity() {
             ?: throw IllegalStateException("Camera initialization failed.")
 
         // CameraSelector
+        if (cameraFront) lensFacing = CameraSelector.LENS_FACING_FRONT
+        if (cameraBack) lensFacing = CameraSelector.LENS_FACING_BACK
         val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
         // Preview
@@ -516,7 +532,11 @@ class Camara : AppCompatActivity() {
     private fun updateCameraSwitchButton() {
         val switchCamerasButton = container.findViewById<ImageButton>(R.id.camera_switch_button)
         try {
-            switchCamerasButton.isEnabled = hasBackCamera() && hasFrontCamera()
+            if (cameraBack || cameraFront) {
+                switchCamerasButton.isEnabled = false
+                switchCamerasButton.visibility = View.GONE
+            }
+            else switchCamerasButton.isEnabled = hasBackCamera() && hasFrontCamera()
         } catch (exception: CameraInfoUnavailableException) {
             switchCamerasButton.isEnabled = false
         }
