@@ -1022,7 +1022,7 @@ public class MainActivity extends CommonsBaseApp {
 
     private void LevantarCamara() {
         Intent intent = new Intent(this, Camara.class);
-        intent.putExtra(Camara.CAMERA_BACK, true);
+        intent.putExtra(Camara.CAMERA_FRONT, true);
         startActivityForResult(intent, Constantes.INTENT_CAMARA);
     }
 

@@ -104,10 +104,15 @@ class Camara : AppCompatActivity() {
         override fun onDisplayAdded(displayId: Int) = Unit
         override fun onDisplayRemoved(displayId: Int) = Unit
         override fun onDisplayChanged(displayId: Int) = view?.let { view ->
-            if (displayId == displayId) {
-                Log.d(TAG, "Rotation changed: ${view.display.rotation}")
-                imageCapture?.targetRotation = view.display.rotation
-                imageAnalyzer?.targetRotation = view.display.rotation
+            try {
+                if (displayId == displayId) {
+                    Log.d(TAG, "Rotation changed: ${view.display.rotation}")
+                    imageCapture?.targetRotation = view.display.rotation
+                    imageAnalyzer?.targetRotation = view.display.rotation
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Use case binding failed", e)
+                e.printStackTrace()
             }
         } ?: Unit
     }
@@ -301,72 +306,72 @@ class Camara : AppCompatActivity() {
     /** Declare and bind preview, capture and analysis use cases */
     private fun bindCameraUseCases() {
 
-        // Get screen metrics used to setup camera for full screen resolution
-        val metrics = windowManager.getCurrentWindowMetrics().bounds
-        Log.d(TAG, "Screen metrics: ${metrics.width()} x ${metrics.height()}")
+        try {
+            // Get screen metrics used to setup camera for full screen resolution
+            val metrics = windowManager.getCurrentWindowMetrics().bounds
+            Log.d(TAG, "Screen metrics: ${metrics.width()} x ${metrics.height()}")
 
-        val screenAspectRatio = aspectRatio(metrics.width(), metrics.height())
-        Log.d(TAG, "Preview aspect ratio: $screenAspectRatio")
+            val screenAspectRatio = aspectRatio(metrics.width(), metrics.height())
+            Log.d(TAG, "Preview aspect ratio: $screenAspectRatio")
 
-        val rotation = viewFinder.display.rotation
+            val rotation = viewFinder.display.rotation
 
-        // CameraProvider
-        val cameraProvider = cameraProvider
-            ?: throw IllegalStateException("Camera initialization failed.")
+            // CameraProvider
+            val cameraProvider = cameraProvider
+                ?: throw IllegalStateException("Camera initialization failed.")
 
-        // CameraSelector
-        if (cameraFront) lensFacing = CameraSelector.LENS_FACING_FRONT
-        if (cameraBack) lensFacing = CameraSelector.LENS_FACING_BACK
-        val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+            // CameraSelector
+            if (cameraFront) lensFacing = CameraSelector.LENS_FACING_FRONT
+            if (cameraBack) lensFacing = CameraSelector.LENS_FACING_BACK
+            val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
-        // Preview
-        preview = Preview.Builder()
-            // We request aspect ratio but no resolution
-            .setTargetAspectRatio(screenAspectRatio)
+            // Preview
+            preview = Preview.Builder()
+                // We request aspect ratio but no resolution
+                .setTargetAspectRatio(screenAspectRatio)
 //            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
 //            .setTargetResolution(size!!)
-            // Set initial target rotation
-            .setTargetRotation(rotation)
-            .build()
+                // Set initial target rotation
+                .setTargetRotation(rotation)
+                .build()
 
-        // ImageCapture
-        imageCapture = ImageCapture.Builder()
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            // ImageCapture
+            imageCapture = ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
 
-            // We request aspect ratio but no resolution to match preview config, but letting
-            // CameraX optimize for whatever specific resolution best fits our use cases
+                // We request aspect ratio but no resolution to match preview config, but letting
+                // CameraX optimize for whatever specific resolution best fits our use cases
 //                .setTargetAspectRatio(screenAspectRatio)
 //            .setTargetResolution(size!!)
-            .setTargetResolution(Size(1080,1920))
+                .setTargetResolution(Size(1080,1920))
 //            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
-            // Set initial target rotation, we will have to call this again if rotation changes
-            // during the lifecycle of this use case
-            .setTargetRotation(rotation)
-            .build()
+                // Set initial target rotation, we will have to call this again if rotation changes
+                // during the lifecycle of this use case
+                .setTargetRotation(rotation)
+                .build()
 
-        // ImageAnalysis
-        imageAnalyzer = ImageAnalysis.Builder()
-            // We request aspect ratio but no resolution
-            .setTargetAspectRatio(screenAspectRatio)
-            // Set initial target rotation, we will have to call this again if rotation changes
-            // during the lifecycle of this use case
-            .setTargetRotation(rotation)
+            // ImageAnalysis
+            imageAnalyzer = ImageAnalysis.Builder()
+                // We request aspect ratio but no resolution
+                .setTargetAspectRatio(screenAspectRatio)
+                // Set initial target rotation, we will have to call this again if rotation changes
+                // during the lifecycle of this use case
+                .setTargetRotation(rotation)
 //            .setTargetResolution(size!!)
-            .build()
-            // The analyzer can then be assigned to the instance
-            .also {
-                it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                    // Values returned from our analyzer are passed to the attached listener
-                    // We log image analysis results here - you should do something useful
-                    // instead!
-                    Log.d(TAG, "Average luminosity: $luma")
-                })
-            }
+                .build()
+                // The analyzer can then be assigned to the instance
+                .also {
+                    it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
+                        // Values returned from our analyzer are passed to the attached listener
+                        // We log image analysis results here - you should do something useful
+                        // instead!
+                        Log.d(TAG, "Average luminosity: $luma")
+                    })
+                }
 
-        // Must unbind the use-cases before rebinding them
-        cameraProvider.unbindAll()
+            // Must unbind the use-cases before rebinding them
+            cameraProvider.unbindAll()
 
-        try {
             // A variable number of use-cases can be passed here -
             // camera provides access to CameraControl & CameraInfo
             camera = cameraProvider.bindToLifecycle(
@@ -376,6 +381,7 @@ class Camara : AppCompatActivity() {
             preview?.setSurfaceProvider(viewFinder.surfaceProvider)
         } catch (exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
+            exc.printStackTrace()
         }
     }
 
