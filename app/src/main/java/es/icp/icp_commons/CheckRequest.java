@@ -592,11 +592,16 @@ public class CheckRequest {
     }
 
     private static CheckRequestException createException(Exception e, String url, String libMethod) {
-        CheckRequestException checkRequestException;
+        CheckRequestException checkRequestException = null;
         if (e != null) {
             String                function              = "WebService Exception (problem in" + libMethod + " method) - " + url;
-            checkRequestException = ((CheckRequestException) e);
-            checkRequestException.setFunction(function);
+            try {
+                checkRequestException = ((CheckRequestException) e);
+            } catch (Exception e2) {
+                checkRequestException = new CheckRequestException("NullPointer", "Excepcion");
+            } finally {
+                checkRequestException.setFunction(function);
+            }
         } else {
             checkRequestException = new CheckRequestException("NullPointer", "Excepcion");
         }
