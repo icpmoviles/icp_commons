@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 176
-        versionName "2.7.8"
+        versionCode 177
+        versionName "2.7.8.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -64,7 +64,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     // Zetbaitsu Compressor
-    implementation 'id.zelory:compressor:3.0.1'
+//    implementation 'id.zelory:compressor:3.0.0'
+    implementation 'id.zelory:compressor:2.1.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.10"
 

@@ -258,8 +258,8 @@ public class VisorImagenes extends AppCompatActivity {
 
     private static File comprimirArchivo() {
         try {
-            Compressor compressor = new Compressor(ctx);
-            compressor.setDestinationDirectoryPath(ctx.getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).toString());
+//            Compressor compressor = new Compressor(ctx);
+//            compressor.setDestinationDirectoryPath(ctx.getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).toString());
             return new Compressor(ctx).compressToFile(archivoTemporal, "/compressed_picture_" + System.currentTimeMillis() + ".jpg");
         } catch (IOException e) {
             e.printStackTrace();
