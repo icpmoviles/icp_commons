@@ -165,13 +165,15 @@ public class CommonsGeocoder {
     }
 
     private void reprocesarMetodo() {
-        switch (metodo) {
-            case DIRECCION:
-                obtenerDireccion(listener);
-                break;
-            case COORDENADAS:
-                obtenerCoordenadas(listener);
-                break;
+        if (metodo != null) {
+            switch (metodo) {
+                case DIRECCION:
+                    obtenerDireccion(listener);
+                    break;
+                case COORDENADAS:
+                    obtenerCoordenadas(listener);
+                    break;
+            }
         }
     }
 

@@ -13,6 +13,9 @@ public class Constantes {
     public static final int NUM_RETRY = 0;
     public static int TIMEOUT   = 25000;
 
+    public static final int INTENT_CAMARA = 1001;
+    public static final String INTENT_CAMARAX = "camarax";
+
     public static final int CAMERA_REQUEST_CODE = 7002;
     public static final int CODE_PERMISSIONS    = 4001;
 
@@ -25,4 +28,6 @@ public class Constantes {
     public static void setTIMEOUT(int TIMEOUT) {
         Constantes.TIMEOUT = TIMEOUT;
     }
+
+
 }

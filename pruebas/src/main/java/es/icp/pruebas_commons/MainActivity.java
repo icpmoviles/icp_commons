@@ -2,11 +2,16 @@ package es.icp.pruebas_commons;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,6 +30,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.icp.icp_commons.Camara.Camara;
 import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CommonsGeocoder;
 import es.icp.icp_commons.CustomDialog;
@@ -45,7 +51,6 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
 import es.icp.icp_commons.Interfaces.GeocoderListener;
 import es.icp.icp_commons.Interfaces.ListenerEditTextAccion;
 import es.icp.icp_commons.Interfaces.NewVolleyCallBack;
-import es.icp.icp_commons.Interfaces.OnCompletionListener;
 import es.icp.icp_commons.Interfaces.ResponseDialog;
 import es.icp.icp_commons.Loading;
 import es.icp.icp_commons.Objects.CheckRequestException;
@@ -56,7 +61,7 @@ import es.icp.icp_commons.Objects.ParametrosPeticion;
 import es.icp.icp_commons.Objects.SmartButton;
 import es.icp.icp_commons.Services.GeoTracking;
 import es.icp.icp_commons.Services.WebService;
-import es.icp.icp_commons.Sonido;
+import es.icp.icp_commons.Utils.SpeedTest;
 import es.icp.icp_commons.Utils.Utils;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
@@ -268,14 +273,68 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn32(View view) {
                 cantidades();
             }
+
+            @Override
+            public void onClickBtn33(View view) {
+                progressActualizable();
+            }
+
+            @Override
+            public void onClickBtn34(View view) {
+                smartProgressActualizable();
+            }
+
+            @Override
+            public void onClickBtn35(View view) {
+                testVelocidad();
+            }
+
+            @Override
+            public void onClickBtn36(View view) {
+                LevantarCamara();
+            }
         };
+    }
+
+    private void testVelocidad() {
+        SpeedTest speedTest = SpeedTest.getInstance(context);
+        speedTest.startTest(true);
+    }
+
+    private void progressActualizable() {
+        Loading.ShowLoading(context);
+        TimerTask timerTask = new TimerTask() {
+            int seconds = 0;
+
+            @Override
+            public void run() {
+                Loading.setMessage("Han pasado " + seconds + " segundos...");
+                seconds++;
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 0, 1000);
+    }
+
+    private void smartProgressActualizable() {
+        Loading.ShowSmartLoading(context, "Titulo", "Han pasado 0 segundos", true);
+        TimerTask timerTask = new TimerTask() {
+            int seconds = 0;
+
+            @Override
+            public void run() {
+                Loading.setSmartMessage("Han pasado " + seconds + " segundos...");
+                seconds++;
+            }
+        };
+        new Timer().schedule(timerTask, 0, 1000);
     }
 
     private void cantidades() {
         DialogConfig config = new DialogConfig.Builder()
                 .makeULTRA(new DialogConfig.UltraConfig.Builder()
-                .setMinHeight(0.2f)
-                .build())
+                        .setMinHeight(0.2f)
+                        .build())
                 .setTitulo("Cantidades")
                 .setMensaje("Introduzca cantidad")
                 .setAutoDismiss(true).setMostrarImagenPredeterminada(false)
@@ -313,7 +372,7 @@ public class MainActivity extends CommonsBaseApp {
     private void crearDialog22() {
         DialogConfig config = new DialogConfig.Builder()
                 .makeULTRA(new DialogConfig.UltraConfig.Builder()           // diálogo estética ULTA
-                        .setMinHeight(0.5f)                                 // mínima altura de los diálogos ULTRA
+                        .setMinHeight(0.1f)                                 // mínima altura de los diálogos ULTRA
                         .build())
                 .setMostrarIconoTitulo(true)                                // mostrar icono en el titulo
                 .setIconoTitulo(R.drawable.ic_launcher_round)               // icono del titulo
@@ -326,6 +385,19 @@ public class MainActivity extends CommonsBaseApp {
                 .setColorTitulo(android.R.color.holo_blue_light)            // color de fondo para la barra del titulo
                 .setMostrarImagenPredeterminada(false)                      // sin ninguna imagen por defecto
                 .build();
+
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, AlertDialog dialog) {
+                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
+                customNotification.showText("Temporizador finalizado");
+            }
+
+            @Override
+            public void negativo(String valor, AlertDialog dialog) {
+
+            }
+        });
 
         new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
             @Override
@@ -948,6 +1020,24 @@ public class MainActivity extends CommonsBaseApp {
         }).start();
     }
 
+    private void LevantarCamara() {
+        Intent intent = new Intent(this, Camara.class);
+        intent.putExtra(Camara.CAMERA_FRONT, true);
+        startActivityForResult(intent, Constantes.INTENT_CAMARA);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK){
+            if (requestCode == Constantes.INTENT_CAMARA) {
+                String photoFile = data.getStringExtra(Constantes.INTENT_CAMARAX);
+                Log.e("PHOTOFILE", photoFile);
+            }
+        }
+    }
+
     public interface Handler {
         void onClickBtn1(View view);
 
@@ -1012,5 +1102,13 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn31(View view);
 
         void onClickBtn32(View view);
+
+        void onClickBtn33(View view);
+
+        void onClickBtn34(View view);
+
+        void onClickBtn35(View view);
+
+        void onClickBtn36(View view);
     }
 }

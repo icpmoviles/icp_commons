@@ -9,7 +9,6 @@ import es.icp.logs.core.MyLog;
 
 public class CommonsHBD {
     private static int    LONGITUD_COLUMNA = 100;
-    private static String path             = "data/data/es.icp.securitasseguridad/databases/ICP_Commons";
 
     private static String rellenaCaracteres(String t, int l, String c) {
         t = (t.length() > LONGITUD_COLUMNA) ? t.substring(0, LONGITUD_COLUMNA) : t;

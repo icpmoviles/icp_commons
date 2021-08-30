@@ -14,7 +14,8 @@ public class Helper {
             ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
             if (connectivityManager == null) return false;
             if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null) {
-                if (Objects.requireNonNull(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).getState() == NetworkInfo.State.CONNECTED) {
+                if (Objects.requireNonNull(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).isConnected()) {
+//                if (Objects.requireNonNull(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).getState() == NetworkInfo.State.CONNECTED) {
                     NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
                     if (netInfo != null && netInfo.isConnectedOrConnecting()) connected = true;
                     else return false;
@@ -22,7 +23,7 @@ public class Helper {
             }
             if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null) {
 
-                if (Objects.requireNonNull(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).getState() == NetworkInfo.State.CONNECTED) {
+                if (Objects.requireNonNull(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).isConnected()) {
                     switch (Objects.requireNonNull(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).getSubtype()) {
                         case TelephonyManager.NETWORK_TYPE_EVDO_0: //3G
                         case TelephonyManager.NETWORK_TYPE_EVDO_A:

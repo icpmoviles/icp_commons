@@ -63,10 +63,58 @@ public class Loading {
                     progress.setCancelable(cancelable); // disable dismiss by tapping outside of the dialog
                     progress.show();
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         });
+    }
+
+    public static void setMessage(final String message) {
+        if (progress == null) return;
+        MyApplication.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    progress.setMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+//        CommonsExecutors.getExecutor().Main().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    progress.setMessage(message);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+    }
+
+    public static void setSmartMessage(final String message) {
+        if (customSmartDialog == null) return;
+        MyApplication.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    customSmartDialog.setMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+//        CommonsExecutors.getExecutor().Main().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    customSmartDialog.setText(message);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 
     /**

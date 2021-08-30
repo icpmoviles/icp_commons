@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import es.icp.icp_commons.CommonsCore.CommonsExecutors;
+import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
@@ -74,6 +76,7 @@ public class CustomSmartDialog {
     public static       int                     contadorLoading  = 0;
     private             boolean                 makeULTRA        = false;
     private             FrameLayout             frameUltra;
+    private             TextView                txtMensaje;
 
     public CustomSmartDialog() {
     }
@@ -108,6 +111,21 @@ public class CustomSmartDialog {
         }
     }
 
+    public void setMessage(final String message) {
+        MyApplication.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+//                    CustomSmartDialog.this.txtMensaje.setText(message);
+                    ListView view = dialogs.get(dialogs.size() - 1).getDialog().getListView();
+                    TextView textView = dialogs.get(dialogs.size() - 1).getDialog().findViewById(R.id.txtMensaje);
+                    textView.setText(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     /**
      * Método para eliminar el diálogo.
@@ -380,6 +398,8 @@ public class CustomSmartDialog {
                         listener.negativo(valor, dialog);
                     }
                 });
+            } else if (view.getId() == R.id.txtMensaje) {
+                txtMensaje = (TextView) view;
             }
         }
         try {
@@ -491,13 +511,14 @@ public class CustomSmartDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        final int indiceActual = dialogs.size() - 1;
+//        final int indiceActual = dialogs.size() - 1;
         if (tiempo > 0) {
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
                     try {
+                        int indiceActual = dialogs.size() - 1;
                         dialogs.get(indiceActual).getDialog().dismiss();
                         dialogs.remove(dialogs.get(indiceActual));
                     } catch (Exception e) {
@@ -726,7 +747,11 @@ public class CustomSmartDialog {
                                 @Override
                                 public void run() {
                                     //                                    iconoTitulo.setBackground(context.getDrawable(R.drawable.circled_background_white));
-                                    Glide.with(context).asGif().load(config.getIconoTituloInt())/*.apply(RequestOptions.circleCropTransform())*/.into(iconoTitulo);
+                                    try {
+                                        Glide.with(context).asGif().load(config.getIconoTituloInt())/*.apply(RequestOptions.circleCropTransform())*/.into(iconoTitulo);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                         } else {
@@ -906,7 +931,7 @@ public class CustomSmartDialog {
                     if (config.isMostrarCantidad()) { //---------------------------------------------------------------------------
                         quantity.setVisibility(View.VISIBLE);
                         int cantidadInicial = 0;
-                        if(config.getCantidadMinima() > config.getCantidadInicial()) {
+                        if (config.getCantidadMinima() > config.getCantidadInicial()) {
                             cantidadInicial = config.getCantidadMinima();
                         } else {
                             cantidadInicial = config.getCantidadInicial();
