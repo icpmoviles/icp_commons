@@ -755,6 +755,7 @@ class Camara : AppCompatActivity() {
             outputDirectory,
             SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US
             ).format(System.currentTimeMillis()) + ".mp4")
+
         val outputOptions = VideoCapture.OutputFileOptions.Builder(videoFile).build()
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
@@ -767,7 +768,10 @@ class Camara : AppCompatActivity() {
             override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
                 val savedUri = Uri.fromFile(videoFile)
                 val msg = "Video capture succeeded: $savedUri"
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+
+                val intent = this@Camara.intent
+                intent.putExtra(Constantes.INTENT_CAMARAX, savedUri.toString())
+                setResult(RESULT_OK, intent)
                 finish()
             }
         })
