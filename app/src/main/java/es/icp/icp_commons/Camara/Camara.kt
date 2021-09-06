@@ -2,6 +2,7 @@ package es.icp.icp_commons.Camara
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -13,13 +14,18 @@ import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.webkit.MimeTypeMap
+import android.widget.Chronometer
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +36,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
+import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -42,6 +49,8 @@ import es.icp.icp_commons.Utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,6 +59,7 @@ import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+
 
 typealias LumaListener = (luma: Double) -> Unit
 
@@ -79,6 +89,13 @@ class Camara : AppCompatActivity() {
 
     private var cameraFront: Boolean = false
     private var cameraBack: Boolean = false
+    private var gallery: Boolean = false
+
+    private lateinit var videoCapture: VideoCapture
+    private var video: Boolean = false
+    private var outputVideoDirectory: File? = null
+
+    private lateinit var chronometer: Chronometer
 
     private val displayManager by lazy {
         this.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -137,6 +154,16 @@ class Camara : AppCompatActivity() {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
+        try {
+            video = intent.extras!![VIDEO] as Boolean
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        try {
+            gallery = intent.extras!![GALLERY] as Boolean
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onResume() {
@@ -179,6 +206,8 @@ class Camara : AppCompatActivity() {
         private const val TAG = "CameraXBasic"
         const val CAMERA_FRONT = "CAMERA_FRONT"
         const val CAMERA_BACK = "CAMERA_BACK"
+        const val VIDEO = "video"
+        const val GALLERY = "gallery"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
@@ -219,7 +248,8 @@ class Camara : AppCompatActivity() {
     private fun setupView() {
 
         val permisos = arrayOf(
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
         )
         if (!Utils.comprobarPermisos(this, permisos)) {
             ActivityCompat.requestPermissions(this, permisos, 1)
@@ -350,6 +380,11 @@ class Camara : AppCompatActivity() {
                 .setTargetRotation(rotation)
                 .build()
 
+            if(video) {
+                videoCapture = VideoCapture.Builder().build()
+                outputVideoDirectory = getOutputDirectory()
+            }
+
             // ImageAnalysis
             imageAnalyzer = ImageAnalysis.Builder()
                 // We request aspect ratio but no resolution
@@ -374,8 +409,14 @@ class Camara : AppCompatActivity() {
 
             // A variable number of use-cases can be passed here -
             // camera provides access to CameraControl & CameraInfo
-            camera = cameraProvider.bindToLifecycle(
-                this, cameraSelector, preview, imageCapture, imageAnalyzer)
+
+            camera = if(video){
+                cameraProvider.bindToLifecycle(
+                    this, cameraSelector, preview, videoCapture)
+            } else {
+                cameraProvider.bindToLifecycle(
+                    this, cameraSelector, preview, imageCapture, imageAnalyzer)
+            }
 
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(viewFinder.surfaceProvider)
@@ -415,6 +456,8 @@ class Camara : AppCompatActivity() {
         // Inflate a new view containing all UI for controlling the camera
         val controls = View.inflate(this, R.layout.camera_ui_container, container)
 
+        chronometer = controls.findViewById(R.id.c_meter)
+
         // In the background, load latest photo taken (if any) for gallery thumbnail
         lifecycleScope.launch(Dispatchers.IO) {
             outputDirectory.listFiles { file ->
@@ -424,85 +467,103 @@ class Camara : AppCompatActivity() {
             }
         }
 
-        // Listener for button used to capture photo
-        controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
+        if(video) {
+            chronometer.isVisible = true
 
-            // Get a stable reference of the modifiable image capture use case
-            imageCapture?.let { imageCapture ->
-
-                // Create output file to hold the image
-                val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
-
-                // Setup image capture metadata
-                val metadata = ImageCapture.Metadata().apply {
-
-                    // Mirror image when using the front camera
-                    isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+            controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnTouchListener { _, event ->
+                if(event.action == MotionEvent.ACTION_DOWN) {
+                    startRecording()
+                    chronometer.base = SystemClock.elapsedRealtime()
+                    chronometer.start()
+                } else if(event.action == MotionEvent.ACTION_UP) {
+                    stopRecording()
+                    chronometer.stop()
                 }
+                false
+            }
+        } else {
+            controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
 
-                // Create output options object which contains file + metadata
-                val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile)
-                    .setMetadata(metadata)
-                    .build()
+                // Get a stable reference of the modifiable image capture use case
+                imageCapture?.let { imageCapture ->
 
-                // Setup image capture listener which is triggered after photo has been taken
-                imageCapture.takePicture(
-                    outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
-                        override fun onError(exc: ImageCaptureException) {
-                            Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                        }
+                    // Create output file to hold the image
+                    val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
 
-                        override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                            val savedUri = output.savedUri ?: Uri.fromFile(photoFile)
-                            Log.d(TAG, "Photo capture succeeded: $savedUri")
+                    // Setup image capture metadata
+                    val metadata = ImageCapture.Metadata().apply {
 
-                            // We can only change the foreground Drawable using API level 23+ API
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                // Update the gallery thumbnail with latest picture taken
-                                setGalleryThumbnail(savedUri)
+                        // Mirror image when using the front camera
+                        isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+                    }
+
+                    // Create output options object which contains file + metadata
+                    val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile)
+                        .setMetadata(metadata)
+                        .build()
+
+                    // Setup image capture listener which is triggered after photo has been taken
+                    imageCapture.takePicture(
+                        outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
+                            override fun onError(exc: ImageCaptureException) {
+                                Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                             }
 
-                            // Implicit broadcasts will be ignored for devices running API level >= 24
-                            // so if you only target API level 24+ you can remove this statement
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                this@Camara.sendBroadcast(
-                                    Intent(android.hardware.Camera.ACTION_NEW_PICTURE, savedUri)
-                                )
+                            override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                                val savedUri = output.savedUri ?: Uri.fromFile(photoFile)
+                                Log.d(TAG, "Photo capture succeeded: $savedUri")
+
+                                // We can only change the foreground Drawable using API level 23+ API
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    // Update the gallery thumbnail with latest picture taken
+                                    setGalleryThumbnail(savedUri)
+                                }
+
+                                // Implicit broadcasts will be ignored for devices running API level >= 24
+                                // so if you only target API level 24+ you can remove this statement
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                    this@Camara.sendBroadcast(
+                                        Intent(android.hardware.Camera.ACTION_NEW_PICTURE, savedUri)
+                                    )
+                                }
+
+                                // If the folder selected is an external media directory, this is
+                                // unnecessary but otherwise other apps will not be able to access our
+                                // images unless we scan them using [MediaScannerConnection]
+                                val mimeType = MimeTypeMap.getSingleton()
+                                    .getMimeTypeFromExtension(savedUri.toFile().extension)
+                                MediaScannerConnection.scanFile(
+                                    this@Camara,
+                                    arrayOf(savedUri.toFile().absolutePath),
+                                    arrayOf(mimeType)
+                                ) { _, uri ->
+                                    Log.d(TAG, "Image capture scanned into media store: $uri")
+                                }
+
+                                val intent = this@Camara.intent
+                                intent.putExtra(Constantes.INTENT_CAMARAX, savedUri.toString())
+                                setResult(RESULT_OK, intent)
+                                finish()
+
                             }
+                        })
 
-                            // If the folder selected is an external media directory, this is
-                            // unnecessary but otherwise other apps will not be able to access our
-                            // images unless we scan them using [MediaScannerConnection]
-                            val mimeType = MimeTypeMap.getSingleton()
-                                .getMimeTypeFromExtension(savedUri.toFile().extension)
-                            MediaScannerConnection.scanFile(
-                                this@Camara,
-                                arrayOf(savedUri.toFile().absolutePath),
-                                arrayOf(mimeType)
-                            ) { _, uri ->
-                                Log.d(TAG, "Image capture scanned into media store: $uri")
-                            }
+                    // We can only change the foreground Drawable using API level 23+ API
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                            val intent = this@Camara.intent
-                            intent.putExtra(Constantes.INTENT_CAMARAX, savedUri.toString())
-                            setResult(RESULT_OK, intent)
-                            finish()
-
-                        }
-                    })
-
-                // We can only change the foreground Drawable using API level 23+ API
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                    // Display flash animation to indicate that photo was captured
-                    container.postDelayed({
-                        container.foreground = ColorDrawable(Color.WHITE)
-                        container.postDelayed(
-                            { container.foreground = null }, ANIMATION_FAST_MILLIS)
-                    }, ANIMATION_SLOW_MILLIS)
+                        // Display flash animation to indicate that photo was captured
+                        container.postDelayed({
+                            container.foreground = ColorDrawable(Color.WHITE)
+                            container.postDelayed(
+                                { container.foreground = null }, ANIMATION_FAST_MILLIS)
+                        }, ANIMATION_SLOW_MILLIS)
+                    }
                 }
             }
         }
+
+        // Listener for button used to capture photo
+
 
         // Setup for button used to switch cameras
         controls.findViewById<ImageButton>(R.id.camera_switch_button).let {
@@ -522,15 +583,40 @@ class Camara : AppCompatActivity() {
             }
         }
 
-        // Listener for button used to view the most recent photo
-        controls.findViewById<ImageButton>(R.id.photo_view_button).setOnClickListener {
-            // Only navigate when the gallery has photos
+        if(gallery) {
+            controls.findViewById<ImageButton>(R.id.photo_view_button).isVisible = true
+
+            // Listener for button used to view the most recent photo
+            controls.findViewById<ImageButton>(R.id.photo_view_button).setOnClickListener {
+                // Only navigate when the gallery has photos
 //            if (true == outputDirectory.listFiles()?.isNotEmpty()) {
 //                Navigation.findNavController(
 //                    this, R.id.fragment_container
 //                ).navigate(CameraFragmentDirections
 //                    .actionCameraToGallery(outputDirectory.absolutePath))
 //            }
+                var galeryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                if(video) {
+                    galeryIntent.type = "video/*"
+                } else {
+                    galeryIntent.type = "image/*"
+                }
+                startActivityForResult(galeryIntent, Constantes.INTENT_CAMARA)
+            }
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == RESULT_OK && requestCode == Constantes.INTENT_CAMARA) {
+            var photoFile = createFileFromURI(data!!.data!!)
+
+            val intent = this@Camara.intent
+            intent.putExtra(Constantes.INTENT_CAMARAX, photoFile.absolutePath)
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 
@@ -621,6 +707,7 @@ class Camara : AppCompatActivity() {
             framesPerSecond = 1.0 / ((timestampFirst - timestampLast) /
                     frameTimestamps.size.coerceAtLeast(1).toDouble()) * 1000.0
 
+
             // Analysis could take an arbitrarily long amount of time
             // Since we are running in a different thread, it won't stall other use cases
 
@@ -653,6 +740,72 @@ class Camara : AppCompatActivity() {
             invalidate()
             isPressed = false
         }, delay)
+    }
+
+    fun getOutputDirectory(): File {
+        val mediaDir = externalMediaDirs.firstOrNull()?.let {
+            File(it, resources.getString(R.string.app_name)).apply { mkdirs() } }
+        return if (mediaDir != null && mediaDir.exists())
+            mediaDir else filesDir
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun startRecording() {
+        val videoFile = File(
+            outputDirectory,
+            SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US
+            ).format(System.currentTimeMillis()) + ".mp4")
+        val outputOptions = VideoCapture.OutputFileOptions.Builder(videoFile).build()
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+        ) { return }
+        videoCapture?.startRecording(outputOptions, ContextCompat.getMainExecutor(this), object: VideoCapture.OnVideoSavedCallback {
+            override fun onError(videoCaptureError: Int, message: String, cause: Throwable?) {
+                Log.e(TAG, "Video capture failed: $message")
+            }
+
+            override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
+                val savedUri = Uri.fromFile(videoFile)
+                val msg = "Video capture succeeded: $savedUri"
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        })
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun stopRecording() {
+        videoCapture?.stopRecording()
+    }
+
+    private fun createFileFromURI(uri: Uri) : File {
+        val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
+        var inputStream = applicationContext.contentResolver.openInputStream(uri)
+
+        var out: FileOutputStream? = null
+
+        try {
+            out = FileOutputStream(photoFile)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+
+        if(inputStream != null) {
+            var count = 0
+            val buffer = ByteArray(1024 * 4)
+            val eof = -1
+            var n = 0
+            while(eof != (inputStream.read(buffer).also { n = it })) {
+                out!!.write(buffer, 0, n)
+                count += n
+            }
+
+            inputStream.close()
+        }
+
+        out?.close()
+
+        return photoFile
     }
 
 }

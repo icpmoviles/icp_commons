@@ -293,6 +293,11 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn36(View view) {
                 LevantarCamara();
             }
+
+            @Override
+            public void onClickBtn37(View view) {
+                LevantarCamaraVideo();
+            }
         };
     }
 
@@ -1026,6 +1031,12 @@ public class MainActivity extends CommonsBaseApp {
         startActivityForResult(intent, Constantes.INTENT_CAMARA);
     }
 
+    private void LevantarCamaraVideo() {
+        Intent intent = new Intent(this, Camara.class);
+        intent.putExtra("video", true);
+        startActivityForResult(intent, Constantes.INTENT_CAMARA);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1033,6 +1044,7 @@ public class MainActivity extends CommonsBaseApp {
         if (resultCode == Activity.RESULT_OK){
             if (requestCode == Constantes.INTENT_CAMARA) {
                 String photoFile = data.getStringExtra(Constantes.INTENT_CAMARAX);
+                Toast.makeText(this, "PATH: " + photoFile, Toast.LENGTH_SHORT).show();
                 Log.e("PHOTOFILE", photoFile);
             }
         }
@@ -1110,5 +1122,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn35(View view);
 
         void onClickBtn36(View view);
+
+        void onClickBtn37(View view);
     }
 }
