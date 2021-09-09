@@ -273,7 +273,14 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{handler::onClickBtn37}"
                     android:gravity="start|center_vertical"
-                    android:text="036 - Abrir la camara video" />
+                    android:text="037 - Abrir la camara video" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{handler::onClickBtn38}"
+                    android:gravity="start|center_vertical"
+                    android:text="038 - Mostrar diálogo listado" />
 
             </LinearLayout>
 

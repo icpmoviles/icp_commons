@@ -30,6 +30,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
@@ -39,6 +41,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.icp.icp_commons.Adapters.ListadoAdapter;
 import es.icp.icp_commons.CommonsCore.CommonsExecutors;
 import es.icp.icp_commons.Helpers.MyApplication;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogInputResponse;
@@ -46,8 +49,10 @@ import es.icp.icp_commons.Interfaces.CustomSmartDialogQResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogQuantityResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogResponse;
 import es.icp.icp_commons.Interfaces.CustomSmartDialogSiNoResponse;
+import es.icp.icp_commons.Interfaces.OnItemSelectedListener;
 import es.icp.icp_commons.Objects.AlertDialog2;
 import es.icp.icp_commons.Objects.SmartButton;
+import es.icp.icp_commons.Utils.MaxHeightRecyclerView;
 import es.icp.icp_commons.Utils.Utils;
 
 /**
@@ -664,6 +669,11 @@ public class CustomSmartDialog {
                     //----------------------------------------------------------------------------------------------------
 
                     //-------------------------------------------------------
+                    //--------------- LISTADO -------------------
+                    MaxHeightRecyclerView rvListado = mainContainer.findViewById(R.id.rvListado);
+                    //----------------------------------------------------------------------------------------------------
+
+                    //-------------------------------------------------------
                     //--------------- ULTRA -------------------
                     LinearLayout mainLayout = mainContainer.findViewById(R.id.mainLayout);
                     FrameLayout  frameUltra = mainContainer.findViewById(R.id.frameUltra);
@@ -688,6 +698,26 @@ public class CustomSmartDialog {
                             mainLayout.setMinimumHeight(Utils.pixelsHeightPercent(context, config.getUltraConfig().getMinHeight()));
                         }
                         mainLayout.setGravity(Gravity.CENTER);
+                    }
+
+                    if (config.isMostrarListado() && config.getListado() != null && config.getListado().size() > 0) {
+                        ListadoAdapter listadoAdapter = new ListadoAdapter(context, config.getListado(), item -> {
+                            try {
+                                dialogs.get(dialogs.size() - 1).getDialog().dismiss();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            listener.positivo(item, dialogs.get(dialogs.size() - 1).getDialog());
+                        }, config.isListadoConfirmacion());
+
+                        rvListado.setVisibility(View.VISIBLE);
+
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                        rvListado.setLayoutManager(linearLayoutManager);
+
+                        rvListado.setAdapter(listadoAdapter);
+
+                        rvListado.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     }
 
                     if (config.getTiempo() > 0 && config.isShowTemporizador()) {

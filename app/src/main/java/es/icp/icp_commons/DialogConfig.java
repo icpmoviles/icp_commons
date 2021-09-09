@@ -26,6 +26,8 @@ public class DialogConfig {
     private boolean                  mostrarBotones              = false;
     private boolean                  mostrarVisorImagenes        = false;
     private boolean                  mostrarLoading              = false;
+    private boolean                  mostrarListado              = false;
+    private ArrayList<String>        listado                     = new ArrayList<>();
     private ArrayList<ImagenCommons> imagenes                    = new ArrayList<>();
     private List<SmartButton>        botones                     = new ArrayList<>();
     private Drawable                 imagen                      = null;
@@ -50,6 +52,7 @@ public class DialogConfig {
     private boolean                  withLoading                 = false;
     private int                      tiempo                      = 0;
     private boolean                  showTemporizador            = false;
+    private boolean                  listadoConfirmacion         = false;
     private boolean                  makeULTRA                   = false;
     private UltraConfig              ultraConfig;
     private CommonsInputType         inputType                   = new CommonsInputType();
@@ -84,6 +87,14 @@ public class DialogConfig {
 
     public void setShowTemporizador(boolean showTemporizador) {
         this.showTemporizador = showTemporizador;
+    }
+
+    public boolean isListadoConfirmacion() {
+        return listadoConfirmacion;
+    }
+
+    public void setListadoConfirmacion(boolean listadoConfirmacion) {
+        this.listadoConfirmacion = listadoConfirmacion;
     }
 
     public int getTiempo() {
@@ -124,6 +135,22 @@ public class DialogConfig {
 
     public void setMostrarLoading(boolean mostrarLoading) {
         this.mostrarLoading = mostrarLoading;
+    }
+
+    public boolean isMostrarListado() {
+        return mostrarListado;
+    }
+
+    public void setMostrarListado(boolean mostrarListado) {
+        this.mostrarListado = mostrarListado;
+    }
+
+    public ArrayList<String> getListado() {
+        return listado;
+    }
+
+    public void setListado(ArrayList<String> listado) {
+        this.listado = listado;
     }
 
     public AdjuntarImagenesListener getAdjuntarImagenesListener() {
@@ -400,6 +427,8 @@ public class DialogConfig {
         private boolean                  mostrarBotones              = false;
         private boolean                  mostrarVisorImagenes        = false;
         private boolean                  mostrarLoading              = false;
+        private boolean                  mostrarListado              = false;
+        private ArrayList<String>        listado                     = new ArrayList<>();
         private List<SmartButton>        botones                     = new ArrayList<>();
         private Drawable                 imagen                      = null;
         private int                      imagenInt                   = 0;
@@ -424,6 +453,7 @@ public class DialogConfig {
         private boolean                  withLoading                 = false;
         private int                      tiempo                      = 0;
         private boolean                  showTemporizador            = false;
+        private boolean                  listadoConfirmacion         = false;
         private boolean                  makeULTRA                   = false;
         private UltraConfig              ultraConfig;
         private CommonsInputType         inputType                   = new CommonsInputType();
@@ -475,6 +505,11 @@ public class DialogConfig {
             return this;
         }
 
+        public Builder setlistadoConfirmacion(boolean listadoConfirmacion) {
+            this.listadoConfirmacion = listadoConfirmacion;
+            return this;
+        }
+
         public Builder setTextoEditText(String textoEditText) {
             this.textoEditText = textoEditText;
             return this;
@@ -482,6 +517,16 @@ public class DialogConfig {
 
         public Builder setMostrarLoading(boolean mostrarLoading) {
             this.mostrarLoading = mostrarLoading;
+            return this;
+        }
+
+        public Builder setMostrarListado(boolean mostrarListado) {
+            this.mostrarListado = mostrarListado;
+            return this;
+        }
+
+        public Builder setListado(ArrayList<String> listado) {
+            this.listado = listado;
             return this;
         }
 
@@ -652,6 +697,8 @@ public class DialogConfig {
             dialogConfig.mostrarBotones              = this.mostrarBotones;
             dialogConfig.mostrarVisorImagenes        = this.mostrarVisorImagenes;
             dialogConfig.mostrarLoading              = this.mostrarLoading;
+            dialogConfig.mostrarListado              = this.mostrarListado;
+            dialogConfig.listado                     = this.listado;
             dialogConfig.autoDismiss                 = this.autoDismiss;
             dialogConfig.hint                        = this.hint;
             dialogConfig.estiloPositivo              = this.estiloPositivo;
@@ -673,6 +720,7 @@ public class DialogConfig {
             dialogConfig.textoEditText               = this.textoEditText;
             dialogConfig.tiempo                      = this.tiempo;
             dialogConfig.showTemporizador            = this.showTemporizador;
+            dialogConfig.listadoConfirmacion         = this.listadoConfirmacion;
             dialogConfig.makeULTRA                   = this.makeULTRA;
             dialogConfig.ultraConfig                 = this.ultraConfig;
             dialogConfig.cantidadMinima              = this.cantidadMinima;

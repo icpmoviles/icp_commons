@@ -26,6 +26,7 @@ import androidx.databinding.DataBindingUtil;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -298,7 +299,68 @@ public class MainActivity extends CommonsBaseApp {
             public void onClickBtn37(View view) {
                 LevantarCamaraVideo();
             }
+
+            @Override
+            public void onClickBtn38(View view) {
+                crearDialogolistado();
+            }
         };
+    }
+
+    private void crearDialogolistado() {
+        ArrayList<String> subgrupos = new ArrayList<>(Arrays.asList(
+                "ALT - Altamira",
+                "APL - Apple",
+                "BLA - Blackstone",
+                "CER - Cerberus",
+                "DIV - Divaran",
+                "HAY - Haya",
+                "MAC - Macc",
+                "SAR - Sarebb",
+                "SOL - Solvia"/*,
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia",
+                "SOL - Solvia"*/
+        ));
+
+        DialogConfig config = new DialogConfig.Builder()
+                .makeULTRA(new DialogConfig.UltraConfig.Builder()
+                        .setMinHeight(0.2f)
+                        .build())
+                .setTitulo("Subgrupos")
+                .setMensaje("Seleccione el subgrupo del envío:")
+                .setAutoDismiss(true)
+                .setMostrarImagenPredeterminada(false)
+                .setMostrarNegativo(true)
+                .setTextoNegativo("Cancelar")
+                .setMostrarPositivo(false)
+                .setMostrarListado(true)
+                .setListado(subgrupos)
+                .build();
+
+        new CustomSmartDialog().dialogGenerico(context, config, new CustomSmartDialogSiNoResponse() {
+            @Override
+            public void positivo(String valor, @Nullable AlertDialog dialog) {
+                // el valor es el string seleccionado del listado
+                CustomNotification customNotification = new CustomNotification.Builder(context).setSimpleMode().setDuration(CustomNotification.LENGTH_SHORT).build();
+                customNotification.showText(valor);
+            }
+
+            @Override
+            public void negativo(String valor, @Nullable AlertDialog dialog) {
+                // se ha pulsado el botón de cancelar selección
+            }
+        });
     }
 
     private void testVelocidad() {
@@ -1125,5 +1187,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn36(View view);
 
         void onClickBtn37(View view);
+
+        void onClickBtn38(View view);
     }
 }

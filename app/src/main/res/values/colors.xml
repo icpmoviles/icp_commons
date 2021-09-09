@@ -11,5 +11,6 @@
     <!--    <color name="red">#FF0000</color>-->
     <color name="red">#f40000</color>
     <color name="btnOrange">#FF5722</color>
+    <color name="cardListado">#72C7E8</color>
 
 </resources>

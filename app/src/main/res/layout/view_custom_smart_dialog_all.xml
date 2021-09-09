@@ -193,6 +193,17 @@
 
                 </LinearLayout>
 
+                <es.icp.icp_commons.Utils.MaxHeightRecyclerView
+                    android:id="@+id/rvListado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:scrollbars="vertical"
+                    app:maxRecyclerHeight="400dp"
+                    tools:visibility="visible"
+                    tools:listitem="@layout/item_listado"
+                    tools:itemCount="20"/>
+
                 <LinearLayout
                     android:id="@+id/botonesSiNo"
                     android:layout_width="wrap_content"
