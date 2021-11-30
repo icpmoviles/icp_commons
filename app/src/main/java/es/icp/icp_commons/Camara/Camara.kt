@@ -629,7 +629,7 @@ class Camara : AppCompatActivity() {
                 switchCamerasButton.visibility = View.GONE
             }
             else switchCamerasButton.isEnabled = hasBackCamera() && hasFrontCamera()
-        } catch (exception: CameraInfoUnavailableException) {
+        } catch (exception: Exception/*CameraInfoUnavailableException*/) {
             switchCamerasButton.isEnabled = false
         }
     }
