@@ -8,6 +8,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -179,7 +181,7 @@ public class CommonsGeocoder {
 
     public void toggleGPS() {
         context.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        lm.requestLocationUpdates("gps", 0, 0, new LocationListener() {
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
 
@@ -202,7 +204,11 @@ public class CommonsGeocoder {
     }
 
     public boolean isGPSOn() {
-        String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        return provider.contains("gps");
+//        if (Build.VERSION.SDK_INT >= 31) {
+            return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        } else {
+//            String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+//            return provider.contains("gps");
+//        }
     }
 }
