@@ -743,7 +743,14 @@ public class CustomSmartDialog {
                                     }
 
                                     public void onFinish() {
-                                        if (listener != null) listener.positivo("", null);
+                                        if (
+                                            listener != null &&
+                                            dialogs.get(dialogs.size() - 1).getDialog().getOwnerActivity() != null &&
+                                            !dialogs.get(dialogs.size() - 1).getDialog().getOwnerActivity().isFinishing() &&
+                                            !dialogs.get(dialogs.size() - 1).getDialog().getOwnerActivity().isDestroyed()
+                                        ) {
+                                            listener.positivo("", null);
+                                        }
                                     }
                                 }.start();
                             }
