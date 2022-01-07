@@ -527,6 +527,7 @@ public class CustomSmartDialog {
                 public void run() {
                     try {
                         int indiceActual = dialogs.size() - 1;
+                        if (!dialogs.get(indiceActual).getDialog().isShowing()) this.cancel();
                         dialogs.get(indiceActual).getDialog().dismiss();
                         dialogs.remove(dialogs.get(indiceActual));
                     } catch (Exception e) {
@@ -744,10 +745,10 @@ public class CustomSmartDialog {
 
                                     public void onFinish() {
                                         if (
-                                            listener != null &&
+                                            listener != null /*&&
                                             dialogs.get(dialogs.size() - 1).getDialog().getOwnerActivity() != null &&
                                             !dialogs.get(dialogs.size() - 1).getDialog().getOwnerActivity().isFinishing() &&
-                                            !dialogs.get(dialogs.size() - 1).getDialog().getOwnerActivity().isDestroyed()
+                                            !dialogs.get(dialogs.size() - 1).getDialog().getOwnerActivity().isDestroyed()*/
                                         ) {
                                             listener.positivo("", null);
                                         }
