@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,6 +28,9 @@ import es.icp.icp_commons.Services.WebService;
 import es.icp.logs.core.MyLog;
 
 import static es.icp.icp_commons.Services.WebService.EnviarAcciones;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @SuppressWarnings({"unused", "WeakerAccess"})
@@ -139,20 +143,35 @@ public class CheckRequest {
      */
     public static void Send(final Context context, final ParametrosPeticion parametros, @NonNull final NewVolleyCallBack callBack,
                             final boolean loader, int idUsuario, String urlError, boolean guardarAccion) throws CheckRequestException {
+        Send(context, parametros, callBack, loader, idUsuario, urlError, guardarAccion, null);
+    }
+
+
+    public static void Send(final Context context, final ParametrosPeticion parametros, @NonNull final NewVolleyCallBack callBack,
+                            final boolean loader, int idUsuario, String urlError, boolean guardarAccion, Map<String, String> headers) throws CheckRequestException {
         GlobalVariables.loader = loader;
         try {
             if (GlobalVariables.loader) {
                 switch (WebService.getLoaderType()) {
                     case NORMAL_DIALOG:
                         Loading.ShowLoading(context);
-                        send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
+                        if (headers != null){
+                            send3(context, parametros, callBack, idUsuario, urlError, guardarAccion, headers);
+                        }else {
+                            send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
+                        }
+
                         break;
                     case SMART_DIALOG:
                         Loading.ShowSmartLoading(context, context.getString(R.string.cargando), context.getString(R.string.obteniendo_informacion), false, new CustomSmartDialog.LoadingListener() {
                             @Override
                             public void onLoadingFinished() {
                                 try {
-                                    send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
+                                    if (headers != null){
+                                        send3(context, parametros, callBack, idUsuario, urlError, guardarAccion, headers);
+                                    }else {
+                                        send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
+                                    }
                                 } catch (CheckRequestException e) {
                                     e.printStackTrace();
                                 }
@@ -268,7 +287,7 @@ public class CheckRequest {
      * @param idUsuario  int. ID del usuario que está llamando al servicio.
      * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
-     * @author Ventura de Lucas
+     * @author Felipe Cambas
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, @NonNull final NewVolleyCallBack callBack, boolean loader, int idUsuario, String urlError) throws CheckRequestException {
         CheckAndSend(context, parametros, callBack, loader, idUsuario, urlError, false);
@@ -294,6 +313,15 @@ public class CheckRequest {
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, @NonNull final NewVolleyCallBack callBack,
                                     final boolean loader, final int idUsuario, final String urlError, final boolean guardarAccion) throws CheckRequestException {
+        CheckAndSend(context, parametros, callBack, loader, idUsuario, urlError, guardarAccion, null);
+
+    }
+
+
+
+
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, @NonNull final NewVolleyCallBack callBack,
+                                    final boolean loader, final int idUsuario, final String urlError, final boolean guardarAccion, Map<String, String> headers) throws CheckRequestException {
         GlobalVariables.loader = loader;
 
         try {
@@ -305,7 +333,7 @@ public class CheckRequest {
 
                 @Override
                 public void onFinish() throws CheckRequestException {
-                    Send(context, parametros, callBack, loader, idUsuario, urlError, guardarAccion);
+                    Send(context, parametros, callBack, loader, idUsuario, urlError, guardarAccion, headers);
                 }
 
                 @Override
@@ -574,6 +602,86 @@ public class CheckRequest {
                 throw createException(e, parametros.getUrl(), "Send");
             }
 
+        }
+    }
+
+    private static void send3(Context context, ParametrosPeticion parametros, NewVolleyCallBack callBack, int idUsuario, String urlError, boolean guardarAccion, Map<String, String> headers) throws CheckRequestException {
+        if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
+            try {
+                WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
+                JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(), new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (GlobalVariables.loader) {
+                            switch (WebService.getLoaderType()) {
+                                case NORMAL_DIALOG:
+                                    Loading.HideLoading();
+                                    break;
+                                case SMART_DIALOG:
+                                    Loading.HideSmartLoading();
+                                    break;
+                            }
+                        }
+                        Object responseObject;
+                        try {
+                            Class  clase = parametros.getClase();
+                            Object objetoAux;
+                            if (clase != null) {
+                                String data = obtenerStringJSON(response);
+
+                                responseObject = new Gson().fromJson(data, clase);
+                            } else {
+                                responseObject = response;
+                            }
+                            callBack.onSuccess(responseObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            responseObject = response;
+                            callBack.onError(new VolleyError("No se ha podido castear al objeto. Error en GSON al crear la instancia. ¿Clase abstracta?"));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (GlobalVariables.loader) {
+                            switch (WebService.getLoaderType()) {
+                                case NORMAL_DIALOG:
+                                    Loading.HideLoading();
+                                    break;
+                                case SMART_DIALOG:
+                                    Loading.HideSmartLoading();
+                                    break;
+                            }
+                        }
+                        tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
+                        callBack.onError(error);
+                    }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        if (headers != null){
+                            Map<String, String> params = new HashMap<String, String>();
+                            return headers;
+                        }else {
+                            return getParams();
+                        }
+                    }
+                };
+                WebService.AddRequest(request, context);
+            } catch (Exception e) {
+                if (GlobalVariables.loader) {
+                    switch (WebService.getLoaderType()) {
+                        case NORMAL_DIALOG:
+                            Loading.HideLoading();
+                            break;
+                        case SMART_DIALOG:
+                            Loading.HideSmartLoading();
+                            break;
+                    }
+                }
+                WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
+                throw createException(e, parametros.getUrl(), "Send");
+            }
         }
     }
 
