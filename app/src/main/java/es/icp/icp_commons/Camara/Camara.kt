@@ -51,6 +51,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.lang.IllegalArgumentException
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -228,20 +229,26 @@ class Camara : AppCompatActivity() {
     }
 
     private fun setGalleryThumbnail(uri: Uri) {
-        // Reference of the view that holds the gallery thumbnail
-        val thumbnail = container.findViewById<ImageButton>(R.id.photo_view_button)
+        if (gallery) {
+            // Reference of the view that holds the gallery thumbnail
+            val thumbnail = container.findViewById<ImageButton>(R.id.photo_view_button)
 
-        // Run the operations in the view's thread
-        thumbnail.post {
+            // Run the operations in the view's thread
+            thumbnail.post {
 
-            // Remove thumbnail padding
-            thumbnail.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
+                // Remove thumbnail padding
+                thumbnail.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
 
-            // Load thumbnail into circular button using Glide
-            Glide.with(thumbnail)
-                .load(uri)
-                .apply(RequestOptions.circleCropTransform())
-                .into(thumbnail)
+                try {
+                    // Load thumbnail into circular button using Glide
+                    Glide.with(thumbnail)
+                        .load(uri)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(thumbnail)
+                } catch (exception: IllegalArgumentException) {
+                    exception.printStackTrace()
+                }
+            }
         }
     }
 
