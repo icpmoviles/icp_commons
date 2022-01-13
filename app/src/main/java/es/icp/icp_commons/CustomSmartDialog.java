@@ -75,7 +75,7 @@ public class CustomSmartDialog {
      * Siempre que quieras iterar sobre la lista de 'dialogs', ten cuidado (es una lista sincronizada segura de multithread, por si hay concurrencia).
      * Úsalo con cabeza, ponlo siempre dentro de un bloque syncrhonized.
      */
-    public static List<AlertDialog2> dialogs = Collections.synchronizedList(new ArrayList());;
+    public final static List<AlertDialog2> dialogs = Collections.synchronizedList(new ArrayList());;
     private boolean generico = false;
     private static EditText txtEditText;
     private static NestedScrollView nestedMensaje;
