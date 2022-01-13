@@ -19,6 +19,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.MediaStore
+import android.util.AttributeSet
 import android.util.Log
 import android.util.Size
 import android.view.KeyEvent
@@ -140,6 +141,12 @@ class Camara : AppCompatActivity() {
         setContentView(R.layout.activity_camara)
 
         getExtras()
+
+//        setupView()
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
 
         setupView()
     }
