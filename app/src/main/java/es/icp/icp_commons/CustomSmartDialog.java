@@ -36,6 +36,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -70,7 +71,11 @@ public class CustomSmartDialog {
     private LoadingListener loadingListener;
     private Message message;
     private static boolean enConstruccion = false;
-    public static ArrayList<AlertDialog2> dialogs = new ArrayList<>();
+    /**
+     * Siempre que quieras iterar sobre la lista de 'dialogs', ten cuidado (es una lista sincronizada segura de multithread, por si hay concurrencia).
+     * Úsalo con cabeza, ponlo siempre dentro de un bloque syncrhonized.
+     */
+    public static List<AlertDialog2> dialogs = Collections.synchronizedList(new ArrayList());;
     private boolean generico = false;
     private static EditText txtEditText;
     private static NestedScrollView nestedMensaje;
@@ -263,9 +268,11 @@ public class CustomSmartDialog {
      */
     public boolean isShowingLoading() {
         try {
-            for (AlertDialog2 dialog2 : dialogs) {
-                if (dialog2.isLoadingDialog()) {
-                    return dialogs.get(dialogs.size() - 1).getDialog().isShowing();
+            synchronized (dialogs) {
+                for (AlertDialog2 dialog2 : dialogs) {
+                    if (dialog2.isLoadingDialog()) {
+                        return dialogs.get(dialogs.size() - 1).getDialog().isShowing();
+                    }
                 }
             }
         } catch (Exception e) {
@@ -526,10 +533,12 @@ public class CustomSmartDialog {
                 @Override
                 public void run() {
                     try {
-                        int indiceActual = dialogs.size() - 1;
-                        if (!dialogs.get(indiceActual).getDialog().isShowing()) this.cancel();
-                        dialogs.get(indiceActual).getDialog().dismiss();
-                        dialogs.remove(dialogs.get(indiceActual));
+                        synchronized (dialogs) {
+                            int indiceActual = dialogs.size() - 1;
+                            if (!dialogs.get(indiceActual).getDialog().isShowing()) this.cancel();
+                            dialogs.get(indiceActual).getDialog().dismiss();
+                            dialogs.remove(dialogs.get(indiceActual));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
