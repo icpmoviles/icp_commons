@@ -14,12 +14,11 @@ import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.MediaStore
-import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
 import android.view.KeyEvent
@@ -85,7 +84,6 @@ class Camara : AppCompatActivity() {
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-    private lateinit var windowManager: WindowManager
     private var size: Size? = null
     private lateinit var view : ConstraintLayout
 
@@ -286,9 +284,6 @@ class Camara : AppCompatActivity() {
         // Every time the orientation of device changes, update rotation for use cases
         displayManager.registerDisplayListener(displayListener, null)
 
-        //Initialize WindowManager to retrieve display metrics
-        windowManager = WindowManager(this)
-
         // Determine the output directory
         outputDirectory = getOutputDirectory(this)
 
@@ -351,11 +346,12 @@ class Camara : AppCompatActivity() {
     private fun bindCameraUseCases() {
 
         try {
+            val displayMetrics = DisplayMetrics()
             // Get screen metrics used to setup camera for full screen resolution
-            val metrics = windowManager.getCurrentWindowMetrics().bounds
-            Log.d(TAG, "Screen metrics: ${metrics.width()} x ${metrics.height()}")
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            Log.d(TAG, "Screen metrics: ${displayMetrics.widthPixels} x ${displayMetrics.heightPixels}")
 
-            val screenAspectRatio = aspectRatio(metrics.width(), metrics.height())
+            val screenAspectRatio = aspectRatio(displayMetrics.widthPixels, displayMetrics.heightPixels)
             Log.d(TAG, "Preview aspect ratio: $screenAspectRatio")
 
             val rotation = viewFinder.display.rotation
