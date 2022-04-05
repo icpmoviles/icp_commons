@@ -101,6 +101,8 @@ public class MainActivity extends CommonsBaseApp {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
+        binding.
+
 //        geoTrackingService();
     }
 
