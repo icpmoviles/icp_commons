@@ -70,6 +70,7 @@ import es.icp.pruebas_commons.helpers.CommonsBaseApp;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
 import es.icp.pruebas_commons.helpers.PruebasLoginResult;
+import es.icp.icp_commons.Extensions.*;
 
 import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
@@ -101,6 +102,14 @@ public class MainActivity extends CommonsBaseApp {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
+        SnackBarCustomExtKt.snackPlosionBar(
+                binding.getRoot(),
+                "Prueba de texto",
+                null,
+                null,
+                null,
+                true
+        );
 
 //        geoTrackingService();
     }
