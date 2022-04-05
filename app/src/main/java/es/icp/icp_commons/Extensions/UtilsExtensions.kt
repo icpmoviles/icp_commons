@@ -205,45 +205,6 @@ fun View.changeBackgroundColorWithAnim(
 }
 
 
-fun Context.toast (message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-}
 
-fun customTOAST (context: Context, mensaje: String, colorBackGround: Int?, icono: Int?) {
-    val inflater: LayoutInflater = LayoutInflater.from(context)
-    val view: View = inflater.inflate(R.layout.toast_custom_layout, R.id.layout_toast as ViewGroup )
-    val txtMensaje: TextView = view.findViewById(R.id.txtToast)
-    txtMensaje.text = mensaje
 
-    val toast: Toast = Toast(context)
-    toast.apply {
-        setGravity(Gravity.CENTER_VERTICAL, 0, 200)
-        duration = Toast.LENGTH_LONG
-        this.view = view
-        colorBackGround.let {
 
-        }
-        show()
-    }
-
-}
-
-fun View.sanckBarCustom (mensaje: String, colorBackGround: Int?, icono: Int?, colorText: Int?): Snackbar {
-
-    val snackBar = Snackbar.make(context, this, mensaje, Snackbar.LENGTH_LONG ).apply {
-        if (!colorBackGround.isNull())
-            setBackgroundTint(resources.getColor(colorBackGround!!,null))
-        if (!colorText.isNull())
-            setTextColor(colorText!!)
-
-    }
-    val parentView = snackBar.view
-    parentView.findViewById<TextView>(R.id.snackbar_text).apply {
-        if (!icono.isNull())
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.logo_icp_top, 0)
-        setPadding(75,0,60,0)
-        textSize = 18F
-    }
-
-    return snackBar
-}
