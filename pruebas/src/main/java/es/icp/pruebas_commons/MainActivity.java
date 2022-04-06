@@ -1,14 +1,12 @@
 package es.icp.pruebas_commons;
 
+import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
+
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -70,9 +68,6 @@ import es.icp.pruebas_commons.helpers.CommonsBaseApp;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
 import es.icp.pruebas_commons.helpers.PruebasLoginResult;
-import es.icp.icp_commons.Extensions.*;
-
-import static es.icp.icp_commons.Helpers.Constantes.DIALOG_NORMAL;
 
 public class MainActivity extends CommonsBaseApp {
 
@@ -101,15 +96,6 @@ public class MainActivity extends CommonsBaseApp {
         binding.setHandler(handler);
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        SnackBarCustomExtKt.snackPlosionBar(
-                binding.getRoot(),
-                "Prueba de texto",
-                null,
-                null,
-                null,
-                true
-        );
 
 //        geoTrackingService();
     }
