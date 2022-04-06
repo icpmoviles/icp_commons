@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 197
-        versionName "3.3.4"
+        versionCode 198
+        versionName "3.3.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -96,6 +96,4 @@ dependencies {
     def arch_version = '2.2.0-alpha01'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$arch_version"
 
-    //Explosion Fields
-    implementation 'tyrantgit:explosionfield:1.0.1'
 }
