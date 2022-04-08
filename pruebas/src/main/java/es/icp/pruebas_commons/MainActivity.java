@@ -69,7 +69,6 @@ import es.icp.pruebas_commons.helpers.CommonsBaseApp;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
 import es.icp.pruebas_commons.helpers.PruebasLoginResult;
-import es.icp.icp_commons.Extensions.visible;
 
 public class MainActivity extends CommonsBaseApp {
 
