@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +69,7 @@ import es.icp.pruebas_commons.helpers.CommonsBaseApp;
 import es.icp.pruebas_commons.helpers.GlobalVariables;
 import es.icp.pruebas_commons.helpers.PruebasLoginRequest;
 import es.icp.pruebas_commons.helpers.PruebasLoginResult;
+import es.icp.icp_commons.Extensions.visible;
 
 public class MainActivity extends CommonsBaseApp {
 
@@ -304,6 +306,10 @@ public class MainActivity extends CommonsBaseApp {
     }
 
     private void crearDialogolistado() {
+
+
+
+
         ArrayList<String> subgrupos = new ArrayList<>(Arrays.asList(
                 "ALT - Altamira",
                 "APL - Apple",
