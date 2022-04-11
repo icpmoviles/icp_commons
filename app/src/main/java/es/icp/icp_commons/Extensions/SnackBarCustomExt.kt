@@ -88,6 +88,7 @@ fun View.snackPlosionBarAction (
     colorText: Int?,
     gravity: Int,
     textAction: String,
+    colorButton: Int,
     listener: View.OnClickListener
 )  {
 
@@ -128,6 +129,7 @@ fun View.snackPlosionBarAction (
 
     binding.txtAction.apply {
         text = textAction
+        setTextColor(colorButton)
         setOnClickListener{
             explosionField.explode(binding.root)
             listener.onClick(it)
