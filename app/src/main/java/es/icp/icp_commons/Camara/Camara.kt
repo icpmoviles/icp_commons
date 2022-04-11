@@ -43,6 +43,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.window.WindowManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import es.icp.icp_commons.Extensions.visible
 import es.icp.icp_commons.Helpers.Constantes
 import es.icp.icp_commons.R
 import es.icp.icp_commons.Utils.Utils
