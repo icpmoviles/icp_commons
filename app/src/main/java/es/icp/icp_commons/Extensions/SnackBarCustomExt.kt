@@ -75,6 +75,7 @@ fun View.snackPlosionBar (mensaje: String, colorBackGround: Int?, icono: Int?, c
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             explosionField.explode(binding.root)
         }, delayExplosion)
+        snackbar.dismiss()
     }
 
     snackbar.show()
@@ -88,7 +89,7 @@ fun View.snackPlosionBarAction (
     colorText: Int?,
     gravity: Int,
     textAction: String,
-    colorButton: Int,
+    colorTextAction: Int,
     listener: View.OnClickListener
 )  {
 
@@ -129,10 +130,11 @@ fun View.snackPlosionBarAction (
 
     binding.txtAction.apply {
         text = textAction
-        setTextColor(colorButton)
+        setTextColor(colorTextAction)
         setOnClickListener{
             explosionField.explode(binding.root)
             listener.onClick(it)
+            snackbar.dismiss()
         }
     }
 
@@ -143,10 +145,9 @@ fun View.snackPlosionBarAction (
 
 
 fun View.explotalo (temporizador: Long = 0) {
-
     Handler(Looper.getMainLooper()).postDelayed(Runnable {
         val bomba = ExplosionField.attach2Window(this.context as Activity)
         bomba.explode(this)
     }, temporizador)
-
+    this.hide()
 }

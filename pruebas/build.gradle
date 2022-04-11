@@ -2,12 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 31
     defaultConfig {
         applicationId "es.icp.pruebas_commons"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName "1.57"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
