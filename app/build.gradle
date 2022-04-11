@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "29.0.1"
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 200
-        versionName "3.3.7"
+        targetSdkVersion 31
+        versionCode 201
+        versionName "3.3.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,7 +42,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.5.0'
     implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -59,7 +58,7 @@ dependencies {
 //    implementation 'com.github.icpmoviles:icp_logs:1.0.0.2'
     implementation 'com.github.icpmoviles:icp_logs:89fa799ed5'
 
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.5.0'
 
     //View pager: indicador inferior de los PagerViewer
 //    implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
