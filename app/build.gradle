@@ -2,36 +2,31 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
     buildToolsVersion "29.0.1"
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 31
-        versionCode 201
-        versionName "3.3.8"
+        targetSdkVersion 30
+        versionCode 202
+        versionName "3.3.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
-
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
-
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     buildFeatures{
         viewBinding true
     }
@@ -50,33 +45,23 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.google.code.gson:gson:2.8.9'
-
     //Log de App
 //    implementation 'com.github.icpmoviles:icp_logs:1.0.0.2'
     implementation 'com.github.icpmoviles:icp_logs:89fa799ed5'
-
-    implementation 'com.google.android.material:material:1.5.0'
-
+    implementation 'com.google.android.material:material:1.3.0'
     //View pager: indicador inferior de los PagerViewer
 //    implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
     implementation 'com.github.splatte:ViewPagerIndicator:3.0.0'
-
-
     // GLIDE: Imagenes
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
     // Zetbaitsu Compressor
 //    implementation 'id.zelory:compressor:3.0.0'
     implementation 'id.zelory:compressor:2.1.1'
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.10"
-
     implementation "com.google.android.gms:play-services-location:18.0.0"
-
     // CameraX core library
     implementation "androidx.camera:camera-core:1.1.0-alpha05"
     // CameraX Camera2 extensions
@@ -87,13 +72,9 @@ dependencies {
     implementation 'androidx.camera:camera-view:1.0.0-alpha25'
     //WindowManager
     implementation 'androidx.window:window:1.0.0-alpha08'
-
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.work:work-runtime:2.7.1'
-
-
     def arch_version = '2.2.0-alpha01'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$arch_version"
-
 }
