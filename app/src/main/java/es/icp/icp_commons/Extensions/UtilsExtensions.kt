@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import es.icp.icp_commons.R
 import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
@@ -204,7 +205,10 @@ fun View.changeBackgroundColorWithAnim(
     valueAnimator.start()
 }
 
-
+fun TextInputEditText.texto(texto: String){
+    this.text?.clear()
+    this.text?.append(texto)
+}
 
 
 
