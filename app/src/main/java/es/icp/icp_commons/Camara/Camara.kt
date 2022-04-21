@@ -18,16 +18,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.MediaStore
+import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
-import android.view.KeyEvent
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.webkit.MimeTypeMap
-import android.widget.Chronometer
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -341,6 +338,44 @@ class Camara : AppCompatActivity() {
             // Build and bind the camera use cases
             bindCameraUseCases()
         }, ContextCompat.getMainExecutor(this))
+
+        val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                val scale = camera!!.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
+                camera!!.cameraControl.setZoomRatio(scale)
+                return true
+            }
+        }
+
+        val scaleGestureDetector = ScaleGestureDetector(this, listener)
+
+
+
+
+        viewFinder.setOnTouchListener { v, event ->
+            scaleGestureDetector.onTouchEvent(event)
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> return@setOnTouchListener true
+
+                MotionEvent.ACTION_UP -> {
+                    // Get the MeteringPointFactory from PreviewView
+                    val factory = viewFinder.getMeteringPointFactory()
+
+                    // Create a MeteringPoint from the tap coordinates
+                    val point = factory.createPoint(event.x, event.y)
+
+                    // Create a MeteringAction from the MeteringPoint, you can configure it to specify the metering mode
+                    val action = FocusMeteringAction.Builder(point).build()
+
+                    // Trigger the focus and metering. The method returns a ListenableFuture since the operation
+                    // is asynchronous. You can use it get notified when the focus is successful or if it fails.
+                    camera?.cameraControl?.startFocusAndMetering(action)
+
+                    return@setOnTouchListener true
+                }
+                else -> return@setOnTouchListener false
+            }
+        }
     }
 
     /** Declare and bind preview, capture and analysis use cases */
