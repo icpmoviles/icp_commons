@@ -80,5 +80,4 @@
         android:visibility="gone"
         tools:visibility="visible"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
