@@ -28,10 +28,17 @@ import es.icp.icp_commons.databinding.SnackbarCustomLayoutBinding
  *       delayExplosion -> tiempo de retardo en la explosion 3000 milisegundo por defecto
  *
  */
-fun View.snackPlosionBar (mensaje: String, colorBackGround: Int?, icono: Int?, colorText: Int?,  gravity: Int, conExplosion: Boolean, delayExplosion: Long = 3000)  {
+fun View.snackPlosionBar (
+    mensaje: String,
+    colorBackGround: Int?,
+    icono: Int?,
+    colorText: Int?,
+    gravity: Int,
+    conExplosion: Boolean,
+    delayExplosion: Long = 3000
+)  {
 
     val explosionField = ExplosionField.attach2Window(this.context as Activity)
-
 
     val snackbar = Snackbar.make(this, "", Snackbar.LENGTH_LONG)
     snackbar.view.setBackgroundColor(Color.TRANSPARENT)
@@ -74,8 +81,8 @@ fun View.snackPlosionBar (mensaje: String, colorBackGround: Int?, icono: Int?, c
         snackbar.duration = Snackbar.LENGTH_INDEFINITE
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             explosionField.explode(binding.root)
+            snackbar.dismiss()
         }, delayExplosion)
-        snackbar.dismiss()
     }
 
     snackbar.show()
@@ -133,8 +140,8 @@ fun View.snackPlosionBarAction (
         setTextColor(colorTextAction)
         setOnClickListener{
             explosionField.explode(binding.root)
-            listener.onClick(it)
             snackbar.dismiss()
+            listener.onClick(it)
         }
     }
 
