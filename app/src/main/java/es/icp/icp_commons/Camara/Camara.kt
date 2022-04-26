@@ -18,11 +18,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.MediaStore
-import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.webkit.MimeTypeMap
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -37,10 +38,8 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.window.WindowManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import es.icp.icp_commons.Extensions.visible
 import es.icp.icp_commons.Helpers.Constantes
 import es.icp.icp_commons.R
 import es.icp.icp_commons.Utils.Utils
@@ -49,7 +48,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.lang.IllegalArgumentException
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -88,6 +86,8 @@ class Camara : AppCompatActivity() {
     private var cameraFront: Boolean = false
     private var cameraBack: Boolean = false
     private var gallery: Boolean = false
+
+    var showAnimation = false
 
     private lateinit var videoCapture: VideoCapture
     private var video: Boolean = false
@@ -335,30 +335,38 @@ class Camara : AppCompatActivity() {
             // Enable or disable switching between cameras
             updateCameraSwitchButton()
 
+            setUpZoomAndFocus()
+
             // Build and bind the camera use cases
             bindCameraUseCases()
         }, ContextCompat.getMainExecutor(this))
+
+    }
+
+    private fun setUpZoomAndFocus() {
+        showAnimation = true
 
         val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 val scale = camera!!.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
                 camera!!.cameraControl.setZoomRatio(scale)
+                showAnimation = false
                 return true
             }
         }
 
         val scaleGestureDetector = ScaleGestureDetector(this, listener)
 
-
-
-
         viewFinder.setOnTouchListener { v, event ->
             scaleGestureDetector.onTouchEvent(event)
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> return@setOnTouchListener true
+//            return@setOnTouchListener true
 
-                MotionEvent.ACTION_UP -> {
-                    // Get the MeteringPointFactory from PreviewView
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                showAnimation = true
+                return@setOnTouchListener true
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (showAnimation) {
                     val factory = viewFinder.getMeteringPointFactory()
 
                     // Create a MeteringPoint from the tap coordinates
@@ -371,10 +379,34 @@ class Camara : AppCompatActivity() {
                     // is asynchronous. You can use it get notified when the focus is successful or if it fails.
                     camera?.cameraControl?.startFocusAndMetering(action)
 
-                    return@setOnTouchListener true
+                    val iv = ImageView(this)
+                    iv.layoutParams = LinearLayout.LayoutParams(200,200)
+                    iv.setImageDrawable(getDrawable(R.drawable.ic_camara_focus))
+                    iv.x = event.x
+                    iv.y = event.y
+                    iv.visibility = View.GONE
+                    view.addView(iv)
+                    var animation = AnimationUtils.loadAnimation(this, R.anim.alpha_aparicion)
+                    animation.setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {
+                            iv.visibility = View.VISIBLE
+                        }
+
+                        override fun onAnimationEnd(animation: Animation?) {
+                            iv.visibility = View.GONE
+                        }
+
+                        override fun onAnimationRepeat(animation: Animation?) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+                    //var animation2 = AnimationUtils.loadAnimation(this, R.anim.alpha_desaparicion)
+                    iv.startAnimation(animation)
                 }
-                else -> return@setOnTouchListener false
+
             }
+            true
         }
     }
 
