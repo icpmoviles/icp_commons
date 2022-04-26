@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
                 android:layout_marginStart="52dp"
-                android:layout_weight="4"
+                android:layout_weight="2"
                 android:textSize="16sp"
                 android:padding="5dp"
                 android:text="Escribe un mensaje"
@@ -56,11 +56,12 @@
                 android:id="@+id/txtAction"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|center_vertical"
+                android:layout_gravity="center"
+                android:textAlignment="center"
                 android:layout_marginStart="50dp"
-                android:layout_weight="1"
+                android:layout_weight="0.75"
                 android:textSize="16sp"
-                android:text="Cerrar"
+                android:text="VOLVER"
                 android:textColor="#E60E0E0E" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
