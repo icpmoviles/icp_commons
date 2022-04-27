@@ -82,7 +82,10 @@ class Camara : AppCompatActivity() {
     private var cameraProvider: ProcessCameraProvider? = null
     private var size: Size? = null
     private lateinit var view : ConstraintLayout
+    private lateinit var btnFlash : ImageButton
 
+    private var record : Boolean = true
+    private var encenderFlash : Boolean = true
     private var cameraFront: Boolean = false
     private var cameraBack: Boolean = false
     private var gallery: Boolean = false
@@ -536,6 +539,20 @@ class Camara : AppCompatActivity() {
 
         chronometer = controls.findViewById(R.id.c_meter)
 
+        btnFlash = controls.findViewById(R.id.flash_button)
+
+        btnFlash.setOnClickListener {
+            if (encenderFlash) {
+                camera!!.cameraControl.enableTorch(true)
+                btnFlash.setImageDrawable(getDrawable(R.drawable.ic_flash))
+            } else {
+                camera!!.cameraControl.enableTorch(false)
+                btnFlash.setImageDrawable(getDrawable(R.drawable.ic_flash_off))
+            }
+
+            encenderFlash = !encenderFlash
+        }
+
         // In the background, load latest photo taken (if any) for gallery thumbnail
         lifecycleScope.launch(Dispatchers.IO) {
             outputDirectory.listFiles { file ->
@@ -548,16 +565,19 @@ class Camara : AppCompatActivity() {
         if(video) {
             chronometer.isVisible = true
 
-            controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnTouchListener { _, event ->
-                if(event.action == MotionEvent.ACTION_DOWN) {
+            controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
+                if (record) {
                     startRecording()
                     chronometer.base = SystemClock.elapsedRealtime()
                     chronometer.start()
-                } else if(event.action == MotionEvent.ACTION_UP) {
+                    controls.findViewById<ImageButton>(R.id.camera_capture_button).setImageDrawable(getDrawable(R.drawable.ic_stop))
+                } else {
                     stopRecording()
                     chronometer.stop()
+                    controls.findViewById<ImageButton>(R.id.camera_capture_button).setImageDrawable(getDrawable(R.drawable.ic_shutter))
                 }
-                false
+
+                record = !record
             }
         } else {
             controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
