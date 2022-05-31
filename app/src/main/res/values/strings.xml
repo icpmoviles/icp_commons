@@ -40,4 +40,9 @@
         <item>Objetos conectados</item>
         <item>Fijo/Router</item>
     </string-array>
+
+    <string name="search_hint">Buscar</string>
+    <string name="action_back">Atras</string>
+    <string name="action_voice_search">Busuqeda Voz</string>
+    <string name="action_clear_search">Limpiar Busqueda</string>
 </resources>
