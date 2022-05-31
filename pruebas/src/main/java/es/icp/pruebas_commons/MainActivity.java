@@ -113,6 +113,13 @@ public class MainActivity extends CommonsBaseApp {
     private void setEvents() {
         handler = new Handler() {
             @Override
+            public void onClickBtn0(View view) {
+
+                Intent intent = new Intent(context, KotlinActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
             public void onClickBtn1(View view) {
                 crearNotif1();
             }
@@ -1115,6 +1122,8 @@ public class MainActivity extends CommonsBaseApp {
     }
 
     public interface Handler {
+        void onClickBtn0(View view);
+
         void onClickBtn1(View view);
 
         void onClickBtn2(View view);
