@@ -22,6 +22,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageButton
+        android:id="@+id/flash_button"
+        android:layout_width="@dimen/round_button_medium"
+        android:layout_height="@dimen/round_button_medium"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_flash_off"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <!-- Camera control and gallery buttons -->
 
     <Chronometer
@@ -80,5 +90,4 @@
         android:visibility="gone"
         tools:visibility="visible"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

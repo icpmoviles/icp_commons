@@ -21,13 +21,11 @@ import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
-import android.view.KeyEvent
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.webkit.MimeTypeMap
-import android.widget.Chronometer
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -40,10 +38,8 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.window.WindowManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import es.icp.icp_commons.Extensions.visible
 import es.icp.icp_commons.Helpers.Constantes
 import es.icp.icp_commons.R
 import es.icp.icp_commons.Utils.Utils
@@ -52,7 +48,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.lang.IllegalArgumentException
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -87,10 +82,15 @@ class Camara : AppCompatActivity() {
     private var cameraProvider: ProcessCameraProvider? = null
     private var size: Size? = null
     private lateinit var view : ConstraintLayout
+    private lateinit var btnFlash : ImageButton
 
+    private var record : Boolean = true
+    private var encenderFlash : Boolean = true
     private var cameraFront: Boolean = false
     private var cameraBack: Boolean = false
     private var gallery: Boolean = false
+
+    var showAnimation = false
 
     private lateinit var videoCapture: VideoCapture
     private var video: Boolean = false
@@ -338,9 +338,79 @@ class Camara : AppCompatActivity() {
             // Enable or disable switching between cameras
             updateCameraSwitchButton()
 
+            setUpZoomAndFocus()
+
             // Build and bind the camera use cases
             bindCameraUseCases()
         }, ContextCompat.getMainExecutor(this))
+
+    }
+
+    private fun setUpZoomAndFocus() {
+        showAnimation = true
+
+        val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                val scale = camera!!.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
+                camera!!.cameraControl.setZoomRatio(scale)
+                showAnimation = false
+                return true
+            }
+        }
+
+        val scaleGestureDetector = ScaleGestureDetector(this, listener)
+
+        viewFinder.setOnTouchListener { v, event ->
+            scaleGestureDetector.onTouchEvent(event)
+//            return@setOnTouchListener true
+
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                showAnimation = true
+                return@setOnTouchListener true
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (showAnimation) {
+                    val factory = viewFinder.getMeteringPointFactory()
+
+                    // Create a MeteringPoint from the tap coordinates
+                    val point = factory.createPoint(event.x, event.y)
+
+                    // Create a MeteringAction from the MeteringPoint, you can configure it to specify the metering mode
+                    val action = FocusMeteringAction.Builder(point).build()
+
+                    // Trigger the focus and metering. The method returns a ListenableFuture since the operation
+                    // is asynchronous. You can use it get notified when the focus is successful or if it fails.
+                    camera?.cameraControl?.startFocusAndMetering(action)
+
+                    val iv = ImageView(this)
+                    iv.layoutParams = LinearLayout.LayoutParams(200,200)
+                    iv.setImageDrawable(getDrawable(R.drawable.ic_camara_focus))
+                    iv.x = event.x
+                    iv.y = event.y
+                    iv.visibility = View.GONE
+                    view.addView(iv)
+                    var animation = AnimationUtils.loadAnimation(this, R.anim.alpha_aparicion)
+                    animation.setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {
+                            iv.visibility = View.VISIBLE
+                        }
+
+                        override fun onAnimationEnd(animation: Animation?) {
+                            iv.visibility = View.GONE
+                        }
+
+                        override fun onAnimationRepeat(animation: Animation?) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+                    //var animation2 = AnimationUtils.loadAnimation(this, R.anim.alpha_desaparicion)
+                    iv.startAnimation(animation)
+                }
+
+            }
+            true
+        }
     }
 
     /** Declare and bind preview, capture and analysis use cases */
@@ -469,6 +539,20 @@ class Camara : AppCompatActivity() {
 
         chronometer = controls.findViewById(R.id.c_meter)
 
+        btnFlash = controls.findViewById(R.id.flash_button)
+
+        btnFlash.setOnClickListener {
+            if (encenderFlash) {
+                camera!!.cameraControl.enableTorch(true)
+                btnFlash.setImageDrawable(getDrawable(R.drawable.ic_flash))
+            } else {
+                camera!!.cameraControl.enableTorch(false)
+                btnFlash.setImageDrawable(getDrawable(R.drawable.ic_flash_off))
+            }
+
+            encenderFlash = !encenderFlash
+        }
+
         // In the background, load latest photo taken (if any) for gallery thumbnail
         lifecycleScope.launch(Dispatchers.IO) {
             outputDirectory.listFiles { file ->
@@ -481,16 +565,19 @@ class Camara : AppCompatActivity() {
         if(video) {
             chronometer.isVisible = true
 
-            controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnTouchListener { _, event ->
-                if(event.action == MotionEvent.ACTION_DOWN) {
+            controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
+                if (record) {
                     startRecording()
                     chronometer.base = SystemClock.elapsedRealtime()
                     chronometer.start()
-                } else if(event.action == MotionEvent.ACTION_UP) {
+                    controls.findViewById<ImageButton>(R.id.camera_capture_button).setImageDrawable(getDrawable(R.drawable.ic_stop))
+                } else {
                     stopRecording()
                     chronometer.stop()
+                    controls.findViewById<ImageButton>(R.id.camera_capture_button).setImageDrawable(getDrawable(R.drawable.ic_shutter))
                 }
-                false
+
+                record = !record
             }
         } else {
             controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
