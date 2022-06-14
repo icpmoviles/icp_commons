@@ -93,8 +93,8 @@ class SimpleSearchView @JvmOverloads constructor(creationContext: Context, attrs
 
     private fun initStyle(attrs: AttributeSet?, defStyleAttr: Int) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleSearchView, defStyleAttr, 0)
-        if (typedArray.hasValue(R.styleable.SimpleSearchView_type)) {
-            cardStyle = typedArray.getInt(R.styleable.SimpleSearchView_type, style)
+        if (typedArray.hasValue(R.styleable.SimpleSearchView_typeSearchBar)) {
+            cardStyle = typedArray.getInt(R.styleable.SimpleSearchView_typeSearchBar, style)
         }
         if (typedArray.hasValue(R.styleable.SimpleSearchView_backIconAlpha)) {
             setBackIconAlpha(typedArray.getFloat(R.styleable.SimpleSearchView_backIconAlpha, BACK_ICON_ALPHA_DEFAULT))
