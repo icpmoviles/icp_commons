@@ -36,7 +36,7 @@
         <attr name="android:inputType" />
         <attr name="android:textColor" format="color" />
 
-        <attr name="type" format="enum">
+        <attr name="typeSearchBar" format="enum">
             <enum name="bar" value="0" />
             <enum name="card" value="1" />
         </attr>
