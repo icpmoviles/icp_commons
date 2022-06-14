@@ -35,7 +35,7 @@
                 android:background="@color/colorPrimary"
                 app:iconsTint="@color/black"
                 app:cursorColor="@color/black"
-                app:type="card"
+                app:typeSearchBar="card"
                 app:voiceSearch="false"
                 app:searchBackIcon="@drawable/ic_arrow_back_black_24dp"
                 tools:visibility="visible" />
