@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/mainLayout"
+    tools:context=".KotlinActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <FrameLayout
+            android:id="@+id/toolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:subtitle="SUbtitulo"
+                app:title="Example" />
+
+            <es.icp.icp_commons.simplesearchview.SimpleSearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                app:iconsTint="@color/black"
+                app:cursorColor="@color/black"
+                app:typeSearchBar="card"
+                app:voiceSearch="false"
+                app:searchBackIcon="@drawable/ic_arrow_back_black_24dp"
+                tools:visibility="visible" />
+        </FrameLayout>
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <Button
+        android:id="@+id/btnEmpezarCoordenadas"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:text="Empezar coordenadas"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnPararCoordenadas"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:text="Parar coordenadas"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"/>
+
+
+
+</LinearLayout>

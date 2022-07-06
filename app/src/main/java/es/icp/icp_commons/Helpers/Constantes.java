@@ -29,5 +29,13 @@ public class Constantes {
         Constantes.TIMEOUT = TIMEOUT;
     }
 
+    //TIEMPO INTERMEDIO COORDENADAS
+
+    public static final long INTERVAL_TIME = 5000;
+    public static final long FASTEST_INTERVAL_TIME = 3000;
+
+
+    public static final int MY_FINE_LOCATION_REQUEST = 99;
+    public static final int  MY_BACKGROUND_LOCATION_REQUEST = 100;
 
 }
