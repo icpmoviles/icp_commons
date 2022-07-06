@@ -45,4 +45,6 @@
     <string name="action_back">Atras</string>
     <string name="action_voice_search">Busuqeda Voz</string>
     <string name="action_clear_search">Limpiar Busqueda</string>
+    <string name="background_location_permission_message"><b>Allow only while using the app</b> permission has been granted. If you want
+        to get location updates in the background even when not using the app then grant<b>Allow all the time</b> permission </string>
 </resources>

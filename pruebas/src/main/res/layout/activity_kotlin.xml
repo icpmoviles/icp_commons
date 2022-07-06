@@ -46,5 +46,22 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
+    <Button
+        android:id="@+id/btnEmpezarCoordenadas"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:text="Empezar coordenadas"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnPararCoordenadas"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:text="Parar coordenadas"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"/>
+
+
 
 </LinearLayout>

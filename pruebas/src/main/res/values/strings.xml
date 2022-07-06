@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Pruebas ICP Commons</string>
+    <string name="background_location_permission_message"><b>Allow only while using the app</b> permission has been granted. If you want
+        to get location updates in the background even when not using the app then grant<b>Allow all the time</b> permission </string>
 </resources>

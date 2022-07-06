@@ -289,6 +289,12 @@
                     android:gravity="start|center_vertical"
                     android:text="038 - Mostrar diálogo listado" />
 
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{handler::onClickBtn39}"
+                    android:gravity="start|center_vertical"
+                    android:text="039 - Location Activity" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

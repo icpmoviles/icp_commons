@@ -1,6 +1,10 @@
 package es.icp.icp_commons.Extensions
 
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -13,6 +17,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import es.icp.icp_commons.Helpers.Constantes
+import es.icp.icp_commons.Helpers.Constantes.MY_BACKGROUND_LOCATION_REQUEST
+import es.icp.icp_commons.Helpers.LocationService
+import es.icp.icp_commons.R
 
 fun checkAppPermissions(context: Context, activityResultLauncher: ActivityResultLauncher<Array<String>>, permisos: Array<String> ){
     permisos.forEach { permission ->
@@ -23,6 +31,44 @@ fun checkAppPermissions(context: Context, activityResultLauncher: ActivityResult
         }
     }
 }
+
+fun checkAccessFineLocationPermission(context: Context) : Boolean{
+    return (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED)
+}
+
+fun checkBackgroundLocationPermission(context: Context) : Boolean {
+    return (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+    != PackageManager.PERMISSION_GRANTED)
+}
+
+//fun createDialogLocationPermissions(context: Context) : AlertDialog.Builder{
+//     return AlertDialog.Builder(context).apply {
+//        setTitle("Permisos Segundo plano")
+//        setMessage(R.string.background_location_permission_message)
+//        setPositiveButton("Empezar servicio" , object : DialogInterface.OnClickListener {
+//            override fun onClick(p0: DialogInterface?, p1: Int) {
+//                starServiceFunc(context)
+//            }
+//        })
+//        setNegativeButton("Dar permisos en segundo plano", object : DialogInterface.OnClickListener {
+//            override fun onClick(p0: DialogInterface?, p1: Int) {
+//                requestFineLocationPermission(context)
+//            }
+//
+//        })
+//    }
+//}
+
+fun requestFineLocationPermission(context: Context) {
+    ActivityCompat.requestPermissions(context as Activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,), Constantes.MY_FINE_LOCATION_REQUEST)
+}
+
+fun requestBackgroundLocationPermission(context: Context) {
+    ActivityCompat.requestPermissions(context as Activity,
+        arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), MY_BACKGROUND_LOCATION_REQUEST)
+}
+
 /**
  * En fragment instanciar y comprobar permisos dentro de override onViewStateRestored()
  *
