@@ -30,9 +30,9 @@
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/getCoordinates"
+            android:id="@+id/btnSumar"
             android:layout_marginTop="10dp"
-            android:text="getCoordinates"
+            android:text="+"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

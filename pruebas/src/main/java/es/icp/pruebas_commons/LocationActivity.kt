@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil.setContentView
+import androidx.lifecycle.ViewModelProvider
 import es.icp.icp_commons.Extensions.requestBackgroundLocationPermission
 import es.icp.icp_commons.Extensions.requestFineLocationPermission
 import es.icp.icp_commons.Helpers.LocationService
@@ -32,11 +33,10 @@ class LocationActivity : AppCompatActivity() {
     lateinit var mServiceIntent: Intent
     var localizaciones: MutableList<Location> = ArrayList()
     private var mBound: Boolean = false
-
+    var contador = 0
     lateinit var startServiceBtn: TextView
     lateinit var stopServiceBtn: TextView
-    lateinit var getCoordinatesBtn: TextView
-
+    lateinit var btnSummar: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ class LocationActivity : AppCompatActivity() {
         mLocationService = LocationService()
         startServiceBtn = findViewById(R.id.start_service_btn)
         stopServiceBtn = findViewById(R.id.stop_service_btn)
-        getCoordinatesBtn = findViewById(R.id.getCoordinates)
+        btnSummar = findViewById(R.id.btnSumar)
 
         startServiceBtn.setOnClickListener {
 
@@ -119,8 +119,8 @@ class LocationActivity : AppCompatActivity() {
             stopServiceFunc()
         }
 
-        getCoordinatesBtn.setOnClickListener {
-            
+        btnSummar.setOnClickListener {
+            contador++
         }
 
 
@@ -129,9 +129,15 @@ class LocationActivity : AppCompatActivity() {
     private fun starServiceFunc() {
         mLocationService = LocationService()
         mServiceIntent = Intent(this, mLocationService.javaClass)
-        mServiceIntent.putExtra("URL", "url de ejemplo")
-        mServiceIntent.putExtra("JsonObject", JSONObject().toString())
-        mServiceIntent.putExtra("ENVIAR", false)
+
+        mServiceIntent.apply {
+            putExtra("URL", "url de ejemplo")
+            putExtra("JsonObject", JSONObject().toString())
+            putExtra("ENVIAR", false)
+            putExtra("INTERVAL",5000)
+            putExtra("DURATION", 60000)
+            //putExtra("DISTANCE", 0F)
+        }
 
         if (!UtilsKt.isMyServiceRunning(mLocationService.javaClass, this)) {
             startService(mServiceIntent)
@@ -154,9 +160,9 @@ class LocationActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        /*  if (::mServiceIntent.isInitialized) {
-              stopService(mServiceIntent)
-          }*/
+//         if (::mServiceIntent.isInitialized) {
+//              stopService(mServiceIntent)
+//          }
         super.onDestroy()
     }
 
@@ -198,7 +204,7 @@ class LocationActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(
                         this,
-                        "ACCESS_FINE_LOCATION permission denied",
+                        "permiso denegado ACCESS_FINE_LOCATION ",
                         Toast.LENGTH_LONG
                     ).show()
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(
@@ -227,7 +233,7 @@ class LocationActivity : AppCompatActivity() {
                     ) {
                         Toast.makeText(
                             this,
-                            "Background location Permission Granted",
+                            "Permiso concedido Background location",
                             Toast.LENGTH_LONG
                         ).show()
                     }

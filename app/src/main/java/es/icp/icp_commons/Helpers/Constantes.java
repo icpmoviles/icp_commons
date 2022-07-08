@@ -20,7 +20,6 @@ public class Constantes {
     public static final int CODE_PERMISSIONS    = 4001;
 
     public static String[] PERMISOS_LOCALIZACION = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-
     public static int getTIMEOUT() {
         return TIMEOUT;
     }
@@ -29,10 +28,13 @@ public class Constantes {
         Constantes.TIMEOUT = TIMEOUT;
     }
 
+
     //TIEMPO INTERMEDIO COORDENADAS
 
-    public static final long INTERVAL_TIME = 5000;
-    public static final long FASTEST_INTERVAL_TIME = 3000;
+    public static final int INTERVAL_TIME = 20000;
+    public static final int FASTEST_INTERVAL_TIME = 5000;
+    public static final int DURATION_DEFAULT = 60000;
+    public static final float DISTANCE_DEFAULT = 0f;
 
 
     public static final int MY_FINE_LOCATION_REQUEST = 99;
