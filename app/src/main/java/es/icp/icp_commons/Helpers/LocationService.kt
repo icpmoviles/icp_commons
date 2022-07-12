@@ -9,14 +9,11 @@ import android.graphics.Color
 import android.location.Location
 import android.os.*
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.android.volley.Request
 import com.google.android.gms.location.*
-import es.icp.icp_commons.CheckRequest
-import es.icp.icp_commons.Extensions.isNull
 import es.icp.icp_commons.Services.*
 import org.json.JSONObject
 
@@ -101,7 +98,7 @@ class LocationService() : Service() {
         chan.lightColor = Color.BLUE
         chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val manager = (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-        //manager.createNotificationChannel(chan)
+        manager.createNotificationChannel(chan)
         val notificationBuilder =
             NotificationCompat.Builder(this, notificationChannelId)
         val notification: Notification = notificationBuilder.setOngoing(true)
