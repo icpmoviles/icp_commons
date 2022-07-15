@@ -18,7 +18,8 @@ import es.icp.icp_commons.Services.*
 import org.json.JSONObject
 
 class LocationService() : Service() {
-
+    private val binder = MyBinder()
+    var locationResultGlobal : Location? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var enviar : Boolean? = false
     private var url : String? = ""
@@ -41,9 +42,11 @@ class LocationService() : Service() {
                 val location = locationList.last()
                 Log.d("Location Latitude", location.latitude.toString())
                 Log.i("Location longitud", location.longitude.toString())
+                locationResultGlobal = locationList.last()
                 if (enviar!= false) {
                     guardarDatosRepo(url!!, location, objecto!!, applicationContext)
                 }
+                setData()
 
             }
         }
@@ -109,6 +112,13 @@ class LocationService() : Service() {
 
         startForeground(2, notification)
 
+    }
+
+    fun setData() {
+        val i = Intent()
+        i.putExtra("COORDENADAS", locationResultGlobal)
+        i.action = "FILTRO"
+        sendBroadcast(i)
     }
 
 
@@ -192,7 +202,13 @@ class LocationService() : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? {
-        return null
+        return binder
+    }
+
+    inner class MyBinder : Binder() {
+        fun getService() : LocationService? {
+            return this@LocationService
+        }
     }
 
 

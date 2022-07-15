@@ -2,16 +2,12 @@ package es.icp.pruebas_commons
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.ComponentName
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
 import android.widget.TextView
@@ -19,24 +15,31 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil.setContentView
-import androidx.lifecycle.ViewModelProvider
-import es.icp.icp_commons.Extensions.requestBackgroundLocationPermission
-import es.icp.icp_commons.Extensions.requestFineLocationPermission
 import es.icp.icp_commons.Helpers.LocationService
-import es.icp.icp_commons.Utils.Utils
 import es.icp.icp_commons.Utils.UtilsKt
 import org.json.JSONObject
 
 class LocationActivity : AppCompatActivity() {
     lateinit var mLocationService: LocationService
     lateinit var mServiceIntent: Intent
-    var localizaciones: MutableList<Location> = ArrayList()
-    private var mBound: Boolean = false
-    var contador = 0
+    var coordenadas : Location? = null
     lateinit var startServiceBtn: TextView
     lateinit var stopServiceBtn: TextView
     lateinit var btnSummar: TextView
+
+    var br = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, i: Intent?) {
+            coordenadas = i?.extras?.get("COORDENADAS") as Location;
+            Log.i("++++++++++MIS COORDENADAS", coordenadas!!.latitude.toString() +","+coordenadas!!.longitude.toString())
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val filt = IntentFilter("FILTRO")
+        this.registerReceiver(br, filt)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,7 +123,7 @@ class LocationActivity : AppCompatActivity() {
         }
 
         btnSummar.setOnClickListener {
-            contador++
+
         }
 
 
@@ -129,14 +132,13 @@ class LocationActivity : AppCompatActivity() {
     private fun starServiceFunc() {
         mLocationService = LocationService()
         mServiceIntent = Intent(this, mLocationService.javaClass)
-
         mServiceIntent.apply {
             putExtra("URL", "url de ejemplo")
             putExtra("JsonObject", JSONObject().toString())
             putExtra("ENVIAR", false)
             putExtra("INTERVAL",5000)
             putExtra("DURATION", 60000)
-            //putExtra("DISTANCE", 0F)
+            //putExtra("DISTANCE", 5F)
         }
 
         if (!UtilsKt.isMyServiceRunning(mLocationService.javaClass, this)) {
