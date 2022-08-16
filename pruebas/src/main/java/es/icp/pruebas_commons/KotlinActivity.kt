@@ -24,6 +24,7 @@ import es.icp.icp_commons.Utils.UtilsKt
 import es.icp.icp_commons.simplesearchview.SimpleSearchView
 import es.icp.icp_commons.simplesearchview.utils.DimensUtils.convertDpToPx
 import es.icp.pruebas_commons.databinding.ActivityKotlinBinding
+import es.icp.pruebas_commons.implementaciones.DxImplementacion
 
 class KotlinActivity : AppCompatActivity() {
 
@@ -42,8 +43,8 @@ class KotlinActivity : AppCompatActivity() {
         setUpView()
     }
 
-    private fun setUpView() {
-        binding.btnEmpezarCoordenadas.setOnClickListener {
+    private fun setUpView() = with(binding) {
+        btnEmpezarCoordenadas.setOnClickListener {
             if (checkAccessFineLocationPermission(context)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     if (!checkBackgroundLocationPermission(context)) {
@@ -69,8 +70,8 @@ class KotlinActivity : AppCompatActivity() {
                     }
                 }
             } else if (!checkAccessFineLocationPermission(context)) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    AlertDialog.Builder(this)
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this@KotlinActivity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    AlertDialog.Builder(this@KotlinActivity)
                         .setTitle("ACCESS_FINE_LOCATION")
                         .setMessage("Location permission required")
                         .setPositiveButton(
@@ -86,9 +87,48 @@ class KotlinActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnPararCoordenadas.setOnClickListener {
+        btnPararCoordenadas.setOnClickListener {
             stopServiceFunc(context)
         }
+
+        btnMostrarDxCustomEjemplo.setOnClickListener {
+
+            val onAccept = {
+                Toast.makeText(context, "Boton aceptar/SI pulsado.", Toast.LENGTH_SHORT).show()
+            }
+
+            val onCancel = {
+                Toast.makeText(context, "Boton cancelar pulsado.", Toast.LENGTH_SHORT).show()
+            }
+
+            DxImplementacion.mostrarDxEjemplo(
+                context,
+                onAccept,
+                onCancel
+            )
+
+        }
+
+        btnMostrarDxCustomEjemploConCustomView.setOnClickListener {
+
+            val onCancel = {
+                Toast.makeText(context, "Boton cancelar pulsado.", Toast.LENGTH_SHORT).show()
+            }
+
+            DxImplementacion.mostrarDxEjemploConCustomView(
+                context,
+                onAccept = {
+
+                    val nombre = it.txtInputNombre.text
+
+                    Toast.makeText(context, "Boton aceptar/SI pulsado. Nombre: $nombre", Toast.LENGTH_SHORT).show()
+
+                },
+                onCancel
+            )
+
+        }
+
     }
 
     fun starServiceFunc(context: Context) {

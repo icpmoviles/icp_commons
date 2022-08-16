@@ -24,4 +24,9 @@
     <dimen name="shutter_button_margin">80dp</dimen>
 
     <dimen name="search_icon_padding">12dp</dimen>
+
+    <!--  DxCustom  -->
+    <dimen name="dx_title_text_size">19sp</dimen>
+    <dimen name="dx_message_text_size">16sp</dimen>
+
 </resources>

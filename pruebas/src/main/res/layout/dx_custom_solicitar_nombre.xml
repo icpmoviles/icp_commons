@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nombreLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:hint="Nombre"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginHorizontal="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInputNombre"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
