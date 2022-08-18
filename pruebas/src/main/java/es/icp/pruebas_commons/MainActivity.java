@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +62,7 @@ import es.icp.icp_commons.Services.GeoTracking;
 import es.icp.icp_commons.Services.WebService;
 import es.icp.icp_commons.Utils.SpeedTest;
 import es.icp.icp_commons.Utils.Utils;
+import es.icp.icp_commons.Utils.UtilsKt;
 import es.icp.logs.core.MyLog;
 import es.icp.pruebas_commons.databinding.MainActivityBinding;
 import es.icp.pruebas_commons.helpers.CommonsBaseApp;
@@ -307,6 +307,12 @@ public class MainActivity extends CommonsBaseApp {
             @Override
             public void onClickBtn38(View view) {
                 crearDialogolistado();
+            }
+
+            @Override
+            public void onClickBtn39(View view) {
+                Intent intent = new Intent(context, LocationActivity.class);
+                startActivity(intent);
             }
         };
     }
@@ -1199,5 +1205,7 @@ public class MainActivity extends CommonsBaseApp {
         void onClickBtn37(View view);
 
         void onClickBtn38(View view);
+
+        void onClickBtn39(View view);
     }
 }

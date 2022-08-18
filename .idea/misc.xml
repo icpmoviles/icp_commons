@@ -10,22 +10,45 @@
         <entry key="..\:/Documents/AndroidStudio/icp_commons/pruebas/src/main/res/layout/main_activity.xml" value="0.2848731884057971" />
         <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/activity_camara.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/camera_ui_container.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/search_view.xml" value="0.3009833262077811" />
-        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/snackbar_custom_layout.xml" value="0.2960108794197643" />
-        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/activity_kotlin.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/background_toast.xml" value="0.25" />
-        <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_close_black_24dp.xml" value="0.3635" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_edit_blue_24dp.xml" value="0.3085" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_photo.xml" value="0.3085" />
-        <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.1905" />
-        <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/layout/search_view.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/layout/snackbar_custom_layout.xml" value="0.5" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/layout/toast_custom_layout.xml" value="1.25" />
-        <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/activity_kotlin.xml" value="0.33" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/activity_main.xml" value="0.28177083333333336" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/main_activity.xml" value="0.3111413043478261" />
-        <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/pruebas/src/main/res/menu/main_menu.xml" value="0.25" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable-v24/circled_background_white.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable-v24/circled_orange_button.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable-v24/ic_semi_circle.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_barcode_512.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_camara_focus.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_chevron_left_black_24dp.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_chevron_right_black_24dp.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_circle_orange_button.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_combined_shape.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_delete_black_24dp.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_edit_blue_24dp.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_flash.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_flash_off.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_help_outline_black_100dp.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_help_outline_white_100dp.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_shutter.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_shutter_normal.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_stop.xml" value="0.138" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/layout/activity_camara.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/layout/activity_location.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/layout/activity_location_2.xml" value="0.18" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/layout/camera_ui_container.xml" value="0.21296296296296297" />
+        <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/activity_kotlin.xml" value="0.25" />
         <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/main_activity.xml" value="0.1703125" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_header_background.xml" value="0.194" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_icon.xml" value="0.194" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_icon_shape.xml" value="0.21" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_transparent_default_background.xml" value="0.194" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_transparent_default_background_color.xml" value="0.194" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/activity_kotlin.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/dx_custom_solicitar_nombre.xml" value="0.365625" />
       </map>
     </option>
   </component>

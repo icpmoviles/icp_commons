@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="-30dp"
     android:gravity="center"
+    android:layout_gravity="bottom"
     android:orientation="vertical"
     android:background="@color/colorTransparent">
 
@@ -21,15 +22,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_semi_circle"
-                android:tint="@android:color/white" />
+                android:backgroundTint="@color/white" />
 
             <ImageView
                 android:id="@+id/imagenIcono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit_black_60dp"
-                android:tint="@android:color/black"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/ic_edit_black_60dp" />
 
         </RelativeLayout>
 
@@ -45,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="Matrícula del donante"
+                android:text="Matrícula del receptor"
                 android:gravity="center"
                 android:textColor="@color/negroTitulo"
                 android:fontFamily="@font/poppins"
@@ -64,6 +65,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/cuerpoDialogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -76,11 +78,11 @@
             android:layout_marginHorizontal="14dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/roboto"
+            android:textColor="@color/negroTexto"
             android:gravity="center"
-            android:lineHeight="19sp"
             android:paddingHorizontal="20dp"
-            android:text="Por favor, introduzca la matrícula de trasportista donante del cual vas a recuperar los bultos"
-            android:textSize="14sp" />
+            android:text="Por favor, introduzca la matrícula de "
+            android:textSize="16sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -98,6 +100,25 @@
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancelar" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Aceptar" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
