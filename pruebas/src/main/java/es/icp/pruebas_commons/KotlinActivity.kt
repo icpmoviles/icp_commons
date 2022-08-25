@@ -127,6 +127,8 @@ class KotlinActivity : AppCompatActivity() {
                 onCancel
             )
 
+            Log.d(":::", getColor(R.color.colorPrimary).toString())
+
         }
 
     }

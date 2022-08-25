@@ -1,5 +1,6 @@
 package es.icp.icp_commons.DxCustom
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.res.XmlResourceParser
@@ -13,6 +14,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import es.icp.icp_commons.Extensions.visible
 import es.icp.icp_commons.R
 
@@ -28,7 +30,7 @@ import es.icp.icp_commons.R
  */
 /**
  * @author Julio Landazuri Diaz
- * @version 1.0
+ * @version 2.0
  *
  * Esta calse permite tener dialogos personalizados a partir de un layout respetando las IDs de los elementos.
  */
@@ -36,8 +38,9 @@ import es.icp.icp_commons.R
 
         DxCustom(this@LoginActivity)
                 .createDialog()
-                .setTitulo("Titulo")
-                .setMensaje("Mensaje")
+                .setTitulo("Titulo", context.getColor(R.color.dxCustom), 5f)
+                .setMensaje("Mensaje", context.getColor(R.color.dxCustom), 5f)
+                .setIcono(color = context.getColor(R.color.dxCustom))
                 .noPermitirSalirSinBotones()
                 .showAceptarButton("aceptar personalizado") {
                     Log.d(":::", "Aceptar pulsado.")
@@ -77,14 +80,25 @@ class DxCustom(
     private var layoutDxCustomPersonalizado:    XmlResourceParser?  = null
     private lateinit var dialog:                Dialog
 
+    private var tituloColor:    Int? = null
+    private var mensajeColor:   Int? = null
+    private var iconoColor:     Int? = null
+
+    private var tituloSp:       Float? = null
+    private var mensajeSp:      Float? = null
+
+    private var animarAlSalirOEsconder: Boolean = true
+
     /**
      * Crea y asigna las configuraciones del dialogo.
      *
      * @return DxCustom
      */
-    fun createDialog(fullScreen: Boolean = false): DxCustom {
+    fun createDialog(fullScreen: Boolean = false, verticalAnimation: Boolean = true): DxCustom {
 
         verificarExistenciaDeRecursos()
+
+        animarAlSalirOEsconder = verticalAnimation
 
         //Este estilo puede cambiar dependiendo del proyecto
         dialog = Dialog(context, R.style.DxCustom)
@@ -107,13 +121,13 @@ class DxCustom(
         //Para que el layout que se asigna al DxCustom, este en pantalla completa.
         if(fullScreen)
             dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT);
+                WindowManager.LayoutParams.MATCH_PARENT)
 
         val window = dialog.window
 
         window?.let {
 
-            val wlp = window.attributes
+            val wlp = it.attributes
 
             wlp.gravity = Gravity.BOTTOM
         }?: run {
@@ -133,16 +147,21 @@ class DxCustom(
      * @throws IllegalArgumentException
      *
      * @param titulo Texto que se asigna al titulo.
+     * @param color Color del titulo.
+     * @param textSize Size del titulo.
      *
      * @return DxCustom
      */
-    fun setTitulo(titulo: String = tituloDxCustom): DxCustom {
+    fun setTitulo(titulo: String = tituloDxCustom, color: Int = -16777216, textSize: Float = 19f): DxCustom {
 
         if(titulo.isEmpty())
             throwIllegalArgumentException("El titulo proporcionado no es valido.")
         else{
             tituloDxCustom = titulo
         }
+
+        tituloColor = color
+        tituloSp = textSize
 
         return this
     }
@@ -151,16 +170,21 @@ class DxCustom(
      * Permite asignar un mensaje al dialogo.
      *
      * @param mensaje Texto que se asigna al mensaje.
+     * @param color Color del mensaje.
+     * @param textSize Size del mensaje.
      *
      * @return DxCustom
      */
-    fun setMensaje(mensaje: String? = mensajeDxCustom): DxCustom {
+    fun setMensaje(mensaje: String? = mensajeDxCustom, color: Int = -16777216, textSize: Float = 16f): DxCustom {
 
-        mensaje?.let { mensaje ->
-            mensajeDxCustom = mensaje
+        mensaje?.let { msj ->
+            mensajeDxCustom = msj
         } ?: run {
             mensajeDxCustomLayout?.visibility = View.GONE
         }
+
+        mensajeColor = color
+        mensajeSp = textSize
 
         return this
     }
@@ -174,13 +198,15 @@ class DxCustom(
      *
      * @return DxCustom
      */
-    fun setIcono(icono: Drawable? = iconoDxCustom): DxCustom {
+    fun setIcono(icono: Drawable? = iconoDxCustom, color: Int): DxCustom {
 
         icono?.let {
             iconoDxCustom = icono
         }?:run{
             throwIllegalArgumentException("El icono proporcionado no es valido.")
         }
+
+        iconoColor = color
 
         return this
     }
@@ -334,7 +360,7 @@ class DxCustom(
 
         try{
 
-            SetDataOnDialog()
+            setDataOnDialog()
             animateDialogOnShow()
 
             dialog.show()
@@ -358,7 +384,7 @@ class DxCustom(
 
         try{
 
-            SetDataOnDialog()
+            setDataOnDialog()
             animateDialogOnShow()
             dialog.show()
 
@@ -383,39 +409,57 @@ class DxCustom(
 
     private fun loadLayoutComponentes(){
 
-        parentDxCustomLayout   =  dialog.findViewById<LinearLayout>(R.id.parentDxCustomLayout)
-        acceptButtonLayout     =  dialog.findViewById<Button>(R.id.acceptButton)
-        cancelButtonLayout     =  dialog.findViewById<Button>(R.id.cancelButton)
-        tituloDxCustomLayout   =  dialog.findViewById<TextView>(R.id.tituloDxCustom)
-        mensajeDxCustomLayout  =  dialog.findViewById<TextView>(R.id.mensajeDxCustom)
-        iconoDxCustomLayout    =  dialog.findViewById<ImageView>(R.id.iconDxCustom)
-        customViewUpLayout     =  dialog.findViewById<LinearLayout>(R.id.customViewLinearLayoutDxCustomUp)
-        customViewDownLayout   =  dialog.findViewById<LinearLayout>(R.id.customViewLinearLayoutDxCustomDown)
+        parentDxCustomLayout   =  dialog.findViewById(R.id.parentDxCustomLayout)
+        acceptButtonLayout     =  dialog.findViewById(R.id.acceptButton)
+        cancelButtonLayout     =  dialog.findViewById(R.id.cancelButton)
+        tituloDxCustomLayout   =  dialog.findViewById(R.id.tituloDxCustom)
+        mensajeDxCustomLayout  =  dialog.findViewById(R.id.mensajeDxCustom)
+        iconoDxCustomLayout    =  dialog.findViewById(R.id.iconDxCustom)
+        customViewUpLayout     =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomUp)
+        customViewDownLayout   =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomDown)
 
     }
 
     /**
      * Pinta los datos proporcionados en el layout proporcionado.
      */
-    private fun SetDataOnDialog(){
+    private fun setDataOnDialog(){
 
-        tituloDxCustomLayout?.let {
-            it.text = tituloDxCustom
+
+        tituloColor?.let { color ->
+            tituloDxCustomLayout?.setTextColor(color)
+        }
+        tituloSp?.let {
+            tituloDxCustomLayout?.textSize= it
+        }
+        tituloDxCustomLayout?.let {textView ->
+            textView.text = tituloDxCustom
+
         }?:run{
             throwNullPointerException("No se encontro: tituloDxCustomLayout.")
         }
 
-        mensajeDxCustomLayout?.let {
-//            it.text = mensajeDxCustom
-            it.text = Html.fromHtml(mensajeDxCustom, Html.FROM_HTML_MODE_COMPACT)
+
+        mensajeColor?.let { color ->
+            mensajeDxCustomLayout?.setTextColor(color)
+        }
+        mensajeSp?.let {
+            mensajeDxCustomLayout?.textSize= it
+        }
+        mensajeDxCustomLayout?.let {textView ->
+            textView.text = Html.fromHtml(mensajeDxCustom, Html.FROM_HTML_MODE_COMPACT)
+
         }?:run{
             throwNullPointerException("No se encontro: mensajeDxCustomLayout.")
         }
 
+
+        iconoColor?.let { color ->
+            iconoDxCustom?.setTint(color)
+        }
         iconoDxCustomLayout?.setImageDrawable(iconoDxCustom) ?:run{
             throwNullPointerException("No se encontro: iconoDxCustomLayout.")
         }
-
     }
 
     /**
@@ -423,30 +467,38 @@ class DxCustom(
      */
     private fun animateDialogOnShow(){
 
+        if (animarAlSalirOEsconder){
+            parentDxCustomLayout?.let {
 
-        parentDxCustomLayout?.let {
+                it.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            it.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                it.translationY = +1000f + it.measuredHeight
 
-            it.translationY = +1000f + it.measuredHeight
+            }?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
 
-        }?:run {
-            throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            parentDxCustomLayout?.visible() ?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
+
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                parentDxCustomLayout?.animate()?.translationY(0f)?.setDuration(DELAY_TIME)
+                    ?.start()
+                    ?:run {
+                        throwNullPointerException("No se encontro: parentDxCustomLayout.")
+                    }
+
+            }, 100)
+        }else{
+
+            parentDxCustomLayout?.visible() ?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
+
         }
 
-        parentDxCustomLayout?.visible() ?:run {
-            throwNullPointerException("No se encontro: parentDxCustomLayout.")
-        }
-
-        Handler(Looper.getMainLooper()).postDelayed({
-
-            parentDxCustomLayout?.animate()?.translationY(0f)?.setDuration(DELAY_TIME)
-                ?.start()
-                ?:run {
-                    throwNullPointerException("No se encontro: parentDxCustomLayout.")
-                }
-
-        }, 100)
 
     }
 
@@ -455,18 +507,25 @@ class DxCustom(
      */
     private fun animateDialogOnHide() {
 
-        parentDxCustomLayout?.animate()?.translationY(2000f)?.setDuration(DELAY_TIME)
-            ?.start()
-            ?:run{
-            throwNullPointerException("No se encontro: parentDxCustomLayout.")
-        }
+        if (animarAlSalirOEsconder){
+            parentDxCustomLayout?.animate()?.translationY(2000f)?.setDuration(DELAY_TIME)
+                ?.start()
+                ?:run{
+                    throwNullPointerException("No se encontro: parentDxCustomLayout.")
+                }
 
 
-        Handler(Looper.getMainLooper()).postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                dialog.dismiss()
+
+            }, DELAY_TIME)
+
+        }else{
 
             dialog.dismiss()
+        }
 
-        }, DELAY_TIME)
 
     }
 
@@ -477,7 +536,7 @@ class DxCustom(
 
         try{
 
-            iconoDxCustom = context.getDrawable(R.drawable.dx_default_icon)
+            iconoDxCustom = ContextCompat.getDrawable(context, R.drawable.dx_default_icon)
 
         }catch (e: Exception){
             throw e

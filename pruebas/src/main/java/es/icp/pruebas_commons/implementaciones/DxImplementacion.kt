@@ -15,9 +15,10 @@ object DxImplementacion {
     ){
 
         DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo("Titulo ejemplo")
+            .createDialog(fullScreen = true, verticalAnimation = false)
+            .setTitulo("Titulo ejemplo", context.getColor(R.color.darkRed))
             .setMensaje("Mensaje ejemplo")
+            .setIcono(color = context.getColor(R.color.colorAccent))
             .noPermitirSalirSinBotones()
             .showAceptarButton(texto = "SI") { onAccept.invoke() }
             .showCancelarButton { onCancel.invoke() }
@@ -38,8 +39,9 @@ object DxImplementacion {
 
         DxCustom(context)
             .createDialog(fullScreen = true)
-            .setTitulo("Titulo ejemplo con custom view")
-            .setMensaje("Mensaje ejemplo con custom view")
+            .setTitulo("Titulo ejemplo con custom view", context.getColor(R.color.dxCustom), 19f)
+            .setMensaje("Mensaje ejemplo con custom view", context.getColor(R.color.dxCustom),16f)
+            .setIcono(color = context.getColor(R.color.dxCustom))
             .permitirSalirSinBotones()
             .showAceptarButton(texto = "SI") { onAccept.invoke(binding) }
             .showCancelarButton { onCancel.invoke() }
