@@ -14,10 +14,14 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +43,7 @@ public class CommonsGeocoder {
     private GeocoderMetodo   metodo;
     private GeocoderListener listener;
     private int              numUpdates = PUNTUAL;
+    private static FusedLocationProviderClient fusedClient;
 
     public static final int CONTINUO = 0;
     public static final int PUNTUAL = 1;
@@ -48,6 +53,7 @@ public class CommonsGeocoder {
 
     public static CommonsGeocoder getINSTANCE(Context context) {
         if (INSTANCE == null) INSTANCE = new CommonsGeocoder(context);
+        if (fusedClient == null) fusedClient = LocationServices.getFusedLocationProviderClient(context);
         return INSTANCE;
     }
 
@@ -102,6 +108,15 @@ public class CommonsGeocoder {
     }
 
     private void getLastKnownLocation(GeocoderMetodo metodo, GeocoderListener listener) {
+        if (fusedClient != null) {
+            fusedClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    procesarLocalizacion(metodo, location, listener);
+                }
+            });
+        }
+
         LocationRequest mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationCallback mLocationCallback = new LocationCallback() {
