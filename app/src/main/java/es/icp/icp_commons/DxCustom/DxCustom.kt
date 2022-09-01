@@ -2,6 +2,7 @@ package es.icp.icp_commons.DxCustom
 
 import android.app.Dialog
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.XmlResourceParser
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -366,8 +367,8 @@ class DxCustom(
      */
     fun showCancelarButton(
         texto: String? = "Cancelar",
-        strokecolor:  Int = R.color.colorPrimary,
-        textColor:  Int = context.resources.getColor(strokecolor, null),
+        strokecolor:  Int = context.resources.getColor(R.color.colorPrimary, null),
+        textColor:  Int = context.resources.getColor(R.color.colorPrimary, null),
         onCancel: () -> Unit
     ): DxCustom {
 
@@ -377,8 +378,14 @@ class DxCustom(
 
                 visibility = VISIBLE
                 text = texto
-                setStrokeColorResource(strokecolor)
-                setTextColor(textColor)
+                strokeColor = ColorStateList.valueOf(strokecolor)
+
+                if(textColor != context.resources.getColor(R.color.colorPrimary, null)){
+
+                    setTextColor(textColor)
+                }else{
+                    setTextColor(strokecolor)
+                }
 
                 setOnClickListener {
                     animateDialogOnHide()
