@@ -59,7 +59,7 @@ object DxImplementacion {
             .permitirSalirSinBotones()
             .showAceptarButton("SI", context.getColor(R.color.red)) { onAccept.invoke(binding) }
             .showCancelarButton(
-                strokecolor = R.color.colorAccent,
+                strokecolor = context.getColor(R.color.colorAccent),
                 textColor = context.getColor(R.color.darkRed)
             ) { onCancel.invoke() }
             .showDialogReturnDxCustom()
