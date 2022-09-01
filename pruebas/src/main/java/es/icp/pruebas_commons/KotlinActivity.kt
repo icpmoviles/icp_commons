@@ -108,6 +108,14 @@ class KotlinActivity : AppCompatActivity() {
             )
 
         }
+        btnMostrarDxCustomNotification.setOnClickListener {
+
+            DxImplementacion.mostrarDxNotification(
+                context,
+                binding.root
+            )
+
+        }
 
         btnMostrarDxCustomEjemploConCustomView.setOnClickListener {
 
@@ -126,6 +134,8 @@ class KotlinActivity : AppCompatActivity() {
                 },
                 onCancel
             )
+
+            Log.d(":::", getColor(R.color.colorPrimary).toString())
 
         }
 

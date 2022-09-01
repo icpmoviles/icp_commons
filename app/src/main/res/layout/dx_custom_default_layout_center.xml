@@ -11,21 +11,29 @@
     android:id="@+id/parentDxCustomLayout"
     android:visibility="gone"
     tools:visibility="visible"
+    android:gravity="center_vertical"
     >
 
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:background="@drawable/dx_default_center_background"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginVertical="100dp">
 
         <LinearLayout
-            android:id="@+id/parte_de_abajo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="0dp"
-            android:background="@drawable/dx_default_header_background"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginVertical="10dp">
+
+            <ImageView
+                android:id="@+id/iconDxCustom"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/dx_default_icon"
+                tools:tint="@color/red"/>
 
             <TextView
                 android:layout_marginTop="5dp"
@@ -68,7 +76,8 @@
                 android:id="@+id/customViewLinearLayoutDxCustomUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -114,38 +123,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
-
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/parte_de_abajo"
-            android:layout_marginBottom="-35dp">
-
-            <FrameLayout
-                android:id="@+id/circulo_de_icono"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center_horizontal">
-
-                <View
-                    android:layout_width="70dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/dx_default_icon_shape"/>
-
-                <ImageView
-                    android:id="@+id/iconDxCustom"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center_horizontal"
-                    android:padding="10dp"
-                    android:src="@drawable/dx_default_icon" />
-
-            </FrameLayout>
-
-        </FrameLayout>
-    </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

@@ -3,18 +3,23 @@ package es.icp.icp_commons.DxCustom
 import android.app.Dialog
 import android.content.Context
 import android.content.res.XmlResourceParser
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
 import android.view.*
 import android.view.View.VISIBLE
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import es.icp.icp_commons.Extensions.visible
 import es.icp.icp_commons.R
+import org.w3c.dom.Text
 
 /*
 
@@ -28,25 +33,41 @@ import es.icp.icp_commons.R
  */
 /**
  * @author Julio Landazuri Diaz
- * @version 1.0
+ * @version 2.0
  *
- * Esta calse permite tener dialogos personalizados a partir de un layout respetando las IDs de los elementos.
+ * Esta clase te permite mostrar dialogos con una vista personalizada.
+ *
+ *            ¡Ahora con colores y notificaciones!
  */
-/* ------- Ejemplo de uso -------
+/* ------- Ejemplo de uso CREATEDIALOG -------
 
         DxCustom(this@LoginActivity)
                 .createDialog()
-                .setTitulo("Titulo")
-                .setMensaje("Mensaje")
+                .setTitulo("Titulo", context.getColor(R.color.dxCustom), 5f)
+                .setMensaje("Mensaje", context.getColor(R.color.dxCustom), 5f)
+                .setIcono(color = context.getColor(R.color.dxCustom))
                 .noPermitirSalirSinBotones()
-                .showAceptarButton("aceptar personalizado") {
+                .showAceptarButton("aceptar personalizado", context.getColor(R.color.red)) {
                     Log.d(":::", "Aceptar pulsado.")
                 }
-                .showCancelarButton ("cancelar personalizado") {
+                .showCancelarButton (
+                    "cancelar personalizado",
+                    strokecolor = R.color.colorAccent,
+                    textColor = context.getColor(R.color.darkRed)
+                ) {
                     Log.d(":::", "Cancelar pulsado.")
                 }
                 .addCustomView(bindingCustomView.root)
                 .showDialog()
+
+
+  ------- Ejemplo de uso CREATENOTIFICATION -------
+
+        DxCustom(context).createNotification(parentView,
+            "Mensaje de ejemplo",
+            backgroundColor = context.getColor(R.color.lightGreen),
+            strokeColor = context.getColor(R.color.red),
+        )
 
 
  */
@@ -74,17 +95,81 @@ class DxCustom(
     private var tituloDxCustom:                 String              = "Sin titulo."
     private var mensajeDxCustom:                String              = "Sin mensaje."
     private var iconoDxCustom:                  Drawable?           = null
-    private var layoutDxCustomPersonalizado:    XmlResourceParser?  = null
+    private var layoutDxCustomPersonalizadoCenter:      XmlResourceParser?  = null
+    private var layoutDxCustomPersonalizadoBottom:      XmlResourceParser?  = null
     private lateinit var dialog:                Dialog
+
+    private var tituloColor:    Int? = null
+    private var mensajeColor:   Int? = null
+    private var iconoColor:     Int? = null
+
+    private var tituloSp:       Float? = null
+    private var mensajeSp:      Float? = null
+
+    private var animarAlSalir: Boolean = true
+    private var animarAlEsconder: Boolean = true
+
+    private var selectedGravity: Int = Gravity.BOTTOM
+
+    /**
+     * Crea una notificacion en la parte superior de la pantalla.
+     *
+     * @param parentLayout Layut padre de la notificacion, suele ser binding.root.
+     * @param text Mensaje a mostrar.
+     * @param textColor Color del mensaje.
+     * @param backgroundColor Color de fondo de la notificacion, por defecto es blanco.
+     * @param strokeColor Color del borde de la notificacion, por defecto es del mismo color que backgroundColor.
+     * @param length Duracion de la notificacion, por defecto es Snackbar.LENGTH_SHORT.
+     *
+     */
+    fun createNotification(
+        parentLayout: View,
+        text: String,
+        textColor: Int = -16777216,
+        backgroundColor: Int = -1,
+        strokeColor: Int = backgroundColor,
+        length: Int = Snackbar.LENGTH_SHORT
+    ) {
+
+        val snackbar: Snackbar = Snackbar.make(parentLayout, text, length)
+        val view = snackbar.view
+        val params: FrameLayout.LayoutParams = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+
+        view.setBackgroundColor(backgroundColor)
+
+        view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).setTextColor(textColor)
+
+        val shape = GradientDrawable()
+        shape.cornerRadius = 10f
+        shape.setColor(backgroundColor)
+        shape.setStroke(2, strokeColor)
+        view.background = shape
+
+        view.layoutParams = params
+        snackbar.animationMode = Snackbar.ANIMATION_MODE_FADE
+        snackbar.show()
+
+    }
 
     /**
      * Crea y asigna las configuraciones del dialogo.
      *
+     * @param fullScreen Si se quiere que el dialogo sea de tamaño completo.
+     * @param animarAlSalir Si se quiere que la animacion sea vertical o la predefinida de Dialog al mostrarse.
+     * @param animarAlEsconder Si se quiere que la animacion sea vertical o la predefinida de Dialog al esconderse.
+     * @param gravity Puede elegirse una de las siguientes opciones: Gravity.BOTTOM -> se muestra abajo, Gravity.CENTER -> se muestra en el centro.
+     *
      * @return DxCustom
      */
-    fun createDialog(fullScreen: Boolean = false): DxCustom {
+    fun createDialog(fullScreen: Boolean = false, animarAlSalir: Boolean = true, animarAlEsconder: Boolean = true, gravity: Int = selectedGravity): DxCustom {
 
         verificarExistenciaDeRecursos()
+
+        this.animarAlSalir = animarAlSalir
+        this.animarAlEsconder = animarAlEsconder
+
+        selectedGravity = gravity
 
         //Este estilo puede cambiar dependiendo del proyecto
         dialog = Dialog(context, R.style.DxCustom)
@@ -92,28 +177,34 @@ class DxCustom(
         val inflater = LayoutInflater.from(context)
 
         try{
+            var dialogView: View? = null
 
-            val dialogView = inflater.inflate(layoutDxCustomPersonalizado, null)
+            when(selectedGravity){
+                Gravity.CENTER -> dialogView = inflater.inflate(layoutDxCustomPersonalizadoCenter, null)
+                Gravity.BOTTOM -> dialogView = inflater.inflate(layoutDxCustomPersonalizadoBottom, null)
+            }
 
-            dialog.setContentView(dialogView)
+            dialogView?.let{
+
+                dialog.setContentView(it)
+            }?:run{
+                throwNullPointerException("Customlayout no encontrado.")
+            }
 
         }catch (e: Exception){
             e.printStackTrace()
         }
 
-        //Importante, indicar un drawable como fondo, en el se podran cambiar los margenes de la ventana del dialogo.
-        dialog.window?.setBackgroundDrawableResource(R.drawable.dx_transparent_default_background)
-
         //Para que el layout que se asigna al DxCustom, este en pantalla completa.
         if(fullScreen)
             dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT);
+                WindowManager.LayoutParams.MATCH_PARENT)
 
         val window = dialog.window
 
         window?.let {
 
-            val wlp = window.attributes
+            val wlp = it.attributes
 
             wlp.gravity = Gravity.BOTTOM
         }?: run {
@@ -133,16 +224,21 @@ class DxCustom(
      * @throws IllegalArgumentException
      *
      * @param titulo Texto que se asigna al titulo.
+     * @param color Color del titulo.
+     * @param textSize Size del titulo.
      *
      * @return DxCustom
      */
-    fun setTitulo(titulo: String = tituloDxCustom): DxCustom {
+    fun setTitulo(titulo: String = tituloDxCustom, color: Int = -16777216, textSize: Float = 19f): DxCustom {
 
         if(titulo.isEmpty())
             throwIllegalArgumentException("El titulo proporcionado no es valido.")
         else{
             tituloDxCustom = titulo
         }
+
+        tituloColor = color
+        tituloSp = textSize
 
         return this
     }
@@ -151,36 +247,44 @@ class DxCustom(
      * Permite asignar un mensaje al dialogo.
      *
      * @param mensaje Texto que se asigna al mensaje.
+     * @param color Color del mensaje.
+     * @param textSize Size del mensaje.
      *
      * @return DxCustom
      */
-    fun setMensaje(mensaje: String? = mensajeDxCustom): DxCustom {
+    fun setMensaje(mensaje: String? = mensajeDxCustom, color: Int = -16777216, textSize: Float = 16f): DxCustom {
 
-        mensaje?.let { mensaje ->
-            mensajeDxCustom = mensaje
+        mensaje?.let { msj ->
+            mensajeDxCustom = msj
         } ?: run {
             mensajeDxCustomLayout?.visibility = View.GONE
         }
+
+        mensajeColor = color
+        mensajeSp = textSize
 
         return this
     }
 
     /**
-     * Permite asginar un icono al dialogo.
+     * Permite asginar un icono al dialogo y un color.
      *
      * @throws IllegalArgumentException
      *
-     * @param icono Drawable a mostrar en el icono del dialogo.
+     * @param icono Drawable a mostrar en el icono del dialogo (obligatorio).
+     * @param color Color del icono.
      *
      * @return DxCustom
      */
-    fun setIcono(icono: Drawable? = iconoDxCustom): DxCustom {
+    fun setIcono(icono: Drawable? = iconoDxCustom, color: Int = context.resources.getColor(R.color.colorPrimary, null)): DxCustom {
 
         icono?.let {
             iconoDxCustom = icono
         }?:run{
             throwIllegalArgumentException("El icono proporcionado no es valido.")
         }
+
+        iconoColor = color
 
         return this
     }
@@ -213,12 +317,14 @@ class DxCustom(
      * Muestra el boton de aceptar y luego ejecuta onAccept.
      *
      * @param texto Permite sustituir el texto mostrado en el boton aceptar.
+     * @param color Permite sustituir el color del boton aceptar.
      * @param onAccept Codigo proporcionado para que se ejecuta cuando el boton aceptar sea pulsado.
      *
      * @return DxCustom
      */
     fun showAceptarButton(
         texto: String? = "Aceptar",
+        color: Int = context.resources.getColor(R.color.colorPrimary, null),
         onAccept: () -> Unit): DxCustom {
 
         acceptButtonLayout?.let { acceptBtn ->
@@ -227,6 +333,7 @@ class DxCustom(
 
                 visibility = VISIBLE
                 text = texto
+                setBackgroundColor(color)
 
                 setOnClickListener {
                     animateDialogOnHide()
@@ -251,21 +358,27 @@ class DxCustom(
      * y desencadenar 2 veces la acción.
      *
      * @param texto Permite sustituir el texto mostrado en el boton cancelar.
+     * @param strokeColor Permite sustituir el color del borde del boton cancelar.
+     * @param textColor Permite sustituir el color del textp del boton cancelar, por defecto es del color del strokeColor.
      * @param onCancel Codigo proporcionado para que se ejecuta cuando el boton cancelar sea pulsado.
      *
      * @return DxCustom
      */
     fun showCancelarButton(
         texto: String? = "Cancelar",
+        strokecolor:  Int = R.color.colorPrimary,
+        textColor:  Int = context.resources.getColor(strokecolor, null),
         onCancel: () -> Unit
     ): DxCustom {
 
         cancelButtonLayout?.let { cancelBtn ->
 
-            with (cancelBtn) {
+            with (cancelBtn as MaterialButton) {
 
                 visibility = VISIBLE
                 text = texto
+                setStrokeColorResource(strokecolor)
+                setTextColor(textColor)
 
                 setOnClickListener {
                     animateDialogOnHide()
@@ -334,7 +447,7 @@ class DxCustom(
 
         try{
 
-            SetDataOnDialog()
+            setDataOnDialog()
             animateDialogOnShow()
 
             dialog.show()
@@ -358,7 +471,7 @@ class DxCustom(
 
         try{
 
-            SetDataOnDialog()
+            setDataOnDialog()
             animateDialogOnShow()
             dialog.show()
 
@@ -383,39 +496,57 @@ class DxCustom(
 
     private fun loadLayoutComponentes(){
 
-        parentDxCustomLayout   =  dialog.findViewById<LinearLayout>(R.id.parentDxCustomLayout)
-        acceptButtonLayout     =  dialog.findViewById<Button>(R.id.acceptButton)
-        cancelButtonLayout     =  dialog.findViewById<Button>(R.id.cancelButton)
-        tituloDxCustomLayout   =  dialog.findViewById<TextView>(R.id.tituloDxCustom)
-        mensajeDxCustomLayout  =  dialog.findViewById<TextView>(R.id.mensajeDxCustom)
-        iconoDxCustomLayout    =  dialog.findViewById<ImageView>(R.id.iconDxCustom)
-        customViewUpLayout     =  dialog.findViewById<LinearLayout>(R.id.customViewLinearLayoutDxCustomUp)
-        customViewDownLayout   =  dialog.findViewById<LinearLayout>(R.id.customViewLinearLayoutDxCustomDown)
+        parentDxCustomLayout   =  dialog.findViewById(R.id.parentDxCustomLayout)
+        acceptButtonLayout     =  dialog.findViewById(R.id.acceptButton)
+        cancelButtonLayout     =  dialog.findViewById(R.id.cancelButton)
+        tituloDxCustomLayout   =  dialog.findViewById(R.id.tituloDxCustom)
+        mensajeDxCustomLayout  =  dialog.findViewById(R.id.mensajeDxCustom)
+        iconoDxCustomLayout    =  dialog.findViewById(R.id.iconDxCustom)
+        customViewUpLayout     =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomUp)
+        customViewDownLayout   =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomDown)
 
     }
 
     /**
      * Pinta los datos proporcionados en el layout proporcionado.
      */
-    private fun SetDataOnDialog(){
+    private fun setDataOnDialog(){
 
-        tituloDxCustomLayout?.let {
-            it.text = tituloDxCustom
+
+        tituloColor?.let { color ->
+            tituloDxCustomLayout?.setTextColor(color)
+        }
+        tituloSp?.let {
+            tituloDxCustomLayout?.textSize= it
+        }
+        tituloDxCustomLayout?.let {textView ->
+            textView.text = tituloDxCustom
+
         }?:run{
             throwNullPointerException("No se encontro: tituloDxCustomLayout.")
         }
 
-        mensajeDxCustomLayout?.let {
-//            it.text = mensajeDxCustom
-            it.text = Html.fromHtml(mensajeDxCustom, Html.FROM_HTML_MODE_COMPACT)
+
+        mensajeColor?.let { color ->
+            mensajeDxCustomLayout?.setTextColor(color)
+        }
+        mensajeSp?.let {
+            mensajeDxCustomLayout?.textSize= it
+        }
+        mensajeDxCustomLayout?.let {textView ->
+            textView.text = Html.fromHtml(mensajeDxCustom, Html.FROM_HTML_MODE_COMPACT)
+
         }?:run{
             throwNullPointerException("No se encontro: mensajeDxCustomLayout.")
         }
 
+
+        iconoColor?.let { color ->
+            iconoDxCustom?.setTint(color)
+        }
         iconoDxCustomLayout?.setImageDrawable(iconoDxCustom) ?:run{
             throwNullPointerException("No se encontro: iconoDxCustomLayout.")
         }
-
     }
 
     /**
@@ -423,31 +554,80 @@ class DxCustom(
      */
     private fun animateDialogOnShow(){
 
-
-        parentDxCustomLayout?.let {
-
-            it.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-            it.translationY = +1000f + it.measuredHeight
-
-        }?:run {
-            throwNullPointerException("No se encontro: parentDxCustomLayout.")
+        when(selectedGravity){
+            Gravity.CENTER -> {animateDialogOnShowCenter()}
+            Gravity.BOTTOM -> {animateDialogOnShowBottom()}
         }
 
-        parentDxCustomLayout?.visible() ?:run {
-            throwNullPointerException("No se encontro: parentDxCustomLayout.")
+    }
+
+    /**
+     * Anima el dialogo cuando se muestra en el centro
+     */
+    private fun animateDialogOnShowCenter(){
+        if(animarAlSalir){
+            parentDxCustomLayout?.let {
+
+                it.scaleY = 0f
+                it.scaleX = 0f
+
+            }?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
+
+            parentDxCustomLayout?.visible() ?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
+
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                parentDxCustomLayout?.animate()?.scaleX(1f)?.scaleY(1f)?.setDuration(DELAY_TIME/3)
+                    ?.start()
+                    ?:run {
+                        throwNullPointerException("No se encontro: parentDxCustomLayout.")
+                    }
+
+            }, DELAY_TIME/3)
+        }else{
+            parentDxCustomLayout?.visible() ?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
         }
+    }
 
-        Handler(Looper.getMainLooper()).postDelayed({
+    /**
+     * Anima el dialogo cuando se muestra en el bottom
+     */
+    private fun animateDialogOnShowBottom(){
+        if(animarAlSalir){
+            parentDxCustomLayout?.let {
 
-            parentDxCustomLayout?.animate()?.translationY(0f)?.setDuration(DELAY_TIME)
-                ?.start()
-                ?:run {
-                    throwNullPointerException("No se encontro: parentDxCustomLayout.")
-                }
+                it.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        }, 100)
+                it.translationY = +1000f + it.measuredHeight
 
+            }?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
+
+            parentDxCustomLayout?.visible() ?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
+
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                parentDxCustomLayout?.animate()?.translationY(0f)?.setDuration(DELAY_TIME)
+                    ?.start()
+                    ?:run {
+                        throwNullPointerException("No se encontro: parentDxCustomLayout.")
+                    }
+
+            }, 100)
+        }else{
+            parentDxCustomLayout?.visible() ?:run {
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
+        }
     }
 
     /**
@@ -455,11 +635,48 @@ class DxCustom(
      */
     private fun animateDialogOnHide() {
 
+        if (animarAlEsconder){
+
+            when(selectedGravity){
+                Gravity.CENTER -> {animateDialogOnHideCenter()}
+                Gravity.BOTTOM -> {animateDialogOnHideBottom()}
+            }
+
+        }else{
+
+            dialog.dismiss()
+        }
+
+
+    }
+
+    /**
+     * Anima el dialogo cuando se esconde en el centro
+     */
+    private fun animateDialogOnHideCenter(){
+        parentDxCustomLayout?.animate()?.scaleX(0f)?.scaleY(0f)?.setDuration(DELAY_TIME/3)
+            ?.start()
+            ?:run{
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
+
+
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            dialog.dismiss()
+
+        }, DELAY_TIME/3)
+    }
+
+    /**
+     * Anima el dialogo cuando se esconde en el bottom
+     */
+    private fun animateDialogOnHideBottom(){
         parentDxCustomLayout?.animate()?.translationY(2000f)?.setDuration(DELAY_TIME)
             ?.start()
             ?:run{
-            throwNullPointerException("No se encontro: parentDxCustomLayout.")
-        }
+                throwNullPointerException("No se encontro: parentDxCustomLayout.")
+            }
 
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -467,7 +684,6 @@ class DxCustom(
             dialog.dismiss()
 
         }, DELAY_TIME)
-
     }
 
     /**
@@ -477,7 +693,7 @@ class DxCustom(
 
         try{
 
-            iconoDxCustom = context.getDrawable(R.drawable.dx_default_icon)
+            iconoDxCustom = ContextCompat.getDrawable(context, R.drawable.dx_default_icon)
 
         }catch (e: Exception){
             throw e
@@ -485,7 +701,8 @@ class DxCustom(
 
         try {
 
-            layoutDxCustomPersonalizado = context.applicationContext.resources.getLayout(R.layout.dx_custom_default_layout)
+            layoutDxCustomPersonalizadoBottom = context.applicationContext.resources.getLayout(R.layout.dx_custom_default_layout)
+            layoutDxCustomPersonalizadoCenter = context.applicationContext.resources.getLayout(R.layout.dx_custom_default_layout_center)
 
         }catch (e: Exception){
             throw e
