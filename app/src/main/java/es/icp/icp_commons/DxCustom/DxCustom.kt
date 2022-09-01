@@ -156,8 +156,8 @@ class DxCustom(
      * Crea y asigna las configuraciones del dialogo.
      *
      * @param fullScreen Si se quiere que el dialogo sea de tamaño completo.
-     * @param verticalAnimationOnShow Si se quiere que la animacion sea vertical o la predefinida de Dialog al mostrarse.
-     * @param verticalAnimationOnHide Si se quiere que la animacion sea vertical o la predefinida de Dialog al esconderse.
+     * @param animarAlSalir Si se quiere que la animacion sea vertical o la predefinida de Dialog al mostrarse.
+     * @param animarAlEsconder Si se quiere que la animacion sea vertical o la predefinida de Dialog al esconderse.
      * @param gravity Puede elegirse una de las siguientes opciones: Gravity.BOTTOM -> se muestra abajo, Gravity.CENTER -> se muestra en el centro.
      *
      * @return DxCustom
