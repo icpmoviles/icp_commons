@@ -108,6 +108,14 @@ class KotlinActivity : AppCompatActivity() {
             )
 
         }
+        btnMostrarDxCustomNotification.setOnClickListener {
+
+            DxImplementacion.mostrarDxNotification(
+                context,
+                binding.root
+            )
+
+        }
 
         btnMostrarDxCustomEjemploConCustomView.setOnClickListener {
 
