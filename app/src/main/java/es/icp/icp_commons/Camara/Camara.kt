@@ -413,7 +413,7 @@ class Camara : AppCompatActivity() {
         }
     }
 
-    /** Declare and bind preview, capture and analysis use cases */
+    /** Declare and bind preview, capture and analysis use casess */
     private fun bindCameraUseCases() {
 
         try {

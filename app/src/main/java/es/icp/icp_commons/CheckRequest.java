@@ -8,9 +8,11 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -180,7 +182,12 @@ public class CheckRequest {
                         break;
                 }
             } else {
-                send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
+                if (headers != null) {
+                    send3(context, parametros, callBack, idUsuario, urlError, guardarAccion, headers);
+                }else {
+                    send1(context, parametros, callBack, idUsuario, urlError, guardarAccion);
+                }
+
             }
 
         } catch (Exception e) {
@@ -657,6 +664,73 @@ public class CheckRequest {
                         callBack.onError(error);
                     }
                 }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        if (headers != null){
+                            Map<String, String> params = new HashMap<String, String>();
+                            return headers;
+                        }else {
+                            return getParams();
+                        }
+                    }
+                };
+                WebService.AddRequest(request, context);
+            } catch (Exception e) {
+                if (GlobalVariables.loader) {
+                    switch (WebService.getLoaderType()) {
+                        case NORMAL_DIALOG:
+                            Loading.HideLoading();
+                            break;
+                        case SMART_DIALOG:
+                            Loading.HideSmartLoading();
+                            break;
+                    }
+                }
+                WebService.TratarExcepcion(context, e.getMessage(), idUsuario, "Request error - Send", e, "", urlError);
+                throw createException(e, parametros.getUrl(), "Send");
+            }
+        } else if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.ARRAY) {
+            try {
+                WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
+                JsonArrayRequest request = new JsonArrayRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONArray(), new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if (GlobalVariables.loader) {
+                            switch (WebService.getLoaderType()) {
+                                case NORMAL_DIALOG:
+                                    Loading.HideLoading();
+                                    break;
+                                case SMART_DIALOG:
+                                    Loading.HideSmartLoading();
+                                    break;
+                            }
+                        }
+                        Object responseObject;
+                        try {
+                            callBack.onSuccess(response);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            responseObject = response;
+                            callBack.onError(new VolleyError("No se ha podido castear al objeto. Error en GSON al crear la instancia. ¿Clase abstracta?"));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (GlobalVariables.loader) {
+                            switch (WebService.getLoaderType()) {
+                                case NORMAL_DIALOG:
+                                    Loading.HideLoading();
+                                    break;
+                                case SMART_DIALOG:
+                                    Loading.HideSmartLoading();
+                                    break;
+                            }
+                        }
+                        tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
+                        callBack.onError(error);
+                    }
+                }){
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         if (headers != null){
