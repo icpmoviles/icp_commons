@@ -24,7 +24,9 @@ import es.icp.icp_commons.Utils.UtilsKt
 import es.icp.icp_commons.simplesearchview.SimpleSearchView
 import es.icp.icp_commons.simplesearchview.utils.DimensUtils.convertDpToPx
 import es.icp.pruebas_commons.databinding.ActivityKotlinBinding
+import es.icp.pruebas_commons.databinding.DxCustomSolicitarNombreBinding
 import es.icp.pruebas_commons.implementaciones.DxImplementacion
+import es.icp.pruebas_commons.implementaciones.ImageGalleryImplementationActivity
 
 class KotlinActivity : AppCompatActivity() {
 
@@ -123,20 +125,29 @@ class KotlinActivity : AppCompatActivity() {
                 Toast.makeText(context, "Boton cancelar pulsado.", Toast.LENGTH_SHORT).show()
             }
 
+            val onAccept: (binding: DxCustomSolicitarNombreBinding) -> Unit = {
+                val nombre = it.txtInputNombre.text
+                Toast.makeText(context, "Boton aceptar/SI pulsado. Nombre: $nombre", Toast.LENGTH_SHORT).show()
+            }
+
             DxImplementacion.mostrarDxEjemploConCustomView(
                 context,
-                onAccept = {
-
-                    val nombre = it.txtInputNombre.text
-
-                    Toast.makeText(context, "Boton aceptar/SI pulsado. Nombre: $nombre", Toast.LENGTH_SHORT).show()
-
-                },
+                onAccept,
                 onCancel
             )
 
             Log.d(":::", getColor(R.color.colorPrimary).toString())
 
+        }
+
+        btnGotoRecyclerSelector.setOnClickListener {
+            val intent = Intent(context, ImageGalleryImplementationActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnAnimacionesExamples.setOnClickListener {
+            val intent = Intent(context, AnimationExamplesActivity::class.java)
+            startActivity(intent)
         }
 
     }
