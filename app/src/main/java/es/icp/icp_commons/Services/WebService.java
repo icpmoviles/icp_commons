@@ -294,5 +294,12 @@ public class WebService {
         requestQueue.add(request);
     }
 
+    public static void AddRequest(JsonArrayRequest request, Context mContext) {
+        if (requestQueue == null) requestQueue = Volley.newRequestQueue(mContext);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(Constantes.TIMEOUT, Constantes.NUM_RETRY, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(request);
+    }
+
 
 }

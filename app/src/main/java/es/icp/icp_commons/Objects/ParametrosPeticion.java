@@ -143,6 +143,10 @@ public class ParametrosPeticion {
         return jsonType;
     }
 
+    public void setJsonType(JsonTypes tipo) {
+        this.jsonType = tipo;
+    }
+
     public Class getClase() {
         return clase;
     }
