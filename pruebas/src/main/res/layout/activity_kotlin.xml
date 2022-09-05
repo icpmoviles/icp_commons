@@ -78,6 +78,22 @@
         android:textAlignment="center"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:id="@+id/btn_goto_recycler_selector"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:text="Ejemplo de uso de recycler selector"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_animaciones_examples"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:text="Ejemplo de animaciones de View animation"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"/>
+
 
 
 </LinearLayout>
