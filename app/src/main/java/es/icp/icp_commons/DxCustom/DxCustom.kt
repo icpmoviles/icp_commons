@@ -12,11 +12,14 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Html
 import android.view.*
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import es.icp.icp_commons.Extensions.visible
 import es.icp.icp_commons.R
@@ -34,11 +37,12 @@ import org.w3c.dom.Text
  */
 /**
  * @author Julio Landazuri Diaz
- * @version 2.0
+ * @version 3.0
  *
  * Esta clase te permite mostrar dialogos con una vista personalizada.
  *
  *            ¡Ahora con colores y notificaciones!
+ *                   ¡Y loaders ╰(*°▽°*)╯!
  */
 /* ------- Ejemplo de uso CREATEDIALOG -------
 
@@ -70,6 +74,16 @@ import org.w3c.dom.Text
             strokeColor = context.getColor(R.color.red),
         )
 
+  ------- Ejemplo de uso CREATELOADING -------
+
+        DxCustom(context).createLoading(
+            R.raw.anim,
+            "Cargando...",
+            "Por favor espere...",
+            -50,
+            -10,
+            false
+        )
 
  */
 const val DELAY_TIME = 500L
@@ -111,6 +125,102 @@ class DxCustom(
     private var animarAlEsconder: Boolean = true
 
     private var selectedGravity: Int = Gravity.BOTTOM
+
+
+    /**
+     * Permite crear una pantalla de carga, con un lottie, titulo y mensaje.
+     *
+     * @param lottie Lottie a mostrar en la pantalla de carga, si es un lottie a mostrar con titulo y mensaje, puede que tengas que editar el tamaño en el Lottie Editor.
+     * @param titulo Titulo a mostrar en la pantalla de carga.
+     * @param mensaje Mensaje a mostrar en la pantalla de carga.
+     * @param textoMarginTop Margen superior del texto (permite valores negativos).
+     * @param lottieMarginTop Margen superior del lottie (permite valroes negativos).
+     * @param tituloColor Color del titulo.
+     * @param mensajeColor Color del mensaje.
+     * @param tituloSize Tamaño del titulo.
+     * @param mensajeSize Tamaño del mensaje.
+     * @param soloAnimacion Si es true, no se muestra el titulo ni el mensaje, solo la animacion a pantalla completa.
+     *
+     * @return Devuelve un objeto de tipo Dialog, para poder cerrarlo cuando quieras deberas usar el .dimiss().
+     */
+    fun createLoading(
+        lottie: Int = R.raw.default_loading_anim,
+        titulo: String = "Cargando...",
+        mensaje: String = "Espere un momento por favor.",
+        textoMarginTop: Int = 0,
+        lottieMarginTop: Int = 0,
+        tituloColor: Int = -16777216,
+        mensajeColor: Int = -16777216,
+        tituloSize: Float = 19f,
+        mensajeSize: Float = 19f,
+        soloAnimacion : Boolean = false
+    ): Dialog{
+
+        dialog = Dialog(context, R.style.DxCustom)
+        val inflater = LayoutInflater.from(context)
+
+        try{
+
+            val dialogView: View = inflater.inflate(R.layout.dx_custom_default_layout_loading, null)
+
+            with(dialogView){
+
+                val cardViewLayoutLoading = findViewById<MaterialCardView>(R.id.cardViewLayoutLoading)
+                val animationViewOnly = findViewById<LottieAnimationView>(R.id.animationViewOnly)
+
+                if(soloAnimacion){
+
+                    cardViewLayoutLoading.visibility = GONE
+                    animationViewOnly.visibility = VISIBLE
+                    animationViewOnly.setAnimation(lottie)
+
+                }else{
+
+                    cardViewLayoutLoading.visibility = VISIBLE
+                    animationViewOnly.visibility = GONE
+
+                    val lottieLinearLayoutLoading = findViewById<LinearLayout>(R.id.lottieLinearLayoutLoading)
+                    val tituloMensajeLayout = findViewById<LinearLayout>(R.id.tituloMensajeLayoutLoading)
+                    val tituloLayout = findViewById<TextView>(R.id.tituloDxCustomLoading)
+                    val mensajeLayout = findViewById<TextView>(R.id.mensajeDxCustomLoading)
+
+                    val lottieLayout = findViewById<LottieAnimationView>(R.id.animationView)
+
+                    val paramsLottie = lottieLinearLayoutLoading.layoutParams as RelativeLayout.LayoutParams
+                    paramsLottie.setMargins(0, lottieMarginTop, 0, 0)
+
+                    val params = tituloMensajeLayout.layoutParams as RelativeLayout.LayoutParams
+                    params.setMargins(0, textoMarginTop, 0, 0)
+                    tituloMensajeLayout.layoutParams = params
+
+                    lottieLayout.setAnimation(lottie)
+
+                    tituloLayout.setTextColor(tituloColor)
+                    tituloLayout.textSize = tituloSize
+                    mensajeLayout.setTextColor(mensajeColor)
+                    mensajeLayout.textSize = mensajeSize
+
+                    tituloLayout.text = titulo
+                    mensajeLayout.text = mensaje
+
+                }
+
+            }
+
+            dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT)
+
+            dialog.setContentView(dialogView)
+
+            dialog.setCancelable(false)
+
+            dialog.show()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
+        return dialog
+    }
 
     /**
      * Crea una notificacion en la parte superior de la pantalla.

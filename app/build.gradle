@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 220
-        versionName "3.4.3"
+        versionCode 221
+        versionName "3.4.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,6 +23,11 @@ android {
             buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -36,7 +41,6 @@ android {
     }
     buildFeatures{
         viewBinding true
-        dataBinding true
     }
 }
 
@@ -86,8 +90,10 @@ dependencies {
     def arch_version = '2.2.0-alpha01'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$arch_version"
 
+    //Lootie
+    implementation "com.airbnb.android:lottie:5.2.0"
+
     // Recycler View selector
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
-
 }
