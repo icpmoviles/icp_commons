@@ -135,6 +135,10 @@ class DxCustom(
      * @param mensaje Mensaje a mostrar en la pantalla de carga.
      * @param textoMarginTop Margen superior del texto (permite valores negativos).
      * @param lottieMarginTop Margen superior del lottie (permite valroes negativos).
+     * @param tituloColor Color del titulo.
+     * @param mensajeColor Color del mensaje.
+     * @param tituloSize Tamaño del titulo.
+     * @param mensajeSize Tamaño del mensaje.
      * @param soloAnimacion Si es true, no se muestra el titulo ni el mensaje, solo la animacion a pantalla completa.
      *
      * @return Devuelve un objeto de tipo Dialog, para poder cerrarlo cuando quieras deberas usar el .dimiss().
@@ -145,6 +149,10 @@ class DxCustom(
         mensaje: String = "Espere un momento por favor.",
         textoMarginTop: Int = 0,
         lottieMarginTop: Int = 0,
+        tituloColor: Int = -16777216,
+        mensajeColor: Int = -16777216,
+        tituloSize: Float = 19f,
+        mensajeSize: Float = 19f,
         soloAnimacion : Boolean = false
     ): Dialog{
 
@@ -187,8 +195,14 @@ class DxCustom(
 
                     lottieLayout.setAnimation(lottie)
 
+                    tituloLayout.setTextColor(tituloColor)
+                    tituloLayout.textSize = tituloSize
+                    mensajeLayout.setTextColor(mensajeColor)
+                    mensajeLayout.textSize = mensajeSize
+
                     tituloLayout.text = titulo
                     mensajeLayout.text = mensaje
+
                 }
 
             }
