@@ -166,8 +166,6 @@ class DxCustom(
                     animationViewOnly.visibility = VISIBLE
                     animationViewOnly.setAnimation(lottie)
 
-                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
                 }else{
 
                     cardViewLayoutLoading.visibility = VISIBLE
