@@ -22,6 +22,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
         <activity
+            android:name=".AnimationExamplesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".implementaciones.ImageGalleryImplementationActivity"
+            android:exported="false" />
+        <activity
             android:name=".KotlinActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -44,9 +50,9 @@
 
         <service
             android:name="es.icp.icp_commons.Helpers.LocationService"
-            android:foregroundServiceType="location"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true"
+            android:foregroundServiceType="location" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
