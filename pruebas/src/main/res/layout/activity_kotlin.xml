@@ -87,6 +87,22 @@
         android:layout_height="wrap_content"/>
 
     <Button
+        android:id="@+id/btn_mostrar_dx_custom_sin_mensaje_y_tiyulo_loading"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:text="Mostrar DxCustom loading solo animacion"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_mostrar_dx_custom_con_mensaje_y_tiyulo_loading"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:text="Mostrar DxCustom loading texto y mensaje"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"/>
+
+    <Button
         android:id="@+id/btn_goto_recycler_selector"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"

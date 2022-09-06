@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,80 +9,103 @@
     android:background="@drawable/dx_transparent_default_background"
     tools:background="@color/black"
     android:id="@+id/parentDxCustomLayout"
-    android:visibility="gone"
+    android:visibility="visible"
     tools:visibility="visible"
     android:gravity="center_vertical"
     >
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewLayoutLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/dx_default_center_background"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginVertical="100dp">
+        android:layout_marginVertical="100dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="0dp"
+        tools:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
 
        <RelativeLayout
            android:layout_width="wrap_content"
-           android:layout_height="wrap_content">
+           android:layout_height="wrap_content"
+           >
 
            <LinearLayout
+               android:id="@+id/tituloMensajeLayoutLoading"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:orientation="vertical"
-               android:layout_marginVertical="10dp">
+               android:orientation="vertical">
 
 
                <TextView
-                   android:layout_marginTop="100dp"
-                   android:id="@+id/tituloDxCustom"
+                   android:id="@+id/tituloDxCustomLoading"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:layout_gravity="bottom"
-                   android:background="@drawable/dx_default_header_background"
+                   android:layout_marginTop="100dp"
                    android:fontFamily="@font/roboto"
                    android:gravity="center_horizontal"
                    android:paddingVertical="10dp"
                    android:textColor="@color/black"
                    android:textSize="@dimen/dx_title_text_size"
                    android:textStyle="bold"
-                   tools:text="Sin titulo"
-                   />
+                   tools:text="Sin titulo" />
 
                <View
                    android:layout_width="match_parent"
                    android:layout_height="0.5dp"
                    android:layout_marginHorizontal="20dp"
-                   android:background="#C6C6C6"/>
+                   android:background="#C6C6C6" />
 
                <TextView
-                   android:id="@+id/mensajeDxCustom"
+                   android:id="@+id/mensajeDxCustomLoading"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:layout_gravity="bottom"
+                   android:layout_marginHorizontal="20dp"
+                   android:layout_marginTop="5dp"
+                   android:layout_marginBottom="15dp"
                    android:background="@color/white"
                    android:fontFamily="@font/roboto"
                    android:gravity="center_horizontal"
                    android:textColor="@color/black"
                    android:textSize="@dimen/dx_message_text_size"
-                   tools:text="Sin mensaje"
                    android:visibility="visible"
-                   android:layout_marginVertical="5dp"
-                   android:layout_marginHorizontal="20dp"
-                   />
+                   tools:text="Sin mensaje" />
 
            </LinearLayout>
 
-           <com.airbnb.lottie.LottieAnimationView
-               android:id="@+id/animationView"
-               android:layout_width="200dp"
-               android:layout_height="150dp"
-               android:layout_centerHorizontal="true"
-               app:lottie_autoPlay="true"
-               app:lottie_loop="true"
-               app:lottie_rawRes="@raw/default_loading_anim" />
+           <LinearLayout
+               android:id="@+id/lottieLinearLayoutLoading"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_centerHorizontal="true" >
+
+               <com.airbnb.lottie.LottieAnimationView
+                   android:id="@+id/animationView"
+                   android:layout_width="200dp"
+                   android:layout_height="150dp"
+                   app:lottie_autoPlay="true"
+                   app:lottie_rawRes="@raw/default_loading_anim"
+                   app:lottie_loop="true"/>
+
+           </LinearLayout>
 
        </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationViewOnly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/default_loading_anim"
+        app:lottie_loop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
+
+</RelativeLayout>

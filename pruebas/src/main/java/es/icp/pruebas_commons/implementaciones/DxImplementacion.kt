@@ -1,5 +1,6 @@
 package es.icp.pruebas_commons.implementaciones
 
+import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import android.view.Gravity
@@ -10,6 +11,14 @@ import es.icp.pruebas_commons.R
 import es.icp.pruebas_commons.databinding.DxCustomSolicitarNombreBinding
 
 object DxImplementacion {
+
+    fun loaderConTextoYMensaje(context: Context): Dialog {
+        return DxCustom(context).createLoading(lottieMarginTop = -50)
+    }
+
+    fun loaderSinTextoYMensaje(context: Context): Dialog {
+        return DxCustom(context).createLoading(lottie = R.raw.loading_alt_anim, lottieMarginTop = -50, soloAnimacion = true)
+    }
 
     fun mostrarDxEjemplo(
         context: Context,
