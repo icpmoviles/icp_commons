@@ -112,6 +112,12 @@ class DxCustom(
 
     private var selectedGravity: Int = Gravity.BOTTOM
 
+    fun createLoading(lottie: Int, soloAnimacion : Boolean = false){
+
+
+
+    }
+
     /**
      * Crea una notificacion en la parte superior de la pantalla.
      *
