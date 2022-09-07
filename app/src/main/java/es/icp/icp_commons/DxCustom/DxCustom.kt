@@ -383,11 +383,11 @@ class DxCustom(
      * @throws IllegalArgumentException
      *
      * @param icono Drawable a mostrar en el icono del dialogo (obligatorio).
-     * @param color Color del icono.
+     * @param color Color del icono, si el valor es NULL se respetara el color de icono.
      *
      * @return DxCustom
      */
-    fun setIcono(icono: Drawable? = iconoDxCustom, color: Int = context.resources.getColor(R.color.colorPrimary, null)): DxCustom {
+    fun setIcono(icono: Drawable? = iconoDxCustom, color: Int? = context.resources.getColor(R.color.colorPrimary, null)): DxCustom {
 
         icono?.let {
             iconoDxCustom = icono
@@ -395,7 +395,9 @@ class DxCustom(
             throwIllegalArgumentException("El icono proporcionado no es valido.")
         }
 
-        iconoColor = color
+        color?.let {
+            iconoColor = color
+        }
 
         return this
     }
