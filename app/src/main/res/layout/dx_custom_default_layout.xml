@@ -74,25 +74,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/white"
                     android:elevation="0dp"
                     android:fontFamily="@font/roboto"
-                    android:stateListAnimator="@null"
-                    android:textAllCaps="true"
-                    android:textColor="#003261"
-                    app:elevation="0dp"
-                    app:strokeColor="#003261"
-                    app:strokeWidth="1dp"
                     tools:text="Text button"
-                    android:visibility="gone"/>
-
+                    android:stateListAnimator="@null"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    />
 
                 <Button
                     android:id="@+id/acceptButton"
@@ -105,7 +100,8 @@
                     android:stateListAnimator="@null"
                     android:textColor="@color/white"
                     tools:text="Text button"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
 

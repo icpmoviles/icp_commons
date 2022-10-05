@@ -61,6 +61,8 @@ object DxImplementacion {
             LayoutInflater.from(context), null, false
         )
 
+        Log.d("DxCustom", context.getColor(R.color.darkRed).toString())
+
         DxCustom(context)
             .createDialog(fullScreen = true, animarAlEsconder = false)
             .setTitulo("Titulo ejemplo con custom view", context.getColor(R.color.dxCustom), 19f)
@@ -68,10 +70,11 @@ object DxImplementacion {
 //            .setIcono(color = context.getColor(R.color.dxCustom))
             .setIcono(AppCompatResources.getDrawable(context, R.drawable.ic_perseo_logo_casco), null)
             .permitirSalirSinBotones()
-            .showAceptarButton("SI", context.getColor(R.color.red)) { onAccept.invoke(binding) }
+            .showAceptarButton("Si", context.getColor(R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
             .showCancelarButton(
-                strokecolor = context.getColor(R.color.colorAccent),
-                textColor = context.getColor(R.color.darkRed)
+                strokecolor = context.getColor(R.color.darkRed),
+                textColor = context.getColor(R.color.darkRed),
+                textAllCaps = false
             ) { onCancel.invoke() }
             .showDialogReturnDxCustom()
             .addCustomView(binding.root)
