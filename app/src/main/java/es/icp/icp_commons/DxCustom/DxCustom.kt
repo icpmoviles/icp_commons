@@ -86,8 +86,7 @@ import es.icp.icp_commons.R
  */
 const val DELAY_TIME = 500L
 class DxCustom(
-    private val context: Context,
-    private val isMaterialComponentes: Boolean = false
+    private val context: Context
 ) {
     /* ------- Ojo con las IDs!! -------
 
@@ -106,16 +105,6 @@ class DxCustom(
     private var iconoDxCustomLayout:    ImageView?      = null
     private var customViewUpLayout:     LinearLayout?   = null
     private var customViewDownLayout:   LinearLayout?   = null
-
-    //DxCustom Material Theming
-//    private var parentDxCustomLayoutMT:   LinearLayout?   = null
-//    private var acceptButtonLayoutMT:     Button?         = null
-//    private var cancelButtonLayoutMT:     Button?         = null
-//    private var tituloDxCustomLayoutMT:   TextView?       = null
-//    private var mensajeDxCustomLayoutMT:  TextView?       = null
-//    private var iconoDxCustomLayoutMT:    ImageView?      = null
-//    private var customViewUpLayoutMT:     LinearLayout?   = null
-//    private var customViewDownLayoutMT:   LinearLayout?   = null
 
     private var tituloDxCustom:                 String              = "Sin titulo."
     private var mensajeDxCustom:                String              = "Sin mensaje."
@@ -633,28 +622,14 @@ class DxCustom(
 
     private fun loadLayoutComponentes(){
 
-//        if(isMaterialComponentes){
-            parentDxCustomLayout   =  dialog.findViewById(R.id.parentDxCustomLayout)
-            acceptButtonLayout     =  dialog.findViewById(R.id.acceptButton)
-            cancelButtonLayout     =  dialog.findViewById(R.id.cancelButton)
-            tituloDxCustomLayout   =  dialog.findViewById(R.id.tituloDxCustom)
-            mensajeDxCustomLayout  =  dialog.findViewById(R.id.mensajeDxCustom)
-            iconoDxCustomLayout    =  dialog.findViewById(R.id.iconDxCustom)
-            customViewUpLayout     =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomUp)
-            customViewDownLayout   =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomDown)
-//        }else{
-
-            //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-//            parentDxCustomLayoutMT   =  dialog.findViewById(R.id.parentDxCustomLayout)
-//            acceptButtonLayoutMT     =  dialog.findViewById(R.id.acceptButton)
-//            cancelButtonLayoutMT     =  dialog.findViewById(R.id.cancelButton)
-//            tituloDxCustomLayoutMT   =  dialog.findViewById(R.id.tituloDxCustom)
-//            mensajeDxCustomLayoutMT  =  dialog.findViewById(R.id.mensajeDxCustom)
-//            iconoDxCustomLayoutMT    =  dialog.findViewById(R.id.iconDxCustom)
-//            customViewUpLayoutMT     =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomUp)
-//            customViewDownLayoutMT   =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomDown)
-//        }
+        parentDxCustomLayout   =  dialog.findViewById(R.id.parentDxCustomLayout)
+        acceptButtonLayout     =  dialog.findViewById(R.id.acceptButton)
+        cancelButtonLayout     =  dialog.findViewById(R.id.cancelButton)
+        tituloDxCustomLayout   =  dialog.findViewById(R.id.tituloDxCustom)
+        mensajeDxCustomLayout  =  dialog.findViewById(R.id.mensajeDxCustom)
+        iconoDxCustomLayout    =  dialog.findViewById(R.id.iconDxCustom)
+        customViewUpLayout     =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomUp)
+        customViewDownLayout   =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomDown)
 
 
     }

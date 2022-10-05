@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 223
-        versionName "3.4.6"
+        versionCode 224
+        versionName "3.4.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
