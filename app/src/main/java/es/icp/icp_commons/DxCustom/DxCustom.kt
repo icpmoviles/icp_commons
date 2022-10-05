@@ -5,25 +5,23 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.XmlResourceParser
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
+import android.text.method.TransformationMethod
+import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import es.icp.icp_commons.Extensions.visible
 import es.icp.icp_commons.R
-import org.w3c.dom.Text
 
 /*
 
@@ -37,7 +35,7 @@ import org.w3c.dom.Text
  */
 /**
  * @author Julio Landazuri Diaz
- * @version 3.0
+ * @version 4.0
  *
  * Esta clase te permite mostrar dialogos con una vista personalizada.
  *
@@ -88,7 +86,8 @@ import org.w3c.dom.Text
  */
 const val DELAY_TIME = 500L
 class DxCustom(
-    private val context: Context
+    private val context: Context,
+    private val isMaterialComponentes: Boolean = false
 ) {
     /* ------- Ojo con las IDs!! -------
 
@@ -98,6 +97,7 @@ class DxCustom(
 
     */
 
+    //DxCustom AppCompat
     private var parentDxCustomLayout:   LinearLayout?   = null
     private var acceptButtonLayout:     Button?         = null
     private var cancelButtonLayout:     Button?         = null
@@ -106,6 +106,16 @@ class DxCustom(
     private var iconoDxCustomLayout:    ImageView?      = null
     private var customViewUpLayout:     LinearLayout?   = null
     private var customViewDownLayout:   LinearLayout?   = null
+
+    //DxCustom Material Theming
+//    private var parentDxCustomLayoutMT:   LinearLayout?   = null
+//    private var acceptButtonLayoutMT:     Button?         = null
+//    private var cancelButtonLayoutMT:     Button?         = null
+//    private var tituloDxCustomLayoutMT:   TextView?       = null
+//    private var mensajeDxCustomLayoutMT:  TextView?       = null
+//    private var iconoDxCustomLayoutMT:    ImageView?      = null
+//    private var customViewUpLayoutMT:     LinearLayout?   = null
+//    private var customViewDownLayoutMT:   LinearLayout?   = null
 
     private var tituloDxCustom:                 String              = "Sin titulo."
     private var mensajeDxCustom:                String              = "Sin mensaje."
@@ -125,7 +135,6 @@ class DxCustom(
     private var animarAlEsconder: Boolean = true
 
     private var selectedGravity: Int = Gravity.BOTTOM
-
 
     /**
      * Permite crear una pantalla de carga, con un lottie, titulo y mensaje.
@@ -438,6 +447,7 @@ class DxCustom(
     fun showAceptarButton(
         texto: String? = "Aceptar",
         color: Int = context.resources.getColor(R.color.colorPrimary, null),
+        textAllCaps: Boolean = true,
         onAccept: () -> Unit): DxCustom {
 
         acceptButtonLayout?.let { acceptBtn ->
@@ -447,6 +457,8 @@ class DxCustom(
                 visibility = VISIBLE
                 text = texto
                 setBackgroundColor(color)
+
+                isAllCaps = textAllCaps
 
                 setOnClickListener {
                     animateDialogOnHide()
@@ -481,16 +493,22 @@ class DxCustom(
         texto: String? = "Cancelar",
         strokecolor:  Int = context.resources.getColor(R.color.colorPrimary, null),
         textColor:  Int = context.resources.getColor(R.color.colorPrimary, null),
+        textAllCaps: Boolean = true,
         onCancel: () -> Unit
     ): DxCustom {
 
         cancelButtonLayout?.let { cancelBtn ->
 
-            with (cancelBtn as MaterialButton) {
+            with (cancelBtn) {
 
+                // add margin vertical to the button
                 visibility = VISIBLE
                 text = texto
-                strokeColor = ColorStateList.valueOf(strokecolor)
+
+                isAllCaps = textAllCaps
+
+                background = ContextCompat.getDrawable(context, R.drawable.stroke_shape)
+                backgroundTintList = ColorStateList.valueOf(strokecolor)
 
                 if(textColor != context.resources.getColor(R.color.colorPrimary, null)){
 
@@ -615,14 +633,29 @@ class DxCustom(
 
     private fun loadLayoutComponentes(){
 
-        parentDxCustomLayout   =  dialog.findViewById(R.id.parentDxCustomLayout)
-        acceptButtonLayout     =  dialog.findViewById(R.id.acceptButton)
-        cancelButtonLayout     =  dialog.findViewById(R.id.cancelButton)
-        tituloDxCustomLayout   =  dialog.findViewById(R.id.tituloDxCustom)
-        mensajeDxCustomLayout  =  dialog.findViewById(R.id.mensajeDxCustom)
-        iconoDxCustomLayout    =  dialog.findViewById(R.id.iconDxCustom)
-        customViewUpLayout     =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomUp)
-        customViewDownLayout   =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomDown)
+//        if(isMaterialComponentes){
+            parentDxCustomLayout   =  dialog.findViewById(R.id.parentDxCustomLayout)
+            acceptButtonLayout     =  dialog.findViewById(R.id.acceptButton)
+            cancelButtonLayout     =  dialog.findViewById(R.id.cancelButton)
+            tituloDxCustomLayout   =  dialog.findViewById(R.id.tituloDxCustom)
+            mensajeDxCustomLayout  =  dialog.findViewById(R.id.mensajeDxCustom)
+            iconoDxCustomLayout    =  dialog.findViewById(R.id.iconDxCustom)
+            customViewUpLayout     =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomUp)
+            customViewDownLayout   =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomDown)
+//        }else{
+
+            //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//            parentDxCustomLayoutMT   =  dialog.findViewById(R.id.parentDxCustomLayout)
+//            acceptButtonLayoutMT     =  dialog.findViewById(R.id.acceptButton)
+//            cancelButtonLayoutMT     =  dialog.findViewById(R.id.cancelButton)
+//            tituloDxCustomLayoutMT   =  dialog.findViewById(R.id.tituloDxCustom)
+//            mensajeDxCustomLayoutMT  =  dialog.findViewById(R.id.mensajeDxCustom)
+//            iconoDxCustomLayoutMT    =  dialog.findViewById(R.id.iconDxCustom)
+//            customViewUpLayoutMT     =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomUp)
+//            customViewDownLayoutMT   =  dialog.findViewById(R.id.customViewLinearLayoutDxCustomDown)
+//        }
+
 
     }
 
@@ -684,6 +717,7 @@ class DxCustom(
      * Anima el dialogo cuando se muestra en el centro
      */
     private fun animateDialogOnShowCenter(){
+
         if(animarAlSalir){
             parentDxCustomLayout?.let {
 
