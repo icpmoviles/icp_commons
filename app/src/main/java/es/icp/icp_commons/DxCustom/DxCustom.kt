@@ -151,6 +151,9 @@ class DxCustom(
         mensajeColor: Int = -16777216,
         tituloSize: Float = 19f,
         mensajeSize: Float = 19f,
+        startLottieFrame: Int = 0,
+        autoPlayLottie: Boolean = true,
+        loopLottie: Boolean = true,
         soloAnimacion : Boolean = false
     ): Dialog{
 
@@ -171,6 +174,12 @@ class DxCustom(
                     cardViewLayoutLoading.visibility = GONE
                     animationViewOnly.visibility = VISIBLE
                     animationViewOnly.setAnimation(lottie)
+                    animationViewOnly.frame = startLottieFrame
+
+                    if(autoPlayLottie)
+                        animationViewOnly.playAnimation()
+
+                    animationViewOnly.loop(loopLottie)
 
                 }else{
 
@@ -200,6 +209,12 @@ class DxCustom(
 
                     tituloLayout.text = titulo
                     mensajeLayout.text = mensaje
+
+                    if(autoPlayLottie)
+                        lottieLayout.playAnimation()
+
+                    lottieLayout.loop(loopLottie)
+                    lottieLayout.frame = startLottieFrame
 
                 }
 
