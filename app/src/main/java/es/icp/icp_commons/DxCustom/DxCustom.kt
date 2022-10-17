@@ -85,6 +85,7 @@ import es.icp.icp_commons.R
 
  */
 const val DELAY_TIME = 500L
+const val ERROR_TAG = "DxCustom"
 class DxCustom(
     private val context: Context
 ) {
@@ -229,7 +230,8 @@ class DxCustom(
 
             dialog.show()
         }catch (e: Exception){
-            e.printStackTrace()
+
+            Log.e(ERROR_TAG, e.printStackTrace().toString())
         }
 
         return dialog
@@ -316,7 +318,7 @@ class DxCustom(
             }
 
         }catch (e: Exception){
-            e.printStackTrace()
+            Log.e(ERROR_TAG, e.printStackTrace().toString())
         }
 
         //Para que el layout que se asigna al DxCustom, este en pantalla completa.
@@ -405,7 +407,10 @@ class DxCustom(
         icono?.let {
             iconoDxCustom = icono
         }?:run{
-            throwIllegalArgumentException("El icono proporcionado no es valido.")
+
+            Log.i(ERROR_TAG, "El icono proporcionado no es valido, se omitirá el icono.")
+
+            iconoDxCustomLayout?.visibility = GONE
         }
 
         color?.let {
@@ -596,7 +601,7 @@ class DxCustom(
 
         }catch (e: Exception){
 
-            e.printStackTrace()
+            Log.e(ERROR_TAG, e.printStackTrace().toString())
 
         }
 
@@ -619,7 +624,7 @@ class DxCustom(
 
         }catch (e: Exception){
 
-            e.printStackTrace()
+            Log.e(ERROR_TAG, e.printStackTrace().toString())
 
         }
 
@@ -839,7 +844,7 @@ class DxCustom(
             iconoDxCustom = ContextCompat.getDrawable(context, R.drawable.dx_default_icon)
 
         }catch (e: Exception){
-            throw e
+            Log.e(ERROR_TAG, e.printStackTrace().toString())
         }
 
         try {
@@ -848,7 +853,7 @@ class DxCustom(
             layoutDxCustomPersonalizadoCenter = context.applicationContext.resources.getLayout(R.layout.dx_custom_default_layout_center)
 
         }catch (e: Exception){
-            throw e
+            Log.e(ERROR_TAG, e.printStackTrace().toString())
         }
 
     }

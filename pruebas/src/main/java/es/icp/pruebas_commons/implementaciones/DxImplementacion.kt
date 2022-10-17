@@ -26,15 +26,18 @@ object DxImplementacion {
         onAccept: () -> Unit,
         onCancel: () -> Unit
     ){
-
+        val binding = DxCustomSolicitarNombreBinding.inflate(
+            LayoutInflater.from(context), null, false
+        )
         DxCustom(context)
             .createDialog(fullScreen = true, animarAlEsconder = false, gravity = Gravity.CENTER)
             .setTitulo("Titulo ejemplo", context.getColor(R.color.darkRed))
-            .setMensaje("Mensaje ejemplo")
-            .setIcono(color = context.getColor(R.color.colorAccent))
+            .setMensaje(null)
+            .setIcono(null)
             .noPermitirSalirSinBotones()
             .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange)) { onAccept.invoke() }
             .showCancelarButton { onCancel.invoke() }
+            .addCustomView(binding.root)
             .showDialogReturnDxCustom()
 
 
