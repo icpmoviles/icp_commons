@@ -35,7 +35,7 @@ object DxImplementacion {
             .setMensaje(null)
             .setIcono(null)
             .noPermitirSalirSinBotones()
-            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange)) { onAccept.invoke() }
+            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange), textColor = context.getColor(R.color.red)) { onAccept.invoke() }
             .showCancelarButton { onCancel.invoke() }
             .addCustomView(binding.root)
             .showDialogReturnDxCustom()
