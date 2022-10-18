@@ -456,6 +456,7 @@ class DxCustom(
     fun showAceptarButton(
         texto: String? = "Aceptar",
         color: Int = context.resources.getColor(R.color.colorPrimary, null),
+        textColor:  Int = context.resources.getColor(R.color.colorPrimary, null),
         textAllCaps: Boolean = true,
         onAccept: () -> Unit): DxCustom {
 
@@ -465,7 +466,17 @@ class DxCustom(
 
                 visibility = VISIBLE
                 text = texto
-                setBackgroundColor(color)
+
+                background = ContextCompat.getDrawable(context, R.drawable.default_button_shape)
+                backgroundTintList = ColorStateList.valueOf(color)
+
+                if(textColor != context.resources.getColor(R.color.colorPrimary, null)){
+
+                    setTextColor(textColor)
+
+                }else{
+                    setTextColor(Color.WHITE)
+                }
 
                 isAllCaps = textAllCaps
 
