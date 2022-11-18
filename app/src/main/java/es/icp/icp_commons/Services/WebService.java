@@ -147,6 +147,7 @@ public class WebService {
             EnviarAccion(dbHandler, mContext, acciones, 0, acciones.size(), new EnvioAccionesCallback() {
                 @Override
                 public void onSuccess() {
+                    Log.d("FALLO_LOADER", "onSuccess() - EnviarAccion()");
                 }
 
                 @Override

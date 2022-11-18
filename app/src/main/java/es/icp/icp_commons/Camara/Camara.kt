@@ -3,10 +3,7 @@ package es.icp.icp_commons.Camara
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
@@ -29,11 +26,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.video.*
+import androidx.camera.video.VideoCapture
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
+import androidx.core.util.Consumer
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope
@@ -89,10 +89,12 @@ class Camara : AppCompatActivity() {
     private var cameraFront: Boolean = false
     private var cameraBack: Boolean = false
     private var gallery: Boolean = false
+    private var standar: Boolean = false
 
     var showAnimation = false
 
-    private lateinit var videoCapture: VideoCapture
+    private lateinit var videoCapture: VideoCapture<Recorder>
+    private lateinit var recording: Recording
     private var video: Boolean = false
     private var outputVideoDirectory: File? = null
 
@@ -171,6 +173,11 @@ class Camara : AppCompatActivity() {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
+        try {
+            standar = intent.extras!![STANDAR] as Boolean
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onResume() {
@@ -215,6 +222,7 @@ class Camara : AppCompatActivity() {
         const val CAMERA_BACK = "CAMERA_BACK"
         const val VIDEO = "video"
         const val GALLERY = "gallery"
+        const val STANDAR = "standar"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
@@ -462,7 +470,14 @@ class Camara : AppCompatActivity() {
                 .build()
 
             if(video) {
-                videoCapture = VideoCapture.Builder().build()
+                val recorder: Recorder
+                if (standar) {
+                    val qualitySelector = QualitySelector.from(Quality.SD)
+                    recorder = Recorder.Builder().setExecutor(cameraExecutor).setQualitySelector(qualitySelector).build()
+                } else {
+                    recorder = Recorder.Builder().setExecutor(cameraExecutor).build()
+                }
+                videoCapture = VideoCapture.withOutput(recorder)
                 outputVideoDirectory = getOutputDirectory()
             }
 
@@ -849,35 +864,87 @@ class Camara : AppCompatActivity() {
 
     @SuppressLint("RestrictedApi")
     private fun startRecording() {
+        val fileName = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US).format(System.currentTimeMillis()) + ".mp4"
+
         val videoFile = File(
             outputDirectory,
-            SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US
-            ).format(System.currentTimeMillis()) + ".mp4")
+            fileName)
 
-        val outputOptions = VideoCapture.OutputFileOptions.Builder(videoFile).build()
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Video.Media.DISPLAY_NAME, fileName)
+        }
+
+        val mediaStoreOutput = MediaStoreOutputOptions.Builder(this.contentResolver,
+            Uri.parse(Uri.fromFile(outputDirectory).toString()))
+            .setContentValues(contentValues)
+            .build()
+
+//        val outputOptions = VideoCapture.OutputFileOptions.Builder(videoFile).build()
+
+        val fileOutputOptions = FileOutputOptions.Builder(videoFile).build()
+
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
         ) { return }
-        videoCapture?.startRecording(outputOptions, ContextCompat.getMainExecutor(this), object: VideoCapture.OnVideoSavedCallback {
-            override fun onError(videoCaptureError: Int, message: String, cause: Throwable?) {
-                Log.e(TAG, "Video capture failed: $message")
+
+        recording = videoCapture.output
+            .prepareRecording(this, fileOutputOptions)
+            .withAudioEnabled()
+            .start(ContextCompat.getMainExecutor(this)
+            ) { videoRecordEvent ->
+                when (videoRecordEvent) {
+                    is VideoRecordEvent.Start -> {
+                        // Handle the start of a new active recording
+                    }
+                    is VideoRecordEvent.Pause -> {
+                        // Handle the case where the active recording is paused
+                    }
+                    is VideoRecordEvent.Resume -> {
+                        // Handles the case where the active recording is resumed
+                    }
+                    is VideoRecordEvent.Finalize -> {
+                        // Handles a finalize event for the active recording, checking Finalize.getError()
+                        val error = videoRecordEvent.error
+                        val recordingStats = videoRecordEvent.recordingStats
+
+                        if (error != VideoRecordEvent.Finalize.ERROR_NONE) {
+                            Log.e(TAG, "Video capture failed: ${videoRecordEvent.cause.toString()}")
+                        } else {
+                            Log.d(TAG, "Video file size: ${recordingStats.numBytesRecorded} BYTES")
+
+                            val savedUri = Uri.parse(outputDirectory.path + "/" + fileName)
+                            val msg = "Video capture succeeded: $savedUri"
+
+                            val intent = this@Camara.intent
+                            intent.putExtra(Constantes.INTENT_CAMARAX, savedUri.toString())
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        }
+                    }
+                }
             }
 
-            override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
-                val savedUri = Uri.fromFile(videoFile)
-                val msg = "Video capture succeeded: $savedUri"
-
-                val intent = this@Camara.intent
-                intent.putExtra(Constantes.INTENT_CAMARAX, savedUri.toString())
-                setResult(RESULT_OK, intent)
-                finish()
-            }
-        })
+//        videoCapture.startRecording(outputOptions, ContextCompat.getMainExecutor(this), object: VideoCapture.OnVideoSavedCallback {
+//            override fun onError(videoCaptureError: Int, message: String, cause: Throwable?) {
+//                Log.e(TAG, "Video capture failed: $message")
+//            }
+//
+//            override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
+//                val savedUri = Uri.fromFile(videoFile)
+//                val msg = "Video capture succeeded: $savedUri"
+//
+//                val intent = this@Camara.intent
+//                intent.putExtra(Constantes.INTENT_CAMARAX, savedUri.toString())
+//                setResult(RESULT_OK, intent)
+//                finish()
+//            }
+//        })
     }
 
     @SuppressLint("RestrictedApi")
     private fun stopRecording() {
-        videoCapture?.stopRecording()
+//        videoCapture?.stopRecording()
+        recording.stop()
     }
 
     private fun createFileFromURI(uri: Uri) : File {

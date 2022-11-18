@@ -57,6 +57,7 @@ public class Loading {
             @Override
             public void run() {
                 try {
+                    if (progress != null) return;
                     progress = new ProgressDialog(ctx);
                     progress.setTitle(title);
                     progress.setMessage(message);
@@ -127,7 +128,7 @@ public class Loading {
      * @author Ventura de Lucas
      */
     public static void ShowSmartLoading(final Context ctx, String title, String message, boolean cancelable) {
-        if (customSmartDialog != null/* && customSmartDialog.isShowingLoading()*/) return;
+        if (customSmartDialog != null) return;
         contextWS = ctx;
         MyApplication.runOnUiThread(new Runnable() {
             @Override
@@ -147,7 +148,7 @@ public class Loading {
      * @author Ventura de Lucas
      */
     public static void ShowSmartLoading(final Context ctx, String title, String message, boolean cancelable, int icono, boolean esGif) {
-        if (customSmartDialog != null/* && customSmartDialog.isShowingLoading()*/) return;
+        if (customSmartDialog != null) return;
         contextWS = ctx;
         MyApplication.runOnUiThread(new Runnable() {
             @Override
@@ -167,7 +168,7 @@ public class Loading {
      * @author Ventura de Lucas
      */
     public static void ShowSmartLoading(final Context ctx, String title, String message, boolean cancelable, CustomSmartDialog.LoadingListener loadingListener) {
-        if (customSmartDialog != null/* && customSmartDialog.isShowingLoading()*/) return;
+        if (customSmartDialog != null) return;
         contextWS = ctx;
         CommonsExecutors.getExecutor().Main().execute(new Runnable() {
             @Override
@@ -180,6 +181,7 @@ public class Loading {
     private static void mostrarCustomSmartDialog(Context context, String title, String message, boolean cancelable, int icono, boolean esGif, CustomSmartDialog.LoadingListener loadingListener) {
         DialogConfig config = new DialogConfig.Builder().setMostrarIconoTitulo(true).isIconoGif(esGif).setMostrarLoading(true).setMostrarImagenPredeterminada(false).setIconoTitulo(icono).setTitulo(title).setMensaje(message).setMostrarNegativo(false).setMostrarPositivo(false).setAutoDismiss(true).setCancelable(cancelable)
                 .build();
+        if (customSmartDialog != null) return;
         customSmartDialog = new CustomSmartDialog();
         customSmartDialog.dialogGenerico(context, config, null, loadingListener);
     }

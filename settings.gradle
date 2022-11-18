@@ -1,2 +1,3 @@
 include ':app', ':pruebas'
 rootProject.name='ICP_Commons'
+include ':camara'
