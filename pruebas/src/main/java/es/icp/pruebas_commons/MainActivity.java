@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import es.icp.icp_commons.Camara.Camara;
+import es.icp.icp_commons.camara.core.Camara;
 import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CommonsGeocoder;
 import es.icp.icp_commons.CustomDialog;
@@ -1110,7 +1110,7 @@ public class MainActivity extends CommonsBaseApp {
     private void LevantarCamaraVideo() {
         Intent intent = new Intent(MainActivity.this, Camara.class);
         intent.putExtra(Camara.VIDEO, true);
-        intent.putExtra(Camara.STANDAR, false);
+        intent.putExtra(Camara.STANDAR, true);
 //        intent.putExtra(Camara.GALLERY, true);
         startActivityForResult(intent, Constantes.INTENT_CAMARA);
     }

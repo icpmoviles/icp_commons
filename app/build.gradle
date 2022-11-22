@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 230
-        versionName "3.5.1"
+        versionCode 231
+        versionName "4.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -75,17 +75,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.10"
     implementation "com.google.android.gms:play-services-location:18.0.0"
 
-    // CameraX core library
-    implementation "androidx.camera:camera-core:1.1.0"
-    // CameraX Camera2 extensions
-    implementation "androidx.camera:camera-camera2:1.1.0"
-    // CameraX Lifecycle library
-    implementation "androidx.camera:camera-lifecycle:1.1.0"
-    // CameraX View class
-    implementation 'androidx.camera:camera-view:1.1.0'
-    // CameraX VideoRecorder
-    implementation 'androidx.camera:camera-video:1.1.0'
-
     //WindowManager
     implementation 'androidx.window:window:1.0.0-alpha08'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
@@ -101,8 +90,4 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
 
-
-
-    implementation files('libs/isoparser-1.0.6.jar')
-    implementation files('libs/aspectjrt-1.7.3.jar')
 }
