@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.icp.icp_commons.Helpers.PasswordStorageHelper;
 import es.icp.icp_commons.camara.core.Camara;
 import es.icp.icp_commons.CheckRequest;
 import es.icp.icp_commons.CommonsGeocoder;
