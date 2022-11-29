@@ -1112,6 +1112,7 @@ public class MainActivity extends CommonsBaseApp {
         Intent intent = new Intent(MainActivity.this, Camara.class);
         intent.putExtra(Camara.VIDEO, true);
         intent.putExtra(Camara.STANDAR, true);
+        intent.putExtra(Camara.COMPRESSION, true);
 //        intent.putExtra(Camara.GALLERY, true);
         startActivityForResult(intent, Constantes.INTENT_CAMARA);
     }

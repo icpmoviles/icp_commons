@@ -6,6 +6,7 @@
     <color name="red">#f40000</color>
     <color name="black">#000000</color>
     <color name="colorTransparent">#00000000</color>
+    <color name="semiTransparent">#00000099</color>
     <color name="white">#ffffff</color>
 
 </resources>

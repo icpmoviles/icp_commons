@@ -3,6 +3,7 @@ package es.icp.icp_commons.camara.core
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -23,6 +24,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.MimeTypeMap
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -43,11 +45,12 @@ import com.bumptech.glide.request.RequestOptions
 import es.icp.icp_commons.camara.R
 import es.icp.icp_commons.camara.helpers.Utils
 import es.icp.icp_commons.camara.helpers.Constantes
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import es.icp.icp_commons.camara.videocompressor.source.VideoCompress
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.lang.Runnable
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -83,6 +86,9 @@ class Camara : AppCompatActivity() {
     private var size: Size? = null
     private lateinit var view : ConstraintLayout
     private lateinit var btnFlash : ImageButton
+    private lateinit var linearProgressCompression : LinearLayout
+    private lateinit var pbCompression : ProgressBar
+    private lateinit var txtProgressCompression : TextView
 
     private var record : Boolean = true
     private var encenderFlash : Boolean = true
@@ -90,6 +96,7 @@ class Camara : AppCompatActivity() {
     private var cameraBack: Boolean = false
     private var gallery: Boolean = false
     private var standar: Boolean = false
+    private var compression: Boolean = false
 
     var showAnimation = false
 
@@ -178,6 +185,11 @@ class Camara : AppCompatActivity() {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
+        try {
+            compression = intent.extras!![COMPRESSION] as Boolean
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onResume() {
@@ -223,6 +235,7 @@ class Camara : AppCompatActivity() {
         const val VIDEO = "video"
         const val GALLERY = "gallery"
         const val STANDAR = "standar"
+        const val COMPRESSION = "compression"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
@@ -568,6 +581,10 @@ class Camara : AppCompatActivity() {
             encenderFlash = !encenderFlash
         }
 
+        linearProgressCompression = controls.findViewById(R.id.linearProgressCompression)
+        pbCompression = controls.findViewById(R.id.pbCompression)
+        txtProgressCompression = controls.findViewById(R.id.txtProgressCompression)
+
         // In the background, load latest photo taken (if any) for gallery thumbnail
         lifecycleScope.launch(Dispatchers.IO) {
             outputDirectory.listFiles { file ->
@@ -862,7 +879,6 @@ class Camara : AppCompatActivity() {
             mediaDir else filesDir
     }
 
-    @SuppressLint("RestrictedApi")
     private fun startRecording() {
         val fileName = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US).format(System.currentTimeMillis()) + ".mp4"
 
@@ -910,35 +926,85 @@ class Camara : AppCompatActivity() {
                         if (error != VideoRecordEvent.Finalize.ERROR_NONE) {
                             Log.e(TAG, "Video capture failed: ${videoRecordEvent.cause.toString()}")
                         } else {
-                            Log.d(TAG, "Video file size: ${recordingStats.numBytesRecorded} BYTES")
+                            Log.d(TAG, "Video file size: ${recordingStats.numBytesRecorded / 1_048_576} MB")
 
                             val savedUri = Uri.parse(outputDirectory.path + "/" + fileName)
                             val msg = "Video capture succeeded: $savedUri"
 
-                            val intent = this@Camara.intent
-                            intent.putExtra(Constantes.INTENT_CAMARAX, savedUri.toString())
-                            setResult(RESULT_OK, intent)
-                            finish()
+                            if (compression) {
+                                this@Camara.lifecycleScope.launch {
+                                    finalizarConResultado(comprimirVideo(savedUri.toString()))
+                                }
+                            } else {
+                                finalizarConResultado(savedUri.toString())
+                            }
+
                         }
                     }
                 }
             }
+    }
 
-//        videoCapture.startRecording(outputOptions, ContextCompat.getMainExecutor(this), object: VideoCapture.OnVideoSavedCallback {
-//            override fun onError(videoCaptureError: Int, message: String, cause: Throwable?) {
-//                Log.e(TAG, "Video capture failed: $message")
-//            }
-//
-//            override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
-//                val savedUri = Uri.fromFile(videoFile)
-//                val msg = "Video capture succeeded: $savedUri"
-//
-//                val intent = this@Camara.intent
-//                intent.putExtra(Constantes.INTENT_CAMARAX, savedUri.toString())
-//                setResult(RESULT_OK, intent)
-//                finish()
-//            }
-//        })
+    @ExperimentalCoroutinesApi
+    suspend fun comprimirVideo(path: String): String {
+        return suspendCancellableCoroutine { continuation ->
+            val fileName = "${getOutputDirectory().path}/" + SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US).format(System.currentTimeMillis()) + "_compressed.mp4"
+//            val progressDialog = ProgressDialog(this@Camara)
+//            progressDialog.setTitle("Comprimiendo...")
+//            progressDialog.setMessage("Se está comprimiendo su video. Por favor, espere un momento...")
+//            progressDialog.setCancelable(false)
+
+            VideoCompress.compressVideoLow(
+                Uri.parse(path).path,
+                fileName,
+                object : VideoCompress.CompressListener {
+                    override fun onStart() {
+                        // Compression is started.
+                        Log.d(TAG, "Empezando compresión: $path")
+//                        progressDialog.show()
+                        linearProgressCompression.visibility = View.VISIBLE
+                        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    }
+
+                    override fun onSuccess() {
+                        // Compression is successfully finished
+                        Log.d(TAG, "Compresión finalizada correctamente ($fileName)")
+                        val file = File(fileName)
+                        Log.d(TAG, "Tamaño video comprimido: ${file.length() / 1_048_576} MB")
+//                        progressDialog.cancel()
+                        linearProgressCompression.visibility = View.GONE
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                        continuation.resume(fileName) {}
+                    }
+
+                    override fun onFail() {
+                        // Compression is failed.
+                        Log.d(TAG, "Compresión finalizada INcorrectamente")
+//                        progressDialog.cancel()
+                        linearProgressCompression.visibility = View.GONE
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                        continuation.resume(path) {}
+                    }
+
+                    override fun onProgress(percent: Float) {
+                        // Compression is in progress.
+                        Log.d(TAG, "Compresión en progreso: $percent%")
+                        pbCompression.progress = percent.toInt()
+                        txtProgressCompression.text = "${percent.toInt()}%"
+//                        progressDialog.progress = percent.toInt()
+                    }
+                })
+
+//            SiliCompressor.with(context).compressVideo(Uri.parse(path).path, getOutputDirectory(context).path)
+//            continuation.resume() {}
+        }
+    }
+
+    private fun finalizarConResultado(uri: String) {
+        val intent = this@Camara.intent
+        intent.putExtra(Constantes.INTENT_CAMARAX, uri)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     @SuppressLint("RestrictedApi")
