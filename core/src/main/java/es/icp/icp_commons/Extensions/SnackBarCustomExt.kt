@@ -14,6 +14,11 @@ import es.icp.icp_commons.ExplosionView.ExplosionAnimator
 import es.icp.icp_commons.ExplosionView.ExplosionField
 import es.icp.icp_commons.databinding.SnackbarCustomLayoutBinding
 
+/**
+ * @author Carlos del Campo Cebrian
+ * @version 1.0
+ *
+ */
 
 
 /**

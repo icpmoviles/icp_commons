@@ -8,6 +8,11 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorInt
 
+/**
+ * @author Carlos del Campo Cebrian
+ * @version 1.0
+ *
+ */
 object ContextUtils {
     @JvmStatic
     fun scanForActivity(context: Context): Activity? {

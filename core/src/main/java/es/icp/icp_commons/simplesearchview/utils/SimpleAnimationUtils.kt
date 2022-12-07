@@ -15,6 +15,11 @@ import kotlin.math.ceil
 import kotlin.math.pow
 import kotlin.math.sqrt
 
+/**
+ * @author Carlos del Campo Cebrian
+ * @version 1.0
+ *
+ */
 
 object SimpleAnimationUtils {
     const val ANIMATION_DURATION_DEFAULT = 250

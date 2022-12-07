@@ -1,17 +1,7 @@
 package es.icp.icp_commons.Extensions
 
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Color
-import android.net.Uri
 import android.os.Build
-import android.provider.Settings
-import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import com.google.android.material.snackbar.Snackbar
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -19,6 +9,12 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
+
+/**
+ * @author Carlos del Campo Cebrian
+ * @version 1.0
+ *
+ */
 
 /**
  * Si se pasa null el formato que por default es
