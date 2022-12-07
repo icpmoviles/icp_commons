@@ -8,6 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
+/**
+ * @author Carlos del Campo Cebrian
+ * @version 1.0
+ *
+ */
 public class UtilsExplosion {
 
     private UtilsExplosion() {

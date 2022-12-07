@@ -12,6 +12,11 @@ import android.view.animation.Interpolator;
 
 import java.util.Random;
 
+/**
+ * @author Carlos del Campo Cebrian
+ * @version 1.0
+ *
+ */
 public class ExplosionAnimator extends ValueAnimator {
 
     static long DEFAULT_DURATION = 0x400;

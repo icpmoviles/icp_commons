@@ -40,6 +40,11 @@ import es.icp.icp_commons.simplesearchview.utils.SimpleAnimationUtils.hideOrFade
 import es.icp.icp_commons.simplesearchview.utils.SimpleAnimationUtils.revealOrFadeIn
 import es.icp.icp_commons.simplesearchview.utils.SimpleAnimationUtils.verticalSlideView
 
+/**
+ * @author Carlos del Campo Cebrian
+ * @version 1.0
+ *
+ */
 class SimpleSearchView @JvmOverloads constructor(creationContext: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(creationContext, attrs, defStyleAttr) {
     @IntDef(STYLE_BAR, STYLE_CARD)
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)

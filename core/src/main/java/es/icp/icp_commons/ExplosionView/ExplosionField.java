@@ -18,6 +18,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author Carlos del Campo Cebrian
+ * @version 1.0
+ *
+ */
 public class ExplosionField extends View {
 
     private List<ExplosionAnimator> mExplosions = new ArrayList<>();
