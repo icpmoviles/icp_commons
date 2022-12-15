@@ -84,14 +84,14 @@ class Camara : AppCompatActivity() {
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var size: Size? = null
-    private lateinit var view : ConstraintLayout
-    private lateinit var btnFlash : ImageButton
-    private lateinit var linearProgressCompression : LinearLayout
-    private lateinit var pbCompression : ProgressBar
-    private lateinit var txtProgressCompression : TextView
+    private lateinit var view: ConstraintLayout
+    private lateinit var btnFlash: ImageButton
+    private lateinit var linearProgressCompression: LinearLayout
+    private lateinit var pbCompression: ProgressBar
+    private lateinit var txtProgressCompression: TextView
 
-    private var record : Boolean = true
-    private var encenderFlash : Boolean = true
+    private var record: Boolean = true
+    private var encenderFlash: Boolean = true
     private var cameraFront: Boolean = false
     private var cameraBack: Boolean = false
     private var gallery: Boolean = false
@@ -99,6 +99,7 @@ class Camara : AppCompatActivity() {
     private var compression: Boolean = false
 
     var showAnimation = false
+    var isFirstTime = true
 
     private lateinit var videoCapture: VideoCapture<Recorder>
     private lateinit var recording: Recording
@@ -110,6 +111,7 @@ class Camara : AppCompatActivity() {
     private val displayManager by lazy {
         this.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     }
+
     /** Blocking camera operations are performed using this executor */
     private lateinit var cameraExecutor: ExecutorService
 
@@ -243,13 +245,16 @@ class Camara : AppCompatActivity() {
 
         /** Helper function used to create a timestamped file */
         private fun createFile(baseFolder: File, format: String, extension: String) =
-            File(baseFolder, SimpleDateFormat(format, Locale.US)
-                .format(System.currentTimeMillis()) + extension)
+            File(
+                baseFolder, SimpleDateFormat(format, Locale.US)
+                    .format(System.currentTimeMillis()) + extension
+            )
 
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
             val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
-                File(it, appContext.resources.getString(R.string.app_name)).apply { mkdirs() } }
+                File(it, appContext.resources.getString(R.string.app_name)).apply { mkdirs() }
+            }
             return if (mediaDir != null && mediaDir.exists())
                 mediaDir else appContext.filesDir
         }
@@ -404,7 +409,7 @@ class Camara : AppCompatActivity() {
                     camera?.cameraControl?.startFocusAndMetering(action)
 
                     val iv = ImageView(this)
-                    iv.layoutParams = LinearLayout.LayoutParams(200,200)
+                    iv.layoutParams = LinearLayout.LayoutParams(200, 200)
                     iv.setImageDrawable(getDrawable(R.drawable.ic_camara_focus))
                     iv.x = event.x
                     iv.y = event.y
@@ -436,14 +441,17 @@ class Camara : AppCompatActivity() {
 
     /** Declare and bind preview, capture and analysis use casess */
     private fun bindCameraUseCases() {
-
         try {
             val displayMetrics = DisplayMetrics()
             // Get screen metrics used to setup camera for full screen resolution
             windowManager.defaultDisplay.getMetrics(displayMetrics)
-            Log.d(TAG, "Screen metrics: ${displayMetrics.widthPixels} x ${displayMetrics.heightPixels}")
+            Log.d(
+                TAG,
+                "Screen metrics: ${displayMetrics.widthPixels} x ${displayMetrics.heightPixels}"
+            )
 
-            val screenAspectRatio = aspectRatio(displayMetrics.widthPixels, displayMetrics.heightPixels)
+            val screenAspectRatio =
+                aspectRatio(displayMetrics.widthPixels, displayMetrics.heightPixels)
             Log.d(TAG, "Preview aspect ratio: $screenAspectRatio")
 
             val rotation = viewFinder.display.rotation
@@ -453,8 +461,14 @@ class Camara : AppCompatActivity() {
                 ?: throw IllegalStateException("Camera initialization failed.")
 
             // CameraSelector
-            if (cameraFront) lensFacing = CameraSelector.LENS_FACING_FRONT
-            if (cameraBack) lensFacing = CameraSelector.LENS_FACING_BACK
+
+
+            if (isFirstTime) {
+                if (cameraFront) lensFacing = CameraSelector.LENS_FACING_FRONT
+                if (cameraBack) lensFacing = CameraSelector.LENS_FACING_BACK
+                isFirstTime = false
+            }
+
             val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
             // Preview
@@ -475,18 +489,19 @@ class Camara : AppCompatActivity() {
                 // CameraX optimize for whatever specific resolution best fits our use cases
 //                .setTargetAspectRatio(screenAspectRatio)
 //            .setTargetResolution(size!!)
-                .setTargetResolution(Size(1080,1920))
+                .setTargetResolution(Size(1080, 1920))
 //            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 // Set initial target rotation, we will have to call this again if rotation changes
                 // during the lifecycle of this use case
                 .setTargetRotation(rotation)
                 .build()
 
-            if(video) {
+            if (video) {
                 val recorder: Recorder
                 if (standar) {
                     val qualitySelector = QualitySelector.from(Quality.HD)
-                    recorder = Recorder.Builder().setExecutor(cameraExecutor).setQualitySelector(qualitySelector).build()
+                    recorder = Recorder.Builder().setExecutor(cameraExecutor)
+                        .setQualitySelector(qualitySelector).build()
                 } else {
                     recorder = Recorder.Builder().setExecutor(cameraExecutor).build()
                 }
@@ -519,12 +534,14 @@ class Camara : AppCompatActivity() {
             // A variable number of use-cases can be passed here -
             // camera provides access to CameraControl & CameraInfo
 
-            camera = if(video){
+            camera = if (video) {
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, videoCapture)
+                    this, cameraSelector, preview, videoCapture
+                )
             } else {
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture, imageAnalyzer)
+                    this, cameraSelector, preview, imageCapture, imageAnalyzer
+                )
             }
 
             // Attach the viewfinder's surface provider to preview use case
@@ -594,7 +611,7 @@ class Camara : AppCompatActivity() {
             }
         }
 
-        if(video) {
+        if (video) {
             chronometer.isVisible = true
 
             controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
@@ -602,11 +619,13 @@ class Camara : AppCompatActivity() {
                     startRecording()
                     chronometer.base = SystemClock.elapsedRealtime()
                     chronometer.start()
-                    controls.findViewById<ImageButton>(R.id.camera_capture_button).setImageDrawable(getDrawable(R.drawable.ic_stop))
+                    controls.findViewById<ImageButton>(R.id.camera_capture_button)
+                        .setImageDrawable(getDrawable(R.drawable.ic_stop))
                 } else {
                     stopRecording()
                     chronometer.stop()
-                    controls.findViewById<ImageButton>(R.id.camera_capture_button).setImageDrawable(getDrawable(R.drawable.ic_shutter))
+                    controls.findViewById<ImageButton>(R.id.camera_capture_button)
+                        .setImageDrawable(getDrawable(R.drawable.ic_shutter))
                 }
 
                 record = !record
@@ -685,7 +704,8 @@ class Camara : AppCompatActivity() {
                         container.postDelayed({
                             container.foreground = ColorDrawable(Color.WHITE)
                             container.postDelayed(
-                                { container.foreground = null }, ANIMATION_FAST_MILLIS)
+                                { container.foreground = null }, ANIMATION_FAST_MILLIS
+                            )
                         }, ANIMATION_SLOW_MILLIS)
                     }
                 }
@@ -713,7 +733,7 @@ class Camara : AppCompatActivity() {
             }
         }
 
-        if(gallery) {
+        if (gallery) {
             controls.findViewById<ImageButton>(R.id.photo_view_button).isVisible = true
 
             // Listener for button used to view the most recent photo
@@ -725,8 +745,9 @@ class Camara : AppCompatActivity() {
 //                ).navigate(CameraFragmentDirections
 //                    .actionCameraToGallery(outputDirectory.absolutePath))
 //            }
-                var galeryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-                if(video) {
+                var galeryIntent =
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                if (video) {
                     galeryIntent.type = "video/*"
                 } else {
                     galeryIntent.type = "image/*"
@@ -740,7 +761,7 @@ class Camara : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == RESULT_OK && requestCode == Constantes.INTENT_CAMARA) {
+        if (resultCode == RESULT_OK && requestCode == Constantes.INTENT_CAMARA) {
             var photoFile = createFileFromURI(data!!.data!!)
 
             val intent = this@Camara.intent
@@ -754,11 +775,12 @@ class Camara : AppCompatActivity() {
     private fun updateCameraSwitchButton() {
         val switchCamerasButton = container.findViewById<ImageButton>(R.id.camera_switch_button)
         try {
-            if (cameraBack || cameraFront) {
-                switchCamerasButton.isEnabled = false
-                switchCamerasButton.visibility = View.GONE
-            }
-            else switchCamerasButton.isEnabled = hasBackCamera() && hasFrontCamera()
+//            if (cameraBack || cameraFront) {
+//                switchCamerasButton.isEnabled = false
+//                switchCamerasButton.visibility = View.GONE
+//            }
+//            else
+            switchCamerasButton.isEnabled = hasBackCamera() && hasFrontCamera()
         } catch (exception: Exception/*CameraInfoUnavailableException*/) {
             switchCamerasButton.isEnabled = false
         }
@@ -874,24 +896,31 @@ class Camara : AppCompatActivity() {
 
     fun getOutputDirectory(): File {
         val mediaDir = externalMediaDirs.firstOrNull()?.let {
-            File(it, resources.getString(R.string.app_name)).apply { mkdirs() } }
+            File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
+        }
         return if (mediaDir != null && mediaDir.exists())
             mediaDir else filesDir
     }
 
     private fun startRecording() {
-        val fileName = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US).format(System.currentTimeMillis()) + ".mp4"
+        val fileName = SimpleDateFormat(
+            "yyyy-MM-dd-HH-mm-ss-SSS",
+            Locale.US
+        ).format(System.currentTimeMillis()) + ".mp4"
 
         val videoFile = File(
             outputDirectory,
-            fileName)
+            fileName
+        )
 
         val contentValues = ContentValues().apply {
             put(MediaStore.Video.Media.DISPLAY_NAME, fileName)
         }
 
-        val mediaStoreOutput = MediaStoreOutputOptions.Builder(this.contentResolver,
-            Uri.parse(Uri.fromFile(outputDirectory).toString()))
+        val mediaStoreOutput = MediaStoreOutputOptions.Builder(
+            this.contentResolver,
+            Uri.parse(Uri.fromFile(outputDirectory).toString())
+        )
             .setContentValues(contentValues)
             .build()
 
@@ -900,13 +929,19 @@ class Camara : AppCompatActivity() {
         val fileOutputOptions = FileOutputOptions.Builder(videoFile).build()
 
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
-        ) { return }
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
 
         recording = videoCapture.output
             .prepareRecording(this, fileOutputOptions)
             .withAudioEnabled()
-            .start(ContextCompat.getMainExecutor(this)
+            .start(
+                ContextCompat.getMainExecutor(this)
             ) { videoRecordEvent ->
                 when (videoRecordEvent) {
                     is VideoRecordEvent.Start -> {
@@ -926,7 +961,10 @@ class Camara : AppCompatActivity() {
                         if (error != VideoRecordEvent.Finalize.ERROR_NONE) {
                             Log.e(TAG, "Video capture failed: ${videoRecordEvent.cause.toString()}")
                         } else {
-                            Log.d(TAG, "Video file size: ${recordingStats.numBytesRecorded / 1_048_576} MB")
+                            Log.d(
+                                TAG,
+                                "Video file size: ${recordingStats.numBytesRecorded / 1_048_576} MB"
+                            )
 
                             val savedUri = Uri.parse(outputDirectory.path + "/" + fileName)
                             val msg = "Video capture succeeded: $savedUri"
@@ -948,7 +986,10 @@ class Camara : AppCompatActivity() {
     @ExperimentalCoroutinesApi
     suspend fun comprimirVideo(path: String): String {
         return suspendCancellableCoroutine { continuation ->
-            val fileName = "${getOutputDirectory().path}/" + SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US).format(System.currentTimeMillis()) + "_compressed.mp4"
+            val fileName = "${getOutputDirectory().path}/" + SimpleDateFormat(
+                "yyyy-MM-dd-HH-mm-ss-SSS",
+                Locale.US
+            ).format(System.currentTimeMillis()) + "_compressed.mp4"
 //            val progressDialog = ProgressDialog(this@Camara)
 //            progressDialog.setTitle("Comprimiendo...")
 //            progressDialog.setMessage("Se está comprimiendo su video. Por favor, espere un momento...")
@@ -963,7 +1004,10 @@ class Camara : AppCompatActivity() {
                         Log.d(TAG, "Empezando compresión: $path")
 //                        progressDialog.show()
                         linearProgressCompression.visibility = View.VISIBLE
-                        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                        window.setFlags(
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        )
                     }
 
                     override fun onSuccess() {
@@ -1013,7 +1057,7 @@ class Camara : AppCompatActivity() {
         recording.stop()
     }
 
-    private fun createFileFromURI(uri: Uri) : File {
+    private fun createFileFromURI(uri: Uri): File {
         val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
         var inputStream = applicationContext.contentResolver.openInputStream(uri)
 
@@ -1025,12 +1069,12 @@ class Camara : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        if(inputStream != null) {
+        if (inputStream != null) {
             var count = 0
             val buffer = ByteArray(1024 * 4)
             val eof = -1
             var n = 0
-            while(eof != (inputStream.read(buffer).also { n = it })) {
+            while (eof != (inputStream.read(buffer).also { n = it })) {
                 out!!.write(buffer, 0, n)
                 count += n
             }
