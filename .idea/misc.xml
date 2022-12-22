@@ -8,8 +8,58 @@
         <entry key="..\:/Documents/AndroidStudio/icp_commons/app/src/main/res/layout/item_listado.xml" value="0.3546875" />
         <entry key="..\:/Documents/AndroidStudio/icp_commons/app/src/main/res/layout/view_custom_smart_dialog_all.xml" value="0.2871376811594203" />
         <entry key="..\:/Documents/AndroidStudio/icp_commons/pruebas/src/main/res/layout/main_activity.xml" value="0.2848731884057971" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable-v24/ic_check_filled.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable-v24/ic_semi_circle.xml" value="0.3535" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/default_button_shape.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_center_background.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_header_background.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_icon.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_icon_shape.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_transparent_default_background.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_transparent_default_background_color.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_baseline_camera_alt_24.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_baseline_delete_outline_24.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_camara_focus.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_flash.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_flash_off.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_outer_circle.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_photo.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_shutter.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_shutter_pressed.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_stop.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_switch.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/stroke_shape.xml" value="0.182" />
         <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/activity_camara.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/activity_image_gallery_previsualization.xml" value="0.15476699444206926" />
         <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/camera_ui_container.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/custom_smooth_dialog.xml" value="0.300090661831369" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout_center.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout_loading.xml" value="0.15476699444206926" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/app/src/main/res/menu/menu_appbar_borrar_imagenes.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/default_button_shape.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/dx_default_center_background.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/dx_default_header_background.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/dx_default_icon.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/dx_default_icon_shape.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/dx_transparent_default_background.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/dx_transparent_default_background_color.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/ic_baseline_camera_alt_24.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/ic_baseline_delete_outline_24.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/ic_check_filled.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/ic_shutter_focused.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/ic_shutter_normal.xml" value="0.318" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/drawable/stroke_shape.xml" value="0.1965" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/font/roboto.xml" value="0.3257802479692176" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/layout/activity_camara.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/layout/camera_ui_container.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/layout/dx_custom_default_layout.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/layout/dx_custom_default_layout_loading.xml" value="0.15476699444206926" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/layout/imagen_viewholder.xml" value="0.15476699444206926" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/camara/src/main/res/menu/menu_appbar_borrar_imagenes.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Ventura.delucas/Documents/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/main_activity.xml" value="0.26745240253853125" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/background_toast.xml" value="0.25" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_edit_blue_24dp.xml" value="0.3085" />
         <entry key="..\:/Users/carlos.delcampo/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/ic_photo.xml" value="0.3085" />
@@ -41,18 +91,15 @@
         <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/app/src/main/res/layout/camera_ui_container.xml" value="0.21296296296296297" />
         <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/activity_kotlin.xml" value="0.25" />
         <entry key="..\:/Users/ismael.toro/AndroidStudioProjects/icp_commons/pruebas/src/main/res/layout/main_activity.xml" value="0.1703125" />
-        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable-v24/rounded_black_button.xml" value="0.201" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/bg_snackbar_notification.xml" value="0.3665" />
-        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/default_button_shape.xml" value="0.2345" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_center_background.xml" value="0.3675" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_header_background.xml" value="0.194" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_icon.xml" value="0.194" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_default_icon_shape.xml" value="0.21" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_transparent_default_background.xml" value="0.194" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/dx_transparent_default_background_color.xml" value="0.194" />
-        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/drawable/stroke_shape.xml" value="0.201" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/layout/activity_image_gallery_previsualization.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout.xml" value="0.33" />
+        <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout_Top.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout_center.xml" value="0.33" />
         <entry key="..\:/Users/jose.landazuri/AndroidStudioProjects/icp_commons/app/src/main/res/layout/dx_custom_default_layout_loading.xml" value="0.36666666666666664" />
@@ -108,7 +155,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

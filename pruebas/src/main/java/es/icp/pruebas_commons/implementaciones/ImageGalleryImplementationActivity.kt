@@ -3,7 +3,7 @@ package es.icp.pruebas_commons.implementaciones
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import es.icp.icp_commons.imageGallery.ImageGallery
+import es.icp.icp_commons.camara.imageGallery.ImageGallery
 import es.icp.pruebas_commons.KotlinActivity
 import es.icp.pruebas_commons.R
 import es.icp.pruebas_commons.databinding.ActivityRecyclerSelectorExampleBinding
