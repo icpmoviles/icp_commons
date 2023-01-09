@@ -1,6 +1,5 @@
 package es.icp.pruebas_commons.implementaciones
 
-import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import android.view.Gravity
@@ -13,12 +12,16 @@ import es.icp.pruebas_commons.databinding.DxCustomSolicitarNombreBinding
 
 object DxImplementacion {
 
-    fun loaderConTextoYMensaje(context: Context): Dialog {
-        return DxCustom(context).createLoading(lottieMarginTop = -50)
+    fun loaderConTextoYMensaje(context: Context) {
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+        DxCustom(context).createLoading(lottieMarginTop = -50)
     }
 
-    fun loaderSinTextoYMensaje(context: Context): Dialog {
-        return DxCustom(context).createLoading(lottie = R.raw.loading_alt_anim, lottieMarginTop = -50, soloAnimacion = true)
+    fun loaderSinTextoYMensaje(context: Context) {
+        DxCustom(context).createLoading(lottie = R.raw.loading_alt_anim, lottieMarginTop = -50)
     }
 
     fun mostrarDxEjemplo(
@@ -67,7 +70,7 @@ object DxImplementacion {
         Log.d("DxCustom", context.getColor(R.color.darkRed).toString())
 
         DxCustom(context)
-            .createDialog(fullScreen = true, animarAlEsconder = false)
+            .createDialog(fullScreen = true, animarAlEsconder = true)
             .setTitulo("Titulo ejemplo con custom view", context.getColor(R.color.dxCustom), 19f)
             .setMensaje("Mensaje ejemplo con custom view", context.getColor(R.color.dxCustom),16f)
 //            .setIcono(color = context.getColor(R.color.dxCustom))
