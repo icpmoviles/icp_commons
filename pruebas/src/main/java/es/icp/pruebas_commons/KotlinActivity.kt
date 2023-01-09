@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -118,20 +117,10 @@ class KotlinActivity : AppCompatActivity() {
 
         btnMostrarDxCustomConMensajeYTiyuloLoading.setOnClickListener {
 
-            val loader = DxImplementacion.loaderConTextoYMensaje(context)
+            DxImplementacion.loaderConTextoYMensaje(context)
 
             Handler(Looper.getMainLooper()).postDelayed({
-                loader.dismiss()
-            }, 5000)
-
-        }
-
-        btnMostrarDxCustomSinMensajeYTiyuloLoading.setOnClickListener {
-
-            val loader = DxImplementacion.loaderSinTextoYMensaje(context)
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                loader.dismiss()
+                DxCustom().dimissLoader()
             }, 5000)
 
         }
