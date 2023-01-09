@@ -7,7 +7,6 @@ import android.content.res.XmlResourceParser
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
@@ -342,7 +341,6 @@ class DxCustom(
                 WindowManager.LayoutParams.MATCH_PARENT)
 
         val window = dialog.window
-        window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
 
         window?.let {
 
