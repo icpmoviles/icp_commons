@@ -13,22 +13,6 @@
     android:animateLayoutChanges="true"
     >
 
-    <io.alterac.blurkit.BlurLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/blurLayout"
-        android:visibility="gone"
-        app:blk_downscaleFactor="0.12"
-        />
-
-    <View
-        android:id="@+id/colorBlurView"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#52000000"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

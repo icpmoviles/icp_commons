@@ -5,8 +5,11 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.XmlResourceParser
 import android.graphics.Color
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
@@ -21,7 +24,6 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import es.icp.icp_commons.Extensions.visible
 import es.icp.icp_commons.R
-import io.alterac.blurkit.BlurLayout
 
 /*
 
@@ -86,7 +88,6 @@ import io.alterac.blurkit.BlurLayout
  */
 const val DELAY_TIME = 500L
 const val ERROR_TAG = "DxCustom"
-const val DEFAULT_BLUR_AMOUNT = 1
 class DxCustom(
     private val context: Context? = null
 ) {
@@ -100,7 +101,6 @@ class DxCustom(
 
     //DxCustom AppCompat
     private var parentDxCustomLayout:   LinearLayout?   = null
-    private var blurLayout:             BlurLayout?   = null
     private var acceptButtonLayout:     Button?         = null
     private var cancelButtonLayout:     Button?         = null
     private var tituloDxCustomLayout:   TextView?       = null
@@ -127,7 +127,6 @@ class DxCustom(
     private var animarAlEsconder: Boolean = true
 
     private var selectedGravity: Int = Gravity.BOTTOM
-    private var blurAmount: Int? = DEFAULT_BLUR_AMOUNT
 
     /**
      * Permite crear una pantalla de carga, con un lottie, titulo y mensaje.
@@ -157,13 +156,10 @@ class DxCustom(
         mensajeSize: Float = 19f,
         startLottieFrame: Int = 0,
         autoPlayLottie: Boolean = true,
-        loopLottie: Boolean = true,
-        blurAmount: Int? = DEFAULT_BLUR_AMOUNT
+        loopLottie: Boolean = true
     ) {
 
-        this.blurAmount = blurAmount
-
-        dialog = if(this.blurAmount != null) {
+        dialog =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Dialog(context!!, R.style.DxCustomBlured)
         }else{
             Dialog(context!!, R.style.DxCustom)
@@ -220,16 +216,6 @@ class DxCustom(
                 WindowManager.LayoutParams.MATCH_PARENT)
 
             dialog.setCancelable(false)
-
-            blurAmount?.let{
-                Handler(Looper.getMainLooper()).postDelayed({
-                    dialog.findViewById<BlurLayout>(R.id.blurLayout)?.apply {
-                        visibility = VISIBLE
-                        blurRadius = it
-                    }
-                    dialog.window?.findViewById<View>(R.id.colorBlurView)?.visibility = VISIBLE
-                }, 50)
-            }
 
             DxCustomLoader.displayLoader(dialog)
 
@@ -295,8 +281,7 @@ class DxCustom(
         fullScreen: Boolean = false,
         animarAlSalir: Boolean = true,
         animarAlEsconder: Boolean = true,
-        gravity: Int = selectedGravity,
-        blurAmount: Int? = 4
+        gravity: Int = selectedGravity
     ): DxCustom {
 
         verificarExistenciaDeRecursos()
@@ -306,11 +291,9 @@ class DxCustom(
 
         selectedGravity = gravity
 
-        this.blurAmount = blurAmount
-
-        dialog = blurAmount?.let{
+        dialog =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Dialog(context!!, R.style.DxCustomBlured)
-        }?:run{
+        }else{
             Dialog(context!!, R.style.DxCustom)
         }
 
@@ -354,18 +337,6 @@ class DxCustom(
         }
 
         loadLayoutComponentes()
-
-        blurAmount?.let{
-            Handler(Looper.getMainLooper()).postDelayed({
-                blurLayout?.apply {
-                    visibility = VISIBLE
-                    blurRadius = it
-                }
-                dialog.window?.findViewById<View>(R.id.colorBlurView)?.visibility = VISIBLE
-            },
-                if(selectedGravity == Gravity.BOTTOM) 350 else 100
-            )
-        }
 
         return this
     }
@@ -691,7 +662,6 @@ class DxCustom(
     private fun loadLayoutComponentes(){
 
         parentDxCustomLayout   =  dialog.findViewById(R.id.parentDxCustomLayout)
-        blurLayout             =  dialog.findViewById(R.id.blurLayout)
         acceptButtonLayout     =  dialog.findViewById(R.id.acceptButton)
         cancelButtonLayout     =  dialog.findViewById(R.id.cancelButton)
         tituloDxCustomLayout   =  dialog.findViewById(R.id.tituloDxCustom)
@@ -811,6 +781,7 @@ class DxCustom(
      */
     private fun animateDialogOnShowBottom(){
         if(animarAlSalir){
+
             parentDxCustomLayout?.let {
 
                 it.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -871,13 +842,6 @@ class DxCustom(
                 throwNullPointerException("No se encontro: parentDxCustomLayout.")
             }
 
-        blurAmount?.let{
-            Handler(Looper.getMainLooper()).postDelayed({
-                blurLayout?.visibility = GONE
-                dialog.window?.findViewById<View>(R.id.colorBlurView)?.visibility = GONE
-            }, 100)
-        }
-
         Handler(Looper.getMainLooper()).postDelayed({
 
             dialog.dismiss()
@@ -894,13 +858,6 @@ class DxCustom(
             ?:run{
                 throwNullPointerException("No se encontro: parentDxCustomLayout.")
             }
-
-        blurAmount?.let{
-            Handler(Looper.getMainLooper()).postDelayed({
-                blurLayout?.visibility = GONE
-                dialog.window?.findViewById<View>(R.id.colorBlurView)?.visibility = GONE
-            }, 250)
-        }
 
         Handler(Looper.getMainLooper()).postDelayed({
 

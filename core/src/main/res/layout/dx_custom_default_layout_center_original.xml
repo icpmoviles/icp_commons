@@ -14,23 +14,6 @@
     android:animateLayoutChanges="true"
     >
 
-    <io.alterac.blurkit.BlurLayout
-        android:id="@+id/blurLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:blk_blurRadius="4"
-        app:blk_downscaleFactor="0.12"
-        />
-
-    <View
-        android:id="@+id/colorBlurView"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#52000000"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -115,9 +98,9 @@
 
                     <Button
                         android:id="@+id/cancelButton"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
                         android:elevation="0dp"
@@ -131,7 +114,7 @@
 
                     <Button
                         android:id="@+id/acceptButton"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginBottom="10dp"
