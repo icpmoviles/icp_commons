@@ -817,18 +817,21 @@ class DxCustom(
      */
     private fun animateDialogOnHide() {
 
-        if (animarAlEsconder){
+        try{
+            if (animarAlEsconder){
 
-            when(selectedGravity){
-                Gravity.CENTER -> {animateDialogOnHideCenter()}
-                Gravity.BOTTOM -> {animateDialogOnHideBottom()}
+                when(selectedGravity){
+                    Gravity.CENTER -> {animateDialogOnHideCenter()}
+                    Gravity.BOTTOM -> {animateDialogOnHideBottom()}
+                }
+
+            }else{
+
+                dialog.dismiss()
             }
-
-        }else{
-
-            dialog.dismiss()
+        }catch (e: Exception){
+            Log.w(ERROR_TAG, "Error al cerrar el dialogo, puede que ya haya sido cerrado por la muerte de una actividad.")
         }
-
 
     }
 

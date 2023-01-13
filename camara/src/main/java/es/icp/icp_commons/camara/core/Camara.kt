@@ -1,9 +1,7 @@
 package es.icp.icp_commons.camara.core
 
-
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -24,7 +22,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.MimeTypeMap
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -35,7 +32,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
-import androidx.core.util.Consumer
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope

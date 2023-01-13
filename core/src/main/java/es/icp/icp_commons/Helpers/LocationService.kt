@@ -195,10 +195,14 @@ class LocationService() : Service() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-        Log.w("Location Service", "FINISHED SERVICE")
-        cdt!!.cancel()
+        try{
+            super.onDestroy()
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+            Log.w("Location Service", "FINISHED SERVICE")
+            cdt!!.cancel()
+        }catch (ex : Exception){
+            ex.printStackTrace()
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? {

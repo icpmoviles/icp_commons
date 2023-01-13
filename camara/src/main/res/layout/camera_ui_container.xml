@@ -20,6 +20,7 @@
     android:id="@+id/camera_ui_container"
     android:layoutDirection="ltr"
     android:layout_width="match_parent"
+    android:theme="@style/Theme.AppCompat.Light"
     android:layout_height="match_parent">
 
     <LinearLayout
