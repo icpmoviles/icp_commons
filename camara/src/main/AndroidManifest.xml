@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <!-- android:hardwareAccelerated="false" -->
-        <activity android:name=".core.Camara" />
+        <activity android:name=".core.Camara"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
