@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         tools:context="es.icp.icp_commons.camara.imageGallery.ImageGalleryPrevisualizationActivity"
         android:orientation="vertical"
+        android:theme="@style/Theme.AppCompat.Light"
         >
 
         <com.google.android.material.appbar.AppBarLayout
