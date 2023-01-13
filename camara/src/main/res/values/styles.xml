@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <resources>
+        <style name="AppTheme" parent="@style/Theme.AppCompat"/>
+    </resources>
+
     <!--  DxCustom  -->
     <style name="DxCustom" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -11,5 +15,4 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
-
 </resources>
