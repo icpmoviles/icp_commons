@@ -408,7 +408,7 @@ class DxCustom(
             iconoDxCustom = icono
         }?:run{
 
-            Log.i(ERROR_TAG, "El icono proporcionado no es valido, se omitirá el icono.")
+            Log.e(ERROR_TAG, "El icono proporcionado no es valido, se omitirá el icono.")
 
             iconoDxCustomLayout?.visibility = GONE
         }
@@ -589,15 +589,24 @@ class DxCustom(
             }
         }
 
-        parentCustomView?.addView(customView) ?:run{
-            throwNullPointerException("Error al crear customView.")
+        try{
+            parentCustomView?.addView(customView) ?:run{
+                throwNullPointerException("Error al crear customView.")
+            }
+        }catch (e: Exception){
+
+            Log.e("DxCustom", "#######################################################################################")
+            Log.e("DxCustom", "# LA VISTA QUE SE ESTÁ INTENTADO AGREGAR YA SE ENCUENTRA VISIBLE EN OTRA VISTA PADRE. #")
+            Log.e("DxCustom", "#                       ASEGURATE DE QUE LA VISTA ES HUÉRFANA                         #")
+            Log.e("DxCustom", "#######################################################################################")
+
         }
 
         return this
     }
 
     /**
-     * Ejecuta el dialogo.
+     * Muestra el dialogo y NO lleva un control sobobre los dialogos que se muestran en pantalla.
      *
      * @return Dialog
      */
@@ -621,11 +630,35 @@ class DxCustom(
     }
 
     /**
-     * Ejecuta el dialogo.
+     * Muestra el dialog y lleva un control sobre los dialogos que se muestran en pantalla para evitar repeticiones del mismo.
      *
      * @return DxCustom
      */
     fun showDialogReturnDxCustom(): DxCustom{
+
+        try{
+
+            DxCustomSingle.addDxCustom(this) {
+                setDataOnDialog()
+                animateDialogOnShow()
+                dialog.show()
+            }
+
+        }catch (e: Exception){
+
+            Log.e(ERROR_TAG, e.printStackTrace().toString())
+
+        }
+
+        return this
+    }
+
+    /**
+     * * Muestra el dialogo y NO lleva un control sobobre los dialogos que se muestran en pantalla.
+     *
+     * @return DxCustom
+     */
+    fun showDialogReturnDxCustomNoControl(): DxCustom{
 
         try{
 
@@ -818,17 +851,21 @@ class DxCustom(
     private fun animateDialogOnHide() {
 
         try{
-            if (animarAlEsconder){
 
-                when(selectedGravity){
-                    Gravity.CENTER -> {animateDialogOnHideCenter()}
-                    Gravity.BOTTOM -> {animateDialogOnHideBottom()}
+            DxCustomSingle.removeDxCustom(this){
+                if (animarAlEsconder){
+
+                    when(selectedGravity){
+                        Gravity.CENTER -> {animateDialogOnHideCenter()}
+                        Gravity.BOTTOM -> {animateDialogOnHideBottom()}
+                    }
+
+                }else{
+
+                    dialog.dismiss()
                 }
-
-            }else{
-
-                dialog.dismiss()
             }
+
         }catch (e: Exception){
             Log.w(ERROR_TAG, "Error al cerrar el dialogo, puede que ya haya sido cerrado por la muerte de una actividad.")
         }
@@ -929,6 +966,101 @@ class DxCustom(
     @Throws(NullPointerException::class)
     fun throwNullPointerException(mensaje: String = "Error no definido") {
         throw NullPointerException(mensaje)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as DxCustom
+
+        if (tituloDxCustom != other.tituloDxCustom) return false
+        if (mensajeDxCustom != other.mensajeDxCustom) return false
+        if (tituloColor != other.tituloColor) return false
+        if (mensajeColor != other.mensajeColor) return false
+        if (iconoColor != other.iconoColor) return false
+        if (tituloSp != other.tituloSp) return false
+        if (mensajeSp != other.mensajeSp) return false
+        if (selectedGravity != other.selectedGravity) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = tituloDxCustom.hashCode()
+        result = 31 * result + mensajeDxCustom.hashCode()
+        result = 31 * result + (tituloColor ?: 0)
+        result = 31 * result + (mensajeColor ?: 0)
+        result = 31 * result + (iconoColor ?: 0)
+        result = 31 * result + (tituloSp?.hashCode() ?: 0)
+        result = 31 * result + (mensajeSp?.hashCode() ?: 0)
+        result = 31 * result + selectedGravity
+        return result
+    }
+
+    override fun toString(): String {
+
+        val gravity = when(selectedGravity){
+            17 -> "Gravity.CENTER"
+            80 -> "Gravity.BOTTOM"
+            else -> "NONE"
+        }
+
+        return " \n Titulo='$tituloDxCustom' \n Gravity='$gravity' \n Mensaje='$mensajeDxCustom'"
+    }
+
+
+}
+
+/**
+ * Clase para lelvar el control de los DxCustom que se muestran en pantalla.
+ */
+private object DxCustomSingle{
+
+    /**
+     * Variable para guardar los DxCustom que se visualizan.
+     */
+    private var dxCustomSingleList: MutableList<DxCustom> = mutableListOf()
+
+    /**
+     * Metodo que agrega el DxCustom a la lista si no lo contiene, si este DxCustom ya se muestra en pantalla, imprimirá por consola un mensaje.
+     *
+     * @param dxCustom Instancia de DxCustom a controlar.
+     * @param actionOnAdd Accion que se ejecuta al comprobar que no existe, es de uso interno a la libreria.
+     */
+    fun addDxCustom(dxCustom:DxCustom, actionOnAdd: () -> Unit){
+
+        if(!dxCustomSingleList.contains(dxCustom)){
+            dxCustomSingleList.add(dxCustom)
+            actionOnAdd.invoke()
+        }else{
+            Log.e("DxCustom", "####################################################################################")
+            Log.e("DxCustom", "# Imposible mostrar un DxCustom, ya se está mostrando uno con información similar. #")
+            Log.e("DxCustom", "####################################################################################")
+            Log.e("DxCustom", "--------------------------- DATOS DEL DXCUSTOM OMITIDO: ----------------------------")
+            Log.e("DxCustom", "$dxCustom")
+            Log.e("DxCustom", "------------------------------------------------------------------------------------")
+
+        }
+
+    }
+
+    /**
+     * Metodo que elimina el DxCustom a la lista si lo contiene.
+     *
+     * @param dxCustom Instancia de DxCustom a controlar.
+     * @param actionOnRemove Accion que se ejecuta al comprobar que existe, es de uso interno a la libreria.
+     */
+    fun removeDxCustom(dxCustom: DxCustom, actionOnRemove: () -> Unit){
+        if(dxCustomSingleList.contains(dxCustom)){
+            dxCustomSingleList.remove(dxCustom)
+        }else{
+            Log.e("DxCustom", "#################################################")
+            Log.e("DxCustom", "# Imposible eliminar un DxCustom no controlado. #")
+            Log.e("DxCustom", "#################################################")
+        }
+
+        actionOnRemove.invoke()
     }
 }
 
