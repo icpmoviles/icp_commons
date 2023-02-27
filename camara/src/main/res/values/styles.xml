@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-     <style name="AppTheme" parent="@style/Theme.AppCompat"/>
+    <style name="AppTheme" parent="@style/Theme.AppCompat">
+
+        <item name="windowActionModeOverlay">true</item>
+        <!-- <item name="actionBarPopupTheme">@style/CAB_Theme</item> -->
+        <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
+
+    </style>
 
     <!--  DxCustom  -->
     <style name="DxCustom" parent="android:style/Theme.Dialog">
@@ -9,7 +15,9 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="colorControlHighlight">@color/colorAccent</item>
+    <style name="Widget.App.ActionMode" parent="Widget.AppCompat.ActionMode">
+        <!-- esto deberá de ser sobreescrito en cada proyecto -->
+        <item name="background">@color/red</item>
     </style>
+
 </resources>

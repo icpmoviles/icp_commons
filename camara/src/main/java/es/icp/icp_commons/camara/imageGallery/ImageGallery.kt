@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import android.os.Handler
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -15,6 +17,7 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import es.icp.icp_commons.camara.R
 
 /*
@@ -73,7 +76,10 @@ class ImageGallery(
     private val recyclerView   : RecyclerView,
     private val listaDeImagenes: ArrayList<String>,
 
-) {
+    // appbar menu que se está usando en la aplicación
+    //private val appBarLayout   : AppBarLayout,
+
+    ) {
     /**
      * Elementos opcionales
      */
@@ -288,6 +294,7 @@ class ImageGallery(
     private val actionModeCallback = object : ActionMode.Callback {
 
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            //appBarLayout.visibility = View.GONE
             val inflater = mActivity.menuInflater
             inflater.inflate(R.menu.menu_appbar_borrar_imagenes, menu)
             return true
@@ -311,6 +318,9 @@ class ImageGallery(
         override fun onDestroyActionMode(mode: ActionMode?) {
             tracker.clearSelection()
             actionMode = null
+            Handler().postDelayed({
+                //appBarLayout.visibility = View.VISIBLE
+            }, 300)
         }
 
     }
