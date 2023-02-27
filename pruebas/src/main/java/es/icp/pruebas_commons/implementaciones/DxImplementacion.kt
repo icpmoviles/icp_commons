@@ -5,26 +5,66 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import es.icp.icp_commons.DxCustom.DxCustom
 import es.icp.pruebas_commons.R
 import es.icp.pruebas_commons.databinding.DxCustomSolicitarNombreBinding
 
 object DxImplementacion {
 
+    fun loaderConTextoYMensaje(context: Context) {
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+        DxCustom(context).createLoading(lottieMarginTop = -50)
+    }
+
+    fun loaderSinTextoYMensaje(context: Context) {
+        DxCustom(context).createLoading(lottie = R.raw.loading_alt_anim, lottieMarginTop = -50)
+    }
+
     fun mostrarDxEjemplo(
         context: Context,
         onAccept: () -> Unit,
         onCancel: () -> Unit
     ){
-
+        val binding = DxCustomSolicitarNombreBinding.inflate(
+            LayoutInflater.from(context), null, false
+        )
         DxCustom(context)
             .createDialog(fullScreen = true, animarAlEsconder = false, gravity = Gravity.CENTER)
             .setTitulo("Titulo ejemplo", context.getColor(R.color.darkRed))
-            .setMensaje("Mensaje ejemplo")
-            .setIcono(color = context.getColor(R.color.colorAccent))
+            .setMensaje(null)
+            .setIcono(null)
             .noPermitirSalirSinBotones()
-            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange)) { onAccept.invoke() }
+            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange), textColor = context.getColor(R.color.red)) { onAccept.invoke() }
             .showCancelarButton { onCancel.invoke() }
+            .addCustomView(binding.root)
+            .showDialogReturnDxCustom()
+
+        //Este DxCustom no se verá en pantalla
+        DxCustom(context)
+            .createDialog(fullScreen = true, animarAlEsconder = false, gravity = Gravity.CENTER)
+            .setTitulo("Titulo ejemplo", context.getColor(R.color.darkRed))
+            .setMensaje(null)
+            .setIcono(null)
+            .noPermitirSalirSinBotones()
+            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange), textColor = context.getColor(R.color.red)) { onAccept.invoke() }
+            .showCancelarButton { onCancel.invoke() }
+            .addCustomView(binding.root)
+            .showDialogReturnDxCustom()
+
+        //Este DxCustom no se verá en pantalla
+        DxCustom(context)
+            .createDialog(fullScreen = true, animarAlEsconder = false, gravity = Gravity.CENTER)
+            .setTitulo("Titulo ejemplo", context.getColor(R.color.darkRed))
+            .setMensaje(null)
+            .setIcono(null)
+            .noPermitirSalirSinBotones()
+            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange), textColor = context.getColor(R.color.red)) { onAccept.invoke() }
+            .showCancelarButton { onCancel.invoke() }
+            .addCustomView(binding.root)
             .showDialogReturnDxCustom()
 
 
@@ -51,20 +91,58 @@ object DxImplementacion {
             LayoutInflater.from(context), null, false
         )
 
+        Log.d("DxCustom", context.getColor(R.color.darkRed).toString())
+
         DxCustom(context)
-            .createDialog(fullScreen = true, animarAlEsconder = false)
+            .createDialog(fullScreen = true, animarAlEsconder = true)
             .setTitulo("Titulo ejemplo con custom view", context.getColor(R.color.dxCustom), 19f)
             .setMensaje("Mensaje ejemplo con custom view", context.getColor(R.color.dxCustom),16f)
-            .setIcono(color = context.getColor(R.color.dxCustom))
+//            .setIcono(color = context.getColor(R.color.dxCustom))
+            .setIcono(AppCompatResources.getDrawable(context, R.drawable.ic_perseo_logo_casco), null)
             .permitirSalirSinBotones()
-            .showAceptarButton("SI", context.getColor(R.color.red)) { onAccept.invoke(binding) }
+            .showAceptarButton("Si", context.getColor(R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
             .showCancelarButton(
-                strokecolor = context.getColor(R.color.colorAccent),
-                textColor = context.getColor(R.color.darkRed)
+                strokecolor = context.getColor(R.color.darkRed),
+                textColor = context.getColor(R.color.darkRed),
+                textAllCaps = false
             ) { onCancel.invoke() }
-            .showDialogReturnDxCustom()
             .addCustomView(binding.root)
             .showDialogReturnDxCustom()
+
+        //Este DxCustom no se verá en pnatalla
+        DxCustom(context)
+            .createDialog(fullScreen = true, animarAlEsconder = true)
+            .setTitulo("Titulo ejemploaa con custom view", context.getColor(R.color.dxCustom), 19f)
+            .setMensaje("Mensaje ejemplo con custom view", context.getColor(R.color.dxCustom),16f)
+//            .setIcono(color = context.getColor(R.color.dxCustom))
+            .setIcono(AppCompatResources.getDrawable(context, R.drawable.ic_perseo_logo_casco), null)
+            .permitirSalirSinBotones()
+            .showAceptarButton("Si", context.getColor(R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
+            .showCancelarButton(
+                strokecolor = context.getColor(R.color.darkRed),
+                textColor = context.getColor(R.color.darkRed),
+                textAllCaps = false
+            ) { onCancel.invoke() }
+            .addCustomView(binding.root)
+            .showDialogReturnDxCustom()
+
+        //Este DxCustom no se verá en pnatalla
+        DxCustom(context)
+            .createDialog(fullScreen = true, animarAlEsconder = true)
+            .setTitulo("Titulo ejemplo con custom view", context.getColor(R.color.dxCustom), 19f)
+            .setMensaje("Mensaje ejemplo con custom view", context.getColor(R.color.dxCustom),16f)
+//            .setIcono(color = context.getColor(R.color.dxCustom))
+            .setIcono(AppCompatResources.getDrawable(context, R.drawable.ic_perseo_logo_casco), null)
+            .permitirSalirSinBotones()
+            .showAceptarButton("Si", context.getColor(R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
+            .showCancelarButton(
+                strokecolor = context.getColor(R.color.darkRed),
+                textColor = context.getColor(R.color.darkRed),
+                textAllCaps = false
+            ) { onCancel.invoke() }
+            .addCustomView(binding.root)
+            .showDialogReturnDxCustom()
+
     }
 
 

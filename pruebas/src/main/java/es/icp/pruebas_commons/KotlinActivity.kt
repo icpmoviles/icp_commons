@@ -10,12 +10,15 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import es.icp.icp_commons.DxCustom.DxCustom
 import es.icp.icp_commons.Extensions.*
 import es.icp.icp_commons.Helpers.Constantes
 import es.icp.icp_commons.Helpers.Constantes.MY_FINE_LOCATION_REQUEST
@@ -46,6 +49,7 @@ class KotlinActivity : AppCompatActivity() {
     }
 
     private fun setUpView() = with(binding) {
+
         btnEmpezarCoordenadas.setOnClickListener {
             if (checkAccessFineLocationPermission(context)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -110,6 +114,17 @@ class KotlinActivity : AppCompatActivity() {
             )
 
         }
+
+        btnMostrarDxCustomConMensajeYTiyuloLoading.setOnClickListener {
+
+            DxImplementacion.loaderConTextoYMensaje(context)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                DxCustom().dimissLoader()
+            }, 5000)
+
+        }
+
         btnMostrarDxCustomNotification.setOnClickListener {
 
             DxImplementacion.mostrarDxNotification(
