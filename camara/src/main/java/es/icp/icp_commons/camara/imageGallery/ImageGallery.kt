@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Build
-import android.os.Handler
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -17,7 +15,6 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.AppBarLayout
 import es.icp.icp_commons.camara.R
 
 /*
@@ -42,13 +39,14 @@ import es.icp.icp_commons.camara.R
  *      recyclerView = binding.recycler,
  *      listaDeImagenes = elementosDePrueba
  * )
- * .setCustomSelectionTrackerFilledIcon(R.drawable.dx_default_icon)   // El icono en caso de que la imagen esté seleccionada
- * .setCustomSelectionTrackerUnfilledIcon(R.drawable.ic_camara_focus) // El icono en caso de que la imagen no esté seleccionada
- * .setDefaultImageDrawable(R.drawable.circled_orange_button)         // En caso de que no exista la imagen se pondrá este circulo naranja como alternativa
- * .setPrevisualizable(true)                                          // Permite previsualizar la imagen al presionar sobre ellas
- * .setColumns(4)
+ * .setCustomSelectionTrackerFilledIcon(R.drawable.dx_default_icon)
+ * .setCustomSelectionTrackerUnfilledIcon(R.drawable.ic_camara_focus)
+ * .setDefaultImageDrawable(R.drawable.circled_orange_button)
+ * .setPrevisualizable(true)
  * .setBackgroundColor(R.color.colorAccent)
  * .setTopbarColor(R.color.colorPrimary)
+ * .setColumns(2)
+ * .isHorizontal(false)
  * .drawGallery()
  *
  */
@@ -89,6 +87,7 @@ class ImageGallery(
     private var onDeleteAction          : (() -> Unit)? = null
     private var numberOfColumns         : Int = 3
     private var isPrevisualizable       : Boolean = false
+    private var isHorizontal            : Boolean = false
 
     /**
      * Elementos generales que necesito a lo largo de la clase.
@@ -132,10 +131,10 @@ class ImageGallery(
     }
 
     /**
-     * Modificación del número de columnas
+     * Modificación del número de columnas o filas (depende si es vertical u horizontal)
      */
 
-    fun setColumns(columns: Int): ImageGallery {
+    fun setColumnsRows(columns: Int): ImageGallery {
         if (isDrawed) throw ImageGalleryException("No se puede modificar este atributo una vez dibujada la galería")
         numberOfColumns = columns
         return this
@@ -160,6 +159,15 @@ class ImageGallery(
     }
 
     /**
+     * La lista de imágenes puede ser horizontal o vertical
+     */
+    fun isHorizontal(horizontal: Boolean): ImageGallery {
+        if (isDrawed) throw ImageGalleryException("No se puede modificar este atributo una vez dibujada la galería")
+        isHorizontal = horizontal
+        return this
+    }
+
+    /**
      * Esta función deberá ejecutarse siempre al final, es la que pintará la galería de imágenes
      * una vez seteados los diferentes atributos.
      */
@@ -176,7 +184,12 @@ class ImageGallery(
             selectionTrackerUnfilled
         )
         recyclerView.adapter = adapterImagenes
-        recyclerView.layoutManager = GridLayoutManager(mContext, numberOfColumns)
+        recyclerView.layoutManager = if(isHorizontal) {
+            GridLayoutManager(mContext, numberOfColumns, GridLayoutManager.HORIZONTAL, false)
+        } else {
+            GridLayoutManager(mContext, numberOfColumns)
+        }
+
         setUpTracker()
 
         isDrawed = true
@@ -294,7 +307,6 @@ class ImageGallery(
     private val actionModeCallback = object : ActionMode.Callback {
 
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            //appBarLayout.visibility = View.GONE
             val inflater = mActivity.menuInflater
             inflater.inflate(R.menu.menu_appbar_borrar_imagenes, menu)
             return true
@@ -318,9 +330,6 @@ class ImageGallery(
         override fun onDestroyActionMode(mode: ActionMode?) {
             tracker.clearSelection()
             actionMode = null
-            Handler().postDelayed({
-                //appBarLayout.visibility = View.VISIBLE
-            }, 300)
         }
 
     }
