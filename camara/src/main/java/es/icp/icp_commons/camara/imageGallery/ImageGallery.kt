@@ -47,6 +47,7 @@ import es.icp.icp_commons.camara.R
  * .setTopbarColor(R.color.colorPrimary)
  * .setColumns(2)
  * .isHorizontal(false)
+ * .setHorizontal(100)
  * .drawGallery()
  *
  */
@@ -81,13 +82,14 @@ class ImageGallery(
     /**
      * Elementos opcionales
      */
-    private var selectionTrackerFilled  : Int? = null
-    private var selectionTrackerUnfilled: Int? = null
-    private var alternativeImage        : Int? = null
-    private var onDeleteAction          : (() -> Unit)? = null
-    private var numberOfColumns         : Int = 3
-    private var isPrevisualizable       : Boolean = false
-    private var isHorizontal            : Boolean = false
+    private var selectionTrackerFilled      : Int? = null
+    private var selectionTrackerUnfilled    : Int? = null
+    private var alternativeImage            : Int? = null
+    private var onDeleteAction              : (() -> Unit)? = null
+    private var numberOfColumns             : Int = 3
+    private var isPrevisualizable           : Boolean = false
+    private var isHorizontal                : Boolean = false
+    private var maxImageHeightWhenHorizontal: Int? = null
 
     /**
      * Elementos generales que necesito a lo largo de la clase.
@@ -161,9 +163,10 @@ class ImageGallery(
     /**
      * La lista de imágenes puede ser horizontal o vertical
      */
-    fun isHorizontal(horizontal: Boolean): ImageGallery {
+    fun setHorizontal(maxImageHeight: Int): ImageGallery {
         if (isDrawed) throw ImageGalleryException("No se puede modificar este atributo una vez dibujada la galería")
-        isHorizontal = horizontal
+        isHorizontal = true
+        maxImageHeightWhenHorizontal = maxImageHeight
         return this
     }
 
@@ -177,7 +180,9 @@ class ImageGallery(
             mActivity,
             listaDeImagenes,
             liveDelete,
+            isHorizontal = isHorizontal,
             numberOfColumns,
+            maxImageHeightWhenHorizontal,
             alternativeImage,
             isPrevisualizable,
             selectionTrackerFilled,
