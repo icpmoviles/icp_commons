@@ -9,6 +9,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
+        <!-- <item name="actionBarPopupTheme">@style/CAB_Theme</item> &lt;!&ndash; -->
     </style>
 
     <style name="btn_primary_large" parent="Widget.AppCompat.Button">
@@ -28,5 +31,11 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
+
+
+<!--    <style name="custom" parent="Widget.App.ActionMode">-->
+<!--        -->
+<!--    </style>-->
+
 
 </resources>
