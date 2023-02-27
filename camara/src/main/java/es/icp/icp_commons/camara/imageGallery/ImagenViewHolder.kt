@@ -17,15 +17,17 @@ import es.icp.icp_commons.camara.databinding.ImagenViewholderBinding
 
 class ImagenViewHolder(
 
-    private val activity                : Activity,
+    private val activity                    : Activity,
+    private val isHorizontal                : Boolean,
 
-    private val view                    : View,
-    private val binding                 : ImagenViewholderBinding,
-    private val numberOfCols            : Int,
-    private val alternativeImage        : Int?,
-    private val isPrevisualizable       : Boolean,
-    private val selectionTrackerFilled  : Int?,
-    private val selectionTrackerUnfilled: Int?
+    private val view                        : View,
+    private val binding                     : ImagenViewholderBinding,
+    private val numberOfCols                : Int,
+    private val maxImageHeightWhenHorizontal: Int? = null,
+    private val alternativeImage            : Int?,
+    private val isPrevisualizable           : Boolean,
+    private val selectionTrackerFilled      : Int?,
+    private val selectionTrackerUnfilled    : Int?
 
 ) : RecyclerView.ViewHolder(view) {
 
@@ -39,10 +41,19 @@ class ImagenViewHolder(
 
         // Ajusto el tamaño del viewholder de manera proporcial al numero de vistas del gridrecycler
         val displayMetrics: DisplayMetrics = view.context.resources.displayMetrics
-        layoutImageContainer.layoutParams = RelativeLayout.LayoutParams(
-            displayMetrics.widthPixels / numberOfCols,
-            displayMetrics.widthPixels / numberOfCols
-        )
+
+        if (!isHorizontal) {
+            layoutImageContainer.layoutParams = RelativeLayout.LayoutParams(
+                displayMetrics.widthPixels / numberOfCols,
+                displayMetrics.widthPixels / numberOfCols
+            )
+        } else {
+            layoutImageContainer.layoutParams = RelativeLayout.LayoutParams(
+                maxImageHeightWhenHorizontal ?: (displayMetrics.widthPixels / numberOfCols),
+                maxImageHeightWhenHorizontal ?: (displayMetrics.widthPixels / numberOfCols)
+            )
+        }
+
 
         // En caso de que se haya seteado una imagen alternativa...
         alternativeImage?.let {

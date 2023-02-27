@@ -14,9 +14,11 @@ class ImagenRecyclerViewAdapter(
 
     private var lista: List<String> = listOf(),
     private var isInDeleteMode: LiveData<Boolean>,
+    private val isHorizontal: Boolean,
 
 
     private val numberOfCols: Int,
+    private val maxImageHeightWhenHorizontal: Int? = null,
     private val alternativeImage: Int?,
     private val isPrevisualizable: Boolean,
 
@@ -36,9 +38,11 @@ class ImagenRecyclerViewAdapter(
         val binding = ImagenViewholderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ImagenViewHolder(
             activity,
+            isHorizontal,
             binding.root,
             binding,
             numberOfCols,
+            maxImageHeightWhenHorizontal,
             alternativeImage,
             isPrevisualizable,
             selectionTrackerFilled,

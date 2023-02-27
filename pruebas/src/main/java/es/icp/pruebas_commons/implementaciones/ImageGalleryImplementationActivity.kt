@@ -49,10 +49,10 @@ class ImageGalleryImplementationActivity : AppCompatActivity() {
             .setCustomSelectionTrackerUnfilledIcon(R.drawable.ic_check_filled) // El icono en caso de que la imagen no esté seleccionada
             .setDefaultImageDrawable(R.drawable.circled_orange_button)         // En caso de que no exista la imagen se pondrá este circulo naranja como alternativa
             .setPrevisualizable(true)                                          // Permite previsualizar la imagen al presionar sobre ellas
-            .setColumnsRows(2)                                                     // Número de columnas
+            .setColumnsRows(2)                                                 // Número de columnas
             .setBackgroundColor(R.color.colorAccent)                           // Color de fondo del recycler
-            .isHorizontal(false)                                       // Si es horizontal o vertical
-            .drawGallery()                                                     // Dibuja la galería
+            .setHorizontal(1000)                                                // Se setea como horizontal y se define la altura máxima de cada foto
+            .drawGallery()                                                      // Dibuja la galería
 
         imageGallery.addImage("https://picsum.photos/1000")          // Añade una imagen a la galería una vez ya creada de forma dinámica
 
