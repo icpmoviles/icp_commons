@@ -32,6 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- app:menu="@menu/menu_appbar_borrar_imagenes" -->
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar_image_gallery_previsualization"
                     android:layout_width="match_parent"
@@ -40,7 +41,6 @@
                     app:titleTextColor="@color/black"
                     app:subtitleTextColor="@color/black"
                     android:background="@color/white"
-                    app:menu="@menu/menu_appbar_borrar_imagenes"
                     app:contentInsetStartWithNavigation="0dp"
                     android:visibility="visible"
                     />
