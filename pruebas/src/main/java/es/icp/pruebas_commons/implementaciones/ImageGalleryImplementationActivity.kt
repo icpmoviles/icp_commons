@@ -2,6 +2,7 @@ package es.icp.pruebas_commons.implementaciones
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import es.icp.icp_commons.camara.imageGallery.ImageGallery
 import es.icp.pruebas_commons.KotlinActivity
@@ -38,6 +39,10 @@ class ImageGalleryImplementationActivity : AppCompatActivity() {
             "IMAGEN ERRONEA A PROPÓSITO"
         )
 
+        val onDeleteAction = { jose: List<String> ->
+            Log.e("--;;;", jose.toString())
+        }
+
         imageGallery = ImageGallery(
             mActivity = this,
             mContext = this,
@@ -51,8 +56,8 @@ class ImageGalleryImplementationActivity : AppCompatActivity() {
             .setPrevisualizable(true)                                          // Permite previsualizar la imagen al presionar sobre ellas
             .setColumnsRows(2)                                                 // Número de columnas
             .setBackgroundColor(R.color.colorAccent)                           // Color de fondo del recycler
-            .setHorizontal(1000)                                                // Se setea como horizontal y se define la altura máxima de cada foto
-            .drawGallery()                                                      // Dibuja la galería
+            .setOnDeleteAction { onDeleteAction(it) }                          // Acción a realizar al eliminar una imagen o varias
+            .drawGallery()                                                     // Dibuja la galería
 
         imageGallery.addImage("https://picsum.photos/1000")          // Añade una imagen a la galería una vez ya creada de forma dinámica
 

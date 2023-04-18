@@ -85,7 +85,7 @@ class ImageGallery(
     private var selectionTrackerFilled      : Int? = null
     private var selectionTrackerUnfilled    : Int? = null
     private var alternativeImage            : Int? = null
-    private var onDeleteAction              : (() -> Unit)? = null
+    private var onDeleteAction              : ((List<String>) -> Unit)? = null
     private var numberOfColumns             : Int = 3
     private var isPrevisualizable           : Boolean = false
     private var isHorizontal                : Boolean = false
@@ -167,6 +167,15 @@ class ImageGallery(
         if (isDrawed) throw ImageGalleryException("No se puede modificar este atributo una vez dibujada la galería")
         isHorizontal = true
         maxImageHeightWhenHorizontal = maxImageHeight
+        return this
+    }
+
+    /**
+     * Seteo la acción que se llevará a cabo cuando se borre una imagen del selector
+     */
+    fun setOnDeleteAction(action: (List<String>) -> Unit): ImageGallery {
+        if (isDrawed) throw ImageGalleryException("No se puede modificar este atributo una vez dibujada la galería")
+        onDeleteAction = action
         return this
     }
 
@@ -293,9 +302,7 @@ class ImageGallery(
             adapterImagenes.notifyDataSetChanged()
             tracker.clearSelection()
 
-            if (listaDeImagenes.isEmpty()) {
-                onDeleteAction?.invoke()
-            }
+            onDeleteAction?.invoke(listaDeImagenesSeleccionadas)
 
         }
 
