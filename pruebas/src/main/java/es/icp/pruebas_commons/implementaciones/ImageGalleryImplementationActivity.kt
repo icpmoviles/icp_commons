@@ -27,7 +27,7 @@ class ImageGalleryImplementationActivity : AppCompatActivity() {
 
         // Esta string se utiliza como identificador en el tracker
         // Pueden usuarse imágenes o uris correspondientes a rutas del teléfono
-        val elementosDePrueba = arrayListOf(
+        val elementosDePrueba = mutableSetOf(
             "https://picsum.photos/200",
             "https://picsum.photos/300",
             "https://picsum.photos/400",
@@ -35,6 +35,16 @@ class ImageGalleryImplementationActivity : AppCompatActivity() {
             "https://picsum.photos/600",
             "https://picsum.photos/700",
             "https://picsum.photos/800",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
+            "https://picsum.photos/900",
             "https://picsum.photos/900",
             "IMAGEN ERRONEA A PROPÓSITO"
         )

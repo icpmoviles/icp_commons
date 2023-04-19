@@ -73,7 +73,7 @@ class ImageGallery(
 
     // La lista de imágenes en formato uri, url...
     private val recyclerView   : RecyclerView,
-    private val listaDeImagenes: ArrayList<String>,
+    private val listaDeImagenes: MutableSet<String>,
 
     // appbar menu que se está usando en la aplicación
     //private val appBarLayout   : AppBarLayout,
@@ -296,7 +296,7 @@ class ImageGallery(
 
             // En caso de confirmar el borrado en el diálogo...
             val listaDeImagenesSeleccionadas = tracker.selection.map {
-                listaDeImagenes[it.toInt()]
+                listaDeImagenes.toCollection(ArrayList())[it.toInt()]
             }
             listaDeImagenes.removeAll(listaDeImagenesSeleccionadas.toSet())
             adapterImagenes.notifyDataSetChanged()

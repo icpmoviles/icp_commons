@@ -12,7 +12,7 @@ class ImagenRecyclerViewAdapter(
 
     private val activity: Activity,
 
-    private var lista: List<String> = listOf(),
+    private var lista: Set<String> = setOf(),
     private var isInDeleteMode: LiveData<Boolean>,
     private val isHorizontal: Boolean,
 
@@ -51,7 +51,7 @@ class ImagenRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ImagenViewHolder, position: Int) {
-        val valor: String = lista[position]
+        val valor: String = lista.toCollection(ArrayList())[position]
         selectionTracker?.let {
             holder.bind(
                 valor,
@@ -68,7 +68,7 @@ class ImagenRecyclerViewAdapter(
     // Serán identificados a la hora de seleccionarse por su posición
     override fun getItemId(position: Int): Long = position.toLong()
 
-    fun setNewDataSet(nuevaLista: List<String>) {
+    fun setNewDataSet(nuevaLista: Set<String>) {
         lista = nuevaLista
         notifyDataSetChanged()
     }
