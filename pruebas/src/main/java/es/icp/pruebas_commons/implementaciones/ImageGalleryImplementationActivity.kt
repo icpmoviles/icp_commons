@@ -60,9 +60,9 @@ class ImageGalleryImplementationActivity : AppCompatActivity() {
             listaDeImagenes = elementosDePrueba,
             //appBarLayout = binding.sopaAppBarLayout
         )
-            .setCustomSelectionTrackerFilledIcon(R.drawable.dx_default_icon)   // El icono en caso de que la imagen esté seleccionada
-            .setCustomSelectionTrackerUnfilledIcon(R.drawable.ic_check_filled) // El icono en caso de que la imagen no esté seleccionada
-            .setDefaultImageDrawable(R.drawable.circled_orange_button)         // En caso de que no exista la imagen se pondrá este circulo naranja como alternativa
+            .setCustomSelectionTrackerFilledIcon(es.icp.icp_commons.R.drawable.dx_default_icon)   // El icono en caso de que la imagen esté seleccionada
+            .setCustomSelectionTrackerUnfilledIcon(es.icp.icp_commons.R.drawable.ic_check_filled) // El icono en caso de que la imagen no esté seleccionada
+            .setDefaultImageDrawable(es.icp.icp_commons.R.drawable.circled_orange_button)         // En caso de que no exista la imagen se pondrá este circulo naranja como alternativa
             .setPrevisualizable(true)                                          // Permite previsualizar la imagen al presionar sobre ellas
             .setColumnsRows(2)                                                 // Número de columnas
             .setBackgroundColor(R.color.colorAccent)                           // Color de fondo del recycler
