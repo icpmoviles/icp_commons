@@ -44,11 +44,11 @@ class LocationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_location)
+        setContentView(es.icp.icp_commons.R.layout.activity_location)
         mLocationService = LocationService()
-        startServiceBtn = findViewById(R.id.start_service_btn)
-        stopServiceBtn = findViewById(R.id.stop_service_btn)
-        btnSummar = findViewById(R.id.btnSumar)
+        startServiceBtn = findViewById(es.icp.icp_commons.R.id.start_service_btn)
+        stopServiceBtn = findViewById(es.icp.icp_commons.R.id.stop_service_btn)
+        btnSummar = findViewById(es.icp.icp_commons.R.id.btnSumar)
 
         startServiceBtn.setOnClickListener {
 

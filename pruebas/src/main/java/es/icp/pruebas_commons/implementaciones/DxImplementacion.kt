@@ -38,7 +38,8 @@ object DxImplementacion {
             .setMensaje(null)
             .setIcono(null)
             .noPermitirSalirSinBotones()
-            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange), textColor = context.getColor(R.color.red)) { onAccept.invoke() }
+            .showAceptarButton(texto = "SI", context.getColor(es.icp.icp_commons.R.color.btnOrange), textColor = context.getColor(
+                es.icp.icp_commons.camara.R.color.red)) { onAccept.invoke() }
             .showCancelarButton { onCancel.invoke() }
             .addCustomView(binding.root)
             .showDialogReturnDxCustom()
@@ -50,7 +51,8 @@ object DxImplementacion {
             .setMensaje(null)
             .setIcono(null)
             .noPermitirSalirSinBotones()
-            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange), textColor = context.getColor(R.color.red)) { onAccept.invoke() }
+            .showAceptarButton(texto = "SI", context.getColor(es.icp.icp_commons.R.color.btnOrange), textColor = context.getColor(
+                es.icp.icp_commons.camara.R.color.red)) { onAccept.invoke() }
             .showCancelarButton { onCancel.invoke() }
             .addCustomView(binding.root)
             .showDialogReturnDxCustom()
@@ -62,7 +64,8 @@ object DxImplementacion {
             .setMensaje(null)
             .setIcono(null)
             .noPermitirSalirSinBotones()
-            .showAceptarButton(texto = "SI", context.getColor(R.color.btnOrange), textColor = context.getColor(R.color.red)) { onAccept.invoke() }
+            .showAceptarButton(texto = "SI", context.getColor(es.icp.icp_commons.R.color.btnOrange), textColor = context.getColor(
+                es.icp.icp_commons.camara.R.color.red)) { onAccept.invoke() }
             .showCancelarButton { onCancel.invoke() }
             .addCustomView(binding.root)
             .showDialogReturnDxCustom()
@@ -76,7 +79,7 @@ object DxImplementacion {
         DxCustom(context).createNotification(parentView,
             "Me has pulsado 💖 💋",
             backgroundColor = context.getColor(R.color.lightGreen),
-            strokeColor = context.getColor(R.color.red),
+            strokeColor = context.getColor(es.icp.icp_commons.camara.R.color.red),
         )
 
     }
@@ -100,7 +103,7 @@ object DxImplementacion {
 //            .setIcono(color = context.getColor(R.color.dxCustom))
             .setIcono(AppCompatResources.getDrawable(context, R.drawable.ic_perseo_logo_casco), null)
             .permitirSalirSinBotones()
-            .showAceptarButton("Si", context.getColor(R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
+            .showAceptarButton("Si", context.getColor(es.icp.icp_commons.camara.R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
             .showCancelarButton(
                 strokecolor = context.getColor(R.color.darkRed),
                 textColor = context.getColor(R.color.darkRed),
@@ -117,7 +120,7 @@ object DxImplementacion {
 //            .setIcono(color = context.getColor(R.color.dxCustom))
             .setIcono(AppCompatResources.getDrawable(context, R.drawable.ic_perseo_logo_casco), null)
             .permitirSalirSinBotones()
-            .showAceptarButton("Si", context.getColor(R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
+            .showAceptarButton("Si", context.getColor(es.icp.icp_commons.camara.R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
             .showCancelarButton(
                 strokecolor = context.getColor(R.color.darkRed),
                 textColor = context.getColor(R.color.darkRed),
@@ -134,7 +137,7 @@ object DxImplementacion {
 //            .setIcono(color = context.getColor(R.color.dxCustom))
             .setIcono(AppCompatResources.getDrawable(context, R.drawable.ic_perseo_logo_casco), null)
             .permitirSalirSinBotones()
-            .showAceptarButton("Si", context.getColor(R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
+            .showAceptarButton("Si", context.getColor(es.icp.icp_commons.camara.R.color.red), textAllCaps = true) { onAccept.invoke(binding) }
             .showCancelarButton(
                 strokecolor = context.getColor(R.color.darkRed),
                 textColor = context.getColor(R.color.darkRed),

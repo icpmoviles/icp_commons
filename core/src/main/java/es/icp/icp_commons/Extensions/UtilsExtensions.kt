@@ -157,7 +157,7 @@ fun View.goneWithFade(duration: Long = 300) {
         .alpha(0f)
         .setDuration(duration)
         .setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 view.visibility = View.GONE
             }
         })
