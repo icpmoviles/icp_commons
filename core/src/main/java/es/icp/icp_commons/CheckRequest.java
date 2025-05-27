@@ -3,6 +3,7 @@ package es.icp.icp_commons;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -434,6 +435,11 @@ public class CheckRequest {
         Send(context, parametros, callBack, true, idUsuario, urlError);
     }
 
+    public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
+                            final boolean loader, int idUsuario, String urlError) throws CheckRequestException {
+        Send(context, parametros, callBack, true, idUsuario, urlError, null);
+    }
+
     /**
      * Envía una petición al servidor sin realizar ninguna comprobación antes del envío.
      * Método asíncrono. Listener de tipo VolleyCallBack.
@@ -444,10 +450,11 @@ public class CheckRequest {
      * @param loader     boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
      * @param idUsuario  int. ID del usuario que está llamando al servicio.
      * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param headers    Map<String, String>. Headers a añadir a la petición.
      * @author Ventura de Lucas
      */
     public static void Send(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
-                            final boolean loader, int idUsuario, String urlError) throws CheckRequestException {
+                            final boolean loader, int idUsuario, String urlError, @Nullable Map<String, String> headers) throws CheckRequestException {
         GlobalVariables.loader = loader;
         WSHelper.logWS(parametros.getUrl(), parametros.getJSONObject());
         try {
@@ -455,14 +462,14 @@ public class CheckRequest {
                 switch (WebService.getLoaderType()) {
                     case NORMAL_DIALOG:
                         Loading.ShowLoading(context);
-                        send2(context, parametros, callBack, idUsuario, urlError);
+                        send2(context, parametros, callBack, idUsuario, urlError, headers);
                         break;
                     case SMART_DIALOG:
                         Loading.ShowSmartLoading(context, context.getString(R.string.cargando), context.getString(R.string.obteniendo_informacion), false, new CustomSmartDialog.LoadingListener() {
                             @Override
                             public void onLoadingFinished() {
                                 try {
-                                    send2(context, parametros, callBack, idUsuario, urlError);
+                                    send2(context, parametros, callBack, idUsuario, urlError, headers);
                                 } catch (CheckRequestException e) {
                                     e.printStackTrace();
                                 }
@@ -471,7 +478,7 @@ public class CheckRequest {
                         break;
                 }
             } else {
-                send2(context, parametros, callBack, idUsuario, urlError);
+                send2(context, parametros, callBack, idUsuario, urlError, headers);
             }
 
         } catch (Exception e) {
@@ -561,7 +568,8 @@ public class CheckRequest {
     }
 
 
-    private static void send2(Context context, ParametrosPeticion parametros, VolleyCallBack callBack, int idUsuario, String urlError) throws CheckRequestException {
+    private static void send2(Context context, ParametrosPeticion parametros, VolleyCallBack callBack, int idUsuario, String urlError,
+                              @Nullable Map<String, String> headers) throws CheckRequestException {
         if (parametros.getJsonType() == ParametrosPeticion.JsonTypes.SIMPLE) {
             try {
                 JsonObjectRequest request = new JsonObjectRequest(parametros.getMethod(), parametros.getUrl(), parametros.getJSONObject(),
@@ -613,7 +621,16 @@ public class CheckRequest {
 //                        tratarStatusCode(context, parametros, guardarAccion, (error != null && error.networkResponse != null) ? error.networkResponse.statusCode : -1);
                         if (callBack != null && error.networkResponse != null) callBack.onError((error.getMessage() == null) ? "Error " + error.networkResponse.statusCode + context.getString(R.string.contacte_administrador_error) : error.getMessage());
                     }
-                });
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        if (headers != null) {
+                            return headers;
+                        } else {
+                            return super.getHeaders();
+                        }
+                    }
+                };
                 WebService.AddRequest(request, context);
             } catch (Exception e) {
                 if (GlobalVariables.loader) {
@@ -860,6 +877,28 @@ public class CheckRequest {
      * Método asíncrono. Listener de tipo VolleyCallBack.
      * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
      *
+     * @param context    Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario  int. ID del usuario que está llamando al servicio.
+     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param headers    Map<String, String>. Headers a añadir a la petición.
+     * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     * @author Ventura de Lucas
+     */
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, int idUsuario, String urlError,
+                                    Map<String, String> headers) throws CheckRequestException {
+        CheckAndSend(context, parametros, callBack, true, idUsuario, urlError, false, headers);
+    }
+
+    /**
+     * Realiza las comprobaciones anteriores al envío de la petición al servidor.
+     * Comprueba la conexión a Internet.
+     * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
+     * Porteriormente, envía la petición al servidor.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
+     *
      * @param context       Context. Contexto de la aplicación.
      * @param parametros    ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack      VolleyCallBack. Listener con el resultado del envío.
@@ -909,11 +948,13 @@ public class CheckRequest {
      * @param idUsuario     int. ID del usuario que está llamando al servicio.
      * @param urlError      String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
      * @param guardarAccion boolean. Indica si se quiere almacenar la petición en caso 'offline'.
+     * @param headers       Map<String, String>. Headers a añadir a la petición.
      * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
      * @author Ventura de Lucas
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
-                                    final boolean loader, final int idUsuario, final String urlError, final boolean guardarAccion) throws CheckRequestException {
+                                    final boolean loader, final int idUsuario, final String urlError, final boolean guardarAccion,
+                                    @Nullable final Map<String, String> headers) throws CheckRequestException {
         GlobalVariables.loader = loader;
 
         try {
@@ -925,7 +966,12 @@ public class CheckRequest {
 
                 @Override
                 public void onFinish() throws CheckRequestException {
-                    Send(context, parametros, callBack, loader, idUsuario, urlError);
+                    if (headers != null) {
+                        Send(context, parametros, callBack, loader, idUsuario, urlError, headers);
+                    } else {
+                        Send(context, parametros, callBack, loader, idUsuario, urlError);
+                    }
+
                 }
 
                 @Override
@@ -941,6 +987,13 @@ public class CheckRequest {
         }
 
     }
+
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack,
+                                    final boolean loader, final int idUsuario, final String urlError,
+                                    final boolean guardarAccion) throws CheckRequestException {
+        CheckAndSend(context, parametros, callBack, loader, idUsuario, urlError, guardarAccion, null);
+    }
+
 
     public static void ShowActions(Context context) {
         MyLog.setDEBUG(true);
