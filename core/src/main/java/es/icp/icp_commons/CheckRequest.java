@@ -920,6 +920,28 @@ public class CheckRequest {
      * Método asíncrono. Listener de tipo VolleyCallBack.
      * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
      *
+     * @param context       Context. Contexto de la aplicación.
+     * @param parametros    ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack      VolleyCallBack. Listener con el resultado del envío.
+     * @param idUsuario     int. ID del usuario que está llamando al servicio.
+     * @param urlError      String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param guardarAccion boolean. Indica si se quiere almacenar la petición en caso 'offline'.
+     * @param headers       Map<String, String>. Headers a añadir a la petición.
+     * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     * @author Ventura de Lucas
+     */
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, int idUsuario, String urlError, boolean guardarAccion, Map<String, String> headers) throws CheckRequestException {
+        CheckAndSend(context, parametros, callBack, true, idUsuario, urlError, guardarAccion, headers);
+    }
+
+    /**
+     * Realiza las comprobaciones anteriores al envío de la petición al servidor.
+     * Comprueba la conexión a Internet.
+     * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
+     * Porteriormente, envía la petición al servidor.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
+     *
      * @param context    Context. Contexto de la aplicación.
      * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
      * @param callBack   VolleyCallBack. Listener con el resultado del envío.
@@ -931,6 +953,28 @@ public class CheckRequest {
      */
     public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, boolean loader, int idUsuario, String urlError) throws CheckRequestException {
         CheckAndSend(context, parametros, callBack, loader, idUsuario, urlError, false);
+    }
+
+    /**
+     * Realiza las comprobaciones anteriores al envío de la petición al servidor.
+     * Comprueba la conexión a Internet.
+     * Comprueba si existen acciones esperando a ser enviadas. En caso afirmativo, las envía.
+     * Porteriormente, envía la petición al servidor.
+     * Método asíncrono. Listener de tipo VolleyCallBack.
+     * En caso de no introducir el parámetro 'guardarAccion' no se almacenará la petición en caso 'offline'
+     *
+     * @param context    Context. Contexto de la aplicación.
+     * @param parametros ParametrosPeticion. Objeto con los distintos parámetros de la petición y clase de respuesta a recibir.
+     * @param callBack   VolleyCallBack. Listener con el resultado del envío.
+     * @param loader     boolean. Indica si se quiere mostrar un loader hasta recibir respuesta del listener. Por defecto, se encuentra a 'true'.
+     * @param idUsuario  int. ID del usuario que está llamando al servicio.
+     * @param urlError   String. URL a la cual se mandará un log con errores (en caso de que ocurran). Introducir "" en caso de no querer enviar el log al servicio.
+     * @param headers       Map<String, String>. Headers a añadir a la petición.
+     * @throws CheckRequestException Hereda de Exception. Nos proporciona la propiedad function (String).
+     * @author Ventura de Lucas
+     */
+    public static void CheckAndSend(final Context context, final ParametrosPeticion parametros, final VolleyCallBack callBack, boolean loader, int idUsuario, String urlError, Map<String, String> headers) throws CheckRequestException {
+        CheckAndSend(context, parametros, callBack, loader, idUsuario, urlError, false, headers);
     }
 
     /**
